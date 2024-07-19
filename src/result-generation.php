@@ -112,13 +112,13 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                                 </div>
                             </div>
                             <div class="col-auto">
-                                <button class="btn btn-previous">
-                                    <i class="fas fa-chevron-left" id="btn-previous"></i>
+                                <button class="btn btn-previous"  id="btn-previous">
+                                    <i class="fas fa-chevron-left"></i>
                                     <span class="d-none d-md-inline">Previous</span>
                                 </button>
-                                <button class="btn btn-next">
+                                <button class="btn btn-next" id="btn-next">
                                     <span class="d-none d-md-inline">Next</span>
-                                    <i class="fas fa-chevron-right" id="btn-next"></i>
+                                    <i class="fas fa-chevron-right" ></i>
                                 </button>
                             </div>
                         </div>
@@ -468,15 +468,15 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                                             <?php foreach ($emojis as $rating => $emoji_class) {
                                                 $percentage = $ratings_percentage[$rating] ?? 0; // Default to 0% if rating percentage is not set
                                             ?>
-                                            <div class="rating-item <?php if ($rating == $highest_rating) echo 'highest-rating'; ?> d-flex align-items-center justify-content-center">
-                                            <div>
+                                                <div class="rating-item <?php if ($rating == $highest_rating) echo 'highest-rating'; ?> d-flex align-items-center justify-content-center">
+                                                    <div>
                                                         <h1 class="<?php if ($rating == $highest_rating) echo 'main-color'; ?>"><?php echo $percentage; ?>%</h1>
                                                         <h2 class="<?php if ($rating == $highest_rating) echo 'main-color'; ?>"><?php echo $rating; ?></h2>
                                                     </div>
-                                                    
-</div>
 
-                                               
+                                                </div>
+
+
 
                                             <?php } ?>
                                         </div>
@@ -587,6 +587,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         <link rel="stylesheet" href="styles/loader.css" />
         <link href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
         <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
         <!--JS -->
@@ -613,153 +614,22 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
     </head>
 
     <body>
+    <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
 
         <?php
         include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/loader.html');
         include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/sidebar.php');
         ?>
         <div id="content" class="main">
-            <?php
-            // Establish database connection to check election schedule
-            $conn = DatabaseConnection::connect();
-
-            // Fetch election close time from database
-            $sql = "SELECT `close` FROM `election_schedule` WHERE `schedule_id` = 0"; // Assuming schedule_id is known
-            $result = $conn->query($sql);
-
-            if ($result && $result->num_rows > 0) {
-                $row = $result->fetch_assoc();
-                $closeTimeStr = $row['close'];
-
-                // Validate current time against close time
-                $closeDateTime = new DateTime($closeTimeStr);
-                $currentDateTime = new DateTime();
-
-                if ($currentDateTime > $closeDateTime) {
-                    // Current time is past the election close time, run generate-json.php
-
-                    // Construct the path to generate-json.php
-                    $generateJsonScript = __DIR__ . '/../generate-json.php';
-
-                    // Check if the script exists before including it
-                    if (file_exists($file_to_check)) {
-                        // If the file exists, display the election reports
-                        displayElectionReports();
-                    } else {
-            ?>
-
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-11 col-md-10 col-lg-11 mx-auto" style="margin-top: -15px;">
-                                    <div class="card-report main-bg-color mb-5">
-                                        <div class="card-body main-bg-color d-flex justify-content-between">
-                                            <div>
-                                                <h5 class="card-title"><i data-feather="bar-chart-2" class="white mb-xl-1"></i> Election Reports</h5>
-                                                <p class="card-text" id="selectedYear">
-                                                    <?php
-                                                    $jsonFilePath = __DIR__ . '/includes/data/' . $org_name . '/voters-turnout.json';
-                                                    $jsonData = json_decode(file_get_contents($jsonFilePath), true);
-                                                    if ($jsonData && isset($jsonData['candidate'])) {
-                                                        $election_years = array_unique(array_column($jsonData['candidate'], 'election_year'));
-                                                        rsort($election_years);
-                                                        $selected_year = isset($_GET['election_year']) ? $_GET['election_year'] : null;
-                                                        if ($selected_year && in_array($selected_year, $election_years)) {
-                                                            echo "Academic Year: <strong>" . htmlspecialchars($selected_year) . "</strong>";
-                                                        }
-                                                    } else {
-                                                        echo "<strong> ELECTION YEAR</strong>";
-                                                    }
-                                                    ?>
-                                                </p>
-                                            </div>
-                                            <?php
-                                            if ($jsonData && isset($jsonData['candidate'])) {
-                                                $selected_year = isset($_GET['election_year']) ? $_GET['election_year'] : null;
-                                                $selected_year_title = "Election Year";
-                                                if ($selected_year && in_array($selected_year, $election_years)) {
-                                                    $selected_year_title = htmlspecialchars($selected_year);
-                                                }
-                                            ?>
-                                            <?php
-                                            }
-                                            ?>
-                                        </div>
-                                    </div>
-                                    <div class="card p-1 mt-1 mt-md-0" style="border-radius: 5px;">
-                                        <div class="card-body4">
-                                            <div class="row w-100">
-                                                <div class="center-image">
-                                                    <img class="empty-state custom-image-size" src="images/resc/Dashboard/candidate-empty-state.jpg">
-                                                </div>
-                                                <h5 class="fs-6 main-color pb-3 pt-0 text-center election-text">Results not found</h5>
-                                                <h5 class="fs-7 pb-5 gray text-center">
-                                                    Looks like there are no candidates and votes available at the moment.
-                                                </h5>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    <?php
-                    }
-                } else {
-                    // Election period has not yet ended, show the empty state
-                    ?>
-
-                    <div class="row justify-content-center">
-                        <div class="col-11 col-md-10 col-lg-11" style="margin-top: -15px;">
-                            <div class="card-report main-bg-color mb-5">
-                                <div class="card-body main-bg-color d-flex justify-content-between">
-                                    <div>
-                                        <h5 class="card-title"><i data-feather="bar-chart-2" class="white mb-xl-1"></i> Election Reports</h5>
-                                        <p class="card-text" id="selectedYear">
-                                            <?php
-                                            $jsonFilePath = __DIR__ . '/includes/data/' . $org_name . '/voters-turnout.json';
-                                            $jsonData = json_decode(file_get_contents($jsonFilePath), true);
-                                            if ($jsonData && isset($jsonData['candidate'])) {
-                                                $election_years = array_unique(array_column($jsonData['candidate'], 'election_year'));
-                                                rsort($election_years);
-                                                $selected_year = isset($_GET['election_year']) ? $_GET['election_year'] : null;
-                                                if ($selected_year && in_array($selected_year, $election_years)) {
-                                                    echo "Academic Year: <strong>" . htmlspecialchars($selected_year) . "</strong>";
-                                                }
-                                            } else {
-                                                echo "<strong> ELECTION YEAR</strong>";
-                                            }
-                                            ?>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card p-1 mt-1 mt-md-0" style="border-radius: 5px;">
-                                <div class="card-body4 ">
-                                    <div class="row">
-                                        <div class="center-image text-center">
-                                            <img class="empty-state custom-image-size" src="images/resc/Dashboard/admin-empty-state.jpeg">
-                                        </div>
-                                        <h5 class="fs-6 main-color pb-3 pt-0 text-center election-text">The election period is still ongoing.</h5>
-                                        <h5 class="fs-7 pb-5 gray text-center">
-                                            Election reports will be generated once voting has ended, please <br> check back later for the latest results!
-                                        </h5>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-        </div>
-
-
     <?php
-                }
-            } else {
-                // No election schedule found
-    ?>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-11 col-md-10 col-lg-11 mx-auto" style="margin-top: -15px;">
+    // Helper function to display empty state messages
+    function displayEmptyState($message) {
+          // ------ SESSION EXCHANGE
+    include FileUtils::normalizeFilePath('includes/session-exchange.php');
+    // ------ END OF SESSION EXCHANGE
+        ?>
+        <div class="row justify-content-center">
+            <div class="col-11 col-md-10 col-lg-11" style="margin-top: -15px;">
                 <div class="card-report main-bg-color mb-5">
                     <div class="card-body main-bg-color d-flex justify-content-between">
                         <div>
@@ -781,107 +651,143 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                                 ?>
                             </p>
                         </div>
-                        <?php
-                        if ($jsonData && isset($jsonData['candidate'])) {
-                            $selected_year = isset($_GET['election_year']) ? $_GET['election_year'] : null;
-                            $selected_year_title = "Election Year";
-                            if ($selected_year && in_array($selected_year, $election_years)) {
-                                $selected_year_title = htmlspecialchars($selected_year);
-                            }
-                        ?>
-                        <?php
-                        }
-                        ?>
                     </div>
                 </div>
                 <div class="card p-1 mt-1 mt-md-0" style="border-radius: 5px;">
                     <div class="card-body4">
-                        <div class="row">
-                            <div class="center-image text-center">
-                                <img class="empty-state custom-image-size" src="images/resc/Dashboard/admin-empty-state.jpeg">
+                        <div class="row w-100">
+                            <div class="center-image">
+                                <img class="empty-state custom-image-size" src="images/resc/Dashboard/candidate-empty-state.jpg">
                             </div>
-                            <h5 class="fs-6 main-color pb-1 pt-0 text-center election-text">No election schedule found</h5>
-                            <h5 class="fs-7 pb-4 gray text-center">
-                                Looks like there is no election date set. Try configuring the election schedule.
-                            </h5>
-                            <div class="pb-2 text-center"> <!-- Added text-center class here -->
-                                <a href="configuration.php" class=" p-2  main-bg-color fw-bold px-4 hover-color" style="color: white; width: 200px;border-radius: 5px; font-size:13px;">
-                                    <i class="bi bi-plus-circle-fill icon"></i> Set Schedule
-                                </a>
-                            </div>
+                            <h5 class="fs-6 main-color pb-3 pt-0 text-center election-text"><?php echo $message; ?></h5>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+        <?php
+    }
 
-<?php
+    // Establish database connection
+    $conn = DatabaseConnection::connect();
+
+    // Fetch election close time from database
+    $sql = "SELECT `close` FROM `election_schedule` WHERE `schedule_id` = 0"; // Assuming schedule_id is known
+    $result = $conn->query($sql);
+
+    // Check for election schedule
+    if ($result && $result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $closeTimeStr = $row['close'];
+
+        // Validate current time against close time
+        $closeDateTime = new DateTime($closeTimeStr);
+        $currentDateTime = new DateTime();
+
+        if ($currentDateTime > $closeDateTime) {
+            // Current time is past the election close time, check for feedback data
+            $feedbackSql = "SELECT COUNT(*) AS count FROM feedback"; // Count the rows in feedback table
+            $feedbackResult = $conn->query($feedbackSql);
+
+            // Debug: Check if the feedback query is successful
+            if (!$feedbackResult) {
+                die("Error executing feedback query: " . $conn->error);
             }
 
-            // Close database connection
-            $conn->close();
-?>
+            $feedbackRow = $feedbackResult->fetch_assoc();
+            $feedbackCount = $feedbackRow['count'];
+
+         
+
+            if ($feedbackCount > 0) {
+                // If there is feedback data, display election reports
+                
+                $jsonFilePath = 'includes/data/' . $org_name . '/voters-turnout.json';
+                if (file_exists( $jsonFilePath)) {
+                    displayElectionReports();
+                } else {
+                    // If no JSON script, show results not found
+                    displayEmptyState("Results not found");
+                }
+            } else {
+                // No feedback data found, show empty state
+                displayEmptyState("Looks like there are no candidates and votes available at the moment.");
+            }
+        } else {
+            // Election period has not yet ended, show the empty state
+            displayEmptyState("The election period is still ongoing. Election reports will be generated once voting has ended, please check back later for the latest results!");
+        }
+    } else {
+        // No election schedule found
+        displayEmptyState("No election schedule found. Please configure the election schedule.");
+    }
+
+    // Close database connection
+    $conn->close();
+    ?>
 </div>
-<!-- Feedback Modal -->
-<div class="modal fade" id="successEmailModal" tabindex="-1" role="dialog" aria-labelledby="successEmailModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="border-radius: 25px;">
-            <div class="modal-body">
-                <div class="d-flex justify-content-end">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 pb-3">
-                        <p class="fw-bold fs-3 main-color modal-text spacing-4">Comment</p>
-                        <p id="modal-feedback" class="fw-medium spacing-5 comment"></p>
-                        <p id="modal-date" class="fw-medium spacing-5 main-color text-end time-date"></p>
+
+
+        <!-- Feedback Modal -->
+        <div class="modal fade" id="successEmailModal" tabindex="-1" role="dialog" aria-labelledby="successEmailModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content" style="border-radius: 25px;">
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 pb-3">
+                                <p class="fw-bold fs-3 main-color modal-text spacing-4">Comment</p>
+                                <p id="modal-feedback" class="fw-medium spacing-5 comment"></p>
+                                <p id="modal-date" class="fw-medium spacing-5 main-color text-end time-date"></p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
-<!-- Modal for Position Details -->
-<div class="modal fade" id="positionModal" tabindex="-1" role="dialog" aria-labelledby="positionModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-        <div class="modal-content" style="border-radius: 25px;">
-            <div class="modal-body">
-                <div class="d-flex justify-content-end">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 pb-3">
-                        <p class="fw-bold fs-3 main-color modal-text spacing-4" id="modal-position-title"></p>
-                        <div id="modal-position-details" class="comment-descrip">
-                            <p id="modal-position-description"></p>
+        <!-- Modal for Position Details -->
+        <div class="modal fade" id="positionModal" tabindex="-1" role="dialog" aria-labelledby="positionModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content" style="border-radius: 25px;">
+                    <div class="modal-body">
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
+                        <div class="row">
+                            <div class="col-md-12 pb-3">
+                                <p class="fw-bold fs-3 main-color modal-text spacing-4" id="modal-position-title"></p>
+                                <div id="modal-position-details" class="comment-descrip">
+                                    <p id="modal-position-description"></p>
+                                    <p id="description"></p>
+                                </div>
 
-                        <div id="modal-candidates">
-                            <!-- Candidates will be inserted here -->
+                                <div id="modal-candidates">
+                                    <!-- Candidates will be inserted here -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
 
 
-<!-- JavaScript -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<script src="scripts/script.js"></script>
-<script src="scripts/result-generation.js"></script>
-<script src="scripts/feather.js"></script>
-<script src="scripts/loader.js"></script>
+        <!-- JavaScript -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <script src="scripts/script.js"></script>
+        <script src="scripts/result-generation.js"></script>
+        <script src="scripts/feather.js"></script>
+        <script src="scripts/loader.js"></script>
     </body>
     <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
 

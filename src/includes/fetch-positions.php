@@ -54,6 +54,7 @@ try {
                 'org_name' => $org_name,
             ];
         } else {
+            // No data found for the position id
             $response = ['error' => 'No data found for position id ' . $positionId];
         }
 
@@ -77,6 +78,12 @@ try {
         $position_data = [];
         while ($row = $positions_tbl->fetch_assoc()) {
             $position_data[] = $row;
+        }
+
+        // Check if position_data is empty
+        if (empty($position_data)) {
+            echo json_encode(['empty_state' => true]);
+            exit;
         }
 
         // Prepare JSON response

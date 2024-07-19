@@ -75,6 +75,46 @@ text-decoration: none;
   padding-right: 18px;
 }
 
+@media (max-width: 475px) {
+
+  .modal-content{
+    margin: 10px !important; 
+  }
+  .modal-dialog {
+    font-size: 15px;
+    margin: 10px !important; 
+  }
+
+  .modal-header{
+    margin: 0 !important;
+  }
+
+  .modal-title{
+    font-size: 16px !important;
+  }
+  
+  .modal-title .btn-close {
+    position: relative;
+    font-size: 5px !important;
+    background-color: #ccc;
+    color: #ffffff !important;
+    font-weight: bold;
+    border: none;
+    width: 10px !important; 
+    height: 10px !important;
+    border-radius: 50%;
+    }
+
+    #submitModalButton {
+      font-size: 13px;
+    }
+
+    #cancelModalButton {
+      font-size: 13px;
+    }
+    
+}
+
 @media (max-width: 576px) {
   .modal-dialog {
     max-width: 100%;
@@ -381,6 +421,7 @@ text-align: center;
 letter-spacing: 2px;
 font-weight: 800;
 font-size: 18px;
+margin: 0;
 }
 
 

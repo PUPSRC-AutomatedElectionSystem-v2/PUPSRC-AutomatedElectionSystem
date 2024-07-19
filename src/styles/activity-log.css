@@ -135,7 +135,7 @@ ul.timeline > li:before {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-shadow: 10px #00000040;
+    box-shadow: 0px 0px 4px 0px #00000040;
     z-index: 2000;
     opacity: 0;
     transform: translateY(100px);
@@ -188,6 +188,10 @@ ul.timeline > li:before {
         font-size: 9px;
         font-weight: 700;
         margin-left: -10px;
+    }
+
+    .activity-dropdown-parent {
+        margin-top: 20px;
     }
 
     .list-inline, .activity-info {
@@ -248,10 +252,6 @@ ul.timeline > li:before {
 
     .dropdown-center .btn {
         font-size: 10px;
-    }
-
-    .activity-dropdown {
-        display: none;
     }
     
     #scrollTopBtn {

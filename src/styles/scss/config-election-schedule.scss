@@ -22,12 +22,22 @@ main.main {
         padding-top: clamp(3rem, 2rem + 1dvw, 5rem);
         padding-bottom: clamp(3rem, 2rem + 1dvw, 5rem);
 
+        &[data-state="edit"],
+        &[data-state="set"] {
+            .subtitle {
+                visibility: visible;
+
+            }
+
+        }
+
         @media only screen and (max-width: 576px) {
             padding-left: clamp(1.5rem, 0.7rem + 1dvw, 5rem);
             padding-right: clamp(1.5rem, 0.7rem + 1dvw, 5rem);
         }
 
         .subtitle {
+            visibility: hidden;
             margin-bottom: clamp(1rem, 0.5rem + 1dvw, 5rem);
             border-bottom: 1px solid light-dark(var(--main-color), var(--main-color));
         }
@@ -124,6 +134,87 @@ main.main {
                 // }
             }
         }
+
+        .action-btn-view {
+            display: none;
+            width: 100%;
+            justify-content: space-between;
+            padding: clamp(1rem, 0.5rem + 1vw + 1dvh, 3rem) 0;
+            border-top: clamp(1px, 0.1vw, 3px) solid light-dark(var(--main-color), var(--main-color));
+
+            .shedule-date {
+                .data {
+                    font-weight: 600;
+                }
+
+                .start,
+                .end {}
+            }
+
+        }
+
+        &[data-state="view"] {
+            .action-btn-view {
+                // height: fit-content;
+                gap: clamp(1rem, 0.25rem + 1dvh + 1vw, 3rem) 0;
+                display: flex;
+                flex-wrap: wrap;
+
+                @media only screen and (max-width: 576px) {
+                    justify-content: center;
+
+                    div:has(button) {
+                        text-align: center;
+                    }
+                }
+
+            }
+
+            .all-day {
+                display: none;
+            }
+
+            .schedule-group {
+                .datetime {
+                    .date-group {
+                        width: 50% !important;
+
+                        &.col-12 {
+                            input {
+                                @media only screen and (max-width: 576px) and (hover: none) {
+                                    padding-left: 25% !important;
+                                }
+                            }
+
+                            ::-webkit-datetime-edit-fields-wrapper {
+                                // targets text content of date and time input
+                                // background-color: var(--main-color);
+                                margin-left: 20%;
+
+                                @media only screen and (max-width: 500px) and (hover: none) {
+                                    margin-left: unset;
+                                }
+
+                            }
+
+                            input[type="date"] {
+                                border-radius: clamp(0.438rem, 0.2rem + 0.3vw, 1rem) 0px 0px clamp(0.438rem, 0.2rem + 0.3vw, 1rem);
+                            }
+                        }
+                    }
+
+                    .time-group {
+                        display: block !important;
+                    }
+                }
+            }
+
+            .action-btn {
+                display: none;
+            }
+
+        }
+
 
 
 

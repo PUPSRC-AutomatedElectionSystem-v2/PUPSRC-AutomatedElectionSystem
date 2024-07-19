@@ -135,9 +135,9 @@ $(() => {
             const timestamp = response.timestamp * 1000; // Convert seconds to milliseconds
             const secondsAgo = Math.floor((Date.now() - timestamp) / 1000);
             const toastTimestamp =
-              secondsAgo === 0 ? "Just Now" : `${secondsAgo} seconds ago`;
+              secondsAgo === 0 ? "Just Now" : `${secondsAgo} second/s ago`;
 
-            $("#profileUpdatedToast .text-body-secondary").text(toastTimestamp);
+            $("#profileUpdatedToast #toastTimestamp").text(toastTimestamp);
           }
 
           const successToast = $("#profileUpdatedToast");

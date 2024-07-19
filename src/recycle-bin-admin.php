@@ -436,7 +436,7 @@ if (selectedIds.length > 0) {
     // Send AJAX request to delete selected items
     $.ajax({
         type: 'POST',
-        url: 'submission_handlers/delete-selected-voter.php', // Replace 'delete_selected.php' with your server endpoint
+        url: 'submission_handlers/delete-selected-admin.php', // Replace 'delete_selected.php' with your server endpoint
         data: { ids: selectedIds },
         dataType: 'json',
         success: function (response) {

@@ -131,15 +131,17 @@ body dialog.modal-native {
             .modal-title {
                 @media only screen and (max-width: 600px) {
                     font-size: calc(0.75rem + 0.6575vw);
+
                 }
 
-                max-width: calc(var(--bs-modal-width) - 3.5rem);
+                max-width: calc(100% - 1rem - 1vw);
                 overflow: clip;
-                overflow-clip-margin: -5rem;
-                /* Doesnt work */
+                text-overflow: ellipsis;
             }
 
             &.editor {
+                justify-content: space-between;
+
                 button.modal-close {
                     color: var(--main-color);
                     background-color: var(--white);
@@ -397,7 +399,6 @@ button.add-new {
         background-color: rgb(236, 236, 236, 1);
         font-weight: bolder;
         color: var(--main-black);
-        cursor: crosshair;
     }
 
     // &:focus-visible {

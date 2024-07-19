@@ -233,6 +233,7 @@ ConfigPage.fetchData = function (requestData) {
         .then(function (data) {
             console.log('GET request successful:', data);
             ConfigPage.setErrorDictionary(data.error_codes);
+            console.log(data);
             ConfigPage.setFetchedSchedule(data);
 
         })
@@ -249,21 +250,15 @@ ConfigPage.isoDateConverter = function (date) {
     return `${year}-${month}-${day}`;
 }
 
-ConfigPage.setFetchedSchedule = function (data) {
+ConfigPage.setFetchedSchedule = function (data, isUTC = false) {
     ConfigPage.datePickerStart.setAttribute('min', ConfigPage.TODAY);
     ConfigPage.datePickerEnd.setAttribute('min', ConfigPage.TODAY);
 
+    let scheduleSettings = document.querySelector(`.schedule.card-box`);
+
     if (data[0]) {
-        let startDateTime = data[0].electionStart.split(' ');
-        let endDateTime = data[0].electionEnd.split(' ');
 
-        let startDate = startDateTime[0]; // "2024-06-10"
-        let startTime = startDateTime[1]; // "12:12:00"
-        let endDate = endDateTime[0]; // "2024-06-30"
-        let endTime = endDateTime[1]; // "12:09:00"
-
-        startTime = startTime.substring(0, 5); // "12:12"
-        endTime = endTime.substring(0, 5);   // "12:09"
+        const { startDateTime, endDateTime, startDate, startTime, endDate, endTime } = ConfigPage.processDateTime(data, isUTC);
 
 
         console.log(startDateTime[1]);
@@ -287,7 +282,119 @@ ConfigPage.setFetchedSchedule = function (data) {
         ConfigPage.timePickerEnd.setAttribute('data-value', endTime);
 
         ConfigPage.handleToggleAllDay();
+
+        scheduleSettings.setAttribute('data-state', 'view');
+        ConfigPage.datePickerStart.setAttribute('readOnly', true);
+        ConfigPage.timePickerStart.setAttribute('readOnly', true);
+        ConfigPage.datePickerEnd.setAttribute('readOnly', true);
+        ConfigPage.timePickerEnd.setAttribute('readOnly', true);
+
+        let editScheduleBtn = document.getElementById(`edit-schedule`);
+        ConfigPage.delEventListener(editScheduleBtn, 'click');
+        ConfigPage.addEventListenerAndStore(editScheduleBtn, 'click', ConfigPage.toggleEditState);
+
+        ConfigPage.setDateTimeInfo(startDate, startTime, endDate, endTime);
+
+
+    } else {
+        scheduleSettings.setAttribute('data-state', 'set');
+
     }
+}
+
+ConfigPage.processDateTime = function (data, isUTC = false) {
+    let startDateTime;
+    let endDateTime;
+
+    if (isUTC) {
+        startDateTime = data[0].electionStart.split('T');
+        endDateTime = data[0].electionEnd.split('T');
+    } else {
+        startDateTime = data[0].electionStart.split(' ');
+        endDateTime = data[0].electionEnd.split(' ');
+    }
+
+    let startDate = startDateTime[0]; // "2024-06-10"
+    let startTime = startDateTime[1]; // "12:12:00"
+    let endDate = endDateTime[0]; // "2024-06-30"
+    let endTime = endDateTime[1]; // "12:09:00"
+
+    console.log(startDate)
+    console.log(startTime)
+    console.log(endDate)
+    console.log(endTime)
+
+    try {
+        startTime = startTime.substring(0, 5); // "12:12"
+        endTime = endTime.substring(0, 5);   // "12:09"
+    } catch (error) {
+        console.warn(error)
+    }
+
+    return { startDateTime, endDateTime, startDate, startTime, endDate, endTime };
+}
+
+ConfigPage.formatDate = function (dateString) {
+    const date = new Date(dateString);
+    const month = date.getMonth(); // Months are zero-indexed
+    const day = date.getDate();
+    const year = date.getFullYear();
+
+    return new Intl.DateTimeFormat('en-US', {
+        month: 'long',  // Long month name
+        day: 'numeric',  // Day with padding (01)
+        year: 'numeric', // Year
+    }).format(date);
+}
+
+ConfigPage.setDateTimeInfo = function (startDate, startTime, endDate, endTime) {
+    let schedInfoContainer = document.querySelector(`.shedule-date span.data`);
+    let startDateInfo = schedInfoContainer.querySelector(`date.start`);
+    let startTimeInfo = schedInfoContainer.querySelector(`time.start`);
+    let endDateInfo = schedInfoContainer.querySelector(`date.end`);
+    let endTimeInfo = schedInfoContainer.querySelector(`time.end`);
+
+    startDateInfo.textContent = ConfigPage.formatDate(startDate); //2024-07-02
+    startTimeInfo.textContent = ConfigPage.formatTime(startTime); // 00:00
+    endDateInfo.textContent = ConfigPage.formatDate(endDate); //2024-07-16
+    endTimeInfo.textContent = ConfigPage.formatTime(endTime); //23:59
+}
+
+ConfigPage.formatTime = function (time) {
+    // Check correct time format and split into components
+    time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+    if (time.length > 1) {
+        // If time format is correct, adjust hours and add AM/PM
+        time = time.slice(1);
+        time[5] = +time[0] < 12 ? ' AM' : ' PM';
+        time[0] = +time[0] % 12 || 12;
+    }
+    return time.join('');
+}
+
+
+ConfigPage.toggleEditState = function () {
+
+    let schedSettings = document.querySelector(`.schedule.card-box`);
+    let schedSettingsState = schedSettings.getAttribute('data-state');
+
+    if (schedSettingsState == 'view') {
+        schedSettings.setAttribute('data-state', 'edit');
+        ConfigPage.datePickerStart.removeAttribute('readonly');
+        ConfigPage.timePickerStart.removeAttribute('readonly');
+        ConfigPage.datePickerEnd.removeAttribute('readonly');
+        ConfigPage.timePickerEnd.removeAttribute('readonly');
+
+        let saveBtn = document.getElementById(`submit-schedule`)
+        saveBtn.textContent = "Save Changes";
+    } else {
+        schedSettings.setAttribute('data-state', 'view');
+        ConfigPage.datePickerStart.setAttribute('readOnly', true);
+        ConfigPage.timePickerStart.setAttribute('readOnly', true);
+        ConfigPage.datePickerEnd.setAttribute('readOnly', true);
+        ConfigPage.timePickerEnd.setAttribute('readOnly', true);
+    }
+
 }
 
 
@@ -318,6 +425,17 @@ ConfigPage.postData = function (post_data) {
 
             ConfigPage.handleSucessResponse();
 
+            console.log(data.data);
+
+            try {
+                const originalObject = data.data;
+                const iterableArray = [originalObject];
+                ConfigPage.setFetchedSchedule(iterableArray, true);
+
+            } catch (error) {
+                console.error(error);
+            }
+
             return { data, success: true };
         })
         .catch(function (error) {
@@ -339,6 +457,7 @@ ConfigPage.CurrentModal = { html: null };
 ConfigPage.CurrModalInstance = { instance: null };
 
 ConfigPage.showModal = function (modal) {
+    ConfigPage.CurrentModal.html = modal;
     ConfigPage.CurrModalInstance.instance = new bootstrap.Modal(modal);
     ConfigPage.CurrModalInstance.instance.show();
 
@@ -347,11 +466,15 @@ ConfigPage.showModal = function (modal) {
 }
 
 ConfigPage.handleSucessResponse = function () {
-    ConfigPage.showModal(document.getElementById('success-modal'));
+    try {
+        ConfigPage.showModal(document.getElementById('success-modal'));
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 ConfigPage.handleModalDispose = function () {
-    ConfigPage.modalInstance.instance.dispose();
+    ConfigPage.CurrModalInstance.instance.dispose();
 }
 
 
@@ -606,10 +729,12 @@ ConfigPage.handleDiscardSchedule = async function () {
             ConfigPage.handleValidation(ConfigPage.timePickerStart, ConfigPage.startTimeValidator, false);
             ConfigPage.handleValidation(ConfigPage.timePickerEnd, ConfigPage.endTimeValidator, false);
 
+            ConfigPage.toggleEditState();
+
         }
     }
     else {
-
+        ConfigPage.toggleEditState();
     }
 }
 

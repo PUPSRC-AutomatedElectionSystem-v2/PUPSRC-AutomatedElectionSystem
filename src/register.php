@@ -229,7 +229,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                 <div class="col-xl-7 col-md-7">
                                     <div id="submit-container">
                                         <button
-                                            class="btn btn-primary px-sm-5 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6 w-100 text-white"
+                                            class="btn btn-primary px-sm-5 py-2 btn-sm fw-bold fs-6 spacing-6 w-100 text-white"
                                             type="submit" id="sign-up" name="sign-up" disabled>Sign
                                             Up</button>
                                     </div>

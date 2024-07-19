@@ -2,14 +2,20 @@
 include_once str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/file-utils.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/../error-reporting.php');
 include_once FileUtils::normalizeFilePath(__DIR__ . '/../default-time-zone.php');
+include_once FileUtils::normalizeFilePath(__DIR__ . '/../components/email-template.php');
+include_once FileUtils::normalizeFilePath(__DIR__ . '/../organization-list.php');
 
 class EmailSender
 {
+    use EmailTemplate;
     private $mail;
+    private $org_name;
+    const MAX_RECEPIENT = 98;
 
     public function __construct($mail)
     {
         $this->mail = $mail;
+        $this->org_name = $_SESSION['organization'] ?? '';
     }
 
     public function sendApprovalEmail($recipientEmail)
@@ -25,7 +31,8 @@ class EmailSender
     }
 
 
-    public function sendForVerificationStatus($recipientEmail) {
+    public function sendForVerificationStatus($recipientEmail)
+    {
         $mailBody = 'Good day, Iskolar!<br><br>
             
         We wanted to inform you that your account registration has been successfully submitted and is currently awaiting approval. We will review your information shortly and notify you via email once your account has been verified.<br><br>
@@ -58,7 +65,8 @@ class EmailSender
     }
 
 
-    public function sendPasswordEmail($recipientEmail, $password) {
+    public function sendPasswordEmail($recipientEmail, $password)
+    {
         $subject = 'iVOTE Admin Account Created and Password';
         $mailBody = "Hello, Committee Member.<br><br>";
         $mailBody .= "We're pleased to inform you that your account has been successfully created. 
@@ -67,13 +75,14 @@ class EmailSender
         $mailBody .= "Password: $password <br><br>";
         $mailBody .= "For security purposes, we recommend that you log in to your account and change your passsword
         after your first login. If you have any questions or need assistance, contact the support team at ivotepupsrc@gmail.com.";
-    
+
         return $this->sendEmail($recipientEmail, $subject, $mailBody);
     }
 
-    public function sendPasswordResetEmail($recipientEmail, $token, $orgName) {
+    public function sendPasswordResetEmail($recipientEmail, $token)
+    {
         $subject = 'iVOTE Password Reset Request';
-        $resetPasswordLink = "http://localhost/PUPSRC-AutomatedElectionSystem/src/reset-password.php?token=$token&orgName=$orgName";
+        $resetPasswordLink = "http://localhost/PUPSRC-AutomatedElectionSystem/src/reset-password.php?token=$token&orgName=$this->org_name";
         $mailBody = <<<EOT
         <!DOCTYPE html>
         <html lang="en">
@@ -98,11 +107,12 @@ class EmailSender
         </body>
         </html>
         EOT;
-    
+
         return $this->sendEmail($recipientEmail, $subject, $mailBody);
     }
-    
-    public function sendResetEmail($recipientEmail, $token, $orgName) {
+
+    public function sendResetEmail($recipientEmail, $token, $orgName)
+    {
         $subject = 'iVOTE Change Email Request';
         $updateEmailLink = "http://localhost/PUPSRC-AutomatedElectionSystem/src/setting-email-update.php?token=$token&orgName=$orgName";
         $mailBody = <<<EOT
@@ -129,10 +139,40 @@ class EmailSender
         </body>
         </html>
         EOT;
-    
+
         return $this->sendEmail($recipientEmail, $subject, $mailBody);
     }
-    
+
+    public function sendElectionCloseEmail($bccs)
+    {
+        global $org_acronyms;
+        global $org_personality;
+        global $org_social_media;
+        global $org_full_names;
+
+        $org_full_name = ucwords($org_full_names[$this->org_name]);
+        $socialMediaLink = $org_social_media[$this->org_name]['facebook'];
+        $org_acronym = strtoupper($org_acronyms[$this->org_name]);
+
+        $mainHeading = <<<HTML
+            <span>$org_acronym</span> election is now closed.
+    HTML;
+
+        $title = "$org_acronym election is now closed.";
+
+        $messageTemplate = <<<HTML
+        <p>Heads up {$org_personality[$this->org_name]},</p>
+        <p>The election period for <b>$org_full_name</b> is now closed.</p>
+        <p>Updates for new officers will be posted on <a href="$socialMediaLink">$org_acronym</a> facebook page.</p>
+    HTML;
+
+        $subject = $org_acronym . " election is now closed.";
+
+        $mailBody = self::getEmailContent($messageTemplate, $title, $mainHeading);
+
+        return $this->prepMassEmailByBcc($subject, $mailBody, $bccs);
+    }
+
 
     private function sendEmail($recipientEmail, $subject, $body)
     {
@@ -147,5 +187,50 @@ class EmailSender
         } catch (Exception $e) {
             return false;
         }
+    }
+
+    private function prepMassEmailByBcc($subject, $body, $bccs = null)
+    {
+        $serializedEmails = [];
+
+        try {
+            $this->mail->setFrom('chuvarwokahsgahnaquindhenpjheb@gmail.com', 'Test');
+            $this->mail->isHTML(true);
+            $this->mail->Subject = $subject;
+            $this->mail->Body = $body;
+
+            if ($bccs) {
+                $chunks = array_chunk($bccs, self::MAX_RECEPIENT);
+                foreach ($chunks as $chunk) {
+                    foreach ($chunk as $bcc) {
+                        $this->mail->addBCC($bcc);
+                    }
+                    $this->mail->preSend();
+                    // compress to binary
+                    $serializedEmails[] = serialize($this->mail);
+                    $this->mail->clearAllRecipients(); // Clear BCCs for the next chunk
+                }
+            } else {
+                throw new Exception;
+            }
+
+            // print_r($serializedEmails);
+            return $serializedEmails;
+        } catch (Exception $e) {
+            return false;
+        }
+    }
+
+    public function sendQueuedMail($mailContent)
+    {
+        // The email is in compressed to binary
+        $this->mail = unserialize($mailContent);
+        // print_r($this->mail);
+
+        if ($this->mail->postSend()) {
+            // If sent correctly
+            return true;
+        }
+        return false;
     }
 }

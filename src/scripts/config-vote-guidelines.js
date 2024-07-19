@@ -760,6 +760,7 @@ ConfigPage.CurrentModal = { html: null };
 ConfigPage.CurrModalInstance = { instance: null };
 
 ConfigPage.showModal = function (modal) {
+    ConfigPage.CurrentModal.html = modal;
     ConfigPage.CurrModalInstance.instance = new bootstrap.Modal(modal);
     ConfigPage.CurrModalInstance.instance.show();
 

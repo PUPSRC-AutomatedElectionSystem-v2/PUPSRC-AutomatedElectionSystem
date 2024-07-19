@@ -1,6 +1,7 @@
 <?php
 include_once str_replace('/', DIRECTORY_SEPARATOR, '../includes/classes/file-utils.php');
 require_once FileUtils::normalizeFilePath('../includes/classes/db-connector.php');
+require_once FileUtils::normalizeFilePath('../includes/classes/logger.php');
 require_once FileUtils::normalizeFilePath('../includes/session-handler.php');
 require_once FileUtils::normalizeFilePath('../includes/classes/query-handler.php');
 
@@ -9,6 +10,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Check if the 'ids' parameter is set in the POST request
     if (isset($_POST['ids'])) {
         $ids = $_POST['ids'];
+        
+        // Initialize logger based on the number of IDs
+        if (count($ids) == 1) {
+            $logger = new Logger($_SESSION['role'], PERMANENT_DELETE_VOTER);
+        } else {
+            $logger = new Logger($_SESSION['role'], PERMANENT_DELETE_MULTIPLE_VOTERS);
+        }
+        $logger->logActivity();
         
         // Establish database connection
         $conn = DatabaseConnection::connect();

@@ -2,6 +2,7 @@
 include_once str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/classes/file-utils.php');
 require_once FileUtils::normalizeFilePath('session-handler.php');
 require_once FileUtils::normalizeFilePath('classes/db-connector.php');
+require_once FileUtils::normalizeFilePath('classes/logger.php');
 require_once FileUtils::normalizeFilePath('error-reporting.php');
 
 // Check if the request method is POST
@@ -61,6 +62,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         // Prepare and execute the SQL query to update voter status
         $stmt_vote = $conn->prepare("UPDATE voter SET vote_status = ? WHERE voter_id = ?");
+        
+        $logger = new Logger(ROLE_STUDENT_VOTER, VOTED);
+        $logger->logActivity();
+
         if (!$stmt_vote) {
             die("Error in SQL: " . $conn->error);
         }

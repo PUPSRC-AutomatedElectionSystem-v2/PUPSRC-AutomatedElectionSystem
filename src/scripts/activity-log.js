@@ -9,8 +9,40 @@ $(document).ready(function () {
 
   /* Scroll to top event listener  */
 
-  let scrollTopPageBtn = $("#scrollTopBtn");
+  const scrollTopPageBtn = $("#scrollTopBtn");
+  const popover = new bootstrap.Popover(scrollTopBtn, {
+    trigger: "custom",
+  });
   let canShowScrollTop = true;
+
+  // Shows popover on hover
+  // $("#scrollTopBtn").hover(
+  //   function () {
+  //     popover.show();
+  //   },
+  //   function () {
+  //     setTimeout(() => {
+  //       if (!$(this).is(":hover")) {
+  //         popover.hide();
+  //       }
+  //     }, 100);
+  //   }
+  // );
+
+  // Hides popover on click
+  $("#scrollTopBtn").click(function () {
+    canShowScrollTop = false;
+    popover.hide();
+    scrollTopPageBtn.prop("disabled", true).removeClass("show");
+
+    // Scroll to top functionality
+    $("html, body").animate({ scrollTop: 0 }, "slow", function () {
+      canShowScrollTop = true;
+      scrollTopPageBtn.prop("disabled", false);
+    });
+
+    return false;
+  });
 
   $(window).scroll(function () {
     let scrollTop = $(window).scrollTop();
@@ -29,17 +61,15 @@ $(document).ready(function () {
     // }
   });
 
-  scrollTopPageBtn.click(function () {
-    canShowScrollTop = false;
-    scrollTopPageBtn.prop("disabled", true).removeClass("show");
-
-    $("html, body").animate({ scrollTop: 0 }, "slow", function () {
-      canShowScrollTop = true;
-      scrollTopPageBtn.prop("disabled", false);
-    });
-
-    return false;
-  });
+  // if (window.innerWidth < 768) {
+  //   popoverList.forEach((popover) => {
+  //     popover.dispose();
+  //     const popoverTriggerEl = popover._element;
+  //     new bootstrap.Popover(popoverTriggerEl, {
+  //       trigger: "hover",
+  //     });
+  //   });
+  // }
 
   /* Load data on the page */
   // let page = 1;
@@ -82,6 +112,14 @@ $(document).ready(function () {
   // Event listener for dropdown item clicks
   $(".custom-dropdown-item").on("click", function (e) {
     e.preventDefault();
+
+    if ($(this).hasClass("disabled")) {
+      return;
+    }
+
+    $(".custom-dropdown-item").removeClass("disabled");
+    $(this).addClass("disabled");
+
     var filter = $(this).attr("id");
     var filterText = $(this).text();
 
@@ -97,4 +135,6 @@ $(document).ready(function () {
     );
     feather.replace();
   });
+
+  $(".custom-dropdown-item").first().addClass("disabled");
 });

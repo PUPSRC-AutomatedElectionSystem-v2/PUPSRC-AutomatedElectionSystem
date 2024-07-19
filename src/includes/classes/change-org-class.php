@@ -2,6 +2,7 @@
 
 include_once str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/file-utils.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/db-connector.php');
+require_once FileUtils::normalizeFilePath(__DIR__ . '/logger.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/manage-ip-address.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/../session-handler.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/../error-reporting.php');
@@ -9,6 +10,7 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/../default-time-zone.php')
 
 class FormHandler {
     private $conn;
+    private $logger;
 
     public function __construct() {
         $this->conn = DatabaseConnection::connect();
@@ -60,9 +62,12 @@ class FormHandler {
             $target_file = $upload_directory . $filename;
 
             if (move_uploaded_file($cor_file["tmp_name"], $target_file)) {
-                $this->insertVoterData($connection, $filename, $row, $voter_id);
-                $this->deletePreviousVoterEntry($voter_id);
-                $this->updateScoDatabase($filename, $row['email']);
+                $this->insertVoterData($connection, $filename, $row);
+                $this->updateScoDatabase($filename, $target_file, $row['email']);
+                $this->invalidatePreviousVoterEntry($voter_id);
+
+                $this->logger = new Logger(ROLE_STUDENT_VOTER, TRANSFER_ORG);
+                $this->logger->logActivity();
             } else {
                 // echo "Error: Failed to move uploaded file.";
             }
@@ -73,19 +78,19 @@ class FormHandler {
         $connection->close();
     }
 
-    private function insertVoterData($connection, $filename, $row, $voter_id) {
-        $last_name = !empty($row['last_name']) ? $row['last_name'] : null;
-        $first_name = !empty($row['first_name']) ? $row['first_name'] : null;
-        $middle_name = !empty($row['middle_name']) ? $row['middle_name'] : null;
-        $suffix = !empty($row['suffix']) ? $row['suffix'] : null;
-        $year_level = !empty($row['year_level']) ? $row['year_level'] : null;
-        $section = !empty($row['section']) ? $row['section'] : null;
-        $email = !empty($row['email']) ? $row['email'] : null;
-        $password = !empty($row['password']) ? $row['password'] : null;
-        $role = !empty($row['role']) ? $row['role'] : null;
-        $voter_status = !empty($row['voter_status']) ? $row['voter_status'] : null;
-        $vote_status = !empty($row['vote_status']) ? $row['vote_status'] : null;
-        $vote_status_updated = !empty($row['vote_status_updated']) ? $row['vote_status_updated'] : null;
+    private function insertVoterData($connection, $filename, $row) {
+        $last_name = $row['last_name'] ?? null;
+        $first_name = $row['first_name'] ?? null;
+        $middle_name = $row['middle_name'] ?? null;
+        $suffix = $row['suffix'] ?? null;
+        $year_level = $row['year_level'] ?? null;
+        $section = $row['section'] ?? null;
+        $email = $row['email'] ?? null;
+        $password = $row['password'] ?? null;
+        $role = $row['role'] ?? null;
+        $voter_status = $row['voter_status'] ?? null;
+        $vote_status = $row['vote_status'] ?? null;
+        $vote_status_updated = $row['vote_status_updated'] ?? null;
         $account_status = 'for_verification';
 
         $sql = "INSERT INTO voter (last_name, first_name, middle_name, suffix, year_level, section, email, password, 
@@ -93,8 +98,8 @@ class FormHandler {
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $connection->prepare($sql);
         $stmt->bind_param("ssssssssssssss", $last_name, $first_name, $middle_name, $suffix, $year_level, $section, $email, $password, 
-                                            $role, $voter_status, $vote_status, $vote_status_updated, $filename, $account_status);
-        
+                          $role, $voter_status, $vote_status, $vote_status_updated, $filename, $account_status);
+
         if ($stmt->execute()) {
             // echo "Success: Data inserted successfully for voter ID $voter_id.";
         } else {
@@ -104,20 +109,21 @@ class FormHandler {
         $stmt->close();
     }
 
-    private function deletePreviousVoterEntry($voter_id) {
-        $stmt_delete = $this->conn->prepare("DELETE FROM voter WHERE voter_id = ?");
-        $stmt_delete->bind_param('s', $voter_id);
-        
-        if ($stmt_delete->execute()) {
-            // echo "Success: Previous entry deleted for voter ID $voter_id.";
+    private function invalidatePreviousVoterEntry($voter_id) {
+        // Prepare the update statement to set account_status to 'invalid'
+        $stmt_update = $this->conn->prepare("UPDATE voter SET account_status = 'invalid' WHERE voter_id = ?");
+        $stmt_update->bind_param('s', $voter_id);
+
+        if ($stmt_update->execute()) {
+            // echo "Success: Account status set to 'invalid' for voter ID $voter_id.";
         } else {
-            // echo "Error: Failed to delete previous entry for voter ID $voter_id.";
+            // echo "Error: Failed to set account status to 'invalid' for voter ID $voter_id.";
         }
 
-        $stmt_delete->close();
+        $stmt_update->close();
     }
 
-    private function updateScoDatabase($filename, $email) {
+    private function updateScoDatabase($filename, $target_file, $email) {
         $sco_organization = 'sco';
         $config_sco = DatabaseConfig::getOrganizationDBConfig($sco_organization);
         $org_connection = new \mysqli($config_sco['host'], $config_sco['username'], $config_sco['password'], $config_sco['database']);
@@ -126,17 +132,26 @@ class FormHandler {
             die("Connection failed: " . $org_connection->connect_error);
         }
 
-        $sql = "UPDATE voter SET cor = ? WHERE email = ?";
-        $stmt = $org_connection->prepare($sql);
-        $stmt->bind_param('ss', $filename, $email);
+        // also need to upload the file in the sco
+        $upload_directory_sco = "../user_data/$sco_organization/cor/";
+        $target_file_sco = $upload_directory_sco . $filename;
 
-        if ($stmt->execute()) {
-            // echo "Success: cor updated in sco database for email $email.";
+        if (copy($target_file, $target_file_sco)) {
+            $sql = "UPDATE voter SET cor = ? WHERE email = ?";
+            $stmt = $org_connection->prepare($sql);
+            $stmt->bind_param('ss', $filename, $email);
+
+            if ($stmt->execute()) {
+                // echo "Success: cor updated in sco database for email $email.";
+            } else {
+                // echo "Error: Failed to update cor in sco database for email $email.";
+            }
+
+            $stmt->close();
         } else {
-            // echo "Error: Failed to update cor in sco database for email $email.";
+            // echo "Error: Failed to copy uploaded file to SCO directory.";
         }
 
-        $stmt->close();
         $org_connection->close();
     }
 }

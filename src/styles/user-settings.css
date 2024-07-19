@@ -6,7 +6,11 @@ body {
 a {
     color: blue;
     text-decoration: underline;
-}
+  }
+  
+  a .custom-link{
+    text-decoration: none !important;
+  }
 
 .asterisk {
     color: red;
@@ -141,19 +145,21 @@ a {
     transform: translate(-50%, -50%);
 }
 
-.custom-link {
+
+  .custom-link {
     text-decoration: none; /* Remove underline */
     color: inherit; /* Inherit the color from the parent element */
     font-family: inherit; /* Inherit font family */
     font-size: inherit; /* Inherit font size */
     /* You can add more custom styles as needed */
-}
-
-.custom-link:hover,
-.custom-link:focus {
+  }
+  
+  .custom-link:hover,
+  .custom-link:focus {
     color: inherit; /* Change color on hover/focus */
-    text-decoration: underline; /* Add underline on hover/focus */
-}
+    text-decoration: underline !important; /* Add underline on hover/focus */
+  }
+
 
 .error-border {
     border: 2px solid red !important;

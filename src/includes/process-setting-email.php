@@ -4,6 +4,7 @@ require_once FileUtils::normalizeFilePath(__DIR__ . '/session-handler.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/classes/session-manager.php');
 include_once FileUtils::normalizeFilePath(__DIR__ . '/session-exchange.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/classes/db-connector.php');
+require_once FileUtils::normalizeFilePath(__DIR__ . '/classes/logger.php');
 include_once FileUtils::normalizeFilePath(__DIR__ . '/error-reporting.php');
 include_once FileUtils::normalizeFilePath(__DIR__ . '/default-time-zone.php');
 
@@ -91,6 +92,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $success_org = $stmt_update_org->execute();
 
         if ($success_org) {
+
+            $logger = new Logger(ROLE_STUDENT_VOTER, UPDATE_EMAIL);
+            $logger->logActivity();
+
             echo json_encode(['status' => 'success']);
             exit();
         } else {

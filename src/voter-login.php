@@ -3,7 +3,7 @@ include_once str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/includes/classes/
 require_once FileUtils::normalizeFilePath('includes/session-handler.php');
 require_once FileUtils::normalizeFilePath('includes/classes/session-manager.php');
 require_once FileUtils::normalizeFilePath('includes/classes/csrf-token.php');
-require_once FileUtils::normalizeFilePath('includes/classes/db-connector.php');
+// require_once FileUtils::normalizeFilePath('includes/classes/db-connector.php');
 include_once FileUtils::normalizeFilePath('includes/session-exchange.php');
 include_once FileUtils::normalizeFilePath('includes/default-time-zone.php');
 include_once FileUtils::normalizeFilePath('includes/error-reporting.php');
@@ -29,25 +29,37 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
     unset($_SESSION['maxLimit']);
 }
 
-// Create connection with the database
-$connection = DatabaseConnection::connect();
+// $connection = DatabaseConnection::connect();
 
-$sql = "SELECT email, account_status FROM voter";
-$result = $connection->query($sql);
+// $sql = "";
+// $user_data = array();
+// $head_admin = 'head_admin';
+// $admin = 'admin';
 
-// Hold all emails and statuses
-$user_data = array();
+// // Checks if organization is not set to sco
+// if($_SESSION['organization'] !== 'sco') {
+//     $sql = "SELECT email, account_status FROM voter";
+//     $stmt = $connection->prepare($sql);
+// }
+// else {
+//     $sql = "SELECT email, account_status FROM voter WHERE role = ? OR role = ?";
+//     $stmt = $connection->prepare($sql);
+//     $stmt->bind_param("ss", $head_admin, $admin);
+// }
 
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $email = $row['email'];
-        $account_status = $row['account_status'];
-        // Store email and status as key value pairs
-        $user_data[$email] = $account_status;
-    }
-}
+// $stmt->execute();
+// $result = $stmt->get_result();
 
-$connection->close();
+// if($result->num_rows > 0) {
+//     while($row = $result->fetch_assoc()) {
+//         $email = $row['email'];
+//         $account_status = $row['account_status'];
+//         // Store email and status as key value pairs
+//         $user_data[$email] = $account_status;
+//     }
+// }
+
+// $connection->close();
 
 ?>
 
@@ -218,15 +230,15 @@ $connection->close();
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="justify-content-center">
-                    <h1 class="modal-title fw-bold mb-2 forgot-password-title" id="<?php echo strtolower($org_name); ?>SignUP">Forgot Password
+                    <h1 class="modal-title fw-bold mb-2 forgot-password-title" id="<?php echo strtolower($org_name); ?>SignUP">Forgot your password?
                     </h1><!-- <hr> -->
                 </div>
                 <div class="modal-body">
                     <form class="needs-validation" id="forgot-password-form" name="forgot-password-form" novalidate enctype="multipart/form-data">
                         <div class="col-12 col-md-12">
                             <div class="d-flex align-items-start mb-0 pb-0 forgot-pass-email-title">
-                                <!-- <p for="email" class="form-label text-start ps-1">We will send a password reset link to your registered email address.</p> -->
-                                <p>Email Address</p>
+                                <p for="email" class="form-label text-start ps-1 pb-3 forgot-password-subtitle">Don't sweat it, enter your registered email address below to recover your account.</p>
+                                <!-- <p>Email Address</p> -->
                             </div>
                             <input type="email" class="form-control shadow-sm email" id="email" name="email" placeholder="Email Address" autocomplete="email">
                             <div class="valid-feedback text-start fw-medium" id="email-valid">
@@ -237,16 +249,16 @@ $connection->close();
 
                             <!-- Will be used for validating user -->
                             <script>
-                                const user_data = <?php echo json_encode($user_data); ?>
+
                             </script>
 
                         </div>
                         <div class="col-md-12 mt-4">
                             <div class="row">
-                                <div class="col-5">
-                                    <button type="button" id="cancelReset" class="btn cancel-button w-100" data-bs-dismiss="modal">Cancel</button>
+                                <div class="col-5" id="cancelBtnContainer">
+                                    <button type="button" id="cancelReset" class="btn border border-0 cancel-button w-100" data-bs-dismiss="modal">Cancel</button>
                                 </div>
-                                <div class="col-7">
+                                <div class="col-7" id="sendBtnContainer">
                                     <button class="btn send-link-button w-100" id="<?php echo strtoupper($org_name); ?>-login-button" type="submit" name="send-email-btn">Send Link</button>
                                     <script>
                                         const ORG_NAME = "<?php echo strtoupper($org_name) . '-login-button'; ?>";
@@ -262,7 +274,7 @@ $connection->close();
     </div>
 
     <!-- Email Sending Modal -->
-    <div class="modal" id="emailSending" tabindex="-1" data-bs-keyboard="false" data-bs-backdrop="static">
+    <!-- <div class="modal" id="emailSending" tabindex="-1" data-bs-keyboard="false" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-body">
@@ -281,7 +293,7 @@ $connection->close();
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     <!-- Success Modal -->
     <div class="modal" id="successResetPasswordLinkModal" tabindex="-1" role="dialog">

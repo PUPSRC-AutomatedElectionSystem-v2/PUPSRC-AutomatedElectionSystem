@@ -133,10 +133,10 @@ $warning_message_json = json_encode($warning_message);
         <div class="container-fluid">
           <div class="row justify-content-center text-center">
             <div class="col-md-3 mb-4">
-              <button type="submit" name="submit_btn" value="<?php echo $org_acronyms['sco']; ?>"
+              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['sco']); ?>"
                 class="landing-page-org-card" id="SCO-landing-logo">
                 <img src="images/logos/sco.webp" alt="SCO Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-capitalize"><?php echo $org_full_names['sco']; ?></h5>
+                <h5 class="fw-bold pt-2 text-capitalize"><?php echo htmlspecialchars($org_full_names['sco']); ?></h5>
               </button>
             </div>
           </div>
@@ -145,26 +145,26 @@ $warning_message_json = json_encode($warning_message);
         <div class="container-fluid">
           <div class="row justify-content-center text-center">
             <div class="col-md-3 mb-4" id="index-ACAP">
-              <button type="submit" name="submit_btn" value="<?php echo $org_acronyms['acap']; ?>"
+              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['acap']); ?>"
                 class="landing-page-org-card" id="ACAP-landing-logo">
                 <img src="images/logos/acap.webp" alt="ACAP Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo $org_acronyms['acap']; ?></h5>
+                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['acap']); ?></h5>
               </button>
             </div>
 
             <div class="col-md-3 mb-4" id="index-AECES">
-              <button type="submit" name="submit_btn" value="<?php echo $org_acronyms['aeces']; ?>"
+              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['aeces']); ?>"
                 class="landing-page-org-card" id="AECES-landing-logo">
                 <img src="images/logos/aeces.webp" alt="AECES Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo $org_acronyms['aeces']; ?></h5>
+                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['aeces']); ?></h5>
               </button>
             </div>
 
             <div class="col-md-3 mb-4" id="index-AECES">
-              <button type="submit" name="submit_btn" value="<?php echo $org_acronyms['elite']; ?>"
+              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['elite']); ?>"
                 class="landing-page-org-card" id="ELITE-landing-logo">
                 <img src="images/logos/elite.webp" alt="ELITE Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo $org_acronyms['elite']; ?></h5>
+                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['elite']); ?></h5>
               </button>
             </div>
           </div>
@@ -173,25 +173,25 @@ $warning_message_json = json_encode($warning_message);
         <div class="container-fluid">
           <div class="row justify-content-center text-center">
             <div class="col-md-3 mb-4" id="index-ACAP">
-              <button type="submit" name="submit_btn" value="<?php echo $org_acronyms['give']; ?>"
+              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['give']); ?>"
                 class="landing-page-org-card" id="GIVE-landing-logo">
                 <img src="images/logos/give.webp" alt="GIVE Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo $org_acronyms['give']; ?></h5>
+                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['give']); ?></h5>
               </button>
             </div>
             <div class="col-md-3 mb-4" id="index-JEHRA">
-              <button type="submit" name="submit_btn" value="<?php echo $org_acronyms['jehra']; ?>"
+              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['jehra']); ?>"
                 class="landing-page-org-card" id="JEHRA-landing-logo">
                 <img src="images/logos/jehra.webp" alt="JEHRA Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo $org_acronyms['jehra']; ?></h5>
+                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['jehra']); ?></h5>
               </button>
             </div>
 
             <div class="col-md-3 mb-4" id="index-JMAP">
-              <button type="submit" name="submit_btn" value="<?php echo $org_acronyms['jmap']; ?>"
+              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['jmap']); ?>"
                 class="landing-page-org-card" id="JMAP-landing-logo">
                 <img src="images/logos/jmap.webp" alt="JMAP Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo $org_acronyms['jmap']; ?></h5>
+                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['jmap']); ?></h5>
               </button>
             </div>
 
@@ -201,17 +201,17 @@ $warning_message_json = json_encode($warning_message);
         <div class="container-fluid">
           <div class="row justify-content-center text-center">
             <div class="col-md-3 mb-4" id="index-JPIA">
-              <button type="submit" name="submit_btn" value="<?php echo $org_acronyms['jpia']; ?>"
+              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['jpia']); ?>"
                 class="landing-page-org-card" id="JPIA-landing-logo">
                 <img src="images/logos/jpia.webp" alt="JPIA Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo $org_acronyms['jpia']; ?></h5>
+                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['jpia']); ?></h5>
               </button>
             </div>
             <div class="col-md-3 mb-4" id="index-PIIE">
-              <button type="submit" name="submit_btn" value="<?php echo $org_acronyms['piie']; ?>"
+              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['piie']); ?>"
                 class="landing-page-org-card" id="PIIE-landing-logo">
                 <img src="images/logos/piie.webp" alt="PIIE Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo $org_acronyms['piie']; ?></h5>
+                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['piie']); ?></h5>
               </button>
             </div>
           </div>

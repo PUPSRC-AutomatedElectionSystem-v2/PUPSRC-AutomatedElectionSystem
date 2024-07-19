@@ -7,9 +7,9 @@ include_once FileUtils::normalizeFilePath('includes/default-time-zone.php');
 include_once FileUtils::normalizeFilePath('includes/error-reporting.php');
 
 
-if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['role'] == 'student_voter')) 
-{
-   if(($_SESSION['vote_status'] == NULL)){
+if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['role'] == 'student_voter')) {
+
+   if(($_SESSION['vote_status'] == NULL)) {
 
     // ------ SESSION EXCHANGE
     include FileUtils::normalizeFilePath('includes/session-exchange.php');
@@ -36,8 +36,20 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
   $result_guidelines = $stmt_guidelines->get_result();
 
   $voter_id = $_SESSION['voter_id']; // Get voter id to update the vote status
-  $vote_status = $_SESSION['vote_status']; // Get voter id to update the vote status
-  
+
+  // Query for election period, cannot use the $_SESSION['electionOpen']
+  // upon reloding the page, it is checked
+  $stmt_electionOpen = $connection->prepare("SELECT  start, close FROM election_schedule WHERE schedule_id = 0");
+  $stmt_electionOpen->execute();	
+  $result_electionOpen = $stmt_electionOpen->get_result();	
+
+  if($result_electionOpen) {	
+      $row_election = $result_electionOpen->fetch_assoc();	
+      $today = new DateTime();	
+      $start = new Datetime($row_election['start']);	
+      $close = new DateTime($row_election['close']);	
+      if($today >= $start && $today <= $close) {
+        
 ?>
 
 <!DOCTYPE html>
@@ -62,9 +74,8 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
   <link rel="stylesheet" href="styles/loader.css" />
   <link rel="stylesheet" href="<?php echo 'styles/orgs/' . $org_acronym . '.css'; ?>">
   <!-- Icons -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
   
@@ -128,13 +139,12 @@ if ($total_guidelines > 0) {
     $guidelines_html = '<div class="ps-4 pe-4 pb-2">No guidelines found.</div>';
 }
 ?>
-
     
 <!-- Modal -->
-<div class="modal fade" id="guidelinesModal" tabindex="-1" role="dialog" aria-labelledby="guidelinesModalLabel" aria-hidden="true">
+<div class="modal fade" id="guidelinesModal" tabindex="-1" aria-labelledby="guidelinesModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="margin: 0; font-size: 14px">
-            <div class="modal-body" style="padding: 0;">
+        <div class="modal-content" style="background-color: transparent; border: none;">
+            <div class="modal-body p-0" style="background-color: white;border: none; border-radius: 10px;">
                 <div class="title-2 main-bg-color">
                     Voting Guidelines
                 </div>
@@ -179,7 +189,7 @@ if ($total_guidelines > 0) {
   <div class="modal-content" style="border-radius: 20px;">
       <div class="modal-body">
         <div class="text-center pt-2 pb-3">
-          <div class="main-color pt-lg-4 pt-md-3 pt-4 pb-2">
+          <div class="main-color pt-lg-4 pt-md-3 pt-sm-2 pt-2 pb-2">
             <h4><b>BALLOT PREVIEW</b></h4>
           </div>
           Kindly review and confirm selections.
@@ -231,26 +241,23 @@ if ($total_guidelines > 0) {
 
   <!-- Reset Form Modal -->
   <div class="modal fade" id="resetFormModal" tabindex="-1" role="dialog" aria-labelledby="resetFormModallLabel" aria-hidden="false"
-  data-backdrop="static" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Reset Form</h5>
-        </div>
-        <div class="modal-body">
-          Are you sure you want to reset your selections?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-warning text-white" id="yesButton" onclick="confirmReset()">Yes</button>
-          <button type="button" class="btn btn-success text-white" id="noButton" data-bs-dismiss="modal" aria-label="Close">No</button>
+       data-backdrop="static" data-bs-backdrop="static" data-bs-keyboard="false">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body pt-4">
+            Are you sure you want to reset your selections?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning text-white px-4" id="yesButton" onclick="confirmReset()">Yes</button>
+            <button type="button" class="btn btn-success text-white px-4" id="noButton" data-bs-dismiss="modal" aria-label="Close">No</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
 
   <div class="toast" id="myToast" role="alert" aria-live="assertive" aria-atomic="true">
     <div class="toast-header">
-        <strong class="mr-auto">Notification</strong>
+        <strong class="mr-auto"><span><i data-feather="info"></i></span> Notification</strong>
     </div>
     <div class="toast-body">
         You have reached maximum selections for this position. Please remove other selections.
@@ -306,7 +313,8 @@ if ($total_guidelines > 0) {
                             $candidate_count++;
                             ?>
                           <div class="reminder mb-4" data-position-title="<?php echo htmlspecialchars($row['title']); ?>">
-                              <div class="text-position main-color pt-md-3 pt-lg-4 pt-sm-2 pt-4 ps-3 ps-lg-5 ps-sm-3 d-flex align-items-center justify-content-between">
+                            <div class="pt-lg-1 pt-0">
+                              <div class="text-position main-color pt-md-3 pt-lg-4 pt-sm-2 pt-4 pe-3 pe-sm-1 pe-lg-3 ps-3 ps-md-3 ps-lg-5 ps-sm-3 d-flex align-items-center justify-content-between">
                                 <b><?php echo strtoupper($row['title']) ?></b>
                                 <?php if ($row['max_votes'] > 1): ?>
                                 <!-- Display on large screens -->
@@ -315,7 +323,8 @@ if ($total_guidelines > 0) {
                                         Select up to&nbsp;<b><?php echo $row['max_votes'] ?></b>&nbsp;candidates
                                     </div>
                                 <?php endif; ?>
-                            </div>
+                              </div>
+                           </div>
                             <div class="hover-color ps-3 ps-lg-5 ps-sm-3 pb-4" style="font-size: 12px;">
                                 <a href="#<?php echo $modal_id ?>" data-toggle="modal">Duties and Responsibilities</a>
                                 <!-- Display below on medium and small screens -->
@@ -330,14 +339,14 @@ if ($total_guidelines > 0) {
                             <!-- Modal for Duties and Responsibilities -->
                             <div class="modal fade adjust-modal" id="<?php echo $modal_id ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                                 <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
+                                    <div class="modal-content" style="background-color: transparent; border: none;">
                                         <div class="modal-header main-bg-color text-white d-flex justify-content-between align-items-center">
                                             <h4 class="modal-title mb-0"><b><?php echo strtoupper($row['title']) ?></b></h4>
                                             <button type="button" class="btn-close me-2" data-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <div class="modal-body">
-                                            <div class="main-color pt-4 pb-3"><b>DUTIES AND RESPONSIBILITIES</b></div>
-                                            <div id="description-output-<?php echo $modal_id ?>">
+                                        <div class="modal-body p-0" style="background-color: white;border: none; border-radius: 0 0 10px 10px;">
+                                            <div class="main-color px-3 pt-4 pb-3"><b>DUTIES AND RESPONSIBILITIES</b></div>
+                                            <div class="px-3" id="description-output-<?php echo $modal_id ?>">
                                                 <?php
                                                 if (!empty($row['description'])) {
                                                     ?>
@@ -467,12 +476,15 @@ if ($total_guidelines > 0) {
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src ="scripts/ballot-forms.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="scripts/loader.js"></script>
   
 
 </html>
 <?php
+      } else {
+        header("Location: voting-closed.php");
+      }
+    } 
   } else {
     header("Location: end-point.php");
   }

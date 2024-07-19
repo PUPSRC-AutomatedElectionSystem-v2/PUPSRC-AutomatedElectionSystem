@@ -58,6 +58,13 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         <link rel="stylesheet" href="styles/profile.css" />
         <link rel="stylesheet" href="styles/loader.css" />
         <link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
+        <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="scripts/loader.js" defer></script>
+        <script src="scripts/feather.js" defer></script>
+        <script src="scripts/edit-profile.js" defer></script>
+        <script src="scripts/verify-password.js" defer></script>
     </head>
 
     <body>
@@ -245,13 +252,16 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
         <?php include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/footer.php'); ?>
 
-        <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+                <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="scripts/loader.js"></script>
         <script src="scripts/feather.js"></script>
         <script src="scripts/edit-profile.js"></script>
         <script src="scripts/verify-password.js"></script>
+		<script src="scripts/script.js"></script>
 
+        
     </body>
 </html>
 

@@ -9,6 +9,8 @@ require_once FileUtils::normalizeFilePath('includes/classes/manage-ip-address.ph
 
 if(isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['role'] == 'student_voter') ) {
 
+  if ($_SESSION['organization'] != 'sco') {
+
      // ------ SESSION EXCHANGE
      include FileUtils::normalizeFilePath('includes/session-exchange.php');
      // ------ END OF SESSION EXCHANGE
@@ -78,22 +80,22 @@ $voter_id = $_SESSION['voter_id'];
               <div class="px-2">
                 <div class="d-flex align-items-center pt-2 pb-4">
                   <div class="pe-4">
-                  <i data-feather="user" class="white" style="width: 20px; height: 20px;"></i>
+                    <i data-feather="user" class="white" style="width: 20px; height: 20px;"></i>
                   </div>
                   <div>
                     <div class="side-nav mb-0">
                       <a href="user-setting-information.php" class="custom-link"> Information </a>
-                  </div>
+                    </div>
                     <div class="mb-0 des">See your account information like your email address and certificate of registration.</div>
                   </div>
                 </div>
                 <div class="d-flex align-items-center pb-4">
-                <div class="pe-4">
-                  <i data-feather="lock" class="white" style="width: 20px; height: 20px;"></i>
+                  <div class="pe-4">
+                    <i data-feather="lock" class="white" style="width: 20px; height: 20px;"></i>
                   </div>
                   <div>
                     <div class="side-nav mb-0">
-                    <a href="user-setting-password.php" class="custom-link"> Change Password </a>
+                      <a href="user-setting-password.php" class="custom-link"> Change Password </a>
                     </div>
                     <div class="mb-0 des">Ensure your account's security by updating your password whenever you need.</div>
                   </div>
@@ -113,7 +115,7 @@ $voter_id = $_SESSION['voter_id'];
         </div>
         <!-- right side -->
         <div class="col-lg-9 ps-lg-4">
-          <div class="row">
+          <div class="row align-items-stretch">
             <div class="p-4 title" style="font-size:15px;">
               <div class="py-3 px-2 px-lg-4 px-sm-1">
                 <h5 class="main-color pb-2">
@@ -121,20 +123,28 @@ $voter_id = $_SESSION['voter_id'];
                     <i class="fas fa-exchange-alt me-4" style="font-size: 1rem;"></i>Transfer Organization
                   </b>
                 </h5>
-                <div id="section-1" style="align-items: center; justify-content: center;">
-                  <div class="pb-3"><div class="des" style="justify-self: auto;">Transferring your account to another Automated Election System (AES) of a student organization is applicable only if you have officially shifted to a different program. 
-                    This process is almost similar to applying as a first-time voter in your new student organization. Adhering to these steps is crucial to transfer 
-                    your account:</div></div>
+                <div id="section-1">
+                  <div class="pb-3">
+                    <div class="des">Transferring your account to another Automated Election System (AES) of a student organization is applicable only if you have officially shifted to a different program. This process is almost similar to applying as a first-time voter in your new student organization. Adhering to these steps is crucial to transfer your account:</div>
+                  </div>
                   <ul>
-                    <li><b>Select Your New Student Organization:</b><div class="des"> The system will prompt you to select the student organization you wish to transfer to.</div></li>
-                    <li><b>Upload Your Updated Certificate of Registration:</b><div class="des"> You will need to upload your updated Certificate of Registration.</div></li>
-                    <li><b>Verification:</b><div class="des"> Your uploaded Certificate of Registration will be validated by the election committee of your selected student organization.</div></li>
-                    <li><b>Confirmation Email:</b><div class="des"> Wait for an email from the student organization confirming your transfer request.</div></li>
+                    <li><b>Select Your New Student Organization:</b>
+                      <div class="des"> The system will prompt you to select the student organization you wish to transfer to.</div>
+                    </li>
+                    <li><b>Upload Your Updated Certificate of Registration:</b>
+                      <div class="des"> You will need to upload your updated Certificate of Registration.</div>
+                    </li>
+                    <li><b>Verification:</b>
+                      <div class="des"> Your uploaded Certificate of Registration will be validated by the election committee of your selected student organization.</div>
+                    </li>
+                    <li><b>Confirmation Email:</b>
+                      <div class="des"> Wait for an email from the student organization confirming your transfer request.</div>
+                    </li>
                   </ul>
                   <div class="des">Please proceed with caution when transferring your account. Follow these steps carefully, and when you’re ready, click the “Proceed” button to continue with the transfer organization process.</div>
                   <div class="d-flex justify-content-end">
                     <div class="main-color pt-2"><a href="user-setting-transfer.php?page=2" class="custom-link"> <b>Proceed</b> &nbsp;
-                    <i data-feather="arrow-right-circle" class="white"></i></a></div>
+                      <i data-feather="arrow-right-circle" class="white"></i></a></div>
                   </div>
                 </div>
               </div>
@@ -142,7 +152,7 @@ $voter_id = $_SESSION['voter_id'];
           </div>
         </div>
       </div>
-    </div>
+
 
 <div id="section-2" style="display: none;">
   <form method="post" id="changeOrgForm" enctype="multipart/form-data">
@@ -316,7 +326,9 @@ $voter_id = $_SESSION['voter_id'];
 
 </html>
 <?php
-
+  } else {
+    header("Location: user-setting-information.php");
+  }
 } else {
   header("Location: landing-page.php");
 }

@@ -24,7 +24,9 @@ $candidatesQuery = "SELECT c.*
                    FROM candidate c
                    INNER JOIN position p ON c.position_id = p.position_id
                    WHERE p.position_id IN (SELECT position_id FROM position WHERE title = ?)
-                     AND c.election_year = ?";
+                     AND c.election_year = ?
+                     AND c.candidacy_status = 'verified'";
+
 
 $stmt = $conn->prepare($candidatesQuery);
 

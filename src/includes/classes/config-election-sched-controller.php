@@ -68,7 +68,7 @@ class ElectionYearController extends ElectionYearModel
                 ];
                 self::sendResponse(200, $response);
             } else {
-                self::$query_message = 'Invalid Schedule';
+                // self::$query_message = 'Invalid Schedule';
                 $response = [
                     'status' => 'error',
                     'message' => self::$query_message,

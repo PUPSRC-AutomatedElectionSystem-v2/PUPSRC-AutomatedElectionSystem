@@ -4,7 +4,7 @@ require_once FileUtils::normalizeFilePath('../includes/classes/db-connector.php'
 require_once FileUtils::normalizeFilePath('../includes/session-handler.php');
 require_once FileUtils::normalizeFilePath('../includes/classes/query-handler.php');
 
-include FileUtils::normalizeFilePath('includes/session-exchange.php');
+include FileUtils::normalizeFilePath('../includes/session-exchange.php');
 
 if (isset($_POST['voter_id'])) {
     $voter_id = $_POST['voter_id'];
@@ -16,7 +16,7 @@ if (isset($_POST['voter_id'])) {
     $queryExecutor = new QueryExecutor($conn);
     
     // Query to fetch the details based on voter_id
-    $query = "SELECT cor, acc_created, email, status_updated, role, first_name, middle_name, last_name, suffix FROM voter WHERE voter_id = ?";
+    $query = "SELECT  acc_created, email, status_updated, role, first_name, middle_name, last_name, suffix FROM voter WHERE voter_id = ?";
     
     // Prepare and execute the query
     $stmt = $conn->prepare($query);
@@ -29,7 +29,6 @@ if (isset($_POST['voter_id'])) {
         
         // Output JSON response with voter details, replacing NULL values with empty strings
         echo json_encode([
-            'cor' => $row['cor'] ?? '',
             'status_updated' => $row['status_updated'] ?? '',
             'acc_created' => $row['acc_created'] ?? '',
             'email' => $row['email'] ?? '',

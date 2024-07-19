@@ -1300,6 +1300,12 @@ span {
     text-align: center;
   }
 
+  .forgot-password-subtitle {
+    font-size: 10px;
+    margin-top: -15px;
+    margin-bottom: -2px;
+  }
+
   .forgot-pass-email-title {
     font-size: 12px;
     font-weight: 500;

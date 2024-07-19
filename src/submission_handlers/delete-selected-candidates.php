@@ -2,6 +2,7 @@
 include_once str_replace('/', DIRECTORY_SEPARATOR, '../includes/classes/file-utils.php');
 require_once FileUtils::normalizeFilePath('../includes/classes/db-connector.php');
 require_once FileUtils::normalizeFilePath('../includes/session-handler.php');
+require_once FileUtils::normalizeFilePath('../includes/classes/logger.php'); // Add logger
 require_once FileUtils::normalizeFilePath('../includes/classes/query-handler.php');
 
 // Check if the request is POST
@@ -16,6 +17,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             echo json_encode(['error' => 'Database connection failed: ' . $conn->connect_error]);
             exit;
         }
+
+        // Initialize logger based on the number of IDs
+        if (count($ids) == 1) {
+            $logger = new Logger($_SESSION['role'], PERMANENT_DELETE_CANDIDATE);
+        } else {
+            $logger = new Logger($_SESSION['role'], PERMANENT_DELETE_MULTIPLE_CANDIDATES);
+        }
+        $logger->logActivity();
         
         // Initialize the query executor
         $queryExecutor = new QueryExecutor($conn);

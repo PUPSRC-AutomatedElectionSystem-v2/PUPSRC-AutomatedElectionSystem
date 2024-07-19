@@ -52,7 +52,7 @@ function fetchVoterCounts($conn)
             $totalVotersCount = $totalVotersResult->fetch_assoc()['total_count'];
 
     // Fetch count of voters with voteStatus as 'voted'
-    $votedVotersQuery = "SELECT COUNT(*) AS voted_count FROM voter WHERE vote_status = 'Voted'";
+    $votedVotersQuery = "SELECT COUNT(*) AS voted_count FROM voter WHERE vote_status = 'Voted'AND account_status = 'verified';";
     $votedVotersResult = $conn->query($votedVotersQuery);
     $votedVotersCount = $votedVotersResult->fetch_assoc()['voted_count'];
 

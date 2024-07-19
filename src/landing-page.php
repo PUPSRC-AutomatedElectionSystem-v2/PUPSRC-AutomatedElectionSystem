@@ -24,6 +24,11 @@ $warning_message_json = json_encode($warning_message);
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <!-- Preloader Stylesheet and Image -->
+  <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
+  <link rel="preload" href="styles/loader.css" as="style" />
+  <link rel="stylesheet" href="styles/loader.css" />
+
   <!-- Fontawesome Link for Icons -->
   <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"> -->
 
@@ -34,10 +39,6 @@ $warning_message_json = json_encode($warning_message);
   <link rel="stylesheet" href="styles/dist/landing.css">
   <link rel="stylesheet" href="styles/dist/all-footer.css">
   <link rel="stylesheet" href="styles/dist/landing-animation.css">
-
-  <!-- Preloader Stylesheet and Image -->
-  <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
-  <link rel="stylesheet" href="styles/loader.css" />
 
   <!-- Favicon -->
   <link rel="icon" href="images/resc/ivote-favicon.png" type="image/x-icon">

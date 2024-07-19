@@ -98,7 +98,10 @@ function displayCandidate($candidate_data, $isFirst = false, $org_name)
                     <img src="user_data/<?php echo $org_name ?>/candidate_imgs/<?php echo htmlspecialchars($candidate_data["photo_url"]); ?>" class="org-logo" alt="Candidate Image">
                     <div class="card-body text-center">
                         <h3 class="card-title"><?php echo $candidate_name ?></h3>
-                        <h5 class="card-title main-color"><?php echo $candidate_section ?></h5>
+                        <div class="main-color"> </div>
+                        <div class="main-color">
+                        <h5 class="card-title"><?php echo $candidate_section ?></h5>
+                        </div>
                         <h2 class="card-position2"><?php echo $position_title; ?></h2>
                     </div>
                     <p class="main-color"><strong><?php echo $vote_count; ?></strong> Votes</p>

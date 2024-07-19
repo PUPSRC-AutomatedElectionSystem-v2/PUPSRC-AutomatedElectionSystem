@@ -231,15 +231,7 @@ font-weight: 600 !important;
   border: none;
 }
 
-.input-group {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 75%;
-  margin: auto; /* Center horizontally within its container */
-  margin-top: auto; /* Vertically center */
-  margin-bottom: auto; /* Vertically center */
-}
+
 
 
 .eye-toggle i {
@@ -271,37 +263,10 @@ p{
  
 }
 
-.img-container{
-  margin: 0%;
-  padding: 0%;
-  margin-bottom: -140px !important;
-}
-
-.main#change-password{
-  overflow: visible;
-  margin-top: 4%;
-}
-
-form#change-password-form{
-  position: relative;
-  top: -130px;
-}
-
-.card-box{
-  border-radius: 25px;
-}
-
-
-
 
 label{
   color: black ;
 }
-
-.asterisk{
-  color: red;
-}
-
 
 hr {
   height: 2px; /* Adjust the thickness */
@@ -316,135 +281,6 @@ hr {
 
 .form-control#lastName, .form-control#firstName, .form-control#middleName, .form-control#suffix, .form-control#email{
   border: none !important;
-}
-
-
-
-
-/* Change Password */
-.reset-password-body {
-  background-color: #f5f5f5;
-  color: black;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.reset-password-form {
-  margin-top: 100px;
-  background-color: #fff;
-  width: 1000px;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.reset-password-title{
-  font-weight: bold;
-  margin: 0%;
-  padding: 0%;
-}
-
-.reset-password-subtitle{
-  font-weight: 600;
-  margin: 0%;
-  padding: 0%;
-}
-
-.reset-password-password {
-  background-color: white !important;
-  border-radius: 100px;
-  border: 2px solid #999999 !important;
-  border-right: none !important;
-  padding: 2% !important;
-}
-
-#reset-password-toggle-1, #reset-password-toggle-2 {
-  background-color: white !important;
-  width: 75px !important;
-  padding-right: 3% !important;
-  color: #999999 !important;
-  border: 2px solid #999999 !important;
-  border-left: none !important;
-  border-right: 2px solid #999999 !important;
-}
-
-.new-password {
-  position: absolute;
-  z-index: 1000;
-  background-color: white;
-  left: 8%;
-  padding-left: 1%;
-  padding-right: 1%;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-.forgot-password-icon{
-  width: 40%; 
-  display: block;
-  margin: 0 auto;
-  position: relative;
-  top: -150px !important;
-  z-index: 1;
-}
-
-.password-requirements {
-  display: none; /* Hide the element and its space */
-  justify-content: center;
-  text-align: left; /* Keeps text left-aligned within the centered container */
-  margin-top: 5px; /* Adjust the top margin as needed */
-}
-
-.password-requirements.show {
-  display: flex; /* Show the element when needed */
-}
-
-.password-requirements-list {
-  list-style-type: none; /* Removes default bullet points */
-  padding-left: 0; /* Removes default left padding */
-  margin-top: 10px; /* Adjust as needed */
-}
-
-.requirement {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-  font-size: 15px;
-}
-
-.requirement-circle {
-  display: inline-block;
-  width: 13px;
-  height: 13px;
-  border-radius: 50%;
-  margin-right: 10px;
-  border: 2px solid #000; /* Default color */
-  outline: 1px solid transparent; /* Transparent outline */
-  border-color: white;
-  outline-color: gray; /* Outline color when requirement is met */
-}
-
-.requirement.met .requirement-circle {
-  background-color: green;
-}
-
-.requirement.unmet .requirement-circle {
-  background-color: red;
-}
-
-.reset-pass{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.reset-pass-title {
-  font-size: 12px;
-  font-weight: bold;
-  position: relative;
-  left: -50px;
 }
 
 .check-perc{
@@ -485,14 +321,6 @@ hr {
 .reset-sign-in-button:hover {
   font-weight: bold;
 }
-
-
-
-
-
-
-
-
 
 
 /* Default state: hide the horizontal line */

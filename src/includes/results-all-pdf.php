@@ -18,7 +18,6 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
     $voter_id = $_SESSION['voter_id'];
 
     if (isset($_SESSION['organization'])) {
-        // Retrieve the organization name
         $organization = $_SESSION['organization'];
 ?>
 
@@ -28,14 +27,14 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Document</title>
-            <link rel="stylesheet" href="styles/result.css" />
+            <title>Election Results</title>
+            <link rel="stylesheet" href="styles/result.css">
         </head>
 
         <body>
             <div class="popup-container">
                 <h1>ELECTION WINNERS</h1>
-                <p>Upon tabulation of the casted votes, the following candidates for the elective positions of <br> the PUP-SRC <?php echo mb_strtoupper($organization, 'UTF-8'); ?> garnered the total votes opposite to their names.</p>
+                <p>Upon tabulation of the casted votes, the following candidates for the elective positions of<br> the PUP-SRC <?php echo mb_strtoupper($organization, 'UTF-8'); ?> garnered the total votes opposite to their names.</p>
                 <br>
                 <table>
                     <thead>
@@ -136,6 +135,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                     </tbody>
                 </table>
             </div>
+
             <div class="popup-container">
                 <h1>ELECTION RESULTS</h1>
 
@@ -151,7 +151,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                         while ($row = $result->fetch_assoc()) {
                             $position_id = $row['position_id'];
                             $title = $row['title'];
-                        
+
                             // Query to fetch data related to each position (candidates)
                             $data_query = "SELECT c.last_name, c.first_name, COUNT(v.vote_id) as num_votes
                                            FROM `candidate` c
@@ -163,22 +163,22 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                             $stmtData->bind_param("ii", $position_id, $election_year);
                             $stmtData->execute();
                             $data_result = $stmtData->get_result();
-                        
+
                             // Check if there are no data rows
                             if ($data_result->num_rows == 0) {
                                 // Close the statement
                                 $stmtData->close(); ?>
-                                <div class="pop-up container">
+                                <div class="popup-container">
                                     <?php
-                               echo "<table>";
-                                echo "<td>No Candidates in  $title </td>";
-                                echo"</table>";
-                                ?>
+                                    echo "<table>";
+                                    echo "<td>No Candidates in  $title </td>";
+                                    echo "</table>";
+                                    ?>
                                 </div>
-                                <?php
+                <?php
                                 continue; // Move to the next iteration of the outer loop
                             }
-                        
+
                             // Query to fetch total votes for the position
                             $vote_query = "SELECT COUNT(*) as total_votes FROM `vote` v
                                            JOIN `candidate` c ON v.candidate_id = c.candidate_id
@@ -189,7 +189,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                             $vote_result = $stmtVote->get_result();
                             $vote_row = $vote_result->fetch_assoc();
                             $total_votes = isset($vote_row['total_votes']) ? $vote_row['total_votes'] : 0;
-                        
+
                             // Query to fetch count of null votes (abstentions)
                             $abstain_query = "SELECT COUNT(*) as abstain_count FROM `vote` v
                                               JOIN `candidate` c ON v.candidate_id = c.candidate_id
@@ -200,7 +200,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                             $abstain_result = $stmtAbstain->get_result();
                             $abstain_row = $abstain_result->fetch_assoc();
                             $abstain_count = isset($abstain_row['abstain_count']) ? $abstain_row['abstain_count'] : 0;
-                        
+
                             // Display table with headers dynamically set to position title and total votes
                             echo "<table border='1'>";
                             echo "<br>";
@@ -208,52 +208,52 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                             echo "<th>{$title} Candidates</th>";
                             echo "<th colspan='2'>Total of {$total_votes} Votes</th>"; // Column header with total votes and percentage
                             echo "<tbody>";
-                        
+
                             // Output candidate data rows with percentage
                             while ($data_row = $data_result->fetch_assoc()) {
                                 $candidate_votes = $data_row['num_votes'];
                                 $percentage = round(($candidate_votes / $total_votes) * 100); // Calculate percentage without decimals
-                        
+
                                 echo "<tr>";
                                 echo "<td>{$data_row['last_name']}, {$data_row['first_name']}</td>"; // Last Name
                                 echo "<td>{$candidate_votes} ({$percentage}%)</td>"; // Votes and percentage
                                 echo "</tr>";
                             }
-                        
+
                             // Display abstain row with percentage
                             $abstain_percentage = round(($abstain_count / $total_votes) * 100); // Calculate abstain percentage
                             echo "<tr>";
                             echo "<td>Abstain</td>";
                             echo "<td>{$abstain_count} ({$abstain_percentage}%)</td>"; // Abstain count and percentage
                             echo "</tr>";
-                        
+
                             echo "</tbody>";
                             echo "</table>";
-                        
+
                             // Close result sets
                             $stmtData->close();
                             $stmtVote->close();
                             $stmtAbstain->close();
                         }
-                        
                     } else {
-                        echo "No positions found";
+                        echo "<p>No positions found</p>";
                     }
 
                     // Close result set for positions query
                     $result->close();
                 } else {
-                    echo "<tr><td colspan='4'>Election year not specified</td></tr>";
+                    echo "<p>Election year not specified</p>";
                 }
                 ?>
 
             </div>
+
             <div class="popup-container">
                 <h1>VOTERS TURNOUT</h1>
 
                 <?php
                 // Path to the JSON file
-                $jsonFile = 'data/' . $org_name. '/voters-turnout.json';
+                $jsonFile = 'data/' . $organization . '/voters-turnout.json';
 
                 // Check if the file exists
                 if (file_exists($jsonFile)) {
@@ -297,22 +297,89 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                 }
                 ?>
             </div>
+
             <div class="popup-container">
-            <div style="width: 100%; padding-left: 20px;">
-                <div style="text-align: start;">
-                    <br>
-                    <h6>This document is generated by <b>iVote</b></h6>
-                </div>
-                <br>
-                <div>
-                    <h6><b>Verified by: </b></h6>
-                </div>
-                <br><br>
-                <div style="text-align: start;">
-                    <hr style="width: 34%;">
-                    <p>Signature over Printed Name</p>
-                </div>
+                <?php
+                if (isset($_GET['election_year'])) {
+                    $election_year = htmlspecialchars($_GET['election_year']);
+
+                    // Query to fetch data
+                    $sql = "SELECT p.title AS position_title, 
+                           GROUP_CONCAT(DISTINCT CONCAT(c.first_name, ' ', c.last_name) ORDER BY c.last_name SEPARATOR '\n') AS candidates,
+                           GROUP_CONCAT(DISTINCT c.program ORDER BY c.last_name SEPARATOR '\n') AS courses, 
+                           COUNT(c.candidate_id) AS total_candidates
+                    FROM position p
+                    LEFT JOIN candidate c ON p.position_id = c.position_id
+                    WHERE c.election_year = ? AND c.candidacy_status = 'verified'
+                    GROUP BY p.position_id";
+
+                    $stmt = $connection->prepare($sql);
+                    $stmt->bind_param("i", $election_year);
+                    $stmt->execute();
+                    $result = $stmt->get_result();
+
+                    if ($result->num_rows > 0) {
+                        // Output data of each row
+                        echo "<div class='popup-container'>";
+                        echo "<h1>Candidate Count</h1>";
+                        echo "<table border='1'>";
+                        echo "<thead>";
+                        echo "<tr>";
+                        echo "<th colspan='2'>Position Title</th>";
+                        echo "<th>Candidates</th>";
+                        echo "<th>Courses</th>";
+                        echo "<th>Total Candidates</th>";
+                        echo "</tr>";
+                        echo "</thead>";
+                        echo "<tbody>";
+
+                        while ($row = $result->fetch_assoc()) {
+                            echo "<tr>";
+                            // Display position title only once per group
+                            echo "<td colspan='2'>" . htmlspecialchars($row["position_title"]) . "</td>";
+
+                            // Display candidates with line breaks
+                            echo "<td>";
+                            $candidates = explode("\n", $row["candidates"]);
+                            foreach ($candidates as $candidate) {
+                                echo htmlspecialchars($candidate) . "<br>";
+                            }
+                            echo "</td>";
+
+                            // Display courses with line breaks
+                            echo "<td>";
+                            $courses = explode("\n", $row["courses"]);
+                            foreach ($courses as $course) {
+                                echo htmlspecialchars($course) . "<br>";
+                            }
+                            echo "</td>";
+
+                            // Display total candidates
+                            echo "<td>" . htmlspecialchars($row["total_candidates"]) . "</td>";
+                            echo "</tr>";
+                        }
+
+                        echo "</tbody>";
+                        echo "</table>";
+                        echo "</div>";
+                    } else {
+                        echo "<div class='popup-container'><p>No results found</p></div>";
+                    }
+
+                    // Close the statement
+                    $stmt->close();
+                } else {
+                    echo "<div class='popup-container'><p>Election year not specified</p></div>";
+                }
+                ?>
             </div>
+
+
+            <div class="popup-container">
+                <div style="width: 100%; padding-right: 50px; text-align: right;">
+                    <br>
+                    <h6>This is system-generated, signature is not required.</h6>
+                </div>
             </div>
         </body>
 

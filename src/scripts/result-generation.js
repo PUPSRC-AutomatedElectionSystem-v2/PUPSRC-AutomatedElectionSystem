@@ -302,7 +302,7 @@ document.addEventListener("DOMContentLoaded", function () {
     tableBody.innerHTML = "";
 
     feedback_data.forEach((row) => {
-        const truncatedFeedback = truncateText(row.feedback, 20); // Adjust the number to your desired truncation length
+        const truncatedFeedback = truncateText(row.feedback, 50); // Adjust the number to your desired truncation length
 
         // Format the date with specific options
         const dateOptions = {
@@ -470,11 +470,51 @@ async function fetchPositionDetails(positionId) {
         }
 
         // Update modal content with fetched data
-        document.getElementById("modal-position-title").textContent = data.title + ' Candidates';
-        document.getElementById("modal-position-description").textContent = data.description;
+document.getElementById("modal-position-title").textContent = data.title + ' Candidates';
 
-        const candidatesContainer = document.getElementById("modal-candidates");
-        candidatesContainer.innerHTML = "";
+// Parse Delta JSON
+var deltaJson;
+try {
+    deltaJson = JSON.parse(data.description);
+    console.log("Parsed Delta JSON:", deltaJson);
+} catch (e) {
+    console.error("Failed to parse JSON:", e);
+    deltaJson = null;
+}
+
+console.log("Delta JSON:", deltaJson);
+
+// Ensure Quill is available before creating an instance
+if (typeof Quill !== 'undefined') {
+    console.log("Quill is defined. Creating a new Quill instance.");
+
+    // Create a container for the Quill editor
+    var quillContainer = document.createElement('div');
+    quillContainer.style.display = 'none'; // Hide the container
+    document.body.appendChild(quillContainer);
+
+    // Initialize Quill editor
+    var quillEditor = new Quill(quillContainer, {
+        theme: 'snow' // You can specify other options here if needed
+    });
+
+    if (deltaJson && deltaJson.ops) {
+        quillEditor.setContents(deltaJson);
+        var htmlContent = quillEditor.root.innerHTML;
+        console.log("Converted HTML content:", htmlContent);
+        document.getElementById('description').innerHTML = htmlContent;
+    } else {
+        console.error("Invalid Delta JSON format for Quill.");
+    }
+
+    // Remove the temporary Quill container
+    document.body.removeChild(quillContainer);
+} else {
+    console.error('Quill is not defined');
+}
+
+const candidatesContainer = document.getElementById("modal-candidates");
+candidatesContainer.innerHTML = "";
 
         data.candidates.forEach(candidate => {
             const candidateDiv = document.createElement("div");

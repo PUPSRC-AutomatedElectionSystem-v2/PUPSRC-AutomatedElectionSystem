@@ -36,6 +36,8 @@ define('DELETE_MULTIPLE_VOTERS', 'delete_multiple_voters');
 define('PERMANENT_DELETE_VOTER', 'permanent_delete_voter');
 define('PERMANENT_DELETE_MULTIPLE_VOTERS', 'permanent_delete_multiple_voters');
 define('CREATE_CANDIDATE_POSITION', 'create_candidate_position');
+define('UPDATE_CANDIDATE_POSITION', 'update_candidate_position');
+define('DELETE_CANDIDATE_POSITION', 'delete_candidate_position');
 define('ADD_VOTING_GUIDELINE', 'add_voting_guideline');
 define('SET_VOTING_SCHEDULE', 'set_voting_schedule');
 define('UPDATE_VOTING_SCHEDULE', 'update_voting_schedule');
@@ -87,6 +89,8 @@ const ADMIN_ACTIONS = array(
     PERMANENT_DELETE_VOTER => 'You <strong>permanently deleted</strong> a voter account.',
     PERMANENT_DELETE_MULTIPLE_VOTERS => 'You <strong>permanently deleted</strong> multiple voter accounts.',
     CREATE_CANDIDATE_POSITION => 'You <strong>created</strong> a new candidate position.',
+    UPDATE_CANDIDATE_POSITION => 'You <strong>updated</strong> a candidate position.',
+    DELETE_CANDIDATE_POSITION => 'You <strong>deleted</strong> a candidate position.',
     ADD_VOTING_GUIDELINE => 'You <strong>added</strong> new voting guideline/s.',
     SET_VOTING_SCHEDULE => 'You <strong>set</strong> a voting schedule.',
     UPDATE_VOTING_SCHEDULE => 'You <strong>updated</strong> the voting schedule.',
@@ -118,6 +122,8 @@ const HEAD_ADMIN_ACTIONS = array(
     PERMANENT_DELETE_VOTER => 'You <strong>permanently deleted</strong> a voter account.',
     PERMANENT_DELETE_MULTIPLE_VOTERS => 'You <strong>permanently deleted</strong> multiple voter accounts.',
     CREATE_CANDIDATE_POSITION => 'You <strong>created</strong> a new candidate position.',
+    UPDATE_CANDIDATE_POSITION => 'You <strong>updated</strong> a candidate position.',
+    DELETE_CANDIDATE_POSITION => 'You <strong>deleted</strong> a candidate position.',
     ADD_VOTING_GUIDELINE => 'You <strong>added</strong> new voting guideline/s.',
     SET_VOTING_SCHEDULE => 'You <strong>set</strong> a voting schedule.',
     UPDATE_VOTING_SCHEDULE => 'You <strong>updated</strong> the voting schedule.',

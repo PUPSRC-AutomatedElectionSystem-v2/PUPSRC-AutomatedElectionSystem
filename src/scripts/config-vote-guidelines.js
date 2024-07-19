@@ -468,7 +468,7 @@ ConfigPage.TableHandler = class {
                             const { data, success, error } = result;
 
                             if (success) {
-                                ConfigPage.handleResponseStatus(200, data, 'Vote guideline updated successfuly.');
+                                ConfigPage.handleResponseStatus(200, data, 'Vote guideline updated successfully.');
                                 // let processedData = ConfigPage.processData(data);
                                 // console.log(processedData)
                                 // this.updateData(processedData);
@@ -569,7 +569,7 @@ ConfigPage.TableHandler = class {
                                 .then(() => {
                                     // ConfigPage.handleSucessResponse();
 
-                                    ConfigPage.handleResponseStatus(200, data, 'Vote guideline deleted successfuly.');
+                                    ConfigPage.handleResponseStatus(200, data, 'Vote guideline deleted successfully.');
                                 })
                                 .catch((error) => {
                                     console.error("Error inserting data:", error);
@@ -1184,7 +1184,7 @@ ConfigPage.EditorModal = class {
                                 .then(() => {
                                     // ConfigPage.handleSucessResponse();
 
-                                    ConfigPage.handleResponseStatus(200, data, 'Vote guideline added successfuly.');
+                                    ConfigPage.handleResponseStatus(200, data, 'Vote guideline added successfully.');
                                 })
                                 .catch((error) => {
                                     console.error("Error inserting data:", error);
@@ -1198,7 +1198,7 @@ ConfigPage.EditorModal = class {
                                 .then(() => {
                                     // ConfigPage.handleSucessResponse();
 
-                                    ConfigPage.handleResponseStatus(200, data, 'Vote guideline updated successfuly.');
+                                    ConfigPage.handleResponseStatus(200, data, 'Vote guideline updated successfully.');
                                 })
                                 .catch((error) => {
                                     console.error("Error inserting data:", error);

@@ -110,7 +110,7 @@ function updateErrorState(reminder) {
         if (!reminderError) {
             var errorText = document.createElement('div');
             errorText.classList.add('text-danger', 'mt-4', 'ps-lg-4', 'ps-sm-2', 'ps-2', 'ms-2', 'ms-lg-4', 'ms-sm-2', 'me-4');
-            errorText.innerHTML = "<span><i>This field is required. Please select one (1) candidate or click ABSTAIN.</i></span>";
+            errorText.innerHTML = "<span style='font-size:13px'><i>This field is required. Please select one (1) candidate or click ABSTAIN.</i></span>";
             reminder.insertBefore(errorText, reminder.firstChild);
         }
         reminder.classList.add('border', 'border-danger');
@@ -137,34 +137,26 @@ function validateForm(event) {
       var candidateHTML = '';
       var pairCounter = 0;
 
-      // Build HTML for selected candidates for each position
+     // Build HTML for selected candidates for each position
       var checkboxes = reminder.querySelectorAll('input[type="checkbox"]');
       checkboxes.forEach(function(checkbox) {
           if (checkbox.checked) {
               var candidateName = checkbox.parentNode.querySelector('div.ps-4 > div.font-weight2').textContent.trim();
               var imageSrc = checkbox.getAttribute('data-img-src');
 
-              // Determine column classes based on number of candidates
-              var colClasses = (pairCounter % 2 === 0 && pairCounter > 0) ? 'col-lg-12 col-md-12 col-sm-12' : 'col-lg-6 col-md-6 col-sm-12';
-
               // Create HTML for each candidate with vertically centered content
-              candidateHTML += '<div class="' + colClasses + ' mb-3">' +
-                  '<div class="row align-items-center">' + // Ensure vertical alignment
-                  '<div class="col-4">' +
+              candidateHTML += '<div class="col-lg-6 col-md-6 col-sm-12 mb-3">' +
+                  '<div class="d-flex align-items-center">' + // Ensure vertical alignment
+                  '<div class="me-3">' + // Add margin to the right for spacing
                   '<img src="' + imageSrc + '" width="80px" height="80px" style="display: inline-block; vertical-align: middle; border-radius: 10px; border: 2px solid #ccc;">' +
                   '</div>' +
-                  '<div class="col-8" style="font-size:13px">' +
+                  '<div style="font-size:13px">' +
                   '<div class="ps-3"><b>' + candidateName + '</b></div>' +
                   '</div>' +
                   '</div>' +
                   '</div>';
 
               pairCounter++;
-
-              // Add a new row if pairCounter is even (i.e., two candidates per row)
-              if (pairCounter % 2 === 0) {
-                  candidateHTML += '</div><div class="row">';
-              }
           }
       });
 
@@ -172,20 +164,19 @@ function validateForm(event) {
       var abstainRadio = reminder.querySelector('input[type="radio"].abstain-checkbox');
       if (abstainRadio && abstainRadio.checked) {
           // Create HTML for abstain option with vertically centered content
-          candidateHTML += '<div class="col-lg-6 col-md-6 col-sm-12 mb-3">' +
-              '<div class="row align-items-center">' + // Ensure vertical alignment
-              '<div class="col-lg-4 col-md-4 col-sm-4">' +
+          candidateHTML += '<div class="col-12 mb-3">' +
+              '<div class="d-flex  align-items-center">' + // Ensure vertical and horizontal alignment
+              '<div class="me-3">' + // Add margin to the right for spacing
               '<img src="images/resc/Abstained.png" width="80px" height="80px" style="display: inline-block; vertical-align: middle; border-radius: 10px; border: 2px solid #ccc;">' +
               '</div>' +
-              '<div class="col-lg-8 col-md-8 col-sm-8">' +
-              '<div class="ps-3"><b>ABSTAINED</b></div>' +
+              '<div>' +
+              '<div class="ps-3" style="font-size:12.5px"><b>ABSTAINED</b></div>' +
               '</div>' +
               '</div>' +
               '</div>';
 
           pairCounter++;
       }
-
       // If candidates were selected, add them to selectedCandidateHTML
       if (pairCounter > 0) {
           selectedCandidateHTML += '<div>' +

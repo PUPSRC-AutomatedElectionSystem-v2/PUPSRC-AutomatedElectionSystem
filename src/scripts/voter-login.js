@@ -1,4 +1,9 @@
 $(document).ready(function () {
+
+  const sendButton = $("#" + ORG_NAME);
+  const cancelButton = $("#cancelReset");
+  const origSendBtnState = sendButton.html();
+
   // Client-side validation for empty and invalid email and password
   $("#loginForm").on("submit", function (event) {
     let email = $("#Email").val().trim();
@@ -86,7 +91,9 @@ $(document).ready(function () {
       "is-invalid is-valid was-validated border border-danger border-success"
     );
     $("#email-valid").text("");
-    $("#" + ORG_NAME).prop("disabled", true);
+    sendButton.prop("disabled", true);
+    cancelButton.prop("disabled", false);
+    sendButton.html(origSendBtnState);
     $("#forgot-password-form")[0].reset();
   };
 
@@ -100,7 +107,6 @@ $(document).ready(function () {
     $(this).text(type === "password" ? "Show" : "Hide");
   });
 
-  const sendButton = $("#" + ORG_NAME);
   sendButton.prop("disabled", true);
 
   $("#Password").on("change", function (event) {
@@ -131,7 +137,7 @@ $(document).ready(function () {
     const isValid = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(
       emailValue
     );
-    const user = user_data[emailValue];
+    // const user = user_data[emailValue];
 
     if (!isValid) {
       email
@@ -139,14 +145,14 @@ $(document).ready(function () {
         .addClass("is-invalid border border-danger");
       emailErrorElement.text("Please provide a valid email.");
       emailValidElement.text("");
-    } else if (!isLogin && !user) {
-      email.removeClass("is-valid was-validated").addClass("is-invalid");
-      emailErrorElement.text("We couldn't find your email address.");
-      emailValidElement.text("");
-    } else if (!isLogin && user === "invalid") {
-      email.removeClass("is-valid was-validated").addClass("is-invalid");
-      emailErrorElement.text("We couldn't find your account.");
-      emailValidElement.text("");
+      // } else if (!isLogin && !user) {
+      //   email.removeClass("is-valid was-validated").addClass("is-invalid");
+      //   emailErrorElement.text("We couldn't find your email address.");
+      //   emailValidElement.text("");
+      // } else if (!isLogin && user === "invalid") {
+      //   email.removeClass("is-valid was-validated").addClass("is-invalid");
+      //   emailErrorElement.text("We couldn't find your account.");
+      //   emailValidElement.text("");
     } else {
       email
         .removeClass("is-invalid border border-danger")
@@ -155,7 +161,7 @@ $(document).ready(function () {
     }
 
     if (!isLogin) {
-      sendButton.prop("disabled", !(isValid && user && user !== "invalid"));
+      sendButton.prop("disabled", !isValid);
     }
   };
 
@@ -188,8 +194,12 @@ $(document).ready(function () {
       return;
     }
 
-    $("#forgot-password-modal").modal("hide");
-    $("#emailSending").modal("show");
+    // $("#forgot-password-modal").modal("hide");
+    // $("#emailSending").modal("show");
+    cancelButton.prop("disabled", true);
+    sendButton.html(
+      `<span class="spinner-border spinner-border-sm me-2 text-white" role="status" aria-hidden="true"></span>Please wait...`
+    );
     sendButton.prop("disabled", true);
 
     $.ajax({
@@ -198,9 +208,10 @@ $(document).ready(function () {
       data: { email: email },
       dataType: "json",
       success: function (response) {
-        $("#emailSending").modal("hide");
+        // $("#emailSending").modal("hide");
 
         if (response.success) {
+          $("#forgot-password-modal").modal("hide");
           $("#successResetPasswordLinkModal")
             .modal("show")
             .on("hidden.bs.modal", function () {
@@ -209,13 +220,23 @@ $(document).ready(function () {
         } else {
           $("#forgot-password-modal").modal("show");
           emailError.text(response.message);
-          $("#email").addClass("is-invalid");
-          sendButton.prop("disabled", false);
+          $("#email").removeClass(
+            "is-valid was-validated border border-success"
+          );
+          $("#email").addClass("is-invalid border border-danger");
+          sendButton.prop("disabled", true);
+          cancelButton.prop("disabled", false);
+          sendButton.html(origSendBtnState);
         }
       },
       error: function (xhr, status, error) {
         console.error(xhr.responseText);
-        sendButton.prop("disabled", false);
+        emailError.text("Something went wrong. Please try again.");
+        $("#email").removeClass("is-valid was-validated border border-success");
+        $("#email").addClass("is-invalid border border-danger");
+        sendButton.prop("disabled", true);
+        cancelButton.prop("disabled", false);
+        sendButton.html(origSendBtnState);
       },
     });
   });

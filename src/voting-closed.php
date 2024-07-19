@@ -6,13 +6,22 @@ include_once FileUtils::normalizeFilePath('includes/error-reporting.php');
 
 if(isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['role'] == 'student_voter'))  {
 
-
     // ------ SESSION EXCHANGE
     include FileUtils::normalizeFilePath('includes/session-exchange.php');
     // ------ END OF SESSION EXCHANGE
 
   $connection = DatabaseConnection::connect();
   // Assume $connection is your database connection
+
+  $stmt_electionOpen = $connection->prepare("SELECT close FROM election_schedule WHERE schedule_id = 0");
+  $stmt_electionOpen->execute();	
+  $result_electionOpen = $stmt_electionOpen->get_result();	
+
+  if($result_electionOpen) {	
+      $row_election = $result_electionOpen->fetch_assoc();	
+      $today = new DateTime();		
+      $close = new DateTime($row_election['close']);	
+      if( $today > $close) {
 
 ?>
 
@@ -37,8 +46,7 @@ if(isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['rol
   <link rel="stylesheet" href="styles/loader.css" />
   <link rel="stylesheet" href="<?php echo '../src/styles/orgs/' . $org_acronym . '.css'; ?>">
   <!-- Icons -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <style> .nav-link:hover, .nav-link:focus {color: var(--<?php echo "main-color"; ?>); }
@@ -146,7 +154,10 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/topnav
   <script src="scripts/loader.js"></script>
 
   <?php
-
+  } else {
+    header("Location: ballot-forms.php");
+  }
+  }
 } else {
   header("Location: landing-page.php");
 }

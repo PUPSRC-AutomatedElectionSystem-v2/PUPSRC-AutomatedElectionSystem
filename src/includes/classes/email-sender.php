@@ -79,10 +79,10 @@ class EmailSender
         return $this->sendEmail($recipientEmail, $subject, $mailBody);
     }
 
-    public function sendPasswordResetEmail($recipientEmail, $token, $orgName)
+    public function sendPasswordResetEmail($recipientEmail, $token)
     {
         $subject = 'iVOTE Password Reset Request';
-        $resetPasswordLink = "http://localhost/PUPSRC-AutomatedElectionSystem/src/reset-password.php?token=$token&orgName=$orgName";
+        $resetPasswordLink = "http://localhost/PUPSRC-AutomatedElectionSystem/src/reset-password.php?token=$token&orgName=$this->org_name";
         $mailBody = <<<EOT
         <!DOCTYPE html>
         <html lang="en">

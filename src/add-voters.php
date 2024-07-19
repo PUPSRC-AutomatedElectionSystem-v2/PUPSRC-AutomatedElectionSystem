@@ -10,6 +10,8 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
     include FileUtils::normalizeFilePath('includes/session-exchange.php');
     include FileUtils::normalizeFilePath('submission_handlers/manage-acc.php');
+
+
     ?>
 
     <!DOCTYPE html>
@@ -115,8 +117,8 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                                                         <div class="d-flex justify-content-end me-5">
                                                             <button
                                                                 class="btn btn-main-primary px-sm-5 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6 text-white"
-                                                                type="submit" id="import-voters" name="import-voters"
-                                                                disabled>Import Voters</button>
+                                                                type="button" id="import-voters" name="import-voters">Import
+                                                                Voters</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -133,6 +135,32 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
         <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
 
+        <!-- Duplicates Modal -->
+        <div class="modal" id="duplicatesModal" data-bs-keyboard="false" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="d-sm-flex text-end justify-content-end">
+                            <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray" id="duplicatesClose">
+                            </i>
+                        </div>
+                        <div class="text-center">
+                            <div class="col-md-12">
+                                <img src="images/resc/warning.png" class="warning-icon" alt="Warning Icon">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 pb-3 pt-4">
+                                    <p class="fw-bold danger spacing-4" id="duplicatesTitle">Duplicate Students Found!</p>
+                                    <p class="fw-medium spacing-5 pt-2"></p>
+                                    <div id="duplicatesList"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Only Excel, CSV Files Are Allowed Modal -->
         <div class="modal" id="onlyPDFAllowedModal" data-bs-keyboard="false" data-bs-backdrop="static">
@@ -140,7 +168,8 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                 <div class="modal-content">
                     <div class="modal-body">
                         <div class="d-sm-flex text-end justify-content-end">
-                            <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray" id="onlyPDFClose">
+                            <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray" id="onlyPDFClose"
+                                data-bs-dismiss="modal">
                             </i>
                         </div>
                         <div class="text-center">
@@ -151,7 +180,46 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                             <div class="row">
                                 <div class="col-md-12 pb-3 pt-4">
                                     <p class="fw-bold danger spacing-4" id="dangerTitle">Invalid file format!</p>
-                                    <p class="fw-medium spacing-5 pt-2" id="dangerSubtitle">Excel and CSV files are only allowed. Please also ensure the file is no larger than 25 mb. Let's try that again!
+                                    <p class="fw-medium spacing-5 pt-2" id="dangerSubtitle">Excel and CSV files are only
+                                        allowed. Please also ensure the file is no larger than 25 mb and the file headers are correct. Let's try that
+                                        again!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Invalid Content of CSV/Excel Modal -->
+        <div class="modal" id="invalidContentModal" data-bs-keyboard="false" data-bs-backdrop="static">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div class="d-sm-flex text-end justify-content-end">
+                            <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray" id="invalidContentClose"
+                                data-bs-dismiss="modal">
+                            </i>
+                        </div>
+                        <div class="text-center">
+                            <div class="col-md-12">
+                                <img src="images/resc/warning.png" class="warning-icon" alt="Warning Icon">
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 pb-3 pt-4">
+                                    <p class="fw-bold danger spacing-4" id="invalidTitle">Invalid Content!</p>
+                                    <p class="fw-medium spacing-5 pt-2" id="invalidSubtitle">The file content is invalid. Please ensure that: 
+                                    <ul class="text-start">
+                                    <li class="fw-medium spacing-5 pt-2">The file headers are correct and in the right order</li>
+                                    <li class="fw-medium spacing-5 pt-2">All required fields are filled</li>
+                                    <li class="fw-medium spacing-5 pt-2">Data formats are correct (e.g., Valid Email Addresses, Correct Student ID, Complete Name)</li>
+                                    <li class="fw-medium spacing-5 pt-2">No Duplicates (You may check the Recycle Bin for such duplicates)</li>
+                                </ul>
+                                        <p class="fw-medium spacing-5 pt-2">
+                                        Please check your file and try again.
+                                        </p>
                                     </p>
                                 </div>
                             </div>
@@ -162,13 +230,12 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         </div>
 
         <!-- Imported Successfully Modal -->
-        <div class="modal" id="trashbinMoveDone" data-bs-keyboard="false" data-bs-backdrop="static">
+        <div class="modal" id="importDoneModal" data-bs-keyboard="false" data-bs-backdrop="static">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-body pb-5">
                         <div class="d-flex justify-content-end">
-                            <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray"
-                                onclick="closeModal('trashbinMoveDone')">
+                            <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray" data-bs-dismiss="modal">
                             </i>
                         </div>
                         <div class="text-center">
@@ -187,8 +254,8 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
                             <div class="col-md-12 pt-1 d-flex justify-content-center">
                                 <button class="btn btn-success px-sm-5 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6"
-                                    onClick="redirectToPage('manage-voters.php')" aria-label="Close">Go To Voters'
-                                    Accounts</button>
+                                    aria-label="Close"> <a href="manage-voters.php" style="color: white"> Go To Voters'
+                                        Accounts</a></button>
                             </div>
                         </div>
                     </div>
@@ -199,6 +266,8 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="scripts/script.js"></script>
         <script src="scripts/feather.js"></script>
+        <script src="scripts/import-voter.js"></script>
+
     </body>
 
     </html>

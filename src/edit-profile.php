@@ -58,6 +58,13 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         <link rel="stylesheet" href="styles/profile.css" />
         <link rel="stylesheet" href="styles/loader.css" />
         <link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+
+        <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="scripts/loader.js" defer></script>
+        <script src="scripts/feather.js" defer></script>
+        <script src="scripts/edit-profile.js" defer></script>
+        <script src="scripts/verify-password.js" defer></script>
     </head>
 
     <body>
@@ -70,13 +77,14 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         <!-- For success update of profile -->
         <div aria-live="polite" aria-atomic="true" class="position-relative" style="z-index: 1050;"> 
             <div class="position-fixed toast-container top-0 end-0 p-3">           
-                <div id="profileUpdatedToast" class="toast bg-success" role="alert" aria-live="assertive" aria-atomic="true">
-                    <div class="toast-header bg-success text-white">
+                <div id="profileUpdatedToast"  class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <img src="images/resc/ivote-icon.webp" height="30px" width="30px" class="rounded me-2" alt="ivote-icon">
                         <strong class="me-auto">Success</strong>
-                        <small class="text-body-secondary" id="toastTimestamp" style="color: #fff !important;"> <!-- Seconds --> </small>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                        <small class="text-body-secondary"> <!-- Seconds --> </small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                     </div>
-                    <div class="toast-body text-white" id="toastBody">
+                    <div class="toast-body" id="toastBody">
                         <!-- Display message here -->
                     </div>
                 </div>
@@ -245,12 +253,16 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         <?php include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/footer.php'); ?>
 
         <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="scripts/loader.js"></script>
         <script src="scripts/feather.js"></script>
         <script src="scripts/edit-profile.js"></script>
         <script src="scripts/verify-password.js"></script>
+		<script src="scripts/script.js"></script>
+        
 
+        
     </body>
 </html>
 

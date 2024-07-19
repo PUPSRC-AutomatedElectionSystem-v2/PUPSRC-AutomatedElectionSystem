@@ -25,13 +25,13 @@ if (isset($_SESSION['voter_id'])) {
             foreach ($_POST['last_name'] as $index => $last_name) {
                 $first_name = htmlspecialchars(trim($_POST['first_name'][$index]));
                 $middle_name = htmlspecialchars(trim($_POST['middle_name'][$index]));
-                $suffix = htmlspecialchars(trim($_POST['suffix'][$index]));
-                $party_list = htmlspecialchars(trim($_POST['party_list'][$index]));
+                $suffix = isset($_POST['suffix'][$index]) ? htmlspecialchars(trim($_POST['suffix'][$index])) : NULL;
+                $party_list = isset($_POST['party_list'][$index]) ? htmlspecialchars(trim($_POST['party_list'][$index])) : NULL;
                 $position_id = intval($_POST['position_id'][$index]);
                 $section_year_program = explode('-', $_POST['section'][$index]);
                 $program = htmlspecialchars(trim($section_year_program[0]));
                 $year_level = $section_year_program[1];
-                $section = $section_year_program[2];
+                $section = $section_year_program[2];    
 
                 $photo_url = '';
 

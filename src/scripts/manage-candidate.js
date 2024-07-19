@@ -484,20 +484,27 @@ $(document).ready(function () {
         }
     });
 
-    // Handle filter option click
-    $(document).on('click', '.dropdown-item', function (e) {
-        e.preventDefault(); // Prevent the default action
-
-        var checkbox = $(this).find('.filter-checkbox');
-        checkbox.prop('checked', !checkbox.prop('checked'));
-
-        var filter = checkbox.val();
-        if (checkbox.prop('checked')) {
-            $('#filterForm').append('<input type="hidden" name="filter[]" value="' + filter + '">');
-        } else {
-            $('#filterForm input[value="' + filter + '"]').remove();
+    $(document).ready(function () {
+        // Escape potentially harmful characters from the filter value
+        function sanitize(value) {
+            return $('<div>').text(value).html();
         }
 
-        applyFilters(); // Apply filters after selection
+        // Handle filter option click
+        $(document).on('click', '.dropdown-item', function (e) {
+            e.preventDefault(); // Prevent the default action
+
+            var checkbox = $(this).find('.filter-checkbox');
+            checkbox.prop('checked', !checkbox.prop('checked'));
+
+            var filter = sanitize(checkbox.val());
+            if (checkbox.prop('checked')) {
+                $('#filterForm').append('<input type="hidden" name="filter[]" value="' + filter + '">');
+            } else {
+                $('#filterForm input[value="' + filter + '"]').remove();
+            }
+
+            applyFilters(); // Apply filters after selection
+        });
     });
 });

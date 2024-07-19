@@ -495,7 +495,10 @@ if (typeof Quill !== 'undefined') {
 
     // Initialize Quill editor
     var quillEditor = new Quill(quillContainer, {
-        theme: 'snow' // You can specify other options here if needed
+        theme: 'snow', // You can specify other options here if needed
+        modules: {
+            toolbar: false // This removes the toolbar
+        }
     });
 
     if (deltaJson && deltaJson.ops) {

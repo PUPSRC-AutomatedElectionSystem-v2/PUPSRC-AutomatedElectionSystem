@@ -711,7 +711,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                 }
             } else {
                 // No feedback data found, show empty state
-                displayEmptyState("Looks like there are no candidates and votes available at the moment.");
+                displayEmptyState("It looks like there is insufficient data to be displayed at the moment");
             }
         } else {
             // Election period has not yet ended, show the empty state

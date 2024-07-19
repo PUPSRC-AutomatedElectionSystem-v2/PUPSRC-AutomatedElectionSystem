@@ -39,6 +39,8 @@ define('CREATE_CANDIDATE_POSITION', 'create_candidate_position');
 define('UPDATE_CANDIDATE_POSITION', 'update_candidate_position');
 define('DELETE_CANDIDATE_POSITION', 'delete_candidate_position');
 define('ADD_VOTING_GUIDELINE', 'add_voting_guideline');
+define('UPDATE_VOTING_GUIDELINE', 'update_voting_guideline');
+define('DELETE_VOTING_GUIDELINE', 'delete_voting_guideline');
 define('SET_VOTING_SCHEDULE', 'set_voting_schedule');
 define('UPDATE_VOTING_SCHEDULE', 'update_voting_schedule');
 define('SET_REGISTRATION_SCHEDULE', 'set_registration_schedule');
@@ -92,6 +94,8 @@ const ADMIN_ACTIONS = array(
     UPDATE_CANDIDATE_POSITION => 'You <strong>updated</strong> a candidate position.',
     DELETE_CANDIDATE_POSITION => 'You <strong>deleted</strong> a candidate position.',
     ADD_VOTING_GUIDELINE => 'You <strong>added</strong> new voting guideline/s.',
+    UPDATE_VOTING_GUIDELINE => 'You <strong>updated</strong> new voting guideline/s.',
+    DELETE_VOTING_GUIDELINE => 'You <strong>deleted</strong> new voting guideline/s.',
     SET_VOTING_SCHEDULE => 'You <strong>set</strong> a voting schedule.',
     UPDATE_VOTING_SCHEDULE => 'You <strong>updated</strong> the voting schedule.',
     SET_REGISTRATION_SCHEDULE => 'You <strong>set</strong> a registration schedule.',
@@ -125,6 +129,8 @@ const HEAD_ADMIN_ACTIONS = array(
     UPDATE_CANDIDATE_POSITION => 'You <strong>updated</strong> a candidate position.',
     DELETE_CANDIDATE_POSITION => 'You <strong>deleted</strong> a candidate position.',
     ADD_VOTING_GUIDELINE => 'You <strong>added</strong> new voting guideline/s.',
+    UPDATE_VOTING_GUIDELINE => 'You <strong>updated</strong> new voting guideline/s.',
+    DELETE_VOTING_GUIDELINE => 'You <strong>deleted</strong> new voting guideline/s.',
     SET_VOTING_SCHEDULE => 'You <strong>set</strong> a voting schedule.',
     UPDATE_VOTING_SCHEDULE => 'You <strong>updated</strong> the voting schedule.',
     SET_REGISTRATION_SCHEDULE => 'You <strong>set</strong> a registration schedule.',

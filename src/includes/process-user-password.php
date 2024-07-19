@@ -1,5 +1,8 @@
 <?php
 // Include necessary files using DIRECTORY_SEPARATOR for cross-platform compatibility
+include_once str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/classes/file-utils.php');
+require_once FileUtils::normalizeFilePath(__DIR__ . '/session-handler.php');
+require_once FileUtils::normalizeFilePath(__DIR__ . '/classes/session-manager.php');
 include_once FileUtils::normalizeFilePath(__DIR__ . '/session-exchange.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/classes/db-connector.php');
 include_once FileUtils::normalizeFilePath(__DIR__ . '/error-reporting.php');
@@ -23,11 +26,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Validate new password
     $error = newPasswordValidation($password);
     if ($error) {
-        
         $_SESSION['error_message'] = $error;
         header("Location: ../setting-password-reset.php");
         exit();
     }
+
+    // Fetch user data based on voter ID
+    $userData = getUserData($voter_id);
+    if (!$userData) {
+        $_SESSION['error_message'] = "User not found.";
+        header("Location: ../setting-password-reset.php");
+        exit();
+    }
+    $email = $userData['email'];
 
     // Connect to database
     $connection = DatabaseConnection::connect();
@@ -41,6 +52,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $stmt->bind_param("si", $new_password, $voter_id);
 
     if ($stmt->execute()) {
+        // Update password in another database
+        updateAnotherDatabasePassword($email, $new_password);
+        
         echo json_encode(['success' => true]);
         
         $logger = new Logger(ROLE_STUDENT_VOTER, CHANGE_PASSWORD);
@@ -51,6 +65,44 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         header("Location: ../setting-password-reset.php");
         exit();
     }
+}
+
+function getUserData($voter_id) {
+    // Connect to database
+    $connection = DatabaseConnection::connect();
+
+    $sql = "SELECT email FROM voter WHERE voter_id = ?";
+    $stmt = $connection->prepare($sql);
+    $stmt->bind_param('i', $voter_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $stmt->close();
+    return $row;
+}
+
+// Function to update password in another database
+function updateAnotherDatabasePassword($email, $new_password) {
+    $sco_organization = 'sco';
+    $config_sco = DatabaseConfig::getOrganizationDBConfig($sco_organization);
+    $sco_connection = new \mysqli($config_sco['host'], $config_sco['username'], $config_sco['password'], $config_sco['database']);
+
+    if ($sco_connection->connect_error) {
+        die("Connection failed: " . $sco_connection->connect_error);
+    }
+
+    $sql = "UPDATE voter SET password = ? WHERE email = ?";
+    $stmt = $sco_connection->prepare($sql);
+    $stmt->bind_param('ss', $new_password, $email);
+
+    if ($stmt->execute()) {
+        // Success message or logging can be added here
+    } else {
+        // Error handling can be added here
+    }
+
+    $stmt->close();
+    $sco_connection->close();
 }
 
 // Validate new password function

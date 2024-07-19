@@ -84,16 +84,22 @@ function loadPage(tableId, paginationId, ajaxUrl, page, searchTerm = "", sortBy 
                     const formattedDate = formatDate(candidate.candidate_creation);
                     const isChecked = selectedAdminIds.includes(candidate.candidate_id) ? "checked" : "";
 
+                    // Construct the name string conditionally
+                    let nameString = `${candidate.first_name} ${candidate.middle_name} ${candidate.last_name}`;
+                    if (candidate.suffix && candidate.suffix.trim()) {
+                        nameString += ` ${candidate.suffix}`;
+                    }
+
                     const row = `
             <tr>
               <td class="col-md-1 text-center checkbox-delete-admin ${deleteAdminState ? "" : "d-none"}">
                 <input type="checkbox" class="adminCheckbox" data-id="${candidate.candidate_id}" ${isChecked}>
               </td>
-              <td class="col-md-4 text-center text-truncate"><a href="candidate-details.php?candidate_id=${candidate.candidate_id}">${candidate.first_name} ${candidate.middle_name} ${candidate.last_name} ${candidate.suffix}</a></td>
+              <td class="col-md-4 text-center text-truncate"><a href="candidate-details.php?candidate_id=${candidate.candidate_id}">${nameString}</a></td>
               <td class="col-md-3 text-center text-truncate">
                 <span class="text-center">${candidate.position}</span>
               </td>
-              <td class="col-md-3 text-center textx truncate">
+              <td class="col-md-3 text-center text-truncate">
                 <span>${formattedDate}</span>
               </td>
             </tr>

@@ -61,13 +61,13 @@ if (isset($_SESSION['voter_id'])) {
 				<div class="row justify-content-center">
 					<div class="col-md-11">
 						<div class="breadcrumbs d-flex flex-wrap align-items-center">
-							<div class="breadcrumbs-inner d-flex">
+							<div class="breadcrumbs d-flex">
 								<button type="button" class="btn btn-lvl-white d-flex align-items-center spacing-8 fs-8">
 									<i data-feather="users" class="white im-cust feather-2xl"></i> <span class="hide-text">CANDIDATES</span>
 								</button>
 								<button type="button" class="btn btn-lvl-current rounded-pill spacing-8 fs-8">MANAGE CANDIDATES</button>
 							</div>
-							<div class="align-items-end ms-auto ms-sm-auto">
+							<div class="align-items-end ms-auto me-4 mx-a">
 								<a href="add-candidate.php">
 									<button type="button" class="button-add rounded-2 fs-7">
 										<i class="bi bi-plus-circle me-1 me-sm-3"></i>

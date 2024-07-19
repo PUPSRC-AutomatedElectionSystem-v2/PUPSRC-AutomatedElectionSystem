@@ -11,9 +11,9 @@ if (isset($_SESSION['voter_id'])) {
 
     if (isset($_POST['candidate_id'])) {
         $candidate_id = intval($_POST['candidate_id']);
-        $last_name = htmlspecialchars(trim($_POST['last_name']));
-        $first_name = htmlspecialchars(trim($_POST['first_name']));
-        $middle_name = htmlspecialchars(trim($_POST['middle_name']));
+        $last_name = ucwords(htmlspecialchars(trim($_POST['last_name'])));
+        $first_name = ucwords(htmlspecialchars(trim($_POST['first_name'])));
+        $middle_name = ucwords(htmlspecialchars(trim($_POST['middle_name'])));
         $suffix = htmlspecialchars(trim($_POST['suffix']));
         $party_list = htmlspecialchars(trim($_POST['party_list']));
         $position_id = intval($_POST['position_id']);

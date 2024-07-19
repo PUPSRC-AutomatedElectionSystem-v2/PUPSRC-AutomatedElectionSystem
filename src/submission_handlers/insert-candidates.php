@@ -23,8 +23,10 @@ if (isset($_SESSION['voter_id'])) {
             $election_year = $currentYear . '-' . $nextYear;
 
             foreach ($_POST['last_name'] as $index => $last_name) {
-                $first_name = htmlspecialchars(trim($_POST['first_name'][$index]));
-                $middle_name = htmlspecialchars(trim($_POST['middle_name'][$index]));
+                // Capitalize the first letter of each word
+                $last_name = ucwords(htmlspecialchars(trim($last_name)));
+                $first_name = ucwords(htmlspecialchars(trim($_POST['first_name'][$index])));
+                $middle_name = ucwords(htmlspecialchars(trim($_POST['middle_name'][$index])));
                 $suffix = isset($_POST['suffix'][$index]) ? htmlspecialchars(trim($_POST['suffix'][$index])) : NULL;
                 $party_list = isset($_POST['party_list'][$index]) ? htmlspecialchars(trim($_POST['party_list'][$index])) : NULL;
                 $position_id = intval($_POST['position_id'][$index]);

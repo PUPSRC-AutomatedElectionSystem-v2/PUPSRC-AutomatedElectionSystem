@@ -118,12 +118,14 @@ class Login extends IpAddress {
             $start = new Datetime($row['start']);	
             $close = new DateTime($row['close']);	
             if($today >= $start && $today <= $close) {	
-                $_SESSION['electionOpen'] = true;                
-                $this->redirectToBallotForm();
+                $_SESSION['electionOpen'] = true;
+                $this->storeLoginActivity();                
+                $this->redirectTo('../ballot-forms.php');
             }	
             else {	
-                $_SESSION['electionOpen'] = false;	
-                $this->redirectToVotingClosed();
+                $_SESSION['electionOpen'] = false;
+                $this->storeLoginActivity();	
+                $this->redirectTo('../voting-closed.php');
             }	
         }	
         else {	
@@ -155,10 +157,11 @@ class Login extends IpAddress {
                 break;
             case 'voted':
             case 'abstained':
-                $this->redirectToEndpoint();
+                $this->storeLoginActivity();
+                $this->redirectTo('../end-point.php');
                 break;
             default:
-                header("Location: ../landing-page.php");
+                $this->redirectTo('../landing-page.php');
                 break;
         }
         exit();
@@ -171,7 +174,8 @@ class Login extends IpAddress {
         if ($row['account_status'] === 'verified') {
             $this->regenerateSessionId();
             $_SESSION['voter_id'] = $row['voter_id'];
-            $this->redirectToDashboard();
+            $this->storeLoginActivity();
+            $this->redirectTo('../admindashboard.php');
         } else {
             $this->redirectWithMessage($this->info_message, 'This account has been disabled.');
         }
@@ -216,49 +220,23 @@ class Login extends IpAddress {
     // Handles different types of messages
     private function redirectWithMessage($type, $message) {
         $_SESSION[$type] = $message;
-        $this->redirectToLogin();
+        $this->redirectTo('../voter-login.php');
     }
     
     private function isLoginAttemptMax() {
         $_SESSION['maxLimit'] = true;
-        $this->redirectToLogin();
+        $this->redirectTo('../voter-login.php');
     }
 
 
-    private function redirectToLogin() {
-        header("Location: ../voter-login.php");
-        exit();
-    }
-
-
-    private function redirectToDashboard() {
+    private function storeLoginActivity() {
         $this->logger = new Logger($_SESSION['role'], LOGIN);
         $this->logger->logActivity();
-        header("Location: ../admindashboard.php");
-        exit();
     }
 
 
-    private function redirectToBallotForm() {
-        $this->logger = new Logger($_SESSION['role'], LOGIN);
-        $this->logger->logActivity();
-        header("Location: ../ballot-forms.php");
-        exit();
-    }
-
-
-    private function redirectToVotingClosed() {
-        $this->logger = new Logger($_SESSION['role'], LOGIN);
-        $this->logger->logActivity();
-        header("Location: ../voting-closed.php");
-        exit();
-    }
-
-
-    private function redirectToEndpoint() {
-        $this->logger = new Logger($_SESSION['role'], LOGIN);
-        $this->logger->logActivity();
-        header("Location: ../end-point.php");
+    private function redirectTo($location) {
+        header("Location: " . $location);
         exit();
     }
 }

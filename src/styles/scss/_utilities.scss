@@ -71,8 +71,12 @@ input:focus-visible::placeholder,
 textarea:focus-visible,
 textarea:focus-visible::placeholder,
 input:disabled,
-textarea:disabled {
+textarea:disabled [contenteditable] {
     font-size: clamp(1rem, 0.75rem + 0.5vw, 1.5vw);
+
+    &:focus-visible {
+        outline: var(--main-color) solid clamp(1.5px, 0.5px + 0.1vw, 5px);
+    }
 }
 
 

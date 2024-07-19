@@ -146,7 +146,7 @@ $page_scripts = '
 <script src="https://cdn.datatables.net/rowreorder/1.5.0/js/dataTables.rowReorder.js"></script>
 <script src="https://cdn.datatables.net/rowreorder/1.5.0/js/rowReorder.bootstrap5.js" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/js/bootstrap-select.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2/dist/quill.js"></script>
 <script type="module" src="src/scripts/config-candidate-position.js?v=2" defer></script>
 <script  type="text/javascript"src="src/scripts/feather.js" defer></script>
     ';

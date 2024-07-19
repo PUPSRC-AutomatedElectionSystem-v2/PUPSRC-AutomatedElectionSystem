@@ -24,6 +24,7 @@ body {
     height: 100%;
 }
 
+
 %table-row-height {
     min-height: calc(1rem + 1vw + 3.5vh);
     height: calc(1rem + 1vw + 3.5vh);
@@ -448,6 +449,7 @@ ul {
         @media only screen and (min-width: 780px) {
             display: flex;
             justify-content: space-between;
+            gap: clamp(0.5rem, 0.25rem + 1vw, 3rem);
 
             & li.nav-item:not(:last-child) {
                 margin-right: 0.75rem;

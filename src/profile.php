@@ -68,8 +68,13 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 		<link rel="stylesheet" href="styles/profile.css" />
 		<link rel="stylesheet" href="styles/loader.css" />
 		<link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+		<script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+		<script src="scripts/script.js" defer></script>
+		<script src="scripts/feather.js" defer></script>
+		<script src="scripts/table-funcs.js" defer></script>
+		<script src="scripts/loader.js" defer></script>
 	</head>
 
 	<body>
@@ -107,7 +112,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 											<div class="member-card-header main-bg-color">
 												iVOTE Account Type
 											</div>
-											<div class="member-card-body text-capitalize">
+											<div class="member-card-body text-capitalize fs-5">
 												<?php echo htmlspecialchars($role); ?>
 											</div>
 										</div>
@@ -138,15 +143,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
 		<?php include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/footer.php'); ?>
 
-		<script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-		<script src="scripts/script.js"></script>
-		<script src="scripts/feather.js"></script>
-		<script src="scripts/table-funcs.js"></script>
-		<script src="scripts/loader.js"></script>
-
 	</body>
-
-
 	</html>
 
 <?php

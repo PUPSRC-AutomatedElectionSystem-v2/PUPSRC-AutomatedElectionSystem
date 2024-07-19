@@ -1581,6 +1581,15 @@ ConfigPage.table = new DataTable('#example', {
                 placeholder: 'Type duties and responsibilities here.',
             });
 
+            ConfigPage.quill.clipboard.addMatcher('IMG', (node, delta) => {
+                const Delta = Quill.import('delta')
+                return new Delta().insert('')
+            })
+            ConfigPage.quill.clipboard.addMatcher('PICTURE', (node, delta) => {
+                const Delta = Quill.import('delta')
+                return new Delta().insert('')
+            })
+
             ConfigPage.mode = 'add';
 
             ConfigPage.CandidatePosition.updateModalContent(rowData, ConfigPage.quill);

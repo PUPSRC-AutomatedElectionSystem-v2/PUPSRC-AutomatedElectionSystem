@@ -45,6 +45,12 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Preloader Stylesheet and Image -->
+    <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
+    <link rel="preload" href="styles/loader.css" as="style" />
+    <link rel="stylesheet" href="styles/loader.css" />
+
     <link rel="icon" type="image/x-icon" href="images/resc/ivote-favicon.png">
 
     <!-- Preloader Stylesheet and Image -->

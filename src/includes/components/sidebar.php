@@ -130,7 +130,7 @@
 							</a>
 						</li>
 						<li class="item">
-							<a href="add-voters.php"
+							<a href="add-voters"
 								class="<?php echo basename($_SERVER['PHP_SELF']) == 'add-voters.php' ? 'active-sub fw-bold' : ''; ?>">
 								Add Voters
 							</a>

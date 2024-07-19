@@ -995,6 +995,13 @@ span {
   color: #FFF !important;
 }
 
+.acc-list-link {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 12.19px;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .login-body {
     padding-top: 15%;
@@ -1084,6 +1091,10 @@ span {
     font-weight: 300;
     line-height: 14.63px;
     text-align: center;
+  }
+
+  .acc-list-link {
+    font-size: 10px;
   }
 
   #index-AES {

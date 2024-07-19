@@ -99,6 +99,7 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
     <!-- Bootstrap JavaScript -->
     <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <!-- Custom JavaScript -->
     <script src="scripts/voter-login.js" defer></script>
     <script src="scripts/loader.js" defer></script>
@@ -184,13 +185,14 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
                             </div>  
                         </div>
 
-                        <div role="button" class="text-align-start" data-bs-toggle="modal" data-bs-target="#forgot-password-modal" id="forgot-password">Forgot Password</div>
+                        <div role="button" class="text-align-start fw-medium" data-bs-toggle="modal" data-bs-target="#forgot-password-modal" id="forgot-password">Forgot Password?</div>
 
                         <div class="d-grid gap-2 mt-5 mb-4">
                             <!-- <button class="btn btn-primary" name="sign_in" type="submit">Sign In</button> -->
-                            <button class="btn login-sign-in-button <?php echo strtoupper($org_name); ?>-login-button" id="loginSubmitBtn" name="sign-in" type="submit">Sign In</button>
+                            <button class="btn login-sign-in-button py-2 <?php echo strtoupper($org_name); ?>-login-button" id="loginSubmitBtn" name="sign-in" type="submit">Sign In</button>
                         </div>
-                        <p class="sign-up-redirect">Don't have an account? <a href="register.php" id="<?php echo strtolower($org_name); ?>SignUP" class="sign-up">Sign Up</a></p>
+                        <p class="sign-up-redirect fw-medium">Don't have an account? <a href="register.php" id="<?php echo strtolower($org_name); ?>SignUP" class="sign-up">Sign Up</a></p>
+                        <p class="acc-list-link lh-sm fw-medium">If you're an eligible member of <?php echo htmlspecialchars(strtoupper($org_acronym)); ?>, <br/>you can set up your account <a href="member-masterlist.php" class="fw-bold main-color">here.</a></p>
                     </form>
                 </div>
             </div>

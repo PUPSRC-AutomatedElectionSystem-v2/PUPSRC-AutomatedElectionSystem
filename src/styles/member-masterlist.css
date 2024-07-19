@@ -1,0 +1,112 @@
+body {
+    font-family: "Montserrat", sans-serif;
+    background-color: #F5F5F5;
+    /* height: 100%; */
+    height: 100vh;
+}
+
+/* Start of Header */
+#login-navbar {
+    background-color: white;
+    min-height: 55px;
+}
+
+#ivote-logo-landing-header {
+    width: 80px;
+}
+/* End of Header */
+
+.account-section {
+    padding-top: 4%;
+    padding-bottom: 5%;
+}
+
+.header-title {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 28.04px;
+    letter-spacing: 0.08em;
+    /* padding-left: 20px; */
+    padding-top: 20px;
+}
+
+.header-subtitle {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 13.41px;
+    letter-spacing: 0.06em;
+    color: #1F1D1B;
+    padding-top: 14px;
+    /* padding-left: 20px; */
+}
+
+.account-container {
+    padding: 30px 50px;
+}
+
+.step-title {
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 28.04px;
+    letter-spacing: 0.08em;
+    padding-top: 20px;
+}
+
+.step-subtitle {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 13.41px;
+    letter-spacing: 0.06em;
+    color: #1F1D1B;
+    padding-top: 30px;
+    padding-left: 20px;
+}
+
+.step {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 15.85px;
+    letter-spacing: 0.06em;
+    color: #1F1D1B;
+    padding-top: 14px;
+    /* padding-left: 20px; */
+}
+
+.search-input {
+    --padding: 14px;
+
+    width: max-content;
+    display: flex;
+    align-items: center;
+    padding: 3px 6px !important;
+    border-radius: 28px;
+    background: #fcfbfb;
+    border: 1px solid #ced4da;
+    transition: box-shadow 0.25s;
+}
+
+.search-input:focus-within {
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.75);
+}
+
+.search-input-bar {
+    font-size: 16px;
+    color: #333333;
+    margin-left: var(--padding);
+    outline: none;
+    border: none;
+    background: transparent;
+}
+
+.search-input-bar::placeholder, .search-icon {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.search-icon {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    justify-content: center;
+    color: rgba(0, 0, 0, 0.5);
+    margin-left: 0.5rem;
+}

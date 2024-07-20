@@ -458,7 +458,7 @@ $(document).ready(function () {
     });
 
     // Add event listener for filter options
-    $(document).on('click', '.dropdown-item', function () {
+    $(document).on('click', '.pfilter', function () {
         var filter = $(this).data('filter');
         $('#filterForm').append('<input type="hidden" name="filter[]" value="' + filter + '">');
         $('#filterForm').submit();
@@ -478,7 +478,7 @@ $(document).ready(function () {
             var dropdownMenu = $('#filterMenu');
             data.positions.forEach(function (position) {
                 dropdownMenu.append(
-                    '<div class="dropdown-item" data-filter="' + position.title + '">' +
+                    '<div class="dropdown-item pfilter" data-filter="' + position.title + '">' +
                     '<input type="checkbox" class="filter-checkbox" value="' + position.title + '"> ' +
                     '<label>' + position.title + '</label>' +
                     '</div>'
@@ -497,7 +497,7 @@ $(document).ready(function () {
         }
 
         // Handle filter option click
-        $(document).on('click', '.dropdown-item', function (e) {
+        $(document).on('click', '.pfilter', function (e) {
             e.preventDefault(); // Prevent the default action
 
             var checkbox = $(this).find('.filter-checkbox');

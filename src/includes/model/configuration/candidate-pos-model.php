@@ -3,6 +3,7 @@ include_once str_replace('/', DIRECTORY_SEPARATOR,  '../classes/file-utils.php')
 require_once FileUtils::normalizeFilePath('../error-reporting.php');
 require_once FileUtils::normalizeFilePath('../classes/db-config.php');
 require_once FileUtils::normalizeFilePath('../classes/db-connector.php');
+require_once FileUtils::normalizeFilePath('../classes/logger.php');
 
 class OrganizationNotSetException extends Exception
 {
@@ -98,6 +99,9 @@ class CandidatePosition
             echo "Error preparing statement: " . self::$connection->error;
         }
         $stmt->close();
+
+        $logger = new Logger($_SESSION['role'], CREATE_CANDIDATE_POSITION);
+        $logger->logActivity();
         return $position;
     }
 
@@ -131,6 +135,10 @@ class CandidatePosition
             echo "Error preparing statement: " . self::$connection->error;
         }
         $stmt->close();
+
+        $logger = new Logger($_SESSION['role'], UPDATE_CANDIDATE_POSITION);
+        $logger->logActivity();
+
         return $position;
     }
 
@@ -160,6 +168,10 @@ class CandidatePosition
             echo "Error preparing statement: " . self::$connection->error;
         }
         $stmt->close();
+
+        $logger = new Logger($_SESSION['role'], UPDATE_CANDIDATE_POSITION);
+        $logger->logActivity();
+
         return $position;
     }
 
@@ -168,6 +180,9 @@ class CandidatePosition
 
         if (isset($data['confirmed_delete']) && $data['confirmed_delete']) {
             if (self::deleteCandidates($data)) {
+
+                $logger = new Logger($_SESSION['role'], PERMANENT_DELETE_CANDIDATE);
+                $logger->logActivity();
                 return self::deletePosition($data);
             } else {
                 self::$query_message = 'Error deleting position';
@@ -252,13 +267,21 @@ class CandidatePosition
                     'max_votes' => $data['max_votes'],
                     'description' => $data['description']
                 ];
+
+
+                $logger = new Logger($_SESSION['role'], DELETE_CANDIDATE_POSITION);
+                $logger->logActivity();
             } else {
                 self::$query_message = 'No position deleted';
             }
         } else {
             self::$query_message = "Error preparing statement: " . self::$connection->error;
         }
+
         $stmt->close();
+
+
+
         return $position;
     }
 

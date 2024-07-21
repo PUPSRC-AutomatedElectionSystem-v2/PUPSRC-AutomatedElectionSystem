@@ -11,11 +11,11 @@ src/user_data/
 .phpunit.result.cache
 
 # Generated Data by the  system
-src\includes\data
+src/includes/data/*
+!src/includes/data/
 
 # Testing Email Credentials
 test-close.php
 src/includes/error-reporting.php
 src/includes/mailer-test.php
-src/includes/data/*
-!src/includes/data/
+

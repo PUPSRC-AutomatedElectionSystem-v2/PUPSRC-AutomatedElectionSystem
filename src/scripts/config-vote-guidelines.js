@@ -820,8 +820,8 @@ ConfigPage.handleConfirmModalDispose = function () {
 ConfigPage.handleConfirmInput = function (modal, inputId, inputVal) {
     let inputElement = modal.querySelector(`#${inputId}`);
 
-    ConfigPage.delEventListener(inputElement, 'blur');
-    ConfigPage.addEventListenerAndStore(inputElement, 'blur', function () {
+    ConfigPage.delEventListener(inputElement, 'input');
+    ConfigPage.addEventListenerAndStore(inputElement, 'input', function () {
         if (inputElement.value == inputVal) {
             $(modal).find('.prompt-action .btn.primary').prop('disabled', false)
                 .val('true');

@@ -44,7 +44,7 @@ SessionManager::checkUserRoleAndRedirect();
 
     <!-- Favicon -->
     <link rel="icon" href="images/resc/ivote-favicon.png" type="image/x-icon">
-    <title>Account List</title>
+    <title>Master List</title>
 
     <!-- Bootstrap JavaScript -->
     <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -53,6 +53,7 @@ SessionManager::checkUserRoleAndRedirect();
     <!-- Custom JavaScript -->
     <script src="scripts/loader.js" defer></script>
     <script src="scripts/feather.js" defer></script>
+    <script src="scripts/member-masterlist.js" defer></script>
 </head>
 
 <body>
@@ -87,11 +88,11 @@ SessionManager::checkUserRoleAndRedirect();
                                 </div>
 
                                 <div class="col-md-4 col-xs-12 mt-2 d-flex header-title align-items-center justify-content-md-end justify-content-xs-start">
-                                    <div class="search-input w-100">
+                                    <div class="search-input w-100" id="searchBarContainer" style="display: none;">
                                         <span class="search-icon" >
                                             <i data-feather="search" class="feather-sm"></i>
                                         </span>
-                                        <input type="text" class="search-input-bar fs-7 spacing-6 fw-semibold w-75" placeholder="Search your name here..."> 
+                                        <input type="text" class="search-input-bar fs-7 spacing-6 fw-semibold w-75" id="searchBar" placeholder="Search your name here..."> 
                                     </div>
                                 </div>
 
@@ -100,31 +101,35 @@ SessionManager::checkUserRoleAndRedirect();
 
                         <table class="table account-table">
 
-                            <thead class="tl-header">
+                            <thead class="tl-header" style="display: none;">
                                 <tr>
                                     <th class="col-md-6 tl-left text-center fs-7 fw-bold spacing-5"><i data-feather="user" class="feather-sm im-cust"></i>Full Name</th>
                                     <th class="col-md-6 tl-right text-center fs-7 fw-bold spacing-5"><i data-feather="check-circle" class="feather-sm im-cust"></i>Verification Token</th>
                                 </tr>                            
                             </thead>
 
-                            <tbody>
-                                <tr class="">
-                                    <td class="text-center">Legrama, Marie Jeremie R.</td>
-                                    <td class="text-center text-body-secondary"><a href="#" class="text-reset">Send Verification Token</a></td>
-                                </tr>
-                                <tr>
-                                    <td class="text-center">Escueta, Peter Wilrexe M.</td>
-                                    <td class="text-center text-body-secondary"><a href="#" class="text-reset">Send Verification Token</a></td>
-                                </tr>  
-                                
-                                <!-- Pagination -->
-                                <ul class="pagination mt-4" id="pagination">
-                                <!-- Load pagination here -->
-                                </ul>
+                            <!-- simple spinner when loading table -->
+                            <tr id="spinner" style="display: none;">
+                                <td colspan="2" class="text-center">
+                                    <div class="spinner-border text-secondary" role="status">
+                                    </div>
+                                    <div class="mt-2 fs-7">
+                                        Getting things ready...
+                                    </div>
+                                </td>
+                            </tr>
 
+                            <tbody id="masterList">
+                                <!-- Full names and ver tokens will be loaded here -->
                             </tbody>
 
                         </table>
+
+                        <div class="clearfix col-xs-12">
+                            <ul class="pagination mt-4" id="pagination" style="display: none;">
+                            <!-- Pagination will be loaded here -->
+                            </ul>
+                        </div>
 
                     </div>
 
@@ -145,11 +150,83 @@ SessionManager::checkUserRoleAndRedirect();
                                     <li class="list-group-item lh-base border border-0"><strong>5. Enter Token:</strong> Type the token into the verification token field.</li>
                                     <li class="list-group-item lh-base border border-0"><strong>6. Create a Password:</strong> Complete your account setup by providing a strong password.</li>
                                 </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <!-- Send Verification Token Modal -->
+            <div class="modal fade" id="sendVerificationTokenModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row px-4 pt-4">
+                                <div class="col-md-12 pb-3">
+                                    <p class="fw-bold main-color text-center spacing-4 pt-3">Email Address</p>
+                                    <form id="sendVerificationTokenForm" method="POST">
+                                        <input type="hidden" id="voterId" name="voter_id">
+                                        <p><strong id="fullName"></strong></p>
+                                        <div class="mb-1">
+                                            <label for="email" class="form-label">Email address</label>
+                                            <input type="email" class="form-control bg-primary shadow-sm" id="email" name="email" placeholder="Put stuff">
+                                        </div>
+                                        <div id="emailErrorMessage" class="fs-7 text-danger mb-4 fw-medium me-5">
+                                            <!-- Display error messages here -->
+                                        </div>
+                                        <div class="row d-flex justify-content-center">
+                                            <div class="col-md-5">
+                                                <button type="button" class="btn btn-secondary w-100" id="cancelSendVerificationTokenBtn" data-bs-dismiss="modal">Cancel</button>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <button type="submit" id="sendTokenBtn" class="btn btn-org-color w-100">Send Token</button>
+                                            </div>                                            
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Verify Token Modal -->
+            <div class="modal fade" id="verifyTokenModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <div class="row px-4 pt-4">
+                                <div class="col-md-12 pb-3">
+                                    <p class="fw-bold main-color text-center spacing-4 pt-3">Verify Token</p>
+                                    <form id="verifyTokenForm" method="POST">
+                                        <div class="mb-1">
+                                            <label for="token" class="form-label">Enter Token</label>
+                                            <input type="text" class="form-control bg-primary shadow-sm" id="token" name="token" placeholder="Put token here">
+                                        </div>
+                                        <div id="tokenErrorMessage" class="fs-7 text-danger mb-4 fw-medium me-5">
+                                            <!-- Display error messages here -->
+                                        </div>
+                                        <div class="row d-flex justify-content-center">
+                                            <div class="col-md-5">
+                                                <button type="button" class="btn btn-secondary w-100" id="cancelVerifyTokenBtn" data-bs-dismiss="modal">Cancel</button>                                               
+                                            </div>
+                                            <div class="col-md-7">
+                                                <button type="submit" id="verifyTokenBtn" class="btn btn-org-color w-100">Send Token</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
         </div>        
     </section>
 
 </body>
+</html>

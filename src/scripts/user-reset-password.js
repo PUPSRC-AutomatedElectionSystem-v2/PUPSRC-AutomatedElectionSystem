@@ -121,6 +121,24 @@ $(document).ready(function () {
     passwordRequirementsList.eq(4).toggleClass("unmet", !/[\W_]/.test(value));
   });
 
+  $(window).on("beforeunload", function () {
+    if ($("#successPasswordResetModal").is(":visible")) {
+      $.ajax({
+        url: "includes/voter-logout.php",
+        type: "POST",
+        success: function () {
+          window.location.href = "landing-page.php";
+        },
+        error: function () {
+          console.error("Error:", error);
+          $("#error-message").text(
+            "An error occurred. Please try again later."
+          );
+        },
+      });
+    }
+  });
+
   // Process new password
   $("#submit").click(function (event) {
     event.preventDefault();
@@ -135,8 +153,38 @@ $(document).ready(function () {
         password_confirmation: password_confirmation,
         voter_id: voter_id,
       },
+      dataType: "json",
       success: function (response) {
-        $("#successPasswordResetModal").modal("show");
+        if (response.success) {
+          $("#successPasswordResetModal").modal("show");
+
+          // Countdown timer
+          let countdown = 10;
+          const timerElement = $("#successPasswordResetModal .timer strong");
+          const countdownInterval = setInterval(function () {
+            countdown--;
+            timerElement.text(countdown);
+
+            if (countdown <= 0) {
+              clearInterval(countdownInterval);
+              $.ajax({
+                url: "includes/voter-logout.php",
+                type: "POST",
+                success: function () {
+                  window.location.href = "landing-page.php";
+                },
+                error: function (xhr, status, error) {
+                  console.error("Error:", error);
+                  $("#error-message").text(
+                    "An error occurred. Please try again later."
+                  );
+                },
+              });
+            }
+          }, 1000);
+        } else {
+          $("#error-message").text(response.message);
+        }
       },
       error: function (xhr, status, error) {
         console.error(xhr.responseText);

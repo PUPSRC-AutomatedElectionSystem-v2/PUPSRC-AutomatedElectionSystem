@@ -136,7 +136,7 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
                                                             <button class="button-check main-bg-color text-white py-2 px-4 custom-link" onclick="window.location.href='includes/voter-logout.php'"><b>Back to Landing Page</b></button>
                                                         </div>
                                                     </div>
-                                                    <p>Redirecting to landing page in <b>10</b> seconds...</p>
+                                                    <p class="timer">Redirecting to landing page in <strong>10</strong> seconds...</p>
                                                 </div>
                                             </div>
                                         </div>

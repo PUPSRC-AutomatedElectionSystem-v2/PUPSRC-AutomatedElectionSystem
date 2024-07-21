@@ -1,4 +1,5 @@
 <?php
+
 include_once str_replace('/', DIRECTORY_SEPARATOR, 'classes/file-utils.php');
 require_once FileUtils::normalizeFilePath('classes/db-connector.php');
 require_once FileUtils::normalizeFilePath('session-handler.php');
@@ -11,9 +12,7 @@ $candidates = [];
 
 if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
 
-    // ------ SESSION EXCHANGE
-    include FileUtils::normalizeFilePath($baseDir . DIRECTORY_SEPARATOR . 'includes' . DIRECTORY_SEPARATOR . 'session-exchange.php');
-    // ------ END OF SESSION EXCHANGE
+
 
     // Database connection
     $connection = DatabaseConnection::connect();

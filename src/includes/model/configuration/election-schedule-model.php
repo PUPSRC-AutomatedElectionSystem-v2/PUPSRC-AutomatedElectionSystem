@@ -166,13 +166,18 @@ class ElectionYearModel extends EmailQueue
                 $verified_voters_email[] = $row['email'];
             }
 
-            global $mail;
 
-            $send_email = new EmailSender($mail);
+            if (!empty($verified_voters_email)) {
 
-            $election_close_emails = $send_email->sendElectionCloseEmail($verified_voters_email);
+                global $mail;
+
+                $send_email = new EmailSender($mail);
+
+                $election_close_emails = $send_email->sendElectionCloseEmail($verified_voters_email);
+            }
 
             $hash = EmailQueue::generateHash();
+
 
             $sql = "INSERT INTO election_schedule (start, close, push_id) VALUES (?, ?, ?)";
 
@@ -189,7 +194,9 @@ class ElectionYearModel extends EmailQueue
             $stmt->close();
 
             // EmailQueue::insertQueue($emails, $data['electionStart'], $hash);
-            EmailQueue::insertQueue($election_close_emails, $data['electionEnd'], $hash);
+            if (!empty($verified_voters_email)) {
+                EmailQueue::insertQueue($election_close_emails, $data['electionEnd'], $hash);
+            }
 
             return $data;
         } catch (Exception $e) {
@@ -219,14 +226,16 @@ class ElectionYearModel extends EmailQueue
                 $verified_voters_email[] = $row['email'];
             }
 
-            global $mail;
 
-            $send_email = new EmailSender($mail);
+            if (!empty($verified_voters_email)) {
+                global $mail;
 
-            $election_close_emails = $send_email->sendElectionCloseEmail($verified_voters_email);
+                $send_email = new EmailSender($mail);
+
+                $election_close_emails = $send_email->sendElectionCloseEmail($verified_voters_email);
+            }
 
             $hash = EmailQueue::generateHash();
-
 
             $sql = "UPDATE election_schedule SET start = ?, close = ? , push_id = ?";
 
@@ -245,7 +254,9 @@ class ElectionYearModel extends EmailQueue
             // EmailQueue::insertQueue($emails, $data['electionStart'], $hash);
 
             // print_r($election_close_emails);
-            EmailQueue::insertQueue($election_close_emails, $data['electionEnd'], $hash);
+            if (!empty($verified_voters_email)) {
+                EmailQueue::insertQueue($election_close_emails, $data['electionEnd'], $hash);
+            }
 
             return $data;
         } catch (Exception $e) {

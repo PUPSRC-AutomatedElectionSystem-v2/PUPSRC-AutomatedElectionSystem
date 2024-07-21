@@ -42,6 +42,9 @@ define('UPDATE_VOTING_SCHEDULE', 'update_voting_schedule');
 define('SET_REGISTRATION_SCHEDULE', 'set_registration_schedule');
 define('UPDATE_REGISTRATION_SCHEDULE', 'update_registration_schedule');
 define('IMPORT_MEMBER_LIST', 'import_member_list');
+define('ADD_FAQ', 'add_faq');
+define('UPDATE_FAQ', 'update_faq');
+define('DELETE_FAQ', 'delete_faq');
 
 
 // Specific to Head Admin
@@ -89,7 +92,10 @@ const ADMIN_ACTIONS = array(
     UPDATE_VOTING_SCHEDULE => 'You <strong>updated</strong> the voting schedule.',
     SET_REGISTRATION_SCHEDULE => 'You <strong>set</strong> a registration schedule.',
     UPDATE_REGISTRATION_SCHEDULE => 'You <strong>updated</strong> the registration schedule.',
-    IMPORT_MEMBER_LIST => 'You <strong>imported</strong> an Excel/CSV file.'
+    IMPORT_MEMBER_LIST => 'You <strong>imported</strong> an Excel/CSV file.',
+    ADD_FAQ => 'You <strong>added</strong> a FAQ item.',
+    UPDATE_FAQ => 'You <strong>updated</strong> a FAQ item.',
+    DELETE_FAQ => 'You <strong>updated</strong> a FAQ item.'
 );
 
 
@@ -118,6 +124,9 @@ const HEAD_ADMIN_ACTIONS = array(
     SET_REGISTRATION_SCHEDULE => 'You <strong>set</strong> a registration schedule.',
     UPDATE_REGISTRATION_SCHEDULE => 'You <strong>updated</strong> the registration schedule.',
     IMPORT_MEMBER_LIST => 'You <strong>imported</strong> an Excel/CSV file.',
+    ADD_FAQ => 'You <strong>added</strong> a FAQ item.',
+    UPDATE_FAQ => 'You <strong>updated</strong> a FAQ item.',
+    DELETE_FAQ => 'You <strong>deleted</strong> a FAQ item.',
     CREATE_ADMIN_ACCOUNT => 'You <strong>created</strong> a new admin account.',
     CREATE_HEAD_ADMIN_ACCOUNT => 'You <strong>created</strong> a new head admin account.',
     DELETE_ADMIN_ACCOUNT => 'You <strong>deleted</strong> an admin account.',

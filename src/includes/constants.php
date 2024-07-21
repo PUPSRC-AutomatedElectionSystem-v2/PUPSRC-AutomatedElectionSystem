@@ -42,6 +42,7 @@ define('UPDATE_VOTING_SCHEDULE', 'update_voting_schedule');
 define('SET_REGISTRATION_SCHEDULE', 'set_registration_schedule');
 define('UPDATE_REGISTRATION_SCHEDULE', 'update_registration_schedule');
 define('IMPORT_MEMBER_LIST', 'import_member_list');
+define('EXPORT_MEMBER_LIST', 'import_member_list');
 define('ADD_FAQ', 'add_faq');
 define('UPDATE_FAQ', 'update_faq');
 define('DELETE_FAQ', 'delete_faq');
@@ -82,8 +83,7 @@ const ADMIN_ACTIONS = array(
     UPDATE_CANDIDATE_INFO => 'You <strong>updated</strong> a candidate information.',
     APPROVE_VOTER => 'You <strong>approved</strong> a pending voter registration.',
     REJECT_VOTER => 'You <strong>rejected</strong> a pending voter registration.',
-    DELETE_VOTER => 'You <strong>deleted</strong> a voter account.',
-    DELETE_MULTIPLE_VOTERS => 'You <strong>deleted</strong> multiple voter accounts.',
+    DELETE_VOTER => 'You <strong>deleted</strong> voter(s) account.',
     PERMANENT_DELETE_VOTER => 'You <strong>permanently deleted</strong> a voter account.',
     PERMANENT_DELETE_MULTIPLE_VOTERS => 'You <strong>permanently deleted</strong> multiple voter accounts.',
     CREATE_CANDIDATE_POSITION => 'You <strong>created</strong> a new candidate position.',
@@ -93,6 +93,7 @@ const ADMIN_ACTIONS = array(
     SET_REGISTRATION_SCHEDULE => 'You <strong>set</strong> a registration schedule.',
     UPDATE_REGISTRATION_SCHEDULE => 'You <strong>updated</strong> the registration schedule.',
     IMPORT_MEMBER_LIST => 'You <strong>imported</strong> an Excel/CSV file.',
+    EXPORT_MEMBER_LIST => 'You <strong>exported</strong> an Excel/CSV file.',
     ADD_FAQ => 'You <strong>added</strong> a FAQ item.',
     UPDATE_FAQ => 'You <strong>updated</strong> a FAQ item.',
     DELETE_FAQ => 'You <strong>updated</strong> a FAQ item.'
@@ -113,8 +114,7 @@ const HEAD_ADMIN_ACTIONS = array(
     UPDATE_CANDIDATE_INFO => 'You <strong>updated</strong> a candidate information.',
     APPROVE_VOTER => 'You <strong>approved</strong> a pending voter registration.',
     REJECT_VOTER => 'You <strong>rejected</strong> a pending voter registration.',
-    DELETE_VOTER => 'You <strong>deleted</strong> a voter account.',
-    DELETE_MULTIPLE_VOTERS => 'You <strong>deleted</strong> multiple voter accounts.',
+    DELETE_VOTER => 'You <strong>deleted</strong> voter(s) account.',
     PERMANENT_DELETE_VOTER => 'You <strong>permanently deleted</strong> a voter account.',
     PERMANENT_DELETE_MULTIPLE_VOTERS => 'You <strong>permanently deleted</strong> multiple voter accounts.',
     CREATE_CANDIDATE_POSITION => 'You <strong>created</strong> a new candidate position.',
@@ -124,6 +124,7 @@ const HEAD_ADMIN_ACTIONS = array(
     SET_REGISTRATION_SCHEDULE => 'You <strong>set</strong> a registration schedule.',
     UPDATE_REGISTRATION_SCHEDULE => 'You <strong>updated</strong> the registration schedule.',
     IMPORT_MEMBER_LIST => 'You <strong>imported</strong> an Excel/CSV file.',
+    EXPORT_MEMBER_LIST => 'You <strong>exported</strong> an Excel/CSV file.',
     ADD_FAQ => 'You <strong>added</strong> a FAQ item.',
     UPDATE_FAQ => 'You <strong>updated</strong> a FAQ item.',
     DELETE_FAQ => 'You <strong>deleted</strong> a FAQ item.',

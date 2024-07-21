@@ -51,9 +51,9 @@ class EmailQueue
         }
     }
 
-    public static function getCurrQueue()
+    public static function getCurrQueue($db_conn)
     {
-        self::ensureConnection();
+        self::$connection = $db_conn;
         $emails = [];
 
         if (self::$connection) {

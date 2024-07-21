@@ -143,6 +143,27 @@ class EmailSender
         return $this->sendEmail($recipientEmail, $subject, $mailBody);
     }
 
+
+    public function sendVerificationToken($recipientEmail, $verificationToken) {
+        $subject = 'iVOTE Account Setup';
+        $mailBody = <<<EOT
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>iVOTE Password Reset Request</title>
+        </head>
+        <body">
+            <p>Verification Token: $verificationToken</p>
+        </body>
+        </html>
+        EOT;
+
+        return $this->sendEmail($recipientEmail, $subject, $mailBody);
+    }
+    
+
     public function sendElectionCloseEmail($bccs)
     {
         global $org_acronyms;

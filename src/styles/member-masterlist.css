@@ -110,3 +110,14 @@ body {
     color: rgba(0, 0, 0, 0.5);
     margin-left: 0.5rem;
 }
+
+.pagination li {
+    margin-right: 5px;
+}
+
+.pagination li a {
+    border: none;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+}

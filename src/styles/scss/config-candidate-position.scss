@@ -183,6 +183,13 @@ body dialog.modal-native {
             border-radius: 0;
             border-bottom: clamp(1px, 1px + 0.01dvw, 5px) solid var(--main-color);
             padding-left: 0;
+
+            @media (prefers-color-scheme: dark) {
+
+                padding-left: calc(1dvw + 1dvh);
+
+            }
+
             padding-right: 0;
             // line-height: 1.75;
             @extend %general-responsive-base-font-size;
@@ -200,11 +207,10 @@ body dialog.modal-native {
 
         button.btn.btn-secondary {
             box-shadow: none !important;
-            background-color: var(--bs-modal-bg) !important;
 
             &:active,
             &:hover {
-                filter: grayscale(100%);
+                filter: grayscale(100%) brightness(110%);
                 box-shadow: var(--bs-box-shadow-sm) !important;
             }
 
@@ -239,6 +245,7 @@ body dialog.modal-native {
 
     }
 
+
     .form-control {
         color: var(--main-black);
 
@@ -269,9 +276,6 @@ body dialog.modal-native {
             @media only screen and (max-width: 576px) {
                 gap: clamp(0.5rem, 0.25rem + 0.75vw + 1.5vh, 3rem);
             }
-
-
-
 
             overflow-y: auto;
 
@@ -380,28 +384,4 @@ div.dt-container {
 
 div:has(> button.add-new:focus-visible) {
     box-shadow: var(--box-shadow-size) color-mix(in srgb, var(--dark-gray) 25%, transparent) !important;
-}
-
-button.add-new {
-    width: 100%;
-    // display: flex;
-    // flex-grow: 1;
-    // align-items: center;
-    // justify-content: center;
-    border: calc(1px + 0.06dvw) solid rgba(217, 217, 217, 1);
-    background-color: var(--white);
-    font-size: calc(0.75rem + 0.6575vw);
-    font-weight: bold;
-    color: rgba(134, 134, 134, 1);
-    @extend %table-row-height;
-
-    &:hover {
-        background-color: rgb(236, 236, 236, 1);
-        font-weight: bolder;
-        color: var(--main-black);
-    }
-
-    // &:focus-visible {
-    //     box-shadow: var(--box-shadow-size), color-mix(in srgb, var(--dark-gray) 25%, transparent);
-    // }
 }

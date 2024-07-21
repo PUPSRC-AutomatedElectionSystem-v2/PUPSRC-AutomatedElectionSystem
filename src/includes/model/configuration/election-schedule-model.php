@@ -5,10 +5,11 @@ require_once FileUtils::normalizeFilePath('../error-reporting.php');
 require_once FileUtils::normalizeFilePath('../classes/db-config.php');
 require_once FileUtils::normalizeFilePath('../classes/db-connector.php');
 require_once FileUtils::normalizeFilePath('../classes/query-handler.php');
-require_once FileUtils::normalizeFilePath('../mailer-test.php');
-// require_once FileUtils::normalizeFilePath('../mailer.php');
+// require_once FileUtils::normalizeFilePath('../mailer-test.php');
+require_once FileUtils::normalizeFilePath('../mailer.php');
 require_once FileUtils::normalizeFilePath('../classes/email-sender.php');
 require_once FileUtils::normalizeFilePath('../classes/email-queue.php');
+require_once FileUtils::normalizeFilePath('../classes/logger.php');
 
 error_reporting(E_ALL | E_STRICT);
 
@@ -171,9 +172,12 @@ class ElectionYearModel extends EmailQueue
 
                 global $mail;
 
-                $send_email = new EmailSender($mail);
+                $close_mailer = new EmailSender($mail);
+                $start_mailer = new EmailSender($mail);
 
-                $election_close_emails = $send_email->sendElectionCloseEmail($verified_voters_email);
+                $election_start_emails = $start_mailer->sendElectionStartEmail($verified_voters_email, $data['electionStart'], $data['electionEnd']);
+
+                $election_close_emails = $close_mailer->sendElectionCloseEmail($verified_voters_email);
             }
 
             $hash = EmailQueue::generateHash();
@@ -193,10 +197,13 @@ class ElectionYearModel extends EmailQueue
 
             $stmt->close();
 
-            // EmailQueue::insertQueue($emails, $data['electionStart'], $hash);
             if (!empty($verified_voters_email)) {
+                EmailQueue::insertQueue($election_start_emails, $data['electionStart'], $hash);
                 EmailQueue::insertQueue($election_close_emails, $data['electionEnd'], $hash);
             }
+
+            $logger = new Logger($_SESSION['role'], SET_VOTING_SCHEDULE);
+            $logger->logActivity();
 
             return $data;
         } catch (Exception $e) {
@@ -230,9 +237,12 @@ class ElectionYearModel extends EmailQueue
             if (!empty($verified_voters_email)) {
                 global $mail;
 
-                $send_email = new EmailSender($mail);
+                $close_mailer = new EmailSender($mail);
+                $start_mailer = new EmailSender($mail);
 
-                $election_close_emails = $send_email->sendElectionCloseEmail($verified_voters_email);
+                $election_start_emails = $start_mailer->sendElectionStartEmail($verified_voters_email, $data['electionStart'], $data['electionEnd']);
+
+                $election_close_emails = $close_mailer->sendElectionCloseEmail($verified_voters_email);
             }
 
             $hash = EmailQueue::generateHash();
@@ -251,12 +261,15 @@ class ElectionYearModel extends EmailQueue
 
             $stmt->close();
 
-            // EmailQueue::insertQueue($emails, $data['electionStart'], $hash);
 
             // print_r($election_close_emails);
             if (!empty($verified_voters_email)) {
+                EmailQueue::insertQueue($election_start_emails, $data['electionStart'], $hash);
                 EmailQueue::insertQueue($election_close_emails, $data['electionEnd'], $hash);
             }
+
+            $logger = new Logger($_SESSION['role'], UPDATE_VOTING_SCHEDULE);
+            $logger->logActivity();
 
             return $data;
         } catch (Exception $e) {

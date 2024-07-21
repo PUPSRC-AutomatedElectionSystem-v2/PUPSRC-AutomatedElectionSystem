@@ -14,4 +14,8 @@ src/user_data/
 src\includes\data
 
 # Testing Email Credentials
-src\includes\mailer-test.php
+test-close.php
+src/includes/error-reporting.php
+src/includes/mailer-test.php
+src/includes/data/*
+!src/includes/data/

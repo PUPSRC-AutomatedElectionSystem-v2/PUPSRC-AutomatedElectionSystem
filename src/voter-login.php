@@ -192,7 +192,11 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
                             <button class="btn login-sign-in-button py-2 <?php echo strtoupper($org_name); ?>-login-button" id="loginSubmitBtn" name="sign-in" type="submit">Sign In</button>
                         </div>
                         <p class="sign-up-redirect fw-medium">Don't have an account? <a href="register.php" id="<?php echo strtolower($org_name); ?>SignUP" class="sign-up">Sign Up</a></p>
-                        <p class="acc-list-link lh-sm fw-medium">If you're an eligible member of <?php echo htmlspecialchars(strtoupper($org_acronym)); ?>, <br/>you can set up your account <a href="member-masterlist.php" class="fw-bold main-color">here.</a></p>
+                        
+                        <?php if($_SESSION['organization'] !== 'sco') : ?>
+                            <p class="acc-list-link lh-sm fw-medium">If you're an eligible member of <?php echo htmlspecialchars(strtoupper($org_acronym)); ?>, <br/>you can set up your account <a href="member-masterlist.php" class="fw-bold main-color">here.</a></p>
+                        <?php endif; ?>
+
                     </form>
                 </div>
             </div>

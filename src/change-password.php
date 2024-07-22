@@ -8,20 +8,19 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
     include FileUtils::normalizeFilePath('includes/session-exchange.php');
 
-    if(!isset($_SESSION['correctPassword'])) {
+    if (!isset($_SESSION['correctPassword'])) {
         header("Location: " . $_SESSION['referringPage']);
-        exit(); 
-    }
-    else {
-        if(!$_SESSION['correctPassword'] === true) {
+        exit();
+    } else {
+        if (!$_SESSION['correctPassword'] === true) {
             header("Location: " . $_SESSION['referringPage']);
-            exit(); 
+            exit();
         }
     }
 
     $_SESSION['referringPage'] = $_SERVER['PHP_SELF'];
 
-    if(isset($_SESSION['isBlocked']) && $_SESSION['isBlocked'] === true) {
+    if (isset($_SESSION['isBlocked']) && $_SESSION['isBlocked'] === true) {
         session_destroy();
     }
 
@@ -31,7 +30,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         $error_message = $_SESSION['error_message'];
         unset($_SESSION['error_message']);
     }
-    
+
 ?>
 
     <!DOCTYPE html>
@@ -53,10 +52,8 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         <link rel="stylesheet" href="<?php echo 'styles/orgs/' . $org_name . '.css'; ?>" id="org-style">
         <link rel="stylesheet" href="styles/style.css" />
         <link rel="stylesheet" href="styles/core.css" />
-        <link rel="stylesheet" href="styles/tables.css" />
-        <link rel="stylesheet" href="styles/manage-voters.css" />
         <link rel="stylesheet" href="styles/profile.css" />
-        <link rel="stylesheet" href="styles/dist/landing.css" />
+        <link rel="stylesheet" href="styles/change-password.css" />
         <link rel="stylesheet" href="styles/loader.css" />
         <link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -65,7 +62,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
     <body>
 
-        <?php 
+        <?php
         include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/loader.html');
         include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/sidebar.php');
         ?>
@@ -77,10 +74,11 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                     <div class="col-md-10 card-box">
                         <div class="table-wrapper" id="profile">
                             <form class="needs-validation" id="reset-password-form" novalidate enctype="multipart/form-data">
-                                
+
                                 <!-- CSRF Token hidden field -->
-                                <!-- <input type="hidden" name="csrf_token" value="<?php // echo $csrf_token; ?>">               -->
-                                
+                                <!-- <input type="hidden" name="csrf_token" value="<?php // echo $csrf_token; 
+                                                                                    ?>">               -->
+
                                 <div class="img-container">
                                     <img src="images/resc/Change-Pass/<?php echo strtolower($org_name); ?>-change-pass.png" alt="Forgot Password Icon" class="forgot-password-icon">
                                 </div>
@@ -88,6 +86,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                                 <div class="form-group">
                                     <h4 class="reset-password-title text-center <?php echo strtoupper($org_name); ?>-text-color" id="">Set your new password</h4>
                                     <p class="reset-password-subtitle text-center">Let's keep your account safe! Please choose a strong <br>password for added security.</p>
+
 
                                     <!-- Displays error message -->
                                     <?php if (isset($error_message)) : ?>
@@ -110,9 +109,13 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                                             <div class="input-group mb-3" id="reset-password">
                                                 <input type="password" class="form-control reset-password-password" name="password" placeholder="Enter a strong password" id="password" required>
                                                 <label for="password" class="new-password translate-middle-y <?php echo strtoupper($org_name); ?>-text-color">NEW PASSWORD</label>
-                                                <button class="btn btn-secondary reset-password-password" type="button" id="reset-password-toggle-1">
+                                                <button class="btn d-flex btn-secondary reset-password-password" type="button" id="reset-password-toggle-1">
                                                     <i class="fas fa-eye-slash"></i>
+                                                    <i class="fas fa-check-circle" style="display: none;"></i> <!-- Check icon with margin-left -->
                                                 </button>
+
+                                                <!-- muginoMinato1! -->
+
                                             </div>
                                             <div class="password-requirements">
                                                 <ul id="password-requirements-list">
@@ -132,20 +135,51 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                                                 <label for="password_confirmation" class="new-password translate-middle-y <?php echo strtoupper($org_name); ?>-text-color">CONFIRM PASSWORD</label>
                                                 <button class="btn btn-secondary reset-password-password" type="button" id="reset-password-toggle-2">
                                                     <i class="fas fa-eye-slash"></i>
+                                                    <i class="fas fa-check-circle " style="display: none;"></i> <!-- Check icon -->
                                                 </button>
+
                                             </div>
                                             <div id="password-mismatch-error" class="text-center ps-1 text-danger fw-semibold fs-7 mt-2" style="display: none;">PASSWORDS DO NOT MATCH.</div>
-                                            <div id="error-message" class="text-center ps-1 text-danger fw-semibold fs-7 mt-2 text-uppercase" >
+                                            <div id="error-message" class="text-center ps-1 text-danger fw-semibold fs-7 mt-2 text-uppercase">
                                                 <!-- Display error message -->
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12 reset-pass">
-                                        <button class="btn login-sign-in-button fw-semibold my-3 px-4 rounded-2" id="<?php echo strtoupper($org_name); ?>-login-button" type="submit" name="change-password-submit">Set Password</button>
+
+                                    <div class="col-12 mb-3 reset-pass">
+                                        <button class="btn login-sign-in-button fw-semibold my-3 px-4 rounded-2 incomplete-button" id="<?php echo strtoupper($org_name); ?>-login-button" type="submit" name="change-password-submit">Set Password</button>
                                         <script>
                                             const ORG_NAME = "<?php echo strtoupper($org_name) . '-login-button'; ?>";
                                         </script>
                                     </div>
+
+                                    <script>
+                                        document.addEventListener('DOMContentLoaded', function() {
+                                            const button = document.getElementById(ORG_NAME);
+                                            const form = document.querySelector('form'); // Adjust the selector to your specific form
+
+                                            function checkFormCompletion() {
+                                                const inputs = form.querySelectorAll('input[required]');
+                                                let isFormComplete = true;
+
+                                                inputs.forEach(input => {
+                                                    if (!input.value.trim()) {
+                                                        isFormComplete = false;
+                                                    }
+                                                });
+
+                                                if (isFormComplete) {
+                                                    button.classList.remove('incomplete-button');
+                                                } else {
+                                                    button.classList.add('incomplete-button');
+                                                }
+                                            }
+
+                                            form.addEventListener('input', checkFormCompletion);
+                                            checkFormCompletion(); // Initial check in case the form is already filled
+                                        });
+                                    </script>
+
                                 </div>
 
                             </form>
@@ -172,16 +206,20 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
             </div>
         </div>
 
-        <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
+        <?php include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/footer.php'); ?>
 
         <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script src="scripts/script.js"></script>
+        <script src="scripts/loader.js"></script>
         <script src="scripts/feather.js"></script>
-        <script src="scripts/change-password.js"></script>
+        <script src="scripts/edit-profile.js"></script>
+        <script src="scripts/verify-password.js"></script>
+        <script src="scripts/reset-password.js"></script>
+        <script src="scripts/script.js"></script>
 
     </body>
-</html>
+
+    </html>
 
 <?php
 } else {

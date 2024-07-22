@@ -15,6 +15,12 @@ SessionManager::checkUserRoleAndRedirect();
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Preloader Stylesheet and Image -->
+  <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
+  <link rel="preload" href="styles/loader.css" as="style" />
+  <link rel="stylesheet" href="styles/loader.css" />
+
   <!-- Fontawesome Link for Icons -->
   <link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="styles/faqs.css">
@@ -22,10 +28,6 @@ SessionManager::checkUserRoleAndRedirect();
   <link rel="stylesheet" href="styles/dist/all-footer.css">
   <link rel="icon" href="images/resc/ivote-favicon.png" type="image/x-icon">
   <title>iVote</title>
-
-  <!-- Preloader Stylesheet and Image -->
-  <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
-  <link rel="stylesheet" href="styles/loader.css" />
 
   <!-- Montserrat Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">

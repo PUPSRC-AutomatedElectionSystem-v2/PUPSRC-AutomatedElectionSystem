@@ -493,7 +493,7 @@ ConfigPage.TableHandler = class {
                             const { data, success, error } = result;
 
                             if (success) {
-                                ConfigPage.handleResponseStatus(200, data, 'FAQ updated successfuly.');
+                                ConfigPage.handleResponseStatus(200, data, 'FAQ updated successfully.');
                                 // let processedData = ConfigPage.processData(data);
                                 // console.log(processedData)
                                 // this.updateData(processedData);
@@ -596,7 +596,7 @@ ConfigPage.TableHandler = class {
                                 .then(() => {
                                     // ConfigPage.handleSucessResponse();
 
-                                    ConfigPage.handleResponseStatus(200, data, 'FAQ deleted successfuly.');
+                                    ConfigPage.handleResponseStatus(200, data, 'FAQ deleted successfully.');
                                 })
                                 .catch((error) => {
                                     console.error("Error inserting data:", error);
@@ -1486,7 +1486,7 @@ ConfigPage.EditorModal = class {
                                 .then(() => {
                                     // ConfigPage.handleSucessResponse();
 
-                                    ConfigPage.handleResponseStatus(200, data, 'FAQ added successfuly.');
+                                    ConfigPage.handleResponseStatus(200, data, 'FAQ added successfully.');
                                 })
                                 .catch((error) => {
                                     console.error("Error inserting data:", error);
@@ -1500,7 +1500,7 @@ ConfigPage.EditorModal = class {
                                 .then(() => {
                                     // ConfigPage.handleSucessResponse();
 
-                                    ConfigPage.handleResponseStatus(200, data, 'FAQ updated successfuly.');
+                                    ConfigPage.handleResponseStatus(200, data, 'FAQ updated successfully.');
                                 })
                                 .catch((error) => {
                                     console.error("Error inserting data:", error);

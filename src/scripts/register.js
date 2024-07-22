@@ -15,7 +15,8 @@ $(document).ready(function () {
   const studentNumberRegex = /^\d{4}-\d{5}-[A-Z]{2}-\d$/;
   const passwordRegex =
     /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])[^\s]{8,20}$/;
-  const nameRegex = /^([a-z]+[,.]?[ ]?|[a-z]+['-ñÑ]?)+$/i;
+  const nameRegex = /^[a-zA-ZñÑ]+([ ,.'-][a-zA-ZñÑ]+)*$/;
+
 
   let isDirty = false;
   let targetUrl = "";

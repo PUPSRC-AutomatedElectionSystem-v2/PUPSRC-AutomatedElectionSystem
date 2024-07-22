@@ -127,7 +127,7 @@ class Registration {
 
     // Validates name values
     private function validateNameFormat() {
-        $name_regex = '/^([a-z]+[,.]?[ ]?|[a-z]+[\'-ñÑ]?)+$/i';
+        $name_regex =  '/^[a-zA-ZñÑ]+([ ,.\'-][a-zA-ZñÑ]+)*$/';
         $error_message = "Please use a valid name format.";
 
         if(!preg_match($name_regex, $this->first_name)) {

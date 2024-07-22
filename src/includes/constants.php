@@ -36,12 +36,17 @@ define('DELETE_MULTIPLE_VOTERS', 'delete_multiple_voters');
 define('PERMANENT_DELETE_VOTER', 'permanent_delete_voter');
 define('PERMANENT_DELETE_MULTIPLE_VOTERS', 'permanent_delete_multiple_voters');
 define('CREATE_CANDIDATE_POSITION', 'create_candidate_position');
+define('UPDATE_CANDIDATE_POSITION', 'update_candidate_position');
+define('DELETE_CANDIDATE_POSITION', 'delete_candidate_position');
 define('ADD_VOTING_GUIDELINE', 'add_voting_guideline');
+define('UPDATE_VOTING_GUIDELINE', 'update_voting_guideline');
+define('DELETE_VOTING_GUIDELINE', 'delete_voting_guideline');
 define('SET_VOTING_SCHEDULE', 'set_voting_schedule');
 define('UPDATE_VOTING_SCHEDULE', 'update_voting_schedule');
 define('SET_REGISTRATION_SCHEDULE', 'set_registration_schedule');
 define('UPDATE_REGISTRATION_SCHEDULE', 'update_registration_schedule');
 define('IMPORT_MEMBER_LIST', 'import_member_list');
+define('EXPORT_MEMBER_LIST', 'import_member_list');
 define('ADD_FAQ', 'add_faq');
 define('UPDATE_FAQ', 'update_faq');
 define('DELETE_FAQ', 'delete_faq');
@@ -82,17 +87,21 @@ const ADMIN_ACTIONS = array(
     UPDATE_CANDIDATE_INFO => 'You <strong>updated</strong> a candidate information.',
     APPROVE_VOTER => 'You <strong>approved</strong> a pending voter registration.',
     REJECT_VOTER => 'You <strong>rejected</strong> a pending voter registration.',
-    DELETE_VOTER => 'You <strong>deleted</strong> a voter account.',
-    DELETE_MULTIPLE_VOTERS => 'You <strong>deleted</strong> multiple voter accounts.',
+    DELETE_VOTER => 'You <strong>deleted</strong> voter(s) account.',
     PERMANENT_DELETE_VOTER => 'You <strong>permanently deleted</strong> a voter account.',
     PERMANENT_DELETE_MULTIPLE_VOTERS => 'You <strong>permanently deleted</strong> multiple voter accounts.',
     CREATE_CANDIDATE_POSITION => 'You <strong>created</strong> a new candidate position.',
+    UPDATE_CANDIDATE_POSITION => 'You <strong>updated</strong> a candidate position.',
+    DELETE_CANDIDATE_POSITION => 'You <strong>deleted</strong> a candidate position.',
     ADD_VOTING_GUIDELINE => 'You <strong>added</strong> new voting guideline/s.',
+    UPDATE_VOTING_GUIDELINE => 'You <strong>updated</strong> new voting guideline/s.',
+    DELETE_VOTING_GUIDELINE => 'You <strong>deleted</strong> new voting guideline/s.',
     SET_VOTING_SCHEDULE => 'You <strong>set</strong> a voting schedule.',
     UPDATE_VOTING_SCHEDULE => 'You <strong>updated</strong> the voting schedule.',
     SET_REGISTRATION_SCHEDULE => 'You <strong>set</strong> a registration schedule.',
     UPDATE_REGISTRATION_SCHEDULE => 'You <strong>updated</strong> the registration schedule.',
     IMPORT_MEMBER_LIST => 'You <strong>imported</strong> an Excel/CSV file.',
+    EXPORT_MEMBER_LIST => 'You <strong>exported</strong> an Excel/CSV file.',
     ADD_FAQ => 'You <strong>added</strong> a FAQ item.',
     UPDATE_FAQ => 'You <strong>updated</strong> a FAQ item.',
     DELETE_FAQ => 'You <strong>updated</strong> a FAQ item.'
@@ -113,17 +122,21 @@ const HEAD_ADMIN_ACTIONS = array(
     UPDATE_CANDIDATE_INFO => 'You <strong>updated</strong> a candidate information.',
     APPROVE_VOTER => 'You <strong>approved</strong> a pending voter registration.',
     REJECT_VOTER => 'You <strong>rejected</strong> a pending voter registration.',
-    DELETE_VOTER => 'You <strong>deleted</strong> a voter account.',
-    DELETE_MULTIPLE_VOTERS => 'You <strong>deleted</strong> multiple voter accounts.',
+    DELETE_VOTER => 'You <strong>deleted</strong> voter(s) account.',
     PERMANENT_DELETE_VOTER => 'You <strong>permanently deleted</strong> a voter account.',
     PERMANENT_DELETE_MULTIPLE_VOTERS => 'You <strong>permanently deleted</strong> multiple voter accounts.',
     CREATE_CANDIDATE_POSITION => 'You <strong>created</strong> a new candidate position.',
+    UPDATE_CANDIDATE_POSITION => 'You <strong>updated</strong> a candidate position.',
+    DELETE_CANDIDATE_POSITION => 'You <strong>deleted</strong> a candidate position.',
     ADD_VOTING_GUIDELINE => 'You <strong>added</strong> new voting guideline/s.',
+    UPDATE_VOTING_GUIDELINE => 'You <strong>updated</strong> new voting guideline/s.',
+    DELETE_VOTING_GUIDELINE => 'You <strong>deleted</strong> new voting guideline/s.',
     SET_VOTING_SCHEDULE => 'You <strong>set</strong> a voting schedule.',
     UPDATE_VOTING_SCHEDULE => 'You <strong>updated</strong> the voting schedule.',
     SET_REGISTRATION_SCHEDULE => 'You <strong>set</strong> a registration schedule.',
     UPDATE_REGISTRATION_SCHEDULE => 'You <strong>updated</strong> the registration schedule.',
     IMPORT_MEMBER_LIST => 'You <strong>imported</strong> an Excel/CSV file.',
+    EXPORT_MEMBER_LIST => 'You <strong>exported</strong> an Excel/CSV file.',
     ADD_FAQ => 'You <strong>added</strong> a FAQ item.',
     UPDATE_FAQ => 'You <strong>updated</strong> a FAQ item.',
     DELETE_FAQ => 'You <strong>deleted</strong> a FAQ item.',

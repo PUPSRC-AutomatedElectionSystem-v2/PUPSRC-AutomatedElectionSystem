@@ -4,10 +4,74 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    @media (prefers-color-scheme: dark) {
+        color: #f5f5f5;
+        font-weight: bold;
+
+    }
+
+
+}
+
+@media (prefers-color-scheme: dark) {
+    .main-color {
+        color: color-mix(in srgb, var(--main-color), var(--white) 25%) !important;
+
+        *::before,
+        *::after {
+            color: color-mix(in srgb, var(--main-color), var(--white) 25%) !important;
+        }
+    }
+
+    .text-danger,
+    .text-success,
+    .form-feedback,
+    .feedback-alert {
+        filter: brightness(120%);
+    }
+
+}
+
+nav {
+
+    &.navbar,
+    &.sidebar {
+        background-color: light-dark(var(--white), #3c4042);
+    }
+}
+
+
+.dropdown-menu {
+    background-color: light-dark(var(--bs-dropdown-bg), #3c4042);
+}
+
+.item {
+
+    a:hover,
+    .submenu-item:hover {
+        background-color: light-dark(rgb(255, 121, 0, 0.1), rgb(255, 121, 0, 0.3));
+    }
+}
+
+table.table> :not(caption)>*>* {
+    background-color: light-dark(var(--bs-table-bg), #3c4042);
+}
+
+.card-box {
+    background-color: light-dark(var(--white), #3c4042);
+
+    &.schedule {
+        background-color: light-dark(var(--white), #6c7072);
+    }
+}
+
+.footer {
+    background-color: light-dark(var(--white), #3c4042);
 }
 
 :root {
-    // color-scheme: light dark;
+    color-scheme: light dark;
 }
 
 ::-moz-selection {
@@ -17,9 +81,9 @@
         filter: brightness(120%);
     }
 
-    color: light-dark(var(--white), #f5f5f5);
+    color: light-dark(var(--white), var(--white));
     font-weight: bolder;
-    background: light-dark(color-mix(in srgb, var(--main-color) 95%, transparent), color-mix(in srgb, var(--main-color) 75%, transparent));
+    background: light-dark(color-mix(in srgb, var(--main-color) 95%, transparent), color-mix(in srgb, var(--main-color) 80%, transparent));
 }
 
 ::selection {
@@ -29,7 +93,7 @@
 
     color: light-dark(var(--white), #f5f5f5);
     font-weight: bolder;
-    background: light-dark(color-mix(in srgb, var(--main-color) 75%, transparent), color-mix(in srgb, var(--main-color), var(--white)));
+    background: light-dark(color-mix(in srgb, var(--main-color) 95%, transparent), color-mix(in srgb, var(--main-color) 75%, transparent));
 
 }
 
@@ -50,21 +114,37 @@ body {
     *::placeholder {
         @extend %general-responsive-base-font-size;
     }
+
+    @media (prefers-color-scheme: dark) {
+        img {
+            filter: brightness(.8) contrast(1.2);
+        }
+    }
 }
 
 input,
 textarea {
     background-color: light-dark(var(--white), #ccc);
+
+    &.form-control {
+        background-color: light-dark(var(--white), #ccc);
+
+        &:focus {
+            background-color: light-dark(var(--white), #d6d4d4);
+        }
+    }
 }
 
 textarea,
 .ql-editor {
+    background-color: light-dark(var(--white), #ccc);
     resize: none;
 
     &::-webkit-scrollbar {
         display: none;
     }
 }
+
 
 input:focus-visible,
 input:focus-visible::placeholder,
@@ -153,35 +233,18 @@ textarea:disabled [contenteditable] {
     }
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-    text-shadow: 0.031px 0.031px var(--border-gray);
 
-    &.page-title {
-        color: light-dark(var(--main-color), color-mix(in srgb, var(--main-color), var(--white) 25%));
-        text-shadow: none;
-        text-transform: uppercase;
-        font-weight: 700;
-        margin-top: clamp(2rem, 3.2dvw, 4rem);
-        margin-bottom: clamp(2rem, 2.4dvw, 3rem);
-    }
-}
 
 main.main .page-title.card {
 
     // padding: 1rem 2.5rem;
 
     padding: clamp(0.75rem, 0.5rem + 1dvw, 2rem) clamp(1rem, 0.25rem + 3dvw, 4rem);
-
-
     box-shadow: var(--bs-box-shadow-sm);
     border: none;
     margin-top: clamp(1.5rem, 2.5dvw, 4rem);
     margin-bottom: clamp(2rem, 2.4dvw, 3rem);
+    background-color: light-dark(var(--bs-card-bg), #3c4042);
 
     h1,
     h2,
@@ -364,6 +427,11 @@ section .toast-container-unstacked {
 }
 
 .modal {
+
+    .modal-content {
+        background-color: light-dark(var(--bs-modal-bg), #6c7072);
+    }
+
     .prompt-content {
         display: flex;
         flex-direction: column;
@@ -422,12 +490,21 @@ section .toast-container-unstacked {
 .dropdown.bootstrap-select {
 
     button.dropdown-toggle {
-        background-color: #f8f8f8;
+        background-color: light-dark(#f8f8f8, #ccc);
+        border: none;
         padding-top: 0.938rem;
         padding-top: clamp(0.45rem, 0.20rem + 0.3dvw + 1dvh, 1.5rem);
         padding-bottom: 1rem;
         padding-bottom: clamp(0.5rem, 0.25rem + 0.35dvw + 1dvh, 1.6rem);
         @extend %general-responsive-base-font-size;
+
+        &:hover {
+            @media (prefers-color-scheme: dark) {
+
+                filter: brightness(80%);
+
+            }
+        }
 
         .filter-option {
             color: var(--main-black);

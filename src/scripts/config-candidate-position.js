@@ -1059,7 +1059,7 @@ ConfigPage.showConfirmModal = async function (modal, instanceRef, inputId = null
         $(modal).find('button').on('click', (event) => {
             const buttonValue = event.currentTarget.value;
             if (event.target && event.target.textContent.trim() === 'Go to Candidates') {
-                console.log('got to candidates');
+                console.log('go to candidates');
                 window.location.href = 'src/manage-candidate.php';
             }
 
@@ -1087,8 +1087,8 @@ ConfigPage.handleConfirmModalDispose = function () {
 ConfigPage.handleConfirmInput = function (modal, inputId, inputVal) {
     let inputElement = modal.querySelector(`#${inputId}`);
 
-    ConfigPage.delEventListener(inputElement, 'blur');
-    ConfigPage.addEventListenerAndStore(inputElement, 'blur', function () {
+    ConfigPage.delEventListener(inputElement, 'input');
+    ConfigPage.addEventListenerAndStore(inputElement, 'input', function () {
         if (inputElement.value == inputVal) {
             $(modal).find('.prompt-action .btn.primary').prop('disabled', false)
                 .val('true');

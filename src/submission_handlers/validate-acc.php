@@ -6,6 +6,7 @@ require_once FileUtils::normalizeFilePath('../includes/classes/session-manager.p
 require_once FileUtils::normalizeFilePath('../includes/classes/query-handler.php');
 require_once FileUtils::normalizeFilePath('../includes/mailer.php');
 require_once FileUtils::normalizeFilePath('../includes/classes/email-sender.php');
+require_once FileUtils::normalizeFilePath('../includes/classes/logger.php');
 
 if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'head_admin')) {
     $voterManager = new VoterManager();
@@ -24,6 +25,9 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         // Sending of email
         $recipientEmail = $voter->getEmailById($voter_id);
         $emailSender->sendApprovalEmail($recipientEmail);
+
+        $logger = new Logger($_SESSION['role'], APPROVE_VOTER);
+        $logger->logActivity();
     
     } elseif ($action == 'reject') {
         $reject_query = "UPDATE voter SET account_status = 'invalid' WHERE voter_id = ?";
@@ -36,6 +40,9 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         $reason = isset($_POST['reason']) ? $_POST['reason'] : '';
         $otherReason = isset($_POST['otherReason']) ? $_POST['otherReason'] : '';
         $emailSender->sendRejectionEmail($recipientEmail, $reason, $otherReason);
+
+        $logger = new Logger($_SESSION['role'], REJECT_VOTER);
+        $logger->logActivity();
     }
 
     echo json_encode(['success' => true]);

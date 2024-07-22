@@ -166,8 +166,18 @@ function validateData($data, $conn) {
         return 'invalid_id';
     }
 
-    // Extract the "00000" part of the student ID
-    $idPart = substr($data[0], 5, 5);
+    // Check if Student ID already exists
+    $checkSql = "SELECT * FROM voter WHERE student_id = ?";
+    $checkStmt = $conn->prepare($checkSql);
+    $checkStmt->bind_param("s", $data[0]);
+    $checkStmt->execute();
+    $result = $checkStmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        $checkStmt->close();
+        return 'duplicate';
+    }
+    $checkStmt->close();
 
     // Extract the part of the email before @example.com
     $emailParts = explode('@', $data[7]);
@@ -198,14 +208,14 @@ function checkForDuplicates($filePath, $type = 'csv') {
         $file = fopen($filePath, 'r');
         fgetcsv($file); // Skip header
         while (($data = fgetcsv($file)) !== FALSE) {
-            $idPart = substr($data[0], 5, 5);
+            $studentId = $data[0];
             $emailParts = explode('@', $data[7]);
             $emailPrefix = $emailParts[0];
             
-            if (in_array($idPart, $studentIds) || in_array($emailPrefix, $emailPrefixes)) {
-                $duplicates[] = $data[0];
+            if (in_array($studentId, $studentIds) || in_array($emailPrefix, $emailPrefixes)) {
+                $duplicates[] = $studentId;
             } else {
-                $studentIds[] = $idPart;
+                $studentIds[] = $studentId;
                 $emailPrefixes[] = $emailPrefix;
             }
         }
@@ -216,14 +226,14 @@ function checkForDuplicates($filePath, $type = 'csv') {
         $rows = $worksheet->toArray();
         array_shift($rows); // Remove header row
         foreach ($rows as $row) {
-            $idPart = substr($row[0], 5, 5);
+            $studentId = $row[0];
             $emailParts = explode('@', $row[7]);
             $emailPrefix = $emailParts[0];
             
-            if (in_array($idPart, $studentIds) || in_array($emailPrefix, $emailPrefixes)) {
-                $duplicates[] = $row[0];
+            if (in_array($studentId, $studentIds) || in_array($emailPrefix, $emailPrefixes)) {
+                $duplicates[] = $studentId;
             } else {
-                $studentIds[] = $idPart;
+                $studentIds[] = $studentId;
                 $emailPrefixes[] = $emailPrefix;
             }
         }
@@ -268,12 +278,12 @@ function insertData($data, $conn) {
 
     $suffix = empty($data[4]) ? NULL : $data[4];
 
-    $sql = "INSERT INTO voter (last_name, first_name, middle_name, suffix, year_level, section, email, password, role, account_status, voter_status, vote_status) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, email, password, role, account_status, voter_status, vote_status) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     try {
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("ssssssssssss", $data[1], $data[2], $data[3], $suffix, $data[5], $data[6], $data[7], $hashedPassword, $role, $accountStatus, $voterStatus, $voteStatus);
+        $stmt->bind_param("sssssssssss", $data[0], $data[1], $data[2], $data[3], $suffix, $data[7], $hashedPassword, $role, $accountStatus, $voterStatus, $voteStatus);
         $result = $stmt->execute();
         $stmt->close();
         

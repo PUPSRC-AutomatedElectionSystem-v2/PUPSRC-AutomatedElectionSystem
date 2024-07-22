@@ -4,6 +4,7 @@ include_once str_replace('/', DIRECTORY_SEPARATOR,  '../classes/file-utils.php')
 require_once FileUtils::normalizeFilePath('../error-reporting.php');
 require_once FileUtils::normalizeFilePath('../classes/db-config.php');
 require_once FileUtils::normalizeFilePath('../classes/db-connector.php');
+require_once FileUtils::normalizeFilePath('../classes/logger.php');
 
 
 class RegistrationSchedModel
@@ -121,6 +122,9 @@ class RegistrationSchedModel
 
             $stmt->close();
 
+            $logger = new Logger($_SESSION['role'], SET_REGISTRATION_SCHEDULE);
+            $logger->logActivity();
+
             return $data;
         } catch (Exception $e) {
             self::$query_message = 'set ' . htmlspecialchars($e->getMessage());
@@ -145,6 +149,9 @@ class RegistrationSchedModel
             $stmt->execute();
 
             $stmt->close();
+
+            $logger = new Logger($_SESSION['role'], UPDATE_REGISTRATION_SCHEDULE);
+            $logger->logActivity();
 
             return $data;
         } catch (Exception $e) {

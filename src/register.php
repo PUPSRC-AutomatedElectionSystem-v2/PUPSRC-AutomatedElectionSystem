@@ -56,7 +56,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
     <!-- Preloader Stylesheet and Image -->
     <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
     <link rel="stylesheet" href="styles/loader.css" />
-    
+
     <link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <title>Register</title>
@@ -83,12 +83,12 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
 
 <body>
 
-    <?php 
+    <?php
     include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/loader.html');
-    include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/outside-header.php');  
+    include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/outside-header.php');
     ?>
 
-    <div class="mt-4 pt-3" style="padding-top: 0.8rem">
+    <div class="register-all-container pt-3 pb-5" style="padding-top: 0.8rem">
         <div class="row mt-5 pl-5 pb-4 container-fluid">
             <div class="col-md-6 slide-in main-reg-container">
                 <form id="register-form" action="includes/registration-inc.php" method="POST"
@@ -105,23 +105,101 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                     </div>
 
                     <div class="register-container">
-                        
-                    <!-- Displays error message -->
-                    <?php if (isset($error_message)) : ?>
-                    <div class="row pt-3">
-                        <div class="col-12 d-flex justify-content-end">
-                            <div class="col-xl-7 col-md-7">
-                                <div id="serverSideErrorMessage" class="fw-semibold border border-danger text-danger alert alert-danger alert-dismissible fade show  custom-alert" role="alert">
-                                    <div class="d-flex align-items-center">
-                                        <span class=""><?php echo $error_message; ?></span>
-                                        <button type="button" class="btn-sm btn-close shadow-none" data-bs-dismiss="alert" aria-label="Close"></button>
+
+                        <!-- Displays error message -->
+                        <?php if (isset($error_message)): ?>
+                            <div class="row pt-3">
+                                <div class="col-12 d-flex justify-content-end">
+                                    <div class="col-xl-7 col-md-7">
+                                        <div id="serverSideErrorMessage"
+                                            class="fw-semibold border border-danger text-danger alert alert-danger alert-dismissible fade show  custom-alert"
+                                            role="alert">
+                                            <div class="d-flex align-items-center">
+                                                <span class=""><?php echo $error_message; ?></span>
+                                                <button type="button" class="btn-sm btn-close shadow-none"
+                                                    data-bs-dismiss="alert" aria-label="Close"></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <?php endif; ?>
+
+                        <!-- Student ID -->
+                        <div class="row pt-3">
+                            <div class="col-12 d-flex justify-content-end">
+                                <div class="col-xl-7 col-md-7">
+                                    <div class="form-group">
+                                        <label for="student_id" class="fs-8 spacing-3">Student ID<span
+                                                class="asterisk fw-medium">*</span></label>
+                                        <input type="text" class="form-control pt-2 bg-white text-black"
+                                            name="student_id" id="student_id" placeholder="Email Address"
+                                            autocomplete="email" required>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <?php endif; ?>
+                        <!-- Last + First Name -->
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-end">
+                                <div class="col-xl-7 col-md-7">
+                                    <div class="row">
+                                        <!-- First Name -->
+                                        <div class="col-md-6 pt-3">
+                                            <div class="form-group">
+                                                <label for="first_name" class="fs-8 spacing-3">First Name<span
+                                                        class="asterisk fw-medium">*</span></label>
+                                                <input type="text" class="form-control pt-2 bg-white text-black"
+                                                    name="first_name" id="first_name" placeholder="First Name"
+                                                    autocomplete="off" required>
+                                            </div>
+                                        </div>
+
+                                        <!-- Last Name -->
+                                        <div class="col-md-6 pt-3">
+                                            <div class="form-group">
+                                                <label for="last_name" class="fs-8 spacing-3">Last Name<span
+                                                        class="asterisk fw-medium">*</span></label>
+                                                <input type="text" class="form-control pt-2 bg-white text-black"
+                                                    name="last_name" id="last_name" placeholder="Last Name"
+                                                    autocomplete="email" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Middle Name + Suffix -->
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-end">
+                                <div class="col-xl-7 col-md-7">
+                                    <div class="row">
+                                        <!-- Middle Name -->
+                                        <div class="col-md-6 pt-3">
+                                            <div class="form-group">
+                                                <label for="middle_name" class="fs-8 spacing-3">Middle Name</label>
+                                                <input type="text" class="form-control pt-2 bg-white text-black"
+                                                    name="middle_name" id="middle_name" placeholder="Middle Name"
+                                                    autocomplete="off" required>
+                                            </div>
+                                        </div>
+
+                                        <!-- Suffix -->
+                                        <div class="col-md-6 pt-3">
+                                            <div class="form-group">
+                                                <label for="suffix" class="fs-8 spacing-3">Suffix</label>
+                                                <input type="text" class="form-control pt-2 bg-white text-black"
+                                                    name="suffix" id="suffix" placeholder="Suffix"
+                                                    autocomplete="email" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Email Address -->
                         <div class="row pt-3">
@@ -159,21 +237,6 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                             </div>
                         </div>
 
-                        <!-- COR -->
-                        <div class="row pt-2">
-                            <div class="col-12 d-flex justify-content-end">
-                                <div class="col-xl-7 col-md-7">
-                                    <label for="cor" class="fs-8 spacing-3">Certificate of Registration<span
-                                            class="asterisk fw-medium"> *</span></label>
-                                    <input class="form-control pl-2" style="background-color:#fff" type="file"
-                                        name="cor" id="cor" accept=".pdf" max="25MB" required>
-                                    <div class="form-text mt-2" style="font-size: 12px;"><span
-                                            class="main-blue fw-semibold">Note:</span> Only PDF files up to 25MB are
-                                        allowed.</div>
-                                </div>
-                            </div>
-                        </div>
-
 
                         <!--Password -->
                         <div class="row pt-2">
@@ -183,8 +246,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                         <label for="password" class="fs-8 spacing-3">Password <span
                                                 class="asterisk fw-medium">*</span></label>
                                         <input type="password" class="form-control pt-2 bg-white text-black"
-                                            name="password" id="password" placeholder="Password"
-                                            required>
+                                            name="password" id="password" placeholder="Password" required>
                                     </div>
                                 </div>
                             </div>
@@ -199,8 +261,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                         <label for="retype-pass" class="fs-8 spacing-3">Re-type password <span
                                                 class="asterisk fw-medium">*</span></label>
                                         <input type="password" class="form-control pt-2 bg-white text-black"
-                                            id="retype-pass" name="retype-pass" placeholder="Re-type password"
-                                        required>
+                                            id="retype-pass" name="retype-pass" placeholder="Re-type password" required>
                                     </div>
                                 </div>
                             </div>
@@ -217,10 +278,12 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                                 class="mb-sm-0 me-sm-2 me-md-2">
                                             <label class="form-check-label fs-7 mb-0 policy-terms-conditions">
                                                 I agree with the
-                                                <a role="button" id="termsConditionsLink" class="underline text-primary">Terms &
+                                                <a role="button" id="termsConditionsLink"
+                                                    class="underline text-primary">Terms &
                                                     Conditions</a>
                                                 and
-                                                <a role="button" id="privacyTermsLink" class="underline text-primary"> Privacy
+                                                <a role="button" id="privacyTermsLink" class="underline text-primary">
+                                                    Privacy
                                                     Policy</a>
                                             </label>
                                         </div>
@@ -274,8 +337,10 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
 
                         <div class="row">
                             <div class="col-md-12">
-                                <p class="fw-bold success-color spacing-4" id="successTitle">Successfully Registered!</p>
-                                <p class="fw-medium spacing-5 pt-2" id="successSubtitle">We'll notify you via email once your account has been
+                                <p class="fw-bold success-color spacing-4" id="successTitle">Successfully Registered!
+                                </p>
+                                <p class="fw-medium spacing-5 pt-2" id="successSubtitle">We'll notify you via email once
+                                    your account has been
                                     verified.
                                 </p>
                             </div>
@@ -303,7 +368,8 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                         <div class="row">
                             <div class="col-md-12 pb-3 pt-4">
                                 <p class="fw-bold danger spacing-4" id="dangerTitle">Only PDF files are allowed</p>
-                                <p class="fw-medium spacing-5 pt-2" id="dangerSubtitle">Please also ensure the file is no larger than 25 mb. Let's try that again!
+                                <p class="fw-medium spacing-5 pt-2" id="dangerSubtitle">Please also ensure the file is
+                                    no larger than 25 mb. Let's try that again!
                                 </p>
                             </div>
                         </div>
@@ -325,13 +391,16 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                         <div class="row">
                             <div class="col-md-12 pb-3 pt-4">
                                 <p class="fw-bold text-warning spacing-4" id="dangerTitle">Pending Registration</p>
-                                <p class="fw-medium spacing-5 pt-2" id="dangerSubtitle">If you leave this page, your progress will be lost.
+                                <p class="fw-medium spacing-5 pt-2" id="dangerSubtitle">If you leave this page, your
+                                    progress will be lost.
                                 </p>
                             </div>
                         </div>
                         <div class="d-grid gap-3 d-flex justify-content-center pt-3">
-                            <button type="button" class="btn btn-secondary" id="cancelBtn" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" class="btn btn-primary text-light" id="confirmLeaveBtn">Leave anyway</button>
+                            <button type="button" class="btn btn-secondary" id="cancelBtn"
+                                data-bs-dismiss="modal">Cancel</button>
+                            <button type="button" class="btn btn-primary text-light" id="confirmLeaveBtn">Leave
+                                anyway</button>
                         </div>
                     </div>
                 </div>

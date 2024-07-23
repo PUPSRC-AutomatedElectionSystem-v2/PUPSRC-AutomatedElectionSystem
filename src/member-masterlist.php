@@ -76,10 +76,10 @@ SessionManager::checkUserRoleAndRedirect();
                 <div class="col-12">
 
                     <div class="mt-3">
-                        <a href="voter-login.php" class="fs-7 spacing-5 link-offset-1"><i data-feather="arrow-left" class="feather-sm im-cust"></i><u>Go back to login page</u></a>                        
+                        <a href="voter-login.php" class="spacing-5 link-offset-1 nav-back"><i data-feather="arrow-left" class="feather-sm im-cust"></i><u>Go back to login page</u></a>                        
                     </div>
 
-                    <div class="table-wrapper rounded-3 px-5 shadow-sm">
+                    <div class="table-wrapper rounded-3 tbl-masterlist shadow-sm">
                         <div class="table-title">
                             <div class="row">
                                 <div class="col-md-8 col-xs-12 d-flex flex-column justify-content-center align-items-start">
@@ -92,7 +92,7 @@ SessionManager::checkUserRoleAndRedirect();
                                         <span class="search-icon" >
                                             <i data-feather="search" class="feather-sm"></i>
                                         </span>
-                                        <input type="text" class="search-input-bar fs-7 spacing-6 fw-semibold w-75" id="searchBar" placeholder="Search your name here..."> 
+                                        <input type="text" class="search-input-bar spacing-6 fw-semibold w-75" id="searchBar" placeholder="Search your name here..."> 
                                     </div>
                                 </div>
 
@@ -103,8 +103,8 @@ SessionManager::checkUserRoleAndRedirect();
 
                             <thead class="tl-header" style="display: none;">
                                 <tr>
-                                    <th class="col-md-6 tl-left text-center fs-7 fw-bold spacing-5"><i data-feather="user" class="feather-sm im-cust"></i>Full Name</th>
-                                    <th class="col-md-6 tl-right text-center fs-7 fw-bold spacing-5"><i data-feather="check-circle" class="feather-sm im-cust"></i>Verification Token</th>
+                                    <th class="col-md-6 tl-left text-center fw-bold spacing-5 full-name-header"><i data-feather="user" class="feather-sm im-cust"></i>Full Name</th>
+                                    <th class="col-md-6 tl-right text-center fw-bold spacing-5 acc-activation-header"><i data-feather="check-circle" class="feather-sm im-cust"></i>Account Activation</th>
                                 </tr>                            
                             </thead>
 
@@ -138,11 +138,11 @@ SessionManager::checkUserRoleAndRedirect();
 
             <div class="row justify-content-center mt-3">
                 <div class="col-12">
-                    <div class="card border border-0 shadow-sm">
-                        <div class="card-body px-5 mb-5">
+                    <div class="card border border-0 guidelines shadow-sm">
+                        <div class="card-body mb-5">
                             <div class="main-color fw-bold ls-10 spacing-6 step-title">How To Setup Your Account</div>
                             <div class="step-subtitle pb-2">To setup your account, please follow these steps:</div>
-                                <ul class="list-group ps-2 list-group-flush step">
+                                <ul class="list-group list-group-flush step">
                                     <li class="list-group-item lh-base border border-0"><strong>1. Find your Name:</strong> Go to the <a href="#memMasterList" class="fw-bold main-color">Members' Master List</a> table and search your full name.</li>
                                     <li class="list-group-item lh-base border border-0"><strong>2. Send Verification Token:</strong> Once found, click the “Send Verification Token”.</li>
                                     <li class="list-group-item lh-base border border-0"><strong>3. Input Email:</strong> Input the email you provided to the organization.</li>
@@ -161,24 +161,24 @@ SessionManager::checkUserRoleAndRedirect();
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-body">
-                            <div class="row px-4 pt-4">
-                                <div class="col-md-12 pb-3">
-                                    <p class="fw-bold main-color text-center spacing-4 pt-3">Email Address</p>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <h1 class="fw-bold main-color text-center spacing-4 verify-email">Email Address</h1>
                                     <form id="sendVerificationTokenForm" method="POST">
                                         <input type="hidden" id="voterId" name="voter_id">
                                         <p><strong id="fullName"></strong></p>
                                         <div class="mb-1">
-                                            <label for="email" class="form-label">Email address</label>
-                                            <input type="email" class="form-control bg-primary shadow-sm" id="email" name="email" placeholder="Put stuff">
+                                            <!-- <label for="email" class="form-label">Email address</label> -->
+                                            <input type="email" class="form-control bg-primary shadow-sm" id="email" name="email" placeholder="Enter your email address">
                                         </div>
                                         <div id="emailErrorMessage" class="fs-7 text-danger mb-4 fw-medium me-5">
                                             <!-- Display error messages here -->
                                         </div>
                                         <div class="row d-flex justify-content-center">
-                                            <div class="col-md-5">
+                                            <div class="col-5">
                                                 <button type="button" class="btn btn-secondary w-100" id="cancelSendVerificationTokenBtn" data-bs-dismiss="modal">Cancel</button>
                                             </div>
-                                            <div class="col-md-7">
+                                            <div class="col-7">
                                                 <button type="submit" id="sendTokenBtn" class="btn btn-org-color w-100">Send Token</button>
                                             </div>                                            
                                         </div>
@@ -191,9 +191,34 @@ SessionManager::checkUserRoleAndRedirect();
                 </div>
             </div>
 
+            <!-- Success Modal -->
+            <div class="modal" id="successResetPasswordLinkModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content" id="success-modal">
+                        <div class="modal-body">
+                            <div class="d-flex justify-content-end">
+                                <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray" role="button" data-bs-dismiss="modal"></i>
+                            </div>
+                            <div class="text-center">
+                                <div class="col-md-12">
+                                    <img src="images/resc/check-animation.gif" class="check-perc" alt="iVote Logo">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 pb-3">
+                                        <p class="fw-bold text-success spacing-4 success-title">Success!</p>
+                                        <p class="fw-medium spacing-5 success-subtitle">An email containing the password reset link has been sent. Kindly check your email.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <!-- Verify Token Modal -->
-            <div class="modal fade" id="verifyTokenModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <!-- <div class="modal fade" id="verifyTokenModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-body">
@@ -206,7 +231,7 @@ SessionManager::checkUserRoleAndRedirect();
                                             <input type="text" class="form-control bg-primary shadow-sm" id="token" name="token" placeholder="Put token here">
                                         </div>
                                         <div id="tokenErrorMessage" class="fs-7 text-danger mb-4 fw-medium me-5">
-                                            <!-- Display error messages here -->
+
                                         </div>
                                         <div class="row d-flex justify-content-center">
                                             <div class="col-md-5">
@@ -223,7 +248,7 @@ SessionManager::checkUserRoleAndRedirect();
 
                     </div>
                 </div>
-            </div>
+            </div> -->
 
         </div>        
     </section>

@@ -1292,10 +1292,10 @@ span {
   }
 
   .index-button {
-    width: 152px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    font-size: 11px;
+    width: 75%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 14px;
     font-weight: 700;
   }
 

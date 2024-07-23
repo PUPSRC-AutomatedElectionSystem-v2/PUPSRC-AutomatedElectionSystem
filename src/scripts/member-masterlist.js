@@ -22,6 +22,7 @@ $(document).ready(function () {
   const verifyTokenBtn = $("#verifyTokenBtn");
   const cancelSendVerificationTokenBtn = $("#cancelSendVerificationTokenBtn");
   const cancelVerifyTokenBtn = $("#cancelVerifyTokenBtn");
+  const successResetPasswordLinkModal = $("#successResetPasswordLinkModal");
 
   // search input
   searchBar.on("input", function () {
@@ -50,6 +51,8 @@ $(document).ready(function () {
     }
   });
 
+  sendTokenBtn.prop("disabled", true);
+
   // prevent leading and trailing whitespace to inputs
   emailField.add(tokenField).on("input", function (event) {
     preventSpaces(event);
@@ -69,9 +72,11 @@ $(document).ready(function () {
     if (!emailRegex.test(emailField.val())) {
       emailField.addClass("is-invalid border border-danger");
       emailErrorMessageContainer.text("Please provide a valid email address.");
+      sendTokenBtn.prop("disabled", true);
     } else {
       emailField.removeClass("is-invalid border border-danger");
       emailErrorMessageContainer.text("");
+      sendTokenBtn.prop("disabled", false);
     }
 
     if (emailField.val().length > 255) {
@@ -83,7 +88,7 @@ $(document).ready(function () {
   /* ----------------------------------------------------
                 START: CHECK EXISTING TOKEN
   ------------------------------------------------------- */
-  $(document).on("click", ".send-token-link", function () {
+  $(document).on("click", ".setup-acc-link", function () {
     const row = $(this).closest("tr");
     const voterId = row.data("voter-id");
     const fullName = row.data("full-name");
@@ -92,28 +97,30 @@ $(document).ready(function () {
     voterIdField.val(voterId);
     fullNameField.text(fullName);
 
+    sendVerificationTokenModal.modal("show");
+
     // AJAX request to check existing token
-    $.ajax({
-      url: "includes/check-existing-token.php",
-      type: "POST",
-      data: {
-        voterIdVal: voterIdField.val(),
-      },
-      dataType: "json",
-      success: function (response) {
-        if (response.tokenExist) {
-          verifyTokenModal.modal("show");
-        } else {
-          sendVerificationTokenModal.modal("show");
-        }
-      },
-      error: function (error) {
-        console.error(error); //d debug
-      },
-    });
+    // $.ajax({
+    //   url: "includes/check-existing-token.php",
+    //   type: "POST",
+    //   data: {
+    //     voterIdVal: voterIdField.val(),
+    //   },
+    //   dataType: "json",
+    //   success: function (response) {
+    //     if (response.tokenExist) {
+    //       verifyTokenModal.modal("show");
+    //     } else {
+    //       sendVerificationTokenModal.modal("show");
+    //     }
+    //   },
+    //   error: function (error) {
+    //     console.error(error); //d debug
+    //   },
+    // });
 
     // debug
-    console.log(voterIdField.val());
+    // console.log(voterIdField.val());
   });
   /* ----------------------------------------------------
                 END: CHECK EXISTING TOKEN
@@ -130,7 +137,7 @@ $(document).ready(function () {
       emailField.addClass("is-invalid border border-danger");
       emailErrorMessageContainer.text("Email input field cannot be empty.");
     } else {
-      sendTokenBtn.add(cancelSendVerificationTokenBtn).prop("disabled", true);
+      cancelSendVerificationTokenBtn.prop("disabled", true);
       $.ajax({
         url: "includes/verify-email.php",
         type: "POST",
@@ -151,7 +158,8 @@ $(document).ready(function () {
             );
           } else if (response.success) {
             sendVerificationTokenModal.modal("hide");
-            verifyTokenModal.modal("show");
+            successResetPasswordLinkModal.modal("show");
+            // success modal
             resetFormState(
               emailErrorMessageContainer,
               sendTokenBtn,
@@ -161,11 +169,11 @@ $(document).ready(function () {
             // code for incorrect email
             emailErrorMessageContainer.text(response.message);
             emailField.addClass("is-invalid border border-danger");
-            sendTokenBtn.prop("disabled", false);
+            cancelSendVerificationTokenBtn.prop("disabled", false);
           }
         },
         error: function (xhr, status, error) {
-          console.error(xhr, status, error);
+          // console.error(xhr, status, error);
           resetFormState(emailErrorMessageContainer, sendTokenBtn, emailField);
         },
       });
@@ -179,62 +187,61 @@ $(document).ready(function () {
                 START: VERIFY MATCHED TOKEN 
   ------------------------------------------------------- */
 
-  verifyTokenForm.on("submit", function (event) {
-    event.preventDefault();
-    const emailVal = emailField.val().trim();
-    const tokenVal = tokenField.val();
+  // verifyTokenForm.on("submit", function (event) {
+  //   event.preventDefault();
+  //   const emailVal = emailField.val().trim();
+  //   const tokenVal = tokenField.val();
 
-    if (tokenVal === "") {
-      tokenField.addClass("is-invalid border border-danger");
-      tokenErrorMessageContainer.text("Token input field cannot be empty.");
-    } else {
-      verifyTokenBtn.add(cancelVerifyTokenBtn).prop("disabled", true);
-      $.ajax({
-        url: "includes/verify-token.php",
-        type: "POST",
-        data: {
-          emailVal: emailVal,
-          voterIdVal: voterIdField.val(),
-          verificationTokenVal: tokenVal,
-        },
-        dataType: "json",
-        success: function (response) {
-          if (response.maxLimit) {
-            // code for max limit modal here. below is jsut sample copde
-            alert("Max reached");
-            window.location.href = "landing-page.php";
-            resetFormState(
-              tokenErrorMessageContainer,
-              verifyTokenBtn,
-              tokenField
-            );
-          } else if (response.success) {
-            verifyTokenModal.modal("hide");
-            alert("YES");
-            //   window.location.href = ""; go somewhere
-            resetFormState(
-              tokenErrorMessageContainer,
-              verifyTokenBtn,
-              tokenField
-            );
-          } else {
-            // code for incorrect token
-            tokenErrorMessageContainer.text(response.message);
-            tokenField.addClass("is-invalid border border-danger");
-            verifyTokenBtn.prop("disabled", false);
-          }
-        },
-        error: function (xhr, status, error) {
-          console.error(xhr, status, error);
-          resetFormState(
-            tokenErrorMessageContainer,
-            verifyTokenBtn,
-            tokenField
-          );
-        },
-      });
-    }
-  });
+  //   if (tokenVal === "") {
+  //     tokenField.addClass("is-invalid border border-danger");
+  //     tokenErrorMessageContainer.text("Token input field cannot be empty.");
+  //   } else {
+  //     verifyTokenBtn.add(cancelVerifyTokenBtn).prop("disabled", true);
+  //     $.ajax({
+  //       url: "includes/verify-token.php",
+  //       type: "POST",
+  //       data: {
+  //         emailVal: emailVal,
+  //         voterIdVal: voterIdField.val(),
+  //         verificationTokenVal: tokenVal,
+  //       },
+  //       dataType: "json",
+  //       success: function (response) {
+  //         if (response.maxLimit) {
+  //           // code for max limit modal here. below is jsut sample copde
+  //           alert("Max reached");
+  //           window.location.href = "landing-page.php";
+  //           resetFormState(
+  //             tokenErrorMessageContainer,
+  //             verifyTokenBtn,
+  //             tokenField
+  //           );
+  //         } else if (response.success) {
+  //           verifyTokenModal.modal("hide");
+  //           window.location.href = "create-password.php";
+  //           resetFormState(
+  //             tokenErrorMessageContainer,
+  //             verifyTokenBtn,
+  //             tokenField
+  //           );
+  //         } else {
+  //           // code for incorrect token
+  //           tokenErrorMessageContainer.text(response.message);
+  //           tokenField.addClass("is-invalid border border-danger");
+  //           verifyTokenBtn.prop("disabled", false);
+  //         }
+  //       },
+  //       error: function (xhr, status, error) {
+  //         console.error(xhr, status, error);
+  //         resetFormState(
+  //           tokenErrorMessageContainer,
+  //           verifyTokenBtn,
+  //           tokenField
+  //         );
+  //       },
+  //     });
+  //   }
+  // });
 
   /* ----------------------------------------------------
                 END: VERIFY MATCHED TOKEN 
@@ -256,8 +263,8 @@ $(document).ready(function () {
   });
 
   function loadmasterListData(page) {
-    spinner.show();
-    masterList.hide();
+    // spinner.show();
+    // masterList.hide()
 
     $.ajax({
       url: "includes/load-masterlist.php",
@@ -271,36 +278,36 @@ $(document).ready(function () {
         const data = JSON.parse(response);
         displayTableData(data);
         loadPagination(page, true);
-        spinner.hide();
+        // spinner.hide();
       },
       error: function (error) {
-        console.error(error);
-        spinner.hide();
+        // console.error(error);
+        // spinner.hide();
       },
     });
   }
 
   function loadSearchResults(query, page) {
-    spinner.show();
-    masterList.hide();
+    // spinner.show();
+    // masterList.hide();
     $.ajax({
       url: "includes/load-masterlist.php",
       method: "POST",
       data: {
         actionVal: "searchName",
         searchQuery: query,
-        pageLimitVal: pageLimit,
-        pageStartVal: (page - 1) * pageLimit,
+        // pageLimitVal: pageLimit,
+        // pageStartVal: (page - 1) * pageLimit,
       },
       success: function (response) {
         const data = JSON.parse(response);
         displayTableData(data);
         loadPagination(page, true);
-        spinner.hide();
+        // spinner.hide();
       },
       error: function (error) {
-        console.error(error);
-        spinner.hide();
+        // console.error(error);
+        // spinner.hide();
       },
     });
   }
@@ -328,9 +335,11 @@ $(document).ready(function () {
 
         tableHtml += `
                 <tr data-voter-id="${row.voter_id}" data-full-name="${row.full_name}" class="clickable-row">
-                <td class="text-center">${row.full_name}</td>
+                <td class="text-center">
+                    <div class="full-name">${row.full_name}</div>
+                </td>
                 <td class="text-center text-body-secondary">
-                    <div class="text-reset send-token-link" role="button"><u>Send Verification Token</u></div>
+                    <div class="text-reset setup-acc-link" role="button"><u>Set Up Account</u></div>
                 </td>
                 </tr>
             `;
@@ -341,7 +350,7 @@ $(document).ready(function () {
   }
 
   function loadPagination(currentPage, isSearch) {
-    spinner.show();
+    // spinner.show();
     $.ajax({
       url: "includes/load-masterlist.php",
       method: "POST",
@@ -409,11 +418,11 @@ $(document).ready(function () {
         }
 
         $("#pagination").html(paginationHtml);
-        spinner.hide();
+        // spinner.hide();
       },
       error: function (error) {
-        console.error(error);
-        spinner.hide();
+        // console.error(error);
+        // spinner.hide();
       },
     });
   }
@@ -427,7 +436,9 @@ $(document).ready(function () {
 
   function resetFormState(errorMessageContainers, btnId, inputId) {
     errorMessageContainers.text("");
-    btnId.prop("disabled", false);
+    btnId.prop("disabled", true);
+    cancelSendVerificationTokenBtn.prop("disabled", false);
+    cancelVerifyTokenBtn.prop("disabled", false);
     inputId.removeClass("is-invalid border border-danger");
     inputId.val("");
   }

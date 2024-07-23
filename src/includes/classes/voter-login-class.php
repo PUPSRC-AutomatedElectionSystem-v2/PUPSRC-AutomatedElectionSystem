@@ -112,7 +112,7 @@ class Login extends IpAddress {
         $stmt->execute();	
         $result = $stmt->get_result();	
 
-        if($result) {	
+        if($result && $result->num_rows > 0) {	
             $row = $result->fetch_assoc();	
             $today = new DateTime();	
             $start = new Datetime($row['start']);	

@@ -37,9 +37,9 @@ $(document).ready(function () {
 
     // Scroll to top functionality
     $("html, body").animate({ scrollTop: 0 }, "slow", function () {
-      canShowScrollTop = true;
       scrollTopPageBtn.prop("disabled", false);
     });
+    canShowScrollTop = true;
 
     return false;
   });

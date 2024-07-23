@@ -9,15 +9,9 @@ require_once FileUtils::normalizeFilePath('classes/email-sender.php');
 include_once FileUtils::normalizeFilePath('default-time-zone.php');
 include_once FileUtils::normalizeFilePath('error-reporting.php');
 
-
-ini_set('error_reporting', E_ALL);
-ini_set('display_errors', 1);
-ini_set('log_errors', 1);
-
-
-const ATTEMPTS_LIMIT = 5;
-const BLOCK_TIME = 1800; // 30 mins
-$time = time() - BLOCK_TIME;
+// const ATTEMPTS_LIMIT = 5;
+// const BLOCK_TIME = 1800; // 30 mins
+// $time = time() - BLOCK_TIME;
 
 $response = ['success' => false, 'maxLimit' => false, 'message' => 'An error occurred'];
 
@@ -25,45 +19,48 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST['emailVal'];
     $voter_id = $_POST['voterIdVal'];
 
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        encodeJSONResponse(['message' => 'Please provide a valid email address.']);
+    }
+
     $connection = DatabaseConnection::connect();
 
-    $ip_manager = new IpAddress();
-    $ip_address = IpAddress::getIpAddress();
+    // $ip_manager = new IpAddress();
+    // $ip_address = IpAddress::getIpAddress();
+    // isIpAddressBlocked($ip_manager, $ip_address, $time);
 
-    isIpAddressBlocked($ip_manager, $ip_address, $time);
-
-    $sql = "SELECT voter_id FROM voter WHERE BINARY email = ?";
+    $sql = "SELECT voter_id FROM voter WHERE voter_id = ? AND BINARY email = ?";
     $stmt = $connection->prepare($sql);
-    $stmt->bind_param("s", $email);
+    $stmt->bind_param("is", $voter_id, $email);
     $stmt->execute();
     $result = $stmt->get_result();
 
     if($result->num_rows === 0) {
-        $ip_manager->storeIpAddress($ip_address, time());
+        // $ip_manager->storeIpAddress($ip_address, time());
 
-        isIpAddressBlocked($ip_manager, $ip_address, $time);
-        $count_attempts = $ip_manager->countIpAddressAttempt($ip_address, $time);
+        // isIpAddressBlocked($ip_manager, $ip_address, $time);
+        // $count_attempts = $ip_manager->countIpAddressAttempt($ip_address, $time);
+        // $remaining_attempts = ATTEMPTS_LIMIT - $count_attempts;
 
-        $remaining_attempts = ATTEMPTS_LIMIT - $count_attempts;
-        encodeJSONResponse(['message' => 'Incorrect email address. Attempts left: ' . $remaining_attempts]);
+        encodeJSONResponse(['message' => 'Incorrect email addres.']);
     }
     else {
-        $ip_manager->deleteIpAddress($ip_address);
-        $verification_token = bin2hex(random_bytes(32));
-        // $hashed_verification_token = hash("sha256", $verification_token);
+        // $ip_manager->deleteIpAddress($ip_address);
 
-        // verification token available only in 30 mins
+        $token = bin2hex(random_bytes(16));
+        $token_hash = hash("sha256", $token);    
+
         $duration = time() + (60 * 30);
         $expiry = date("Y-m-d H:i:s", $duration);
 
-        $sql = "UPDATE voter SET verification_token = ? WHERE BINARY email = ?";
+        $sql = "UPDATE voter SET reset_token_hash = ?, reset_token_expires_at = ? WHERE BINARY email = ?";
         $stmt = $connection->prepare($sql);
-        $stmt->bind_param("ss", $verification_token, $email);
+        $stmt->bind_param('sss', $token_hash, $expiry, $email);
         $stmt->execute();
 
         if($stmt->affected_rows) {
             $send_verification_token = new EmailSender($mail);
-            $send_verification_token->sendVerificationToken($email, $verification_token);
+            $send_verification_token->sendVerificationToken($email, $token, $_SESSION['organization']);
             encodeJSONResponse(['success' => true]);
         }
         else {
@@ -73,15 +70,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 // Check if a user of a certain ip address exceeds attempt limit within 30 minutes
-function isIpAddressBlocked($ip_manager, $ip_address, $time) {
-    $count_attempts = $ip_manager->countIpAddressAttempt($ip_address, $time);
+// function isIpAddressBlocked($ip_manager, $ip_address, $time) {
+//     $count_attempts = $ip_manager->countIpAddressAttempt($ip_address, $time);
 
-    if($count_attempts >= ATTEMPTS_LIMIT) {
-        $_SESSION['time'] = $time;
-        $_SESSION['isBlocked'] = true;
-        encodeJSONResponse(['maxLimit' => true]);
-    }
-}
+//     if($count_attempts >= ATTEMPTS_LIMIT) {
+//         $_SESSION['time'] = $time;
+//         $_SESSION['isBlocked'] = true;
+//         encodeJSONResponse(['maxLimit' => true]);
+//     }
+// }
 
 function encodeJSONResponse($response) {
     header('Content-Type: application/json');

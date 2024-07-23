@@ -65,11 +65,11 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
     <link rel="stylesheet" href="styles/dist/register.css">
     <link rel="stylesheet" href="styles/core.css" />
     <link rel="stylesheet" href="styles/dist/all-footer.css">
-    <link rel="stylesheet" href="styles/dist/landing-animation.css">
+    <!-- <link rel="stylesheet" href="styles/dist/landing-animation.css"> -->
 
     <!-- Bootstrap JavaScript -->
     <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="scripts/register.js" defer></script>
     <script src="scripts/loader.js" defer></script>
 
@@ -133,7 +133,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                     <div class="form-group">
                                         <label for="student_id" class="fs-8 spacing-3">Student Number<span
                                                 class="asterisk fw-medium">*</span></label>
-                                        <input type="text" class="form-control pt-2 bg-white text-black"
+                                        <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
                                             name="student_number" id="student_number" placeholder="Ex: 2024-00XXX-SR-0"
                                             autocomplete="email" required>
                                     </div>
@@ -147,22 +147,22 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                 <div class="col-xl-7 col-md-7">
                                     <div class="row">
                                         <!-- First Name -->
-                                        <div class="col-md-6 pt-3">
+                                        <div class="col-md-6 pt-2">
                                             <div class="form-group">
                                                 <label for="first_name" class="fs-8 spacing-3">First Name<span
                                                         class="asterisk fw-medium">*</span></label>
-                                                <input type="text" class="form-control pt-2 bg-white text-black"
+                                                <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
                                                     name="first_name" id="first_name" placeholder="First Name"
                                                     autocomplete="off" required>
                                             </div>
                                         </div>
 
                                         <!-- Last Name -->
-                                        <div class="col-md-6 pt-3">
+                                        <div class="col-md-6 pt-2">
                                             <div class="form-group">
                                                 <label for="last_name" class="fs-8 spacing-3">Last Name<span
                                                         class="asterisk fw-medium">*</span></label>
-                                                <input type="text" class="form-control pt-2 bg-white text-black"
+                                                <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
                                                     name="last_name" id="last_name" placeholder="Last Name"
                                                     autocomplete="email" required>
                                             </div>
@@ -178,20 +178,20 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                 <div class="col-xl-7 col-md-7">
                                     <div class="row">
                                         <!-- Middle Name -->
-                                        <div class="col-md-6 pt-3">
+                                        <div class="col-md-6 pt-2">
                                             <div class="form-group">
                                                 <label for="middle_name" class="fs-8 spacing-3">Middle Name</label>
-                                                <input type="text" class="form-control pt-2 bg-white text-black"
+                                                <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
                                                     name="middle_name" id="middle_name" placeholder="Middle Name"
                                                     autocomplete="off">
                                             </div>
                                         </div>
 
                                         <!-- Suffix -->
-                                        <div class="col-md-6 pt-3">
+                                        <div class="col-md-6 pt-2">
                                             <div class="form-group">
                                                 <label for="suffix" class="fs-8 spacing-3">Suffix</label>
-                                                <input type="text" class="form-control pt-2 bg-white text-black"
+                                                <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
                                                     name="suffix" id="suffix" placeholder="Suffix"
                                                     autocomplete="email">
                                             </div>
@@ -202,13 +202,13 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                         </div>
 
                         <!-- Email Address -->
-                        <div class="row pt-3">
+                        <div class="row pt-2">
                             <div class="col-12 d-flex justify-content-end">
                                 <div class="col-xl-7 col-md-7">
                                     <div class="form-group">
                                         <label for="email" class="fs-8 spacing-3">Email Address<span
                                                 class="asterisk fw-medium">*</span></label>
-                                        <input type="text" class="form-control pt-2 bg-white text-black" name="email"
+                                        <input type="text" class="form-control pt-2 bg-white fs-7 text-black" name="email"
                                             id="email" placeholder="Ex: johndoe@gmail.com" autocomplete="email" required>
                                     </div>
                                 </div>
@@ -221,7 +221,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                 <div class="col-xl-7 col-md-7">
                                     <label for="org" class="fs-8 spacing-3">Organization<span
                                             class="asterisk fw-medium">*</span></label>
-                                    <select class="form-select form-control bg-white text-black"
+                                    <select class="form-select form-control bg-white fs-7 text-black"
                                         style="color: red; background-color: blue;" name="org" id="org" required>
                                         <option selected hidden value="">Select Organization</option>
                                         <option value="acap">ACAP</option>
@@ -245,7 +245,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                     <div class="form-group">
                                         <label for="password" class="fs-8 spacing-3">Password <span
                                                 class="asterisk fw-medium">*</span></label>
-                                        <input type="password" class="form-control pt-2 bg-white text-black"
+                                        <input type="password" class="form-control pt-2 bg-white fs-7 text-black"
                                             name="password" id="password" placeholder="Password" required>
                                     </div>
                                 </div>
@@ -260,7 +260,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                     <div class="form-group">
                                         <label for="retype-pass" class="fs-8 spacing-3">Re-type password <span
                                                 class="asterisk fw-medium">*</span></label>
-                                        <input type="password" class="form-control pt-2 bg-white text-black"
+                                        <input type="password" class="form-control pt-2 bg-white fs-7 text-black"
                                             id="retype-pass" name="retype-pass" placeholder="Re-type password" required>
                                     </div>
                                 </div>
@@ -462,7 +462,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
     </div>
 
     <?php include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/all-footer.php'); ?>
-    <script src="scripts/landing-animation.js"></script>
+    <!-- <script src="scripts/landing-animation.js"></script> -->
 </body>
 
 </html>

@@ -6,9 +6,9 @@ require_once FileUtils::normalizeFilePath('classes/manage-ip-address.php');
 include_once FileUtils::normalizeFilePath('error-reporting.php');
 include_once FileUtils::normalizeFilePath('default-time-zone.php');
 
-const ATTEMPTS_LIMIT = 5;
-const BLOCK_TIME = 1800; // 30 mins
-$time = time() - BLOCK_TIME;
+// const ATTEMPTS_LIMIT = 5;
+// const BLOCK_TIME = 1800; // 30 mins
+// $time = time() - BLOCK_TIME;
 
 $response = ['success' => false, 'maxLimit' => false, 'message' => 'An error occurred'];
 

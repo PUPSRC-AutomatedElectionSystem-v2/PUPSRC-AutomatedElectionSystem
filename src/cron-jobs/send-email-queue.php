@@ -28,7 +28,6 @@ foreach ($orgs as $org) {
             throw new Exception("Connection failed: " . $connection->connect_error);
         }
 
-
         // $sql = "SELECT DATABASE()";
         // $result = mysqli_query($connection, $sql);
         // $row = mysqli_fetch_row($result);
@@ -36,6 +35,8 @@ foreach ($orgs as $org) {
 
         // echo "Currently connected database: " . $current_db;
 
+        $connection->query("SET SESSION interactive_timeout = 57;");
+        $connection->query("SET SESSION wait_timeout = 57;");
         $emails = EmailQueue::getCurrQueue($connection);
 
         // print_r($emails);
@@ -45,19 +46,16 @@ foreach ($orgs as $org) {
             $send_email = new EmailSender($mail);
 
             $is_send_success = $send_email->sendQueuedMail($email['content']);
-            sleep(3);
 
             if ($is_send_success) {
                 EmailQueue::updateEmailStatus($email['email_id'], 'sent');
             } else {
                 EmailQueue::updateEmailStatus($email['email_id'], 'failed');
             }
-            sleep(1);
         }
-
-        // $connection->close();
-
     } catch (Exception $e) {
         echo $e->getMessage() . "\<br>\n<br>";
+    } finally {
+        $connection->close();
     }
 }

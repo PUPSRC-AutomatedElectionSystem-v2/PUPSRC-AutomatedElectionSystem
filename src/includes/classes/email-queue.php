@@ -59,22 +59,22 @@ class EmailQueue
         if (self::$connection) {
             $currentDatetime = date('Y-m-d H:i:s');
 
-            $sql = "SELECT email_id, status, schedule, content, push_id FROM email_queue WHERE schedule <= ? AND status = 'pending'";
+            $sql = "SELECT email_id, content FROM email_queue WHERE schedule <= ? AND status = 'pending'";
             $stmt = self::$connection->prepare($sql);
 
             if ($stmt) {
                 $stmt->bind_param('s', $currentDatetime);
                 $stmt->execute();
                 $email_id = $status =  $schedule = $push_id = $content = '';
-                $stmt->bind_result($email_id, $status, $schedule, $content, $push_id);
+                $stmt->bind_result($email_id, $content);
 
                 while ($stmt->fetch()) {
                     $emails[] = [
                         'email_id' => $email_id,
-                        'status' => $status,
-                        'schedule' => $schedule,
+                        // 'status' => $status,
+                        // 'schedule' => $schedule,
                         'content' => $content,
-                        'push_id' => $push_id
+                        // 'push_id' => $push_id
                     ];
                 }
 

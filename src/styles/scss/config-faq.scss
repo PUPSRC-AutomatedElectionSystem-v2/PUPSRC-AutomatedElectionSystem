@@ -244,6 +244,7 @@ body dialog.modal-native {
                     // top: anchor(top);
 
 
+
                     span.label-icon {
                         background-color: unset;
 
@@ -258,6 +259,7 @@ body dialog.modal-native {
                 position: absolute;
                 background-color: transparent;
                 width: 90%;
+                z-index: 1500;
             }
 
             div.ql-container {

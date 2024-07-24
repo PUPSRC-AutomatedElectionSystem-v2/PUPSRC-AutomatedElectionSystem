@@ -10,17 +10,17 @@ $(document).ready(function () {
   const voterIdField = $("#voterId");
   const fullNameField = $("#fullName");
   const emailField = $("#email");
-  const sendVerificationTokenModal = $("#sendVerificationTokenModal");
-  const sendVerificationTokenForm = $("#sendVerificationTokenForm");
-  const sendTokenBtn = $("#sendTokenBtn");
+  const sendAccSetupLinkModal = $("#sendAccSetupLinkModal");
+  const sendAccSetupLinkForm = $("#sendAccSetupLinkForm");
+  const sendAccSetupLink = $("#sendAccSetupLink");
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const emailErrorMessageContainer = $("#emailErrorMessage");
-  const tokenField = $("#token");
-  const verifyTokenModal = $("#verifyTokenModal");
-  const verifyTokenForm = $("#verifyTokenForm");
-  const tokenErrorMessageContainer = $("#tokenErrorMessage");
-  const verifyTokenBtn = $("#verifyTokenBtn");
-  const cancelSendVerificationTokenBtn = $("#cancelSendVerificationTokenBtn");
+  // const tokenField = $("#token");
+  // const verifyTokenModal = $("#verifyTokenModal");
+  // const verifyTokenForm = $("#verifyTokenForm");
+  // const tokenErrorMessageContainer = $("#tokenErrorMessage");
+  // const verifyTokenBtn = $("#verifyTokenBtn");
+  const cancelSendAccSetupLinkBtn = $("#cancelSendAccSetupLinkBtn");
   const cancelVerifyTokenBtn = $("#cancelVerifyTokenBtn");
   const successResetPasswordLinkModal = $("#successResetPasswordLinkModal");
 
@@ -51,32 +51,32 @@ $(document).ready(function () {
     }
   });
 
-  sendTokenBtn.prop("disabled", true);
+  sendAccSetupLink.prop("disabled", true);
 
   // prevent leading and trailing whitespace to inputs
-  emailField.add(tokenField).on("input", function (event) {
+  emailField.on("input", function (event) {
     preventSpaces(event);
   });
 
   // resets the form state of modals
-  cancelSendVerificationTokenBtn.on("click", function () {
-    resetFormState(emailErrorMessageContainer, sendTokenBtn, emailField);
+  cancelSendAccSetupLinkBtn.on("click", function () {
+    resetFormState(emailErrorMessageContainer, sendAccSetupLink, emailField);
   });
 
-  cancelVerifyTokenBtn.on("click", function () {
-    resetFormState(tokenErrorMessageContainer, verifyTokenBtn, tokenField);
-  });
+  // cancelVerifyTokenBtn.on("click", function () {
+  //   resetFormState(tokenErrorMessageContainer, verifyTokenBtn, tokenField);
+  // });
 
   // validate email format
   emailField.on("input", function () {
     if (!emailRegex.test(emailField.val())) {
       emailField.addClass("is-invalid border border-danger");
       emailErrorMessageContainer.text("Please provide a valid email address.");
-      sendTokenBtn.prop("disabled", true);
+      sendAccSetupLink.prop("disabled", true);
     } else {
       emailField.removeClass("is-invalid border border-danger");
       emailErrorMessageContainer.text("");
-      sendTokenBtn.prop("disabled", false);
+      sendAccSetupLink.prop("disabled", false);
     }
 
     if (emailField.val().length > 255) {
@@ -97,7 +97,7 @@ $(document).ready(function () {
     voterIdField.val(voterId);
     fullNameField.text(fullName);
 
-    sendVerificationTokenModal.modal("show");
+    sendAccSetupLinkModal.modal("show");
 
     // AJAX request to check existing token
     // $.ajax({
@@ -111,7 +111,7 @@ $(document).ready(function () {
     //     if (response.tokenExist) {
     //       verifyTokenModal.modal("show");
     //     } else {
-    //       sendVerificationTokenModal.modal("show");
+    //       sendAccSetupLinkModal.modal("show");
     //     }
     //   },
     //   error: function (error) {
@@ -129,7 +129,7 @@ $(document).ready(function () {
   /* ----------------------------------------------------
                 START: VERIFY MATCHED EMAIL 
   ------------------------------------------------------- */
-  sendVerificationTokenForm.on("submit", function (event) {
+  sendAccSetupLinkForm.on("submit", function (event) {
     event.preventDefault();
     const emailVal = emailField.val().trim();
     if (emailVal === "") {
@@ -137,7 +137,7 @@ $(document).ready(function () {
       emailField.addClass("is-invalid border border-danger");
       emailErrorMessageContainer.text("Email input field cannot be empty.");
     } else {
-      cancelSendVerificationTokenBtn.prop("disabled", true);
+      cancelSendAccSetupLinkBtn.add(sendAccSetupLink).prop("disabled", true);
       $.ajax({
         url: "includes/verify-email.php",
         type: "POST",
@@ -153,28 +153,32 @@ $(document).ready(function () {
             window.location.href = "landing-page.php";
             resetFormState(
               emailErrorMessageContainer,
-              sendTokenBtn,
+              sendAccSetupLink,
               emailField
             );
           } else if (response.success) {
-            sendVerificationTokenModal.modal("hide");
+            sendAccSetupLinkModal.modal("hide");
             successResetPasswordLinkModal.modal("show");
             // success modal
             resetFormState(
               emailErrorMessageContainer,
-              sendTokenBtn,
+              sendAccSetupLink,
               emailField
             );
           } else {
             // code for incorrect email
             emailErrorMessageContainer.text(response.message);
             emailField.addClass("is-invalid border border-danger");
-            cancelSendVerificationTokenBtn.prop("disabled", false);
+            cancelSendAccSetupLinkBtn.prop("disabled", false);
           }
         },
         error: function (xhr, status, error) {
           // console.error(xhr, status, error);
-          resetFormState(emailErrorMessageContainer, sendTokenBtn, emailField);
+          resetFormState(
+            emailErrorMessageContainer,
+            sendAccSetupLink,
+            emailField
+          );
         },
       });
     }
@@ -257,9 +261,9 @@ $(document).ready(function () {
     const fullName = $(this).data("name");
 
     $("#voterId").val(voterId);
-    $("#sendVerificationTokenModal").text(fullName);
+    $("#sendAccSetupLinkModal").text(fullName);
 
-    sendVerificationTokenModal.modal("show");
+    sendAccSetupLinkModal.modal("show");
   });
 
   function loadmasterListData(page) {
@@ -437,7 +441,7 @@ $(document).ready(function () {
   function resetFormState(errorMessageContainers, btnId, inputId) {
     errorMessageContainers.text("");
     btnId.prop("disabled", true);
-    cancelSendVerificationTokenBtn.prop("disabled", false);
+    cancelSendAccSetupLinkBtn.prop("disabled", false);
     cancelVerifyTokenBtn.prop("disabled", false);
     inputId.removeClass("is-invalid border border-danger");
     inputId.val("");

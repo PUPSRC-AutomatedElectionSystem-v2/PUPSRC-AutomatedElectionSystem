@@ -5,15 +5,11 @@ require_once FileUtils::normalizeFilePath('classes/db-connector.php');
 require_once FileUtils::normalizeFilePath('classes/manage-ip-address.php');
 require_once FileUtils::normalizeFilePath('mailer.php');
 require_once FileUtils::normalizeFilePath('classes/email-sender.php');
-// require_once FileUtils::normalizeFilePath('classes/csrf-token.php');
 include_once FileUtils::normalizeFilePath('default-time-zone.php');
 include_once FileUtils::normalizeFilePath('error-reporting.php');
 
-// const ATTEMPTS_LIMIT = 5;
-// const BLOCK_TIME = 1800; // 30 mins
-// $time = time() - BLOCK_TIME;
 
-$response = ['success' => false, 'maxLimit' => false, 'message' => 'An error occurred'];
+$response = ['success' => false, 'message' => 'An error occurred'];
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $_POST['emailVal'];
@@ -36,31 +32,20 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $result = $stmt->get_result();
 
     if($result->num_rows === 0) {
-        // $ip_manager->storeIpAddress($ip_address, time());
-
-        // isIpAddressBlocked($ip_manager, $ip_address, $time);
-        // $count_attempts = $ip_manager->countIpAddressAttempt($ip_address, $time);
-        // $remaining_attempts = ATTEMPTS_LIMIT - $count_attempts;
-
-        encodeJSONResponse(['message' => 'Incorrect email addres.']);
+        encodeJSONResponse(['message' => 'Incorrect email address.']);
     }
     else {
-        // $ip_manager->deleteIpAddress($ip_address);
+        $verification_token = bin2hex(random_bytes(16));
+        $verification_token_hash = hash("sha256", $verification_token);    
 
-        $token = bin2hex(random_bytes(16));
-        $token_hash = hash("sha256", $token);    
-
-        $duration = time() + (60 * 30);
-        $expiry = date("Y-m-d H:i:s", $duration);
-
-        $sql = "UPDATE voter SET reset_token_hash = ?, reset_token_expires_at = ? WHERE BINARY email = ?";
+        $sql = "UPDATE voter SET verification_token = ? WHERE BINARY email = ?";
         $stmt = $connection->prepare($sql);
-        $stmt->bind_param('sss', $token_hash, $expiry, $email);
+        $stmt->bind_param('ss', $verification_token_hash, $email);
         $stmt->execute();
 
         if($stmt->affected_rows) {
-            $send_verification_token = new EmailSender($mail);
-            $send_verification_token->sendVerificationToken($email, $token, $_SESSION['organization']);
+            $send_setup_link = new EmailSender($mail);
+            $send_setup_link->sendAccountSetupLink($email, $verification_token, $_SESSION['organization']);
             encodeJSONResponse(['success' => true]);
         }
         else {
@@ -68,17 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         }
     } 
 }
-
-// Check if a user of a certain ip address exceeds attempt limit within 30 minutes
-// function isIpAddressBlocked($ip_manager, $ip_address, $time) {
-//     $count_attempts = $ip_manager->countIpAddressAttempt($ip_address, $time);
-
-//     if($count_attempts >= ATTEMPTS_LIMIT) {
-//         $_SESSION['time'] = $time;
-//         $_SESSION['isBlocked'] = true;
-//         encodeJSONResponse(['maxLimit' => true]);
-//     }
-// }
 
 function encodeJSONResponse($response) {
     header('Content-Type: application/json');

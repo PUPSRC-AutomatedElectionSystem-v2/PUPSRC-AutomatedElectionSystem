@@ -259,24 +259,6 @@ class CandidatePositionController extends CandidatePosition
     }
 }
 
-$allowed_roles = ['admin', 'head_admin'];
-$is_page_accessible = isset($_SESSION['voter_id'], $_SESSION['role'], $_SESSION['organization']) &&
-    (in_array($_SESSION['role'], $allowed_roles)) &&
-    !empty($_SESSION['organization']);
-
-if (!$is_page_accessible) {
-    $response = [
-        'status' => 'error',
-        'message' => 'Unauthorized'
-    ];
-    (new class
-    {
-        use EndpointResponse;
-    })::sendResponse(401, $response);
-    exit();
-}
-
-
 if ($_SERVER['REQUEST_METHOD'] === 'UPDATE') {
     $controller = new CandidatePositionController('sequence');
 

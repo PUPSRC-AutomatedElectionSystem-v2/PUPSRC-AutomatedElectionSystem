@@ -2,36 +2,21 @@
 
 /* --- MEDIAS --- */
 
-.custom-alert, .custom-info {
-  width: 100%;
-  max-width: 360px;
-  font-size: 15px;
-  padding: 3%;
-  margin-bottom: -10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: left;
-  background-color: rgba(238, 28, 35, 0.03);
-  /* Background color with 80% opacity */
-}
-
-.yellow-warning {
-  height: 89px;
-  width: 100px;
-}
-
-#cancelBtn, #confirmLeaveBtn {
-  font-size: 15px;
-  padding: 7px 20px;
-}
-
-#confirmLeaveBtn {
-  font-weight: 600;
-}
-
 @media (max-width: 767px) {
 
+  .row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  .row > * {
+    padding-right: 0 !important;
+    padding-left: 0 !important;
+  }
+
+  .register-all-container {
+    margin-top: 0.5rem;
+  }
   .main-reg-container {
     margin-top: 2rem !important;
   }
@@ -81,6 +66,18 @@
 
   .about-us-icon {
     width: 400px;
+  }
+}
+
+@media (min-width: 768px) {
+  .register-all-container {
+    margin-top: 2rem;
+  }
+}
+
+@media (max-width: 435px) {
+  .register-all-container {
+    margin-top: 0rem !important;
   }
 }
 
@@ -342,4 +339,32 @@ footer {
 #termsConditionsModal .modal-body {
   overflow-y: auto !important;
   height: 70vh;
+}
+
+.custom-alert, .custom-info {
+  width: 100%;
+  max-width: 360px;
+  font-size: 15px;
+  padding: 3%;
+  margin-bottom: -10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: left;
+  background-color: rgba(238, 28, 35, 0.03);
+  /* Background color with 80% opacity */
+}
+
+.yellow-warning {
+  height: 89px;
+  width: 100px;
+}
+
+#cancelBtn, #confirmLeaveBtn {
+  font-size: 15px;
+  padding: 7px 20px;
+}
+
+#confirmLeaveBtn {
+  font-weight: 600;
 }

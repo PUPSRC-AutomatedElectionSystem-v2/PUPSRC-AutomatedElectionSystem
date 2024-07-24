@@ -996,7 +996,7 @@ span {
 }
 
 .acc-list-link {
-  font-size: 12px;
+  font-size: 0.875rem;
   font-weight: 400;
   line-height: 12.19px;
   text-align: center;
@@ -1094,7 +1094,7 @@ span {
   }
 
   .acc-list-link {
-    font-size: 10px;
+    font-size: 0.688rem;
   }
 
   #index-AES {

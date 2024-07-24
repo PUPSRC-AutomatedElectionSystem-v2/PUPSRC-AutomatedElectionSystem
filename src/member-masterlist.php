@@ -15,7 +15,10 @@ SessionManager::checkUserRoleAndRedirect();
 
 <head>
     <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="2024 BSIT 3-1" content="PUPSRC iVOTE">
 
     <!-- Preloader Stylesheet and Image -->
     <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
@@ -143,12 +146,14 @@ SessionManager::checkUserRoleAndRedirect();
                             <div class="main-color fw-bold ls-10 spacing-6 step-title">How To Setup Your Account</div>
                             <div class="step-subtitle pb-2">To setup your account, please follow these steps:</div>
                                 <ul class="list-group list-group-flush step">
-                                    <li class="list-group-item lh-base border border-0"><strong>1. Find your Name:</strong> Go to the <a href="#memMasterList" class="fw-bold main-color">Members' Master List</a> table and search your full name.</li>
-                                    <li class="list-group-item lh-base border border-0"><strong>2. Send Verification Token:</strong> Once found, click the “Send Verification Token”.</li>
-                                    <li class="list-group-item lh-base border border-0"><strong>3. Input Email:</strong> Input the email you provided to the organization.</li>
-                                    <li class="list-group-item lh-base border border-0"><strong>4. Check Your Inbox:</strong> Look for the email with the verification token in your inbox.</li>
-                                    <li class="list-group-item lh-base border border-0"><strong>5. Enter Token:</strong> Type the token into the verification token field.</li>
-                                    <li class="list-group-item lh-base border border-0"><strong>6. Create a Password:</strong> Complete your account setup by providing a strong password.</li>
+                                    <li class="list-group-item lh-base border border-0"><strong>1. Find your Name:</strong> Go to the <a href="#memMasterList" class="fw-bold main-color">Members' Master List</a> table and search for your full name.</li>
+                                    <li class="list-group-item lh-base border border-0"><strong>2. Send Link:</strong> Once found, click the corresponding “Setup Account" row.</li>
+                                    <li class="list-group-item lh-base border border-0"><strong>3. Enter Email:</strong> Enter the email you provided to the organization to verify your legitimacy.</li>
+                                    <li class="list-group-item lh-base border border-0"><strong>4. Check Your Inbox:</strong> Look for the email with the subject <strong>iVote Account Setup</strong> in your inbox.</li>
+                                    <li class="list-group-item lh-base border border-0"><strong>5. Click the Link:</strong> Click the underlined <strong>Account Setup</strong> link that will redirect you to create your password.</li>
+                                    <li class="list-group-item lh-base border border-0"><strong>6. Create a Password:</strong> Complete your account setup by creating and choosing a strong password.</li>
+                                    <li class="list-group-item lh-base border border-0 small-note pt-4"><strong>Note:</strong> If you can't see the email, check your spam or junk folder.</li>
+
                                 </ul>
                             </div>
                         </div>
@@ -156,15 +161,15 @@ SessionManager::checkUserRoleAndRedirect();
                 </div>
             </div>
 
-            <!-- Send Verification Token Modal -->
-            <div class="modal fade" id="sendVerificationTokenModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <!-- Send Account Setup Link Modal -->
+            <div class="modal fade" id="sendAccSetupLinkModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-12">
                                     <h1 class="fw-bold main-color text-center spacing-4 verify-email">Email Address</h1>
-                                    <form id="sendVerificationTokenForm" method="POST">
+                                    <form id="sendAccSetupLinkForm" method="POST">
                                         <input type="hidden" id="voterId" name="voter_id">
                                         <p><strong id="fullName"></strong></p>
                                         <div class="mb-1">
@@ -176,10 +181,10 @@ SessionManager::checkUserRoleAndRedirect();
                                         </div>
                                         <div class="row d-flex justify-content-center">
                                             <div class="col-5">
-                                                <button type="button" class="btn btn-secondary w-100" id="cancelSendVerificationTokenBtn" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn btn-secondary w-100" id="cancelSendAccSetupLinkBtn" data-bs-dismiss="modal">Cancel</button>
                                             </div>
                                             <div class="col-7">
-                                                <button type="submit" id="sendTokenBtn" class="btn btn-org-color w-100">Send Token</button>
+                                                <button type="submit" id="sendAccSetupLink" class="btn btn-org-color w-100">Send Setup Link</button>
                                             </div>                                            
                                         </div>
                                     </form>

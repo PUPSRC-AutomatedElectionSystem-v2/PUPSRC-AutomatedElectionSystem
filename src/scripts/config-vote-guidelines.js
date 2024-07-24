@@ -1144,8 +1144,13 @@ ConfigPage.EditorModal = class {
     }
 
     static #handlePrimaryBtn() {
+        let primaryButton = this.modalElement.querySelector('.modal-body #modal-action-primary');
+
+        if (primaryButton.disabled) {
+            return;
+        }
+
         if (this.data) {
-            let primaryButton = this.modalElement.querySelector('.modal-body #modal-action-primary');
             primaryButton.disabled = true;
             this.#handleSubmit();
         }

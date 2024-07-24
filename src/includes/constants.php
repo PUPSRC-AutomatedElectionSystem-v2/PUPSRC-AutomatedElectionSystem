@@ -74,8 +74,8 @@ const STUDENT_VOTER_ACTIONS = array(
 
 
 const ADMIN_ACTIONS = array(
-    LOGIN => 'You <strong>logged</strong> in to your account.',
-    LOGOUT => 'You <strong>logged</strong> out of your account.',
+    LOGIN => 'You <strong>logged in</strong> to your account.',
+    LOGOUT => 'You <strong>logged out</strong> of your account.',
     UPDATE_PROFILE => 'You <strong>updated</strong> your profile information.',
     CHANGE_PASSWORD => 'You <strong>changed</strong> your password.',
     ADD_CANDIDATE => 'You <strong>added</strong> a new candidate.',
@@ -109,8 +109,8 @@ const ADMIN_ACTIONS = array(
 
 
 const HEAD_ADMIN_ACTIONS = array(
-    LOGIN => 'You <strong>logged</strong> in to your account.',
-    LOGOUT => 'You <strong>logged</strong> out of your account.',
+    LOGIN => 'You <strong>logged in</strong> to your account.',
+    LOGOUT => 'You <strong>logged out</strong> of your account.',
     UPDATE_PROFILE => 'You <strong>updated</strong> your profile information.',
     CHANGE_PASSWORD => 'You <strong>changed</strong> your password.',
     ADD_CANDIDATE => 'You <strong>added</strong> a new candidate.',

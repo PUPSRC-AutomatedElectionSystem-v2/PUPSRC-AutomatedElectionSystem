@@ -5,18 +5,12 @@ require_once FileUtils::normalizeFilePath(__DIR__ . '/includes/classes/session-m
 require_once FileUtils::normalizeFilePath(__DIR__ . '/includes/classes/db-connector.php');
 include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/default-time-zone.php');
 
-if($_SERVER["REQUEST_METHOD"] !== "POST") {
-    // $_SESSION['error_message'] = 'Something went wrong. Please try again.';
-    header("Location: voter-login.php");
-    exit();
-}
-
 SessionManager::checkUserRoleAndRedirect();
 
-$token = $_GET['token'];
-$token_hash = hash('sha256', $token);
+$verification_token = $_GET['token'];
+$verification_token_hash = hash('sha256', $verification_token);
 
-// Get the org name from the URL
+// gets the org name from the URL
 $url_org_name = $_GET['orgName'];
 $org_name = $url_org_name;
 $_SESSION['organization'] = $org_name;
@@ -25,24 +19,15 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/session-exchange.
 
 $connection = DatabaseConnection::connect();
 
-$sql = "SELECT reset_token_hash, reset_token_expires_at FROM voter WHERE reset_token_hash = ?";
+$sql = "SELECT verification_token FROM voter WHERE verification_token = ?";
 $stmt = $connection->prepare($sql);
-$stmt->bind_param("s", $token_hash);
+$stmt->bind_param("s", $verification_token_hash);
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 
 if (!$row) {
-    $_SESSION['error_message'] = 'Reset link was not found.';
-    header("Location: voter-login.php");
-    exit();
-}
-
-$expiry_time = strtotime($row["reset_token_expires_at"]);
-$current_time = time();
-
-if ($expiry_time <= $current_time) {
-    $_SESSION['error_message'] = 'Reset link has expired.';
+    $_SESSION['error_message'] = 'Account setup link was not found.';
     header("Location: voter-login.php");
     exit();
 }
@@ -168,6 +153,8 @@ if (isset($_SESSION['error_message'])) {
                             <button class="btn login-sign-in-button mt-3 mb-3 px-4 fs-7 fw-semibold" id="SCO-login-button" type="submit" name="new-password-submit">Set Password</button>
                             
                         </div>
+
+                        <input type="hidden" id="verificationToken" name="verification-token" value="<?= htmlspecialchars($verification_token) ?>">
                     </div>
 
                 </form>

@@ -1,4 +1,6 @@
 $(document).ready(function () {
+  const submitBtn = $("#SCO-login-button");
+
   // Toggle password visibility
   $("#reset-password-toggle-1").click(function () {
     togglePasswordVisibility("#password", $(this));
@@ -44,7 +46,6 @@ $(document).ready(function () {
     truncatePasswordIfExceedsMax($("#password_confirmation"));
     var passwordValue = $("#password").val().trim();
     var passwordConfirmationValue = $("#password_confirmation").val().trim();
-    var submitButton = $("#SCO-login-button");
     var errorText = $("#password-mismatch-error");
 
     // Password requirements
@@ -64,17 +65,17 @@ $(document).ready(function () {
       !hasNumber ||
       !hasSpecialChar
     ) {
-      submitButton.prop("disabled", true);
+      submitBtn.prop("disabled", true);
       errorText.hide();
       updateCheckIconVisibility(); // Update check icon visibility
       $(".password-requirements").removeClass("show"); // Hide password requirements
     } else if (passwordValue === passwordConfirmationValue) {
-      submitButton.prop("disabled", false);
+      submitBtn.prop("disabled", false);
       errorText.hide();
       updateCheckIconVisibility(); // Update check icon visibility
       $(".password-requirements").removeClass("show"); // Hide password requirements
     } else {
-      submitButton.prop("disabled", true);
+      submitBtn.prop("disabled", true);
       errorText.show();
       updateCheckIconVisibility(); // Update check icon visibility
       $(".password-requirements").addClass("show"); // Show password requirements
@@ -149,24 +150,27 @@ $(document).ready(function () {
   });
 
   // Process new password
-  $("#SCO-login-button").click(function (event) {
+  submitBtn.click(function (event) {
     event.preventDefault();
+    submitBtn.prop("disabled", true);
     var password = $("#password").val();
-    var password_confirmation = $("#password_confirmation").val();
-    var token = $("#token").val();
+    var passwordConfirmation = $("#password_confirmation").val();
+    var verificationToken = $("#verificationToken").val();
     $.ajax({
       url: "includes/process-new-password.php",
       type: "POST",
       data: {
         password: password,
-        password_confirmation: password_confirmation,
-        token: token,
+        passwordConfirmation: passwordConfirmation,
+        verificationToken: verificationToken,
       },
       success: function (response) {
         $("#successPasswordResetModal").modal("show");
+        submitBtn.prop("disabled", false);
       },
       error: function (xhr, status, error) {
-        console.error(xhr.responseText);
+        console.error(xhr.responseText, status, error);
+        submitBtn.prop("disabled", false);
       },
     });
   });

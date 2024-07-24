@@ -19,6 +19,7 @@ body {
 .account-section {
     padding-top: 4%;
     padding-bottom: 5%;
+    overflow-x: hidden;
 }
 
 .header-title {
@@ -62,10 +63,10 @@ body {
     /* padding-left: 20px; */
 }
 
-.step {
-    font-size: 14px;
+.step, .small-note {
+    font-size: 0.875rem;
     font-weight: 500;
-    line-height: 15.85px;
+    line-height: 0.991rem;
     letter-spacing: 0.06em;
     color: #1F1D1B;
     padding-top: 14px;
@@ -221,6 +222,11 @@ body {
         font-size: 0.625rem;
         padding-top: 5px;
     }
+
+    .small-note {
+        font-size: 0.5rem;
+        padding-left: 1rem;
+    }
     
     .account-container {
         padding: 40px 10px;
@@ -237,6 +243,8 @@ body {
 
     .account-container, .account-section {
         width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
     }
 
     .tbl-masterlist, .guidelines {

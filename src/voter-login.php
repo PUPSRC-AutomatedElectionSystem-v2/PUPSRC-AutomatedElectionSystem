@@ -3,7 +3,6 @@ include_once str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/includes/classes/
 require_once FileUtils::normalizeFilePath('includes/session-handler.php');
 require_once FileUtils::normalizeFilePath('includes/classes/session-manager.php');
 require_once FileUtils::normalizeFilePath('includes/classes/csrf-token.php');
-// require_once FileUtils::normalizeFilePath('includes/classes/db-connector.php');
 include_once FileUtils::normalizeFilePath('includes/session-exchange.php');
 include_once FileUtils::normalizeFilePath('includes/default-time-zone.php');
 include_once FileUtils::normalizeFilePath('includes/error-reporting.php');
@@ -29,38 +28,6 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
     unset($_SESSION['maxLimit']);
 }
 
-// $connection = DatabaseConnection::connect();
-
-// $sql = "";
-// $user_data = array();
-// $head_admin = 'head_admin';
-// $admin = 'admin';
-
-// // Checks if organization is not set to sco
-// if($_SESSION['organization'] !== 'sco') {
-//     $sql = "SELECT email, account_status FROM voter";
-//     $stmt = $connection->prepare($sql);
-// }
-// else {
-//     $sql = "SELECT email, account_status FROM voter WHERE role = ? OR role = ?";
-//     $stmt = $connection->prepare($sql);
-//     $stmt->bind_param("ss", $head_admin, $admin);
-// }
-
-// $stmt->execute();
-// $result = $stmt->get_result();
-
-// if($result->num_rows > 0) {
-//     while($row = $result->fetch_assoc()) {
-//         $email = $row['email'];
-//         $account_status = $row['account_status'];
-//         // Store email and status as key value pairs
-//         $user_data[$email] = $account_status;
-//     }
-// }
-
-// $connection->close();
-
 ?>
 
 <!DOCTYPE html>
@@ -69,6 +36,9 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="2024 BSIT 3-1" content="PUPSRC iVOTE">
 
     <!-- Preloader Stylesheet and Image -->
     <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
@@ -194,7 +164,7 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
                         <p class="sign-up-redirect fw-medium">Don't have an account? <a href="register.php" id="<?php echo strtolower($org_name); ?>SignUP" class="sign-up">Sign Up</a></p>
                         
                         <?php if($_SESSION['organization'] !== 'sco') : ?>
-                            <p class="acc-list-link lh-sm fw-medium">If you're an eligible member of <?php echo htmlspecialchars(strtoupper($org_acronym)); ?>, <br/>you can set up your account <a href="member-masterlist.php" class="fw-bold main-color">here.</a></p>
+                            <p class="acc-list-link lh-sm fw-medium pt-3">If you're an eligible member of <?php echo htmlspecialchars(strtoupper($org_acronym)); ?>, <br/>you can set up your account <a href="member-masterlist.php" class="fw-bold main-color">here.</a></p>
                         <?php endif; ?>
 
                     </form>

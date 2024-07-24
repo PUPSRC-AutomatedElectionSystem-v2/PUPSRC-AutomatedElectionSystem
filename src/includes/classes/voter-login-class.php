@@ -90,7 +90,8 @@ class Login extends IpAddress {
         $this->ip_manager->deleteIpAddress($this->ip_address);
 
         switch ($row['account_status']) {
-            case 'for_verification' || 'pending_setup':
+            case 'for_verification':
+            case 'pending_setup':
                 $this->redirectWithMessage($this->info_message, 'This account is under verification.');
                 break;
             case 'invalid':

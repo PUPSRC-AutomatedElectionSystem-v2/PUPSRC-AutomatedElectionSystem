@@ -148,7 +148,7 @@ if (isset($_SESSION['voter_id'])) {
                 <div class="container mb-5 ps-5 breadcrumbs-cont">
                     <div class="row justify-content-center">
                         <div class="col-md-11">
-                            <div class="breadcrumbs d-flex">
+                            <div class="breadcrumbs d-flex flex-wrap justify-content-center justify-content-md-start">
                                 <button type="button" class="btn-white d-flex align-items-center spacing-8 fs-8">
                                     <i data-feather="users" class="white im-cust feather-2xl"></i> <span class = "hide-text">CANDIDATES</span>
                                 </button>

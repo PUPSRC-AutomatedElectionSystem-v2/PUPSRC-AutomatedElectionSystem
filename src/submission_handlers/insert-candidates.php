@@ -3,6 +3,7 @@ include_once __DIR__ . '/../includes/classes/file-utils.php';
 require_once FileUtils::normalizeFilePath(__DIR__ . '/../includes/classes/db-connector.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/../includes/session-handler.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/../includes/session-exchange.php');
+require_once FileUtils::normalizeFilePath(__DIR__ . '/../includes/classes/logger.php');
 
 if (isset($_SESSION['voter_id'])) {
     $conn = DatabaseConnection::connect();
@@ -22,15 +23,17 @@ if (isset($_SESSION['voter_id'])) {
             $election_year = $currentYear . '-' . $nextYear;
 
             foreach ($_POST['last_name'] as $index => $last_name) {
-                $first_name = htmlspecialchars(trim($_POST['first_name'][$index]));
-                $middle_name = htmlspecialchars(trim($_POST['middle_name'][$index]));
-                $suffix = htmlspecialchars(trim($_POST['suffix'][$index]));
-                $party_list = htmlspecialchars(trim($_POST['party_list'][$index]));
+                // Capitalize the first letter of each word
+                $last_name = ucwords(htmlspecialchars(trim($last_name)));
+                $first_name = ucwords(htmlspecialchars(trim($_POST['first_name'][$index])));
+                $middle_name = ucwords(htmlspecialchars(trim($_POST['middle_name'][$index])));
+                $suffix = isset($_POST['suffix'][$index]) ? htmlspecialchars(trim($_POST['suffix'][$index])) : NULL;
+                $party_list = isset($_POST['party_list'][$index]) ? htmlspecialchars(trim($_POST['party_list'][$index])) : NULL;
                 $position_id = intval($_POST['position_id'][$index]);
                 $section_year_program = explode('-', $_POST['section'][$index]);
                 $program = htmlspecialchars(trim($section_year_program[0]));
                 $year_level = $section_year_program[1];
-                $section = $section_year_program[2];
+                $section = $section_year_program[2];    
 
                 $photo_url = '';
 
@@ -70,6 +73,13 @@ if (isset($_SESSION['voter_id'])) {
 
             if (empty($errors)) {
                 $_SESSION['account_created'] = true;
+                    if (count($_POST['last_name']) === 1) {
+                        $logger = new Logger($_SESSION['role'], ADD_CANDIDATE);
+                        $logger->logActivity(); 
+                    }else{
+                        $logger = new Logger($_SESSION['role'], ADD_MULTIPLE_CANDIDATES);
+                        $logger->logActivity();
+                    }
                 header("Location: ../add-candidate.php");
             } else {
                 $_SESSION['errors'] = $errors;

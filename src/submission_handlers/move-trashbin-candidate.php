@@ -4,6 +4,7 @@ require_once FileUtils::normalizeFilePath('../includes/classes/db-connector.php'
 require_once FileUtils::normalizeFilePath('../includes/session-handler.php');
 require_once FileUtils::normalizeFilePath('../includes/classes/session-manager.php');
 require_once FileUtils::normalizeFilePath('../includes/classes/query-handler.php');
+require_once FileUtils::normalizeFilePath(__DIR__ . '/../includes/classes/logger.php');
 
 if (isset($_POST['ids']) && is_array($_POST['ids'])) {
     $voterManager = new VoterManager();
@@ -18,6 +19,13 @@ if (isset($_POST['ids']) && is_array($_POST['ids'])) {
     
     if ($stmt->execute()) {
         echo json_encode(['success' => true]);
+        if (count($ids) === 1) {
+            $logger = new Logger($_SESSION['role'], DELETE_CANDIDATE);
+            $logger->logActivity();
+        } else {
+            $logger = new Logger($_SESSION['role'], DELETE_MULTIPLE_CANDIDATES);
+            $logger->logActivity();
+        }
     } else {
         echo json_encode(['success' => false, 'message' => 'Failed to update records']);
     }

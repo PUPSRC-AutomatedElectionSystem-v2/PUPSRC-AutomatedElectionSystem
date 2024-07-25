@@ -585,6 +585,29 @@ handleSearch("#searchVerified", "verifiedTable", "verified-pagination", "submiss
 // -- DELETION/MOVING TO TRRASHBIN
 
 
+// ++ DOWNLOAD EXCEL FROM VERIFIED TABLE
+function downloadExcel() {
+  fetch(`includes/voters-xls.php`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.error) {
+        console.error("Error:", data.error);
+        return;
+      }
+
+      // Create a new workbook and a worksheet
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(data);
+
+      // Append the worksheet to the workbook
+      XLSX.utils.book_append_sheet(wb, ws, "Voters Masterlist");
+
+      // Generate Excel file and trigger download
+      XLSX.writeFile(wb, `verified_voters_masterlist.xlsx`);
+    })
+    .catch((error) => console.error("Error fetching data:", error));
+}
+// -- DOWNLOAD EXCEL FROM VERIFIED TABLE
 
 // ++ MISC FUNCTIONS
 

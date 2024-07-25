@@ -50,19 +50,19 @@ nav {
 
     a:hover,
     .submenu-item:hover {
-        background-color: light-dark(rgb(255, 121, 0, 0.1), rgb(255, 121, 0, 0.3));
+        background-color: light-dark(color-mix(in srgb, var(--main-color) 10%, transparent), color-mix(in srgb, var(--main-color) 30%, transparent));
     }
 }
 
 table.table> :not(caption)>*>* {
-    background-color: light-dark(var(--bs-table-bg), #3c4042);
+    background-color: light-dark(var(--bs-table-bg), #6c7072);
 }
 
 .card-box {
     background-color: light-dark(var(--white), #3c4042);
 
     &.schedule {
-        background-color: light-dark(var(--white), #6c7072);
+        background-color: light-dark(var(--white), #606368);
     }
 }
 
@@ -101,11 +101,6 @@ table.table> :not(caption)>*>* {
     font-size: clamp(0.8rem, 0.5rem + 0.5vw, 1vw);
 }
 
-html:has(.main) {
-    textarea:disabled {
-        background-color: light-dark(transparent, transparent);
-    }
-}
 
 body {
 
@@ -122,8 +117,10 @@ body {
     }
 }
 
+
 input,
-textarea {
+textarea,
+.ql-editor {
     background-color: light-dark(var(--white), #ccc);
 
     &.form-control {
@@ -131,17 +128,45 @@ textarea {
 
         &:focus {
             background-color: light-dark(var(--white), #d6d4d4);
+            color: var(--main-black);
+
+        }
+
+        &:disabled,
+        &:read-only {
+            background-color: light-dark(transparent, #ccc);
         }
     }
 }
 
+
 textarea,
-.ql-editor {
-    background-color: light-dark(var(--white), #ccc);
+div.ql-editor[contenteditable] {
     resize: none;
+
+    @media (prefers-color-scheme: dark) {
+        color: var(--main-black);
+    }
 
     &::-webkit-scrollbar {
         display: none;
+    }
+}
+
+div:has(.ql-editor[contenteditable]) {
+    @media (prefers-color-scheme: dark) {
+        color: var(--main-black);
+        font-weight: normal;
+
+        *,
+        ::before,
+        ::after {
+            color: inherit;
+
+            &:not(strong, em) {
+                font-weight: inherit;
+            }
+        }
     }
 }
 
@@ -151,7 +176,8 @@ input:focus-visible::placeholder,
 textarea:focus-visible,
 textarea:focus-visible::placeholder,
 input:disabled,
-textarea:disabled [contenteditable] {
+textarea:disabled,
+[contenteditable] {
     font-size: clamp(1rem, 0.75rem + 0.5vw, 1.5vw);
 
     &:focus-visible {
@@ -291,7 +317,9 @@ input[type="checkbox"]:not(disabled) {
 }
 
 .required {
-    color: red;
+    color: light-dark(red, var(--danger)) !important;
+    font-weight: 900;
+
 }
 
 section .toast-container,
@@ -558,6 +586,16 @@ section .toast-container-unstacked {
         filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25));
         padding: clamp(1rem, 0.25rem + 0.5vw, 3rem) clamp(1.25rem, 0.5rem + 0.5vw, 3.5rem);
 
+        @media (prefers-color-scheme: dark) {
+            background-color: #606368;
+        }
+
+        .inner.show {
+            @media (prefers-color-scheme: dark) {
+                background-color: #606368;
+            }
+        }
+
         ul.dropdown-menu li {
             @extend %general-responsive-base-font-size;
             text-align: center;
@@ -565,6 +603,18 @@ section .toast-container-unstacked {
 
             span.text {
                 font-weight: 500;
+            }
+
+            a {
+                @media (prefers-color-scheme: dark) {
+                    color: var(--white);
+
+                    &:hover {
+                        border-radius: 8px;
+                        background-color: color-mix(in srgb, var(--main-color) 50%, white 25%);
+                    }
+
+                }
             }
 
             %hide-default-blank-option {

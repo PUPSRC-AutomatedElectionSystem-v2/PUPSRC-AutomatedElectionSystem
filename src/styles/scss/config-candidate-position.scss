@@ -170,9 +170,14 @@ body dialog.modal-native {
         }
 
         label[for="positionInput"] {
-            color: var(--main-color);
+            color: light-dark(var(--main-color), var(--main-black));
+            // color: light-dark(var(--main-color), color-mix(in srgb, var(--main-color), white 50%));
             font-weight: 800;
+            // filter: contrast(1.1);
+            // filter: saturate(85%);
         }
+
+
 
         #positionInput {
 
@@ -245,15 +250,6 @@ body dialog.modal-native {
 
     }
 
-
-    .form-control {
-        color: var(--main-black);
-
-        &:focus {
-            // color: var(--main-black);
-            background-color: var(--white);
-        }
-    }
 
     .modal-body:has(.affected.candidate-list) {
         display: flex;

@@ -4,7 +4,7 @@ include_once 'modals.php';
 (new class
 {
     use ConfigGuard;
-})::generateCSRFToken(time() + (60 * 20));
+})::generateCSRFToken(time() + (60 * 30));
 ?>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.5.0/css/rowReorder.bootstrap5.css">

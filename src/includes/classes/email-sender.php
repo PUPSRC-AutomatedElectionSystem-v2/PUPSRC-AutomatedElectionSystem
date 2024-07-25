@@ -142,6 +142,39 @@ class EmailSender
         return $this->sendEmail($recipientEmail, $subject, $mailBody);
     }
 
+
+    public function sendAccountSetupLink($recipientEmail, $verificationToken, $org_name) 
+    {
+        $subject = 'iVOTE Account Setup';
+        $setupLink = $this->app_url . "create-password?token=" .urlencode($verificationToken) . "&orgName=" . urlencode($org_name);
+        $mailBody = <<<EOT
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>$subject</title>
+        </head>
+        <body">
+            <p>Dear Iskolar,</p>
+            <p>We have received a request to setup your account. To complete the process, 
+            please follow the instructions below:</p>
+            <ul style="padding-left: 20px;">
+                <li>Click on the following link to setup your account: <a href="$setupLink">Account Setup</a></li>
+                <li>If you are unable to click the link above, please copy and paste it into your browser's address bar.</li>
+                <li>Once the link opens, you will be prompted to enter a new password for your account. Please choose a strong and secure password to ensure the safety of your account.</li>
+            </ul>
+            <p>If you did not initiate this, please disregard this email.</p>
+            <p>Thank you for your attention to this matter.</p>
+            <p>Best regards,<br>iVOTE Team</p>
+        </body>
+        </html>
+        EOT;
+
+        return $this->sendEmail($recipientEmail, $subject, $mailBody);
+    }
+    
+
     public function sendElectionCloseEmail($bccs)
     {
         global $org_acronym;

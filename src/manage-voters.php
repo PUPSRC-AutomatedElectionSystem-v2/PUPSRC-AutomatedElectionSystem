@@ -36,6 +36,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 		<link rel="stylesheet" href="styles/loader.css" />
 		<link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 		<script src="scripts/loader.js"></script>
 
 	</head>
@@ -235,63 +236,80 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 													<div class="table-title">
 														<div class="row verified-accs-table">
 															<!-- Table Header -->
-															<div class="col-sm-6">
+															<div class="col-sm-5">
 																<p class="fs-3 main-color fw-bold ls-10 spacing-6">Voters'
 																	Accounts</p>
 															</div>
-															<div class="col-sm-6">
+															<div class="col-sm-7">
 																<div class="row">
 
 
 																	<div class="col-md-12 filters-sort">
-																		<!-- Delete -->
-																		<div class="d-inline-block">
-																			<button
-																				class="delete-btn verified-delete-btn fs-7 spacing-6 fw-medium"
-																				type="button" id="dropdownMenuButton"
-																				data-bs-toggle="dropdown" aria-haspopup="true"
-																				aria-expanded="false">
-																				<i class="fa-solid fa-trash-can fa-sm"></i>
-																				Delete
-																			</button>
-																			<span
-																				class="light-gray-accent fw-bold ps-3">|</span>
-																		</div>
-																		<!-- Filters -->
+																		<div class="funcs">
+																			<!-- Delete -->
+																			<div class="d-inline-block">
+																				<button
+																					class="pe-3 delete-btn verified-delete-btn fs-7 spacing-6 fw-medium"
+																					type="button" id="dropdownMenuButton"
+																					data-bs-toggle="dropdown"
+																					aria-haspopup="true" aria-expanded="false">
+																					<i class="fa-solid fa-trash-can fa-sm"></i>
+																					<span class="toggle-visibility"> Delete
+																					</span>
+																				</button>
 
-																		<!-- Sort By -->
-																		<div class="d-inline-block ps-3">
-																			<form class="d-inline-block">
-																				<div class="dropdown sort-by">
-																					<button
-																						class="sortby-tbn fs-7 spacing-6 fw-medium"
-																						type="button"
-																						id="dropdownMenuButtonVerified"
-																						data-bs-toggle="dropdown"
-																						aria-haspopup="true"
-																						aria-expanded="false">
-																						<i
-																							class="fa-solid fa-arrow-down-wide-short fa-sm"></i>
-																						Sort by
-																					</button>
-																					<div class="dropdown-menu dropdown-menu-end"
-																						aria-labelledby="dropdownMenuButtonVerified"
-																						style="padding: 0.5rem">
-																						<li class="dropdown-item ps-3 fs-7 fw-medium"
-																							data-sort="newest">Newest to Oldest
-																						</li>
-																						<li class="dropdown-item ps-3 fs-7 fw-medium"
-																							data-sort="oldest">Oldest to Newest
-																						</li>
-																						<li class="dropdown-item ps-3 fs-7 fw-medium"
-																							data-sort="asc">A to Z (Ascending)
-																						</li>
-																						<li class="dropdown-item ps-3 fs-7 fw-medium"
-																							data-sort="desc">Z to A (Descending)
-																						</li>
+																				<button
+																					class="sortby-tbn fs-7 spacing-6 fw-medium"
+																					type="button" onclick="downloadExcel()">
+																					<i class="fa-solid fa-download fa-sm"></i>
+																					<span
+																						class="toggle-visibility">Export</span>
+																				</button>
+
+
+																				<span
+																					class="light-gray-accent fw-bold ps-3 hide-vertical">|</span>
+																			</div>
+																			<!-- Filters -->
+
+																			<!-- Sort By -->
+																			<div class="d-inline-block padding-sortby">
+																				<form class="d-inline-block">
+																					<div class="dropdown sort-by">
+																						<button
+																							class="sortby-tbn fs-7 spacing-6 fw-medium"
+																							type="button"
+																							id="dropdownMenuButtonVerified"
+																							data-bs-toggle="dropdown"
+																							aria-haspopup="true"
+																							aria-expanded="false">
+																							<i
+																								class="fa-solid fa-arrow-down-wide-short fa-sm"></i>
+																							Sort by
+																						</button>
+																						<div class="dropdown-menu dropdown-menu-end"
+																							aria-labelledby="dropdownMenuButtonVerified"
+																							style="padding: 0.5rem">
+																							<li class="dropdown-item ps-3 fs-7 fw-medium"
+																								data-sort="newest">Newest to
+																								Oldest
+																							</li>
+																							<li class="dropdown-item ps-3 fs-7 fw-medium"
+																								data-sort="oldest">Oldest to
+																								Newest
+																							</li>
+																							<li class="dropdown-item ps-3 fs-7 fw-medium"
+																								data-sort="asc">A to Z
+																								(Ascending)
+																							</li>
+																							<li class="dropdown-item ps-3 fs-7 fw-medium"
+																								data-sort="desc">Z to A
+																								(Descending)
+																							</li>
+																						</div>
 																					</div>
-																				</div>
-																			</form>
+																				</form>
+																			</div>
 																		</div>
 
 																		<!-- Search -->
@@ -461,7 +479,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 									<div class="row">
 										<div class="col-md-12 pb-3">
 											<p class="fw-bold fs-3 success-color spacing-4">Deleted successfully</p>
-											<p class="fw-medium spacing-5 fs-7">The deleted account has been moved to <span
+											<p class="fw-medium spacing-5 fs-7">The deleted account(s) has been moved to <span
 													class="fw-bold">Recycle Bin</span>.
 											</p>
 										</div>

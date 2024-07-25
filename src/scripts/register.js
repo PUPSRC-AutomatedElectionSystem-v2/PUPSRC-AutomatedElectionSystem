@@ -1,6 +1,21 @@
 $(document).ready(function () {
   let termsAndPolicyData = null;
   let dataLoaded = false;
+  const studentNumber = $("#student_number");
+  const firstName = $("#first_name");
+  const middleName = $("#middle_name");
+  const lastName = $("#last_name");
+  const suffix = $("#suffix");
+  const email = $("#email");
+  const organization = $("#org");
+  const password = $("#password");
+  const confirmPassword = $("#retype-pass");
+  const privacyAndTerms = $("#privacyTerms");
+  const submitButton = $("#sign-up");
+  const studentNumberRegex = /^\d{4}-\d{5}-[A-Z]{2}-\d$/;
+  const passwordRegex =
+    /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])[^\s]{8,20}$/;
+  const nameRegex = /^[a-zA-ZñÑ]+([ ,.'-][a-zA-ZñÑ]+)*$/;
 
   let isDirty = false;
   let targetUrl = "";
@@ -38,6 +53,39 @@ $(document).ready(function () {
     }
   });
 
+  /* ----------------------------------------------------
+      START: CHECK OPEN ORGANIZATIONS FOR REGISTRATION 
+  ------------------------------------------------------- */
+
+  $.ajax({
+    url: "includes/check-open-reg.php",
+    type: "GET",
+    success: function (response) {
+      updateDropdown(response);
+    },
+    error: function (xhr, status, error) {
+      console.error(error);
+    },
+  });
+
+  function updateDropdown(response) {
+    const select = organization;
+    select.find("option").each(function () {
+      const value = $(this).val();
+      if (value && response[value]) {
+        if (response[value] === "closed") {
+          $(this).addClass("text-secondary");
+          $(this).attr("disabled", "disabled");
+        } else if (response[value] === "open") {
+          $(this).addClass("fw-semibold");
+        }
+      }
+    });
+  }
+  /* ----------------------------------------------------
+      END: CHECK OPEN ORGANIZATIONS FOR REGISTRATION 
+  ------------------------------------------------------- */
+
   function loadTermsAndPrivacyPolicy() {
     $.getJSON("includes/misc/terms-and-privacy.json", function (data) {
       termsAndPolicyData = data;
@@ -49,11 +97,16 @@ $(document).ready(function () {
   loadTermsAndPrivacyPolicy();
 
   const fields = {
+    studentNumber: { touched: false },
+    firstName: { touched: false },
+    middleName: { touched: false },
+    lastName: { touched: false },
+    suffix: { touched: false },
     email: { touched: false },
     org: { touched: false },
     password: { touched: false },
     retypePass: { touched: false },
-    cor: { touched: false },
+    // cor: { touched: false },
   };
 
   function preventSpaces(event) {
@@ -63,27 +116,109 @@ $(document).ready(function () {
     $(input).val(value);
   }
 
+  function preventLeadingSpace(event) {
+    const input = event.target;
+    if (input.value.startsWith(" ")) {
+      input.value = input.value.trim();
+    }
+    input.value = input.value.replace(/\s{2,}/g, " ");
+  }
+
+  // Checks for valid student number
+  function validateStudentNumber(input, showErrorMessages = false) {
+    let studentNumberValue = input.val().trim();
+    const errorElement = input.next();
+
+    if (!studentNumberRegex.test(studentNumberValue)) {
+      if (showErrorMessages && fields.studentNumber.touched)
+        showError(
+          input,
+          errorElement,
+          "Please follow the proper format for student number."
+        );
+      return false;
+    } else {
+      clearError(input, errorElement);
+      return true;
+    }
+  }
+
+  function sliceStringLength(input, max) {
+    let inputValue = input.val().trim();
+    if (inputValue.length > max) {
+      inputValue = inputValue.slice(0, max);
+      input.val(inputValue);
+    }
+    return inputValue;
+  }
+
+  function validateFirstName(input, showErrorMessages = false) {
+    let firstNameValue = input.val().trim();
+    const errorElement = input.next();
+
+    if (!nameRegex.test(firstNameValue)) {
+      if (showErrorMessages && fields.firstName.touched)
+        showError(input, errorElement, "Please use a valid first name.");
+      return false;
+    } else {
+      clearError(input, errorElement);
+      return true;
+    }
+  }
+
+  function validateMiddleName(input, showErrorMessages = false) {
+    let middleNameNameValue = input.val().trim();
+    const errorElement = input.next();
+
+    if (middleNameNameValue && !nameRegex.test(middleNameNameValue)) {
+      if (showErrorMessages && fields.middleName.touched)
+        showError(input, errorElement, "Please use a valid middle name.");
+      return false;
+    } else {
+      clearError(input, errorElement);
+      return true;
+    }
+  }
+
+  function validateLastName(input, showErrorMessages = false) {
+    let lastNameNameValue = input.val().trim();
+    const errorElement = input.next();
+
+    if (!nameRegex.test(lastNameNameValue)) {
+      if (showErrorMessages && fields.lastName.touched)
+        showError(input, errorElement, "Please use a valid last name.");
+      return false;
+    } else {
+      clearError(input, errorElement);
+      return true;
+    }
+  }
+
+  function validateSuffix(input, showErrorMessages = false) {
+    let suffixValue = input.val().trim();
+    const errorElement = input.next();
+
+    if (suffixValue && !nameRegex.test(suffixValue)) {
+      if (showErrorMessages && fields.suffix.touched)
+        showError(input, errorElement, "Please use a valid suffix.");
+      return false;
+    } else {
+      clearError(input, errorElement);
+      return true;
+    }
+  }
+
   // Check for valid email and if one already exists in the voter table
   function validateEmail(input, showErrorMessages = false) {
     let emailValue = input.val().trim();
     const errorElement = input.next();
-
-    // Truncate email if exceeds 255 characters
-    if (emailValue.length > 255) {
-      emailValue = emailValue.slice(0, 255);
-      input.val(emailValue);
-    }
 
     const isValidFormat = validateEmailFormat(emailValue);
     const isExistingEmail = emails.includes(emailValue);
 
     if (!isValidFormat) {
       if (showErrorMessages && fields.email.touched)
-        showError(
-          input,
-          errorElement,
-          "Please provide a valid email address, such as johndoe@gmail.com."
-        );
+        showError(input, errorElement, "Please provide a valid email address.");
       return false;
     } else if (isExistingEmail) {
       if (showErrorMessages && fields.email.touched)
@@ -118,21 +253,12 @@ $(document).ready(function () {
     let passwordValue = input.val();
     const errorElement = input.next();
 
-    // Truncate password if exceeds 20 characters
-    if (passwordValue.length > 20) {
-      passwordValue = passwordValue.slice(0, 20);
-      input.val(passwordValue);
-    }
-
-    const passwordRegex =
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9\s])[^\s]{8,20}$/;
-
     if (!passwordRegex.test(passwordValue)) {
       if (showErrorMessages && fields.password.touched)
         showError(
           input,
           errorElement,
-          "Password must be 8-20 characters long with letters, numbers, and symbols."
+          "Password must be 8-20 characters with a number, an uppercase letter, a lowercase letter, and a special character."
         );
       return false;
     } else {
@@ -149,12 +275,6 @@ $(document).ready(function () {
     let retypePassValue = input.val();
     const errorElement = input.next();
 
-    // Truncate retype password if exceeds 20 characters
-    if (retypePassValue.length > 20) {
-      retypePassValue = retypePassValue.slice(0, 20);
-      input.val(retypePassValue);
-    }
-
     if (retypePassValue !== originalPasswordInput.val()) {
       if (showErrorMessages && fields.retypePass.touched)
         showError(input, errorElement, "Passwords do not match.");
@@ -165,41 +285,41 @@ $(document).ready(function () {
     }
   }
 
-  function validateCOR(showErrorMessages = false) {
-    const file = $("#cor").prop("files")[0];
-    const errorElement = $("#cor").next();
+  // function validateCOR(showErrorMessages = false) {
+  //   const file = $("#cor").prop("files")[0];
+  //   const errorElement = $("#cor").next();
 
-    if (!file) {
-      if (showErrorMessages && fields.cor.touched)
-        showError(
-          $("#cor"),
-          errorElement,
-          "Please upload your Certificate of Registration."
-        );
-      return false;
-    }
+  //   if (!file) {
+  //     if (showErrorMessages && fields.cor.touched)
+  //       showError(
+  //         $("#cor"),
+  //         errorElement,
+  //         "Please upload your Certificate of Registration."
+  //       );
+  //     return false;
+  //   }
 
-    const fileName = file.name;
-    const fileExtension = fileName.split(".").pop().toLowerCase();
+  //   const fileName = file.name;
+  //   const fileExtension = fileName.split(".").pop().toLowerCase();
 
-    // Check if file is PDF extension
-    if (fileExtension !== "pdf") {
-      $("#cor").val("");
-      showModal("onlyPDFAllowedModal");
-      return false;
-    }
+  //   // Check if file is PDF extension
+  //   if (fileExtension !== "pdf") {
+  //     $("#cor").val("");
+  //     showModal("onlyPDFAllowedModal");
+  //     return false;
+  //   }
 
-    // Check if file size exceeds 25mb
-    const fileSizeInMB = file.size / (1024 * 1024);
-    if (fileSizeInMB > 25) {
-      $("#cor").val("");
-      showModal("onlyPDFAllowedModal");
-      return false;
-    }
+  //   // Check if file size exceeds 25mb
+  //   const fileSizeInMB = file.size / (1024 * 1024);
+  //   if (fileSizeInMB > 25) {
+  //     $("#cor").val("");
+  //     showModal("onlyPDFAllowedModal");
+  //     return false;
+  //   }
 
-    clearError($("#cor"), errorElement);
-    return true;
-  }
+  //   clearError($("#cor"), errorElement);
+  //   return true;
+  // }
 
   // Check if terms and conditions checkbox ticked?
   function validateTermsCheckbox() {
@@ -279,25 +399,33 @@ $(document).ready(function () {
 
   // MAIN FORM VALIDATOR
   function checkFormValidity() {
-    const emailValid = validateEmail($("#email"), false);
-    const orgValid = validateOrg($("#org"), false);
-    const passwordValid = validatePassword($("#password"), false);
+    const firstNameValid = validateFirstName(firstName, false);
+    const middleNameValid = validateMiddleName(middleName, false);
+    const lastNameValid = validateLastName(lastName, false);
+    const suffixValid = validateSuffix(suffix, false);
+    const studentNumberValid = validateStudentNumber(studentNumber, false);
+    const emailValid = validateEmail(email, false);
+    const orgValid = validateOrg(organization, false);
+    const passwordValid = validatePassword(password, false);
     const retypePassValid = validateRetypePassword(
-      $("#retype-pass"),
-      $("#password"),
+      confirmPassword,
+      password,
       false
     );
-    const corValid = validateCOR(false);
+    // const corValid = validateCOR(false);
     const termsChecked = validateTermsCheckbox();
 
-    const submitButton = $("#sign-up");
-
     if (
+      firstNameValid &&
+      middleNameValid &&
+      lastNameValid &&
+      suffixValid &&
+      studentNumberValid &&
       emailValid &&
       orgValid &&
       passwordValid &&
       retypePassValid &&
-      corValid &&
+      // corValid &&
       termsChecked
     ) {
       submitButton.removeAttr("disabled");
@@ -306,44 +434,112 @@ $(document).ready(function () {
     }
   }
 
-  // Event listeners to prevent whitespaces haha
-  $("#email, #password, #retype-pass").on("input", function (event) {
+  /* ----------------------------------------------------
+                START: ON INPUT EVENTS 
+  ------------------------------------------------------- */
+
+  studentNumber.on("input", function (event) {
+    sliceStringLength(studentNumber, 15);
     preventSpaces(event);
     checkFormValidity();
   });
 
-  // Event listeners for all input fields validity
-  $("#email").on("change", function () {
-    fields.email.touched = true;
-    validateEmail($(this), true);
+  firstName.on("input", function (event) {
+    sliceStringLength(firstName, 100);
+    preventLeadingSpace(event);
     checkFormValidity();
   });
 
-  $("#org").on("change", function () {
-    fields.org.touched = true;
-    validateOrg($(this), true);
+  middleName.on("input", function (event) {
+    sliceStringLength(middleName, 100);
+    preventLeadingSpace(event);
     checkFormValidity();
   });
 
-  $("#password").on("input", function () {
+  lastName.on("input", function (event) {
+    sliceStringLength(lastName, 100);
+    preventLeadingSpace(event);
+    checkFormValidity();
+  });
+
+  suffix.on("input", function (event) {
+    sliceStringLength(suffix, 10);
+    preventLeadingSpace(event);
+    checkFormValidity();
+  });
+
+  email.on("input", function (event) {
+    sliceStringLength(email, 255);
+    preventSpaces(event);
+    checkFormValidity();
+  });
+
+  password.on("input", function (event) {
+    sliceStringLength(password, 20);
+    preventSpaces(event);
     fields.password.touched = true;
     validatePassword($(this), true);
     checkFormValidity();
   });
 
-  $("#retype-pass").on("input", function () {
+  confirmPassword.on("input", function (event) {
+    sliceStringLength(confirmPassword, 20);
+    preventSpaces(event);
     fields.retypePass.touched = true;
-    validateRetypePassword($(this), $("#password"), true);
+    validateRetypePassword($(this), password, true);
     checkFormValidity();
   });
 
-  $("#cor").on("change", function () {
-    fields.cor.touched = true;
-    validateCOR(true);
+  privacyAndTerms.on("input", function () {
     checkFormValidity();
   });
 
-  $("#privacyTerms").on("input", function () {
+  /* ----------------------------------------------------
+                END: ON INPUT EVENTS 
+  ------------------------------------------------------- */
+
+  /* ----------------------------------------------------
+                START: ON CHANGE EVENTS 
+  ------------------------------------------------------- */
+  studentNumber.on("change", function () {
+    fields.studentNumber.touched = true;
+    validateStudentNumber($(this), true);
+    checkFormValidity();
+  });
+
+  firstName.on("change", function () {
+    fields.firstName.touched = true;
+    validateFirstName($(this), true);
+    checkFormValidity();
+  });
+
+  middleName.on("change", function () {
+    fields.middleName.touched = true;
+    validateMiddleName($(this), true);
+    checkFormValidity();
+  });
+
+  lastName.on("change", function () {
+    fields.lastName.touched = true;
+    validateLastName($(this), true);
+    checkFormValidity();
+  });
+
+  suffix.on("change", function () {
+    fields.suffix.touched = true;
+    validateSuffix($(this), true);
+    checkFormValidity();
+  });
+
+  email.on("change", function () {
+    fields.email.touched = true;
+    validateEmail($(this), true);
+    checkFormValidity();
+  });
+
+  organization.on("change", function () {
+    fields.org.touched = true;
+    validateOrg($(this), true);
     checkFormValidity();
   });
 

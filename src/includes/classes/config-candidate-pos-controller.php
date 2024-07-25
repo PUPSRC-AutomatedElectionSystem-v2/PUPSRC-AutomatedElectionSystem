@@ -1,6 +1,7 @@
 <?php
 include_once 'file-utils.php';
 require_once FileUtils::normalizeFilePath('../error-reporting.php');
+include_once 'config-controller.php';
 require_once FileUtils::normalizeFilePath('../session-handler.php');
 require_once FileUtils::normalizeFilePath('../model/configuration/candidate-pos-model.php');
 require_once FileUtils::normalizeFilePath('../model/configuration/endpoint-response.php');
@@ -8,18 +9,27 @@ require_once FileUtils::normalizeFilePath('../model/configuration/endpoint-respo
 
 class CandidatePositionController extends CandidatePosition
 {
-    use EndpointResponse;
+    use EndpointResponse, ConfigGuard;
     private $mode;
+    private $data;
 
     public function __construct($mode = 'data')
     {
         $this->mode = $mode;
+        $this->data = $this->decodeData();
+        // print_r($this->data);
     }
 
     public function decodeData()
     {
         $json_data = file_get_contents('php://input');
         return json_decode($json_data, true);
+    }
+
+    public function getReqData()
+    {
+        $csrf_token = array_pop($this->data);
+        return [$csrf_token, $this->data];
     }
 
     public function submit($data)
@@ -249,41 +259,23 @@ class CandidatePositionController extends CandidatePosition
     }
 }
 
-$allowed_roles = ['admin', 'head_admin'];
-$is_page_accessible = isset($_SESSION['voter_id'], $_SESSION['role'], $_SESSION['organization']) &&
-    (in_array($_SESSION['role'], $allowed_roles)) &&
-    !empty($_SESSION['organization']);
-
-if (!$is_page_accessible) {
-    $response = [
-        'status' => 'error',
-        'message' => 'Unauthorized'
-    ];
-    (new class
-    {
-        use EndpointResponse;
-    })::sendResponse(401, $response);
-    exit();
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'UPDATE') {
     $controller = new CandidatePositionController('sequence');
 
-    $decoded_data = $controller->decodeData();
-
-    if (isset($decoded_data['update_sequence']) && json_last_error() === JSON_ERROR_NONE) {
+    if (json_last_error() === JSON_ERROR_NONE) {
+        [$reqId,  $decoded_data] = $controller->getReqData();
+        $controller->validateRequestOrigin($reqId);
         $controller->submit($decoded_data['update_sequence']);
     }
-
     // echo json_encode($decoded_data);
 } else
 
 if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
     $controller = new CandidatePositionController();
 
-    $decoded_data = $controller->decodeData();
-
     if (json_last_error() === JSON_ERROR_NONE) {
+        [$reqId,  $decoded_data] = $controller->getReqData();
+        $controller->validateRequestOrigin($reqId['csrf_token']);
         $controller->submit($decoded_data);
     }
 
@@ -293,9 +285,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
 if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     $controller = new CandidatePositionController('delete');
 
-    $decoded_data = $controller->decodeData();
-
     if (json_last_error() === JSON_ERROR_NONE) {
+        [$reqId,  $decoded_data] = $controller->getReqData();
+        $controller->validateRequestOrigin($reqId);
         if (isset($decoded_data['confirmed_delete'])) {
             $controller->submit($decoded_data['confirmed_delete']);
         } else if (isset($decoded_data['delete_position'])) {

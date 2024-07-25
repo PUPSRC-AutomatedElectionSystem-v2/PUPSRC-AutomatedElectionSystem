@@ -6,23 +6,33 @@ require_once FileUtils::normalizeFilePath(__DIR__ . '/../error-reporting.php');
 include_once FileUtils::normalizeFilePath(__DIR__ . '/../default-time-zone.php');
 
 class Registration {
+    private $student_number;
+    private $first_name;
+    private $last_name;
+    private $middle_name;
+    private $suffix;
     private $email;
     private $password;
     private $confirm_password;
     private $organization;
-    private $file;
-    private $file_hash;
-    private $file_name;
+    // private $file;
+    // private $file_hash;
+    // private $file_name;
     private $connection;
     private const ACCOUNT_STATUS = 'for_verification';
     private const ROLE = 'student_voter';
 
-    public function __construct($email, $password, $confirm_password, $organization, $file) {
+    public function __construct($student_number, $first_name, $middle_name, $last_name, $suffix, $email, $password, $confirm_password, $organization) {
+        $this->student_number = $student_number;
+        $this->first_name = $first_name;
+        $this->last_name = $last_name;
+        $this->middle_name = $middle_name;
+        $this->suffix = $suffix;
         $this->email = $email;
         $this->password = $password;
         $this->confirm_password = $confirm_password;
         $this->organization = $organization;
-        $this->file = $file;
+        // $this->file = $file;
 
         $this->initializeDatabaseConnection();
     }
@@ -38,13 +48,16 @@ class Registration {
         try {        
             unset($_SESSION['registration_success']);
             unset($_SESSION['error_message']);
-            $this->validateEmailAndPasswordLength();
+            $this->validateStudentNumber();
+            $this->validateEmailLength();
+            $this->validateNamesLength();
+            $this->validateNameFormat();
             $this->validateEmailFormat();
             $this->validateEmailNotExist();
             $this->validatePasswords();
-            $this->validateFile();
-            $this->saveFile();
-            $this->saveFileToSco();
+            // $this->validateFile();
+            // $this->saveFile();
+            // $this->saveFileToSco();
             $this->beginTransaction();
             $this->insertIntoOrganizationDB();
             $this->insertIntoScoDB();
@@ -63,21 +76,81 @@ class Registration {
         }
     }
 
-    // Validate email and password string length to avoid buffer overflow
-    private function validateEmailAndPasswordLength() {
+    
+    // Validates student number
+    private function validateStudentNumber() {
+        $student_number_regex = '/^\d{4}-\d{5}-[A-Z]{2}-\d$/';
+
+        if(empty($this->student_number)) {
+            throw new Exception("Student number cannot be empty.");
+        }
+
+        if(!preg_match($student_number_regex, $this->student_number)) {
+            throw new Exception("Please follow the proper format for student number.");
+        }
+    }
+
+    // Validate email and password string length
+    private function validateEmailLength() {
         if (strlen($this->email) > 255) {
             throw new Exception("Email address must not exceed 255 characters");
         }
+    }
 
-        if (strlen($this->password) > 20) {
-            throw new Exception("Password must not exceed 20 characters");
+    // Validates names string length
+    private function validateNamesLength() {
+        $max_length = 100;
+        $suffix_max_length = 10;
+
+        if (strlen($this->first_name) > $max_length) {
+            throw new Exception("First name must not exceed 100 characters.");
+        }
+    
+        if ($this->middle_name !== NULL && strlen($this->middle_name) > $max_length) {
+            throw new Exception("Middle name must not exceed 100 characters.");
+        }
+        else {
+            $this->middle_name = NULL;
+        }
+    
+        if (strlen($this->last_name) > $max_length) {
+            throw new Exception("Last name must not exceed 100 characters.");
+        }
+    
+        if ($this->suffix !== NULL && strlen($this->suffix) > $suffix_max_length) {
+            throw new Exception("Suffix must not exceed 10 characters.");
+        }
+        else {
+            $this->suffix = NULL;
+        }
+    }
+
+    // Validates name values
+    private function validateNameFormat() {
+        $name_regex =  '/^[a-zA-ZñÑ]+([ ,.\'-][a-zA-ZñÑ]+)*$/';
+        $error_message = "Please use a valid name format.";
+
+        if(!preg_match($name_regex, $this->first_name)) {
+            throw new Exception($error_message);
+        }
+
+        if($this->middle_name && !preg_match($name_regex, $this->middle_name)) {
+            throw new Exception($error_message);
+        }
+
+        if(!preg_match($name_regex, $this->last_name)) {
+            throw new Exception($error_message);
+        }
+
+        if($this->suffix && !preg_match($name_regex, $this->suffix)) {
+            throw new Exception($error_message);
         }
     }
 
     // Check for invalid email format
     private function validateEmailFormat() {
         if (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
-            throw new Exception("Please provide a valid email address, such as johndoe@gmail.com.");
+            throw new Exception("Please provide a valid email address.");
         }
     }
 
@@ -102,63 +175,72 @@ class Registration {
 
     // Check if password and retype password matches
     private function validatePasswords() {
+        $password_regex = '/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])(?=.*[^\s]).{8,20}$/';
+
         if($this->password !== $this->confirm_password) {
             throw new Exception("Your passwords do not match.");
+        }
+
+        if(!preg_match($password_regex, $this->password)) {
+            throw new Exception("Password must be 8-20 characters with a number, an uppercase letter, a lowercase letter, a special character, and with no whitespace/s.");
         }
     }
 
     // Validate the attached file if it's PDF and doesn't exceed 25mb
-    private function validateFile() {
-        $target_directory = "../user_data/{$this->organization}/cor/";
-        if(!file_exists($target_directory)) {
-            mkdir($target_directory, 0777, true);
-        }
+    // private function validateFile() {
+    //     $target_directory = "../user_data/{$this->organization}/cor/";
+    //     if(!file_exists($target_directory)) {
+    //         mkdir($target_directory, 0777, true);
+    //     }
 
-        // Check if file is PDF and within size limit
-        $file_type = strtolower(pathinfo($this->file['name'], PATHINFO_EXTENSION));
-        if($file_type != 'pdf' || $this->file['size'] > 25000000) {
-            throw new Exception("Invalid file. Only PDF files up to 25MB are allowed.");
-        }
+    //     // Check if file is PDF and within size limit
+    //     $file_type = strtolower(pathinfo($this->file['name'], PATHINFO_EXTENSION));
+    //     if($file_type != 'pdf' || $this->file['size'] > 25000000) {
+    //         throw new Exception("Invalid file. Only PDF files up to 25MB are allowed.");
+    //     }
 
-        $this->file_name = basename($this->file['name']);
-    }
+    //     $this->file_name = basename($this->file['name']);
+    // }
 
     // Save the pdf file in user_data/org_name/cor/
-    private function saveFile() {
-        $target_directory = "../user_data/{$this->organization}/cor/";
-        $target_file = $target_directory . $this->file_name;
+    // private function saveFile() {
+    //     $target_directory = "../user_data/{$this->organization}/cor/";
+    //     $target_file = $target_directory . $this->file_name;
 
-        if(!move_uploaded_file($this->file["tmp_name"], $target_file)) {
-            throw new Exception("There was an error uploading your file. Try again");
-        }
+    //     if(!move_uploaded_file($this->file["tmp_name"], $target_file)) {
+    //         throw new Exception("There was an error uploading your file. Try again");
+    //     }
 
-        $this->file_hash = hash_file('sha256', $target_file);
-    }
+    //     $this->file_hash = hash_file('sha256', $target_file);
+    // }
 
     // Save the pdf file in user_data/sco/cor/
-    private function saveFileToSco() {
-        $sco_directory = "../user_data/sco/cor/";
-        if (!file_exists($sco_directory)) {
-            mkdir($sco_directory, 0777, true);
-        }
+    // private function saveFileToSco() {
+    //     $sco_directory = "../user_data/sco/cor/";
+    //     if (!file_exists($sco_directory)) {
+    //         mkdir($sco_directory, 0777, true);
+    //     }
         
-        $sco_file = $sco_directory . $this->file_name;
+    //     $sco_file = $sco_directory . $this->file_name;
 
-        if (!copy("../user_data/{$this->organization}/cor/" . $this->file_name, $sco_file)) {
-            throw new Exception("There was an error copying your file to the SCO directory. Try again");
-        }
-    }
+    //     if (!copy("../user_data/{$this->organization}/cor/" . $this->file_name, $sco_file)) {
+    //         throw new Exception("There was an error copying your file to the SCO directory. Try again");
+    //     }
+    // }
 
     // Insert from picked org from dropdown into its database
     private function insertIntoOrganizationDB() {
         $hashed_password = password_hash($this->password, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO voter (email, password, cor, cor_hash, account_status, role) VALUES (?, ?, ?, ?, ?, ?)";
+        // $sql = "INSERT INTO voter (email, password, cor, cor_hash, account_status, role) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, email, password, account_status, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->connection->prepare($sql);
 
         $account_status = self::ACCOUNT_STATUS;
         $role = self::ROLE;
 
-        $stmt->bind_param("ssssss", $this->email, $hashed_password, $this->file_name, $this->file_hash, $account_status, $role);
+        // $stmt->bind_param("ssssss", $this->email, $hashed_password, $this->file_name, $this->file_hash, $account_status, $role);
+        $stmt->bind_param("sssssssss", $this->student_number, $this->last_name, $this->first_name, $this->middle_name, $this->suffix, $this->email, $hashed_password, $account_status, $role);
+
         if(!$stmt->execute()) {
             throw new Exception("Error occurred during registration for " . strtoupper($this->organization) . ".");
         }
@@ -173,13 +255,15 @@ class Registration {
         $sco_connection = new mysqli($config['host'], $config['username'], $config['password'], $config['database']);
 
         $hashed_password = password_hash($this->password, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO voter (email, password, cor, cor_hash, account_status, role) VALUES (?, ?, ?, ?, ?, ?)";
+        // $sql = "INSERT INTO voter (email, password, cor, cor_hash, account_status, role) VALUES (?, ?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, email, password, account_status, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $sco_connection->prepare($sql);
 
         $account_status = self::ACCOUNT_STATUS;
         $role = self::ROLE;
 
-        $stmt->bind_param("ssssss", $this->email, $hashed_password, $this->file_name, $this->file_hash, $account_status, $role);
+        // $stmt->bind_param("ssssss", $this->email, $hashed_password, $this->file_name, $this->file_hash, $account_status, $role);
+        $stmt->bind_param("sssssssss", $this->student_number, $this->last_name, $this->first_name, $this->middle_name, $this->suffix, $this->email, $hashed_password, $account_status, $role);
 
         if(!$stmt->execute()) {
             throw new Exception("Error occurred during registration.");

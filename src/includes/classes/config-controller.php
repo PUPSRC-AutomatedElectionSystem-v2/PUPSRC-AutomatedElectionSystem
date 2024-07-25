@@ -108,8 +108,7 @@ trait ConfigGuard
      */
     protected static function displayUnsetToken()
     {
-        unset($_SESSION['csrf_token']);
-        unset($_SESSION['csrf_expiry']);
+        unset($_SESSION['csrf']);
         self::handleUnauthorized();
     }
 }

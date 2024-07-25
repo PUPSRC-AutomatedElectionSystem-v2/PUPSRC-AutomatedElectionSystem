@@ -4,6 +4,7 @@
     --border-gray: #d9d9d9;
     --dark-gray: #969696;
     --box-shadow-size: 0 0 0 clamp(0.25rem, 0.25rem + 0.1vw, 1rem);
+    // --main-color: light-dark();
 
 }
 
@@ -114,8 +115,13 @@ body {
             }
 
             &.btn-outline-primary {
-                color: var(--main-color);
-                border: clamp(1px, 1px + 0.01vw, 5px) solid light-dark(var(--main-color), var(--main-color));
+                color: light-dark(var(--main-color), color-mix(in srgb, var(--main-color), white 50%));
+                border: clamp(1px, 1px + 0.01vw, 5px) solid light-dark(var(--main-color), color-mix(in srgb, var(--main-color), white 50%));
+
+                @media (prefers-color-scheme: dark) {
+                    // filter: contrast(1.5);
+                }
+
                 // outline: clamp(1px, 1px + 0.01vw, 5px) solid light-dark(var(--main-color), var(--main-color));
 
                 &:disabled {
@@ -371,7 +377,7 @@ body {
 
             input {
                 background-color: light-dark(#EDEDED, #EDEDED);
-                color: light-dark(#B6B6B6, #B6B6B6);
+                color: light-dark(var(--main-black), #B6B6B6);
 
                 &:focus-visible {
                     border: clamp(1px, 1px + 0.1vw, 5px) solid light-dark(var(--main-color), var(--main-color));
@@ -429,6 +435,7 @@ body {
 
     .ql-toolbar {
         height: fit-content;
+        background-color: light-dark(transparent, #ccc);
         margin-bottom: 0;
 
         &.ql-snow {
@@ -466,6 +473,10 @@ body {
     .ql-editor {
         transform: translateY(-1%);
         margin-top: 0;
+
+        &.form-control {
+            border-radius: 0;
+        }
     }
 }
 

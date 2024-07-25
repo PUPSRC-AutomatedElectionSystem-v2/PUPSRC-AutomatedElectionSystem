@@ -198,14 +198,7 @@ body dialog.modal-native {
 
     }
 
-    .form-control {
-        color: var(--main-black);
 
-        &:focus {
-            // color: var(--main-black);
-            background-color: var(--white);
-        }
-    }
 }
 
 .dt-rowReorder-float {

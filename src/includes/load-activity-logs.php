@@ -55,7 +55,6 @@ function getActivityLogs($filter, $role, $voter_id, $limit, $offset) {
 
         if ($row['role'] === ROLE_HEAD_ADMIN) {
             $action = HEAD_ADMIN_ACTIONS[$row['action']] ?? $row['action'];
-            $head_admin_email = $row['email'];
         } else {
             if ($row['role'] === ROLE_ADMIN) {
                 $actions = ADMIN_ACTIONS;

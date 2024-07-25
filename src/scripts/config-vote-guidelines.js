@@ -421,7 +421,7 @@ ConfigPage.TableHandler = class {
             if (ConfigPage.DELETE_BUTTON && ConfigPage.DELETE_LABEL) {
                 this.handleDeleteLabel(false, SELECTED_COUNT);
                 ConfigPage.delEventListener(ConfigPage.DELETE_BUTTON, 'click');
-                ConfigPage.addEventListenerAndStore(ConfigPage.DELETE_BUTTON, 'click', this.handleDeleteBtn.bind(this));
+                ConfigPage.addEventListenerAndStore(ConfigPage.DELETE_BUTTON, 'click', ConfigPage.handleDeleteBtn);
             }
             ConfigPage.DELETE_BUTTON.disabled = false;
         } else {
@@ -547,48 +547,6 @@ ConfigPage.TableHandler = class {
         return data;
     }
 
-    static async handleDeleteBtn() {
-        ConfigPage.DELETE_BUTTON.disabled = true;
-
-        if (await
-            ConfigPage.showConfirmModal(ConfigPage.ConfirmDeleteModal, ConfigPage.ConfirmModalInstance, 'confirmDeleteInput', 'Confirm Delete', true)
-            == 'true') {
-            const selectedData = document.querySelectorAll(`table tbody tr.selected`);
-            const deleteData = this.extractData(selectedData);
-
-            ConfigPage.postData(deleteData, 'DELETE')
-                .then(function (result) {
-                    try {
-                        const { data, success, error } = result;
-
-                        if (success) {
-                            console.log(data)
-                            let processedData = ConfigPage.processData(data);
-                            console.log(processedData)
-                            this.deleteEntry(processedData)
-                                .then(() => {
-                                    // ConfigPage.handleSucessResponse();
-
-                                    ConfigPage.handleResponseStatus(200, data, 'Vote guideline deleted successfully.');
-                                })
-                                .catch((error) => {
-                                    console.error("Error inserting data:", error);
-                                });
-
-                        } else if (error.data) {
-                            // error.data.forEach(item => {
-
-
-                            // });
-                        }
-                    }
-                    catch (e) {
-                        console.error('POST request failed:', e);
-                    }
-                }.bind(this))
-        }
-
-    }
 
     static deleteEntry(DATA, isdraw = false) {
 
@@ -752,6 +710,49 @@ ConfigPage.table = new DataTable('#config-table', {
 
     }
 });
+
+ConfigPage.handleDeleteBtn = async function () {
+    ConfigPage.DELETE_BUTTON.disabled = true;
+
+    if (await
+        ConfigPage.showConfirmModal(ConfigPage.ConfirmDeleteModal, ConfigPage.ConfirmModalInstance, 'confirmDeleteInput', 'Confirm Delete', true)
+        == 'true') {
+        const selectedData = document.querySelectorAll(`table tbody tr.selected`);
+        const deleteData = ConfigPage.TableHandler.extractData(selectedData);
+
+        ConfigPage.postData(deleteData, 'DELETE')
+            .then(function (result) {
+                try {
+                    const { data, success, error } = result;
+
+                    if (success) {
+                        console.log(data)
+                        let processedData = ConfigPage.processData(data);
+                        console.log(processedData)
+                        ConfigPage.TableHandler.deleteEntry(processedData)
+                            .then(() => {
+                                // ConfigPage.handleSucessResponse();
+
+                                ConfigPage.handleResponseStatus(200, data, 'Vote guideline deleted successfully.');
+                            })
+                            .catch((error) => {
+                                console.error("Error inserting data:", error);
+                            });
+
+                    } else if (error.data) {
+                        // error.data.forEach(item => {
+
+
+                        // });
+                    }
+                }
+                catch (e) {
+                    console.error('POST request failed:', e);
+                }
+            })
+    }
+
+}
 
 ConfigPage.ConfirmDeleteModal = document.getElementById('delete-modal');
 ConfigPage.ConfirmModalInstance = { instance: null };

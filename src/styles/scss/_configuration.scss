@@ -377,7 +377,7 @@ body {
 
             input {
                 background-color: light-dark(#EDEDED, #EDEDED);
-                color: light-dark(#B6B6B6, #B6B6B6);
+                color: light-dark(var(--main-black), #B6B6B6);
 
                 &:focus-visible {
                     border: clamp(1px, 1px + 0.1vw, 5px) solid light-dark(var(--main-color), var(--main-color));

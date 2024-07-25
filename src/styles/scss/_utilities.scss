@@ -101,11 +101,6 @@ table.table> :not(caption)>*>* {
     font-size: clamp(0.8rem, 0.5rem + 0.5vw, 1vw);
 }
 
-html:has(.main) {
-    textarea:disabled {
-        background-color: light-dark(transparent, transparent);
-    }
-}
 
 body {
 
@@ -122,6 +117,7 @@ body {
     }
 }
 
+
 input,
 textarea,
 .ql-editor {
@@ -132,9 +128,17 @@ textarea,
 
         &:focus {
             background-color: light-dark(var(--white), #d6d4d4);
+            color: var(--main-black);
+
+        }
+
+        &:disabled,
+        &:read-only {
+            background-color: light-dark(transparent, #ccc);
         }
     }
 }
+
 
 textarea,
 div.ql-editor[contenteditable] {

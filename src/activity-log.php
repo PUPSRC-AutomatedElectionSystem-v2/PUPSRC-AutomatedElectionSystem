@@ -104,7 +104,7 @@ if(isset($_SESSION['voter_id']) && isset($_SESSION['role'])) {
 
         <div class="row justify-content-center align-items-center mt-4">
             <div class="col-lg-10 d-flex justify-content-center align-items-center">
-                <button class="btn btn-org-color rounded-3 fw-semibold fs-7 spacing-5 px-4 py-2 border border-0" id="viewMoreBtn" style="display:none;">View 5 More</button>
+                <button class="btn btn-org-color rounded-3 fw-semibold spacing-5 px-4 py-2 border border-0 view-more-activities" id="viewMoreBtn" style="display:none;">Load more activities</button>
             </div>
         </div>
 

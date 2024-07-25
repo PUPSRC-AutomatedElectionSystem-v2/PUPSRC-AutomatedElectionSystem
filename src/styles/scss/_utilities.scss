@@ -50,7 +50,7 @@ nav {
 
     a:hover,
     .submenu-item:hover {
-        background-color: light-dark(rgb(255, 121, 0, 0.1), rgb(255, 121, 0, 0.3));
+        background-color: light-dark(color-mix(in srgb, var(--main-color) 10%, transparent), color-mix(in srgb, var(--main-color) 30%, transparent));
     }
 }
 

@@ -15,14 +15,10 @@ $(document).ready(function () {
   const sendAccSetupLink = $("#sendAccSetupLink");
   const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const emailErrorMessageContainer = $("#emailErrorMessage");
-  // const tokenField = $("#token");
-  // const verifyTokenModal = $("#verifyTokenModal");
-  // const verifyTokenForm = $("#verifyTokenForm");
-  // const tokenErrorMessageContainer = $("#tokenErrorMessage");
-  // const verifyTokenBtn = $("#verifyTokenBtn");
   const cancelSendAccSetupLinkBtn = $("#cancelSendAccSetupLinkBtn");
   const cancelVerifyTokenBtn = $("#cancelVerifyTokenBtn");
   const successResetPasswordLinkModal = $("#successResetPasswordLinkModal");
+  const origSendAccSetupLinkState = sendAccSetupLink.html();
 
   // search input
   searchBar.on("input", function () {
@@ -98,29 +94,6 @@ $(document).ready(function () {
     fullNameField.text(fullName);
 
     sendAccSetupLinkModal.modal("show");
-
-    // AJAX request to check existing token
-    // $.ajax({
-    //   url: "includes/check-existing-token.php",
-    //   type: "POST",
-    //   data: {
-    //     voterIdVal: voterIdField.val(),
-    //   },
-    //   dataType: "json",
-    //   success: function (response) {
-    //     if (response.tokenExist) {
-    //       verifyTokenModal.modal("show");
-    //     } else {
-    //       sendAccSetupLinkModal.modal("show");
-    //     }
-    //   },
-    //   error: function (error) {
-    //     console.error(error); //d debug
-    //   },
-    // });
-
-    // debug
-    // console.log(voterIdField.val());
   });
   /* ----------------------------------------------------
                 END: CHECK EXISTING TOKEN
@@ -130,6 +103,9 @@ $(document).ready(function () {
                 START: VERIFY MATCHED EMAIL 
   ------------------------------------------------------- */
   sendAccSetupLinkForm.on("submit", function (event) {
+    sendAccSetupLink.html(
+      `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Please wait...`
+    );
     event.preventDefault();
     const emailVal = emailField.val().trim();
     if (emailVal === "") {
@@ -147,30 +123,22 @@ $(document).ready(function () {
         },
         dataType: "json",
         success: function (response) {
-          if (response.maxLimit) {
-            // code for max limit modal here. below is jsut sample copde
-            alert("Max reached");
-            window.location.href = "landing-page.php";
-            resetFormState(
-              emailErrorMessageContainer,
-              sendAccSetupLink,
-              emailField
-            );
-          } else if (response.success) {
+          if (response.success) {
             sendAccSetupLinkModal.modal("hide");
-            successResetPasswordLinkModal.modal("show");
-            // success modal
+            successResetPasswordLinkModal.modal("show"); // success modal
             resetFormState(
               emailErrorMessageContainer,
               sendAccSetupLink,
               emailField
             );
+            sendAccSetupLink.html(origSendAccSetupLinkState);
           } else {
             // code for incorrect email
             emailErrorMessageContainer.text(response.message);
             emailField.addClass("is-invalid border border-danger");
             cancelSendAccSetupLinkBtn.prop("disabled", false);
           }
+          sendAccSetupLink.html(origSendAccSetupLinkState);
         },
         error: function (xhr, status, error) {
           // console.error(xhr, status, error);
@@ -179,76 +147,13 @@ $(document).ready(function () {
             sendAccSetupLink,
             emailField
           );
+          sendAccSetupLink.html(origSendAccSetupLinkState);
         },
       });
     }
   });
   /* ----------------------------------------------------
                 END: VERIFY MATCHED EMAIL 
-  ------------------------------------------------------- */
-
-  /* ----------------------------------------------------
-                START: VERIFY MATCHED TOKEN 
-  ------------------------------------------------------- */
-
-  // verifyTokenForm.on("submit", function (event) {
-  //   event.preventDefault();
-  //   const emailVal = emailField.val().trim();
-  //   const tokenVal = tokenField.val();
-
-  //   if (tokenVal === "") {
-  //     tokenField.addClass("is-invalid border border-danger");
-  //     tokenErrorMessageContainer.text("Token input field cannot be empty.");
-  //   } else {
-  //     verifyTokenBtn.add(cancelVerifyTokenBtn).prop("disabled", true);
-  //     $.ajax({
-  //       url: "includes/verify-token.php",
-  //       type: "POST",
-  //       data: {
-  //         emailVal: emailVal,
-  //         voterIdVal: voterIdField.val(),
-  //         verificationTokenVal: tokenVal,
-  //       },
-  //       dataType: "json",
-  //       success: function (response) {
-  //         if (response.maxLimit) {
-  //           // code for max limit modal here. below is jsut sample copde
-  //           alert("Max reached");
-  //           window.location.href = "landing-page.php";
-  //           resetFormState(
-  //             tokenErrorMessageContainer,
-  //             verifyTokenBtn,
-  //             tokenField
-  //           );
-  //         } else if (response.success) {
-  //           verifyTokenModal.modal("hide");
-  //           window.location.href = "create-password.php";
-  //           resetFormState(
-  //             tokenErrorMessageContainer,
-  //             verifyTokenBtn,
-  //             tokenField
-  //           );
-  //         } else {
-  //           // code for incorrect token
-  //           tokenErrorMessageContainer.text(response.message);
-  //           tokenField.addClass("is-invalid border border-danger");
-  //           verifyTokenBtn.prop("disabled", false);
-  //         }
-  //       },
-  //       error: function (xhr, status, error) {
-  //         console.error(xhr, status, error);
-  //         resetFormState(
-  //           tokenErrorMessageContainer,
-  //           verifyTokenBtn,
-  //           tokenField
-  //         );
-  //       },
-  //     });
-  //   }
-  // });
-
-  /* ----------------------------------------------------
-                END: VERIFY MATCHED TOKEN 
   ------------------------------------------------------- */
 
   // load initial row
@@ -324,7 +229,7 @@ $(document).ready(function () {
       pagination.hide();
       tableHtml = `
           <tr>
-            <td colspan="2" class="no-registration text-center">
+            <td colspan="2" class="no-registration text-center border border-0">
               <img src="images/resc/folder-empty.png" class="illus">
               <p class="fw-bold spacing-6 black">No records found.</p>
               <p class="spacing-3 pt-1 black"></p>

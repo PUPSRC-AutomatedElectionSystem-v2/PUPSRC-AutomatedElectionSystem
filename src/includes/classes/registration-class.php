@@ -1,6 +1,8 @@
 <?php
 include_once str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/file-utils.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/db-config.php');
+include_once FileUtils::normalizeFilePath(__DIR__ . '/../mailer.php');
+include_once FileUtils::normalizeFilePath(__DIR__ . '/email-sender.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/../session-handler.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/../error-reporting.php');
 include_once FileUtils::normalizeFilePath(__DIR__ . '/../default-time-zone.php');
@@ -15,9 +17,6 @@ class Registration {
     private $password;
     private $confirm_password;
     private $organization;
-    // private $file;
-    // private $file_hash;
-    // private $file_name;
     private $connection;
     private const ACCOUNT_STATUS = 'for_verification';
     private const ROLE = 'student_voter';
@@ -32,7 +31,6 @@ class Registration {
         $this->password = $password;
         $this->confirm_password = $confirm_password;
         $this->organization = $organization;
-        // $this->file = $file;
 
         $this->initializeDatabaseConnection();
     }
@@ -55,9 +53,6 @@ class Registration {
             $this->validateEmailFormat();
             $this->validateEmailNotExist();
             $this->validatePasswords();
-            // $this->validateFile();
-            // $this->saveFile();
-            // $this->saveFileToSco();
             $this->beginTransaction();
             $this->insertIntoOrganizationDB();
             $this->insertIntoScoDB();
@@ -186,59 +181,15 @@ class Registration {
         }
     }
 
-    // Validate the attached file if it's PDF and doesn't exceed 25mb
-    // private function validateFile() {
-    //     $target_directory = "../user_data/{$this->organization}/cor/";
-    //     if(!file_exists($target_directory)) {
-    //         mkdir($target_directory, 0777, true);
-    //     }
-
-    //     // Check if file is PDF and within size limit
-    //     $file_type = strtolower(pathinfo($this->file['name'], PATHINFO_EXTENSION));
-    //     if($file_type != 'pdf' || $this->file['size'] > 25000000) {
-    //         throw new Exception("Invalid file. Only PDF files up to 25MB are allowed.");
-    //     }
-
-    //     $this->file_name = basename($this->file['name']);
-    // }
-
-    // Save the pdf file in user_data/org_name/cor/
-    // private function saveFile() {
-    //     $target_directory = "../user_data/{$this->organization}/cor/";
-    //     $target_file = $target_directory . $this->file_name;
-
-    //     if(!move_uploaded_file($this->file["tmp_name"], $target_file)) {
-    //         throw new Exception("There was an error uploading your file. Try again");
-    //     }
-
-    //     $this->file_hash = hash_file('sha256', $target_file);
-    // }
-
-    // Save the pdf file in user_data/sco/cor/
-    // private function saveFileToSco() {
-    //     $sco_directory = "../user_data/sco/cor/";
-    //     if (!file_exists($sco_directory)) {
-    //         mkdir($sco_directory, 0777, true);
-    //     }
-        
-    //     $sco_file = $sco_directory . $this->file_name;
-
-    //     if (!copy("../user_data/{$this->organization}/cor/" . $this->file_name, $sco_file)) {
-    //         throw new Exception("There was an error copying your file to the SCO directory. Try again");
-    //     }
-    // }
-
     // Insert from picked org from dropdown into its database
     private function insertIntoOrganizationDB() {
         $hashed_password = password_hash($this->password, PASSWORD_DEFAULT);
-        // $sql = "INSERT INTO voter (email, password, cor, cor_hash, account_status, role) VALUES (?, ?, ?, ?, ?, ?)";
         $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, email, password, account_status, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $this->connection->prepare($sql);
 
         $account_status = self::ACCOUNT_STATUS;
         $role = self::ROLE;
 
-        // $stmt->bind_param("ssssss", $this->email, $hashed_password, $this->file_name, $this->file_hash, $account_status, $role);
         $stmt->bind_param("sssssssss", $this->student_number, $this->last_name, $this->first_name, $this->middle_name, $this->suffix, $this->email, $hashed_password, $account_status, $role);
 
         if(!$stmt->execute()) {
@@ -255,14 +206,12 @@ class Registration {
         $sco_connection = new mysqli($config['host'], $config['username'], $config['password'], $config['database']);
 
         $hashed_password = password_hash($this->password, PASSWORD_DEFAULT);
-        // $sql = "INSERT INTO voter (email, password, cor, cor_hash, account_status, role) VALUES (?, ?, ?, ?, ?, ?)";
         $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, email, password, account_status, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $sco_connection->prepare($sql);
 
         $account_status = self::ACCOUNT_STATUS;
         $role = self::ROLE;
 
-        // $stmt->bind_param("ssssss", $this->email, $hashed_password, $this->file_name, $this->file_hash, $account_status, $role);
         $stmt->bind_param("sssssssss", $this->student_number, $this->last_name, $this->first_name, $this->middle_name, $this->suffix, $this->email, $hashed_password, $account_status, $role);
 
         if(!$stmt->execute()) {
@@ -275,8 +224,6 @@ class Registration {
 
     // Send an email notice to user
     private function sendEmailNotice() {
-        include_once FileUtils::normalizeFilePath(__DIR__ . '/../mailer.php');
-        include_once FileUtils::normalizeFilePath(__DIR__ . '/email-sender.php');
         $mailer = new EmailSender($mail);
         $mailer->sendForVerificationStatus($this->email);
     }

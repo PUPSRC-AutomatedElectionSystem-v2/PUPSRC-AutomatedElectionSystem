@@ -221,40 +221,6 @@ SessionManager::checkUserRoleAndRedirect();
                 </div>
             </div>
 
-
-            <!-- Verify Token Modal -->
-            <!-- <div class="modal fade" id="verifyTokenModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-body">
-                            <div class="row px-4 pt-4">
-                                <div class="col-md-12 pb-3">
-                                    <p class="fw-bold main-color text-center spacing-4 pt-3">Verify Token</p>
-                                    <form id="verifyTokenForm" method="POST">
-                                        <div class="mb-1">
-                                            <label for="token" class="form-label">Enter Token</label>
-                                            <input type="text" class="form-control bg-primary shadow-sm" id="token" name="token" placeholder="Put token here">
-                                        </div>
-                                        <div id="tokenErrorMessage" class="fs-7 text-danger mb-4 fw-medium me-5">
-
-                                        </div>
-                                        <div class="row d-flex justify-content-center">
-                                            <div class="col-md-5">
-                                                <button type="button" class="btn btn-secondary w-100" id="cancelVerifyTokenBtn" data-bs-dismiss="modal">Cancel</button>                                               
-                                            </div>
-                                            <div class="col-md-7">
-                                                <button type="submit" id="verifyTokenBtn" class="btn btn-org-color w-100">Send Token</button>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div> -->
-
         </div>        
     </section>
 

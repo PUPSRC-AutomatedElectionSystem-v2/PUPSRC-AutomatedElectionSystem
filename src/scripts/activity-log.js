@@ -97,17 +97,9 @@ $(document).ready(function () {
                   <div class="col-10 activity-content">
                     <div class="activity-title">${log.action}</div>
                     <ul class="list-inline text-secondary">
-                      ${
-                        log.role === "Head Admin"
-                          ? `<li class="list-inline-item activity-info">Email: ${log.email}</li>`
-                          : ""
-                      }
-                      <li class="list-inline-item activity-info">IP Address: ${
-                        log.ip_address
-                      }</li>
-                      <li class="list-inline-item activity-info">Browser: ${
-                        log.browser
-                      }</li>
+                      <li class="list-inline-item activity-info">Email: ${log.email}</li>
+                      <li class="list-inline-item activity-info">IP Address: ${log.ip_address}</li>
+                      <li class="list-inline-item activity-info">Browser: ${log.browser}</li>
                     </ul>
                   </div>
                 </div>
@@ -134,11 +126,7 @@ $(document).ready(function () {
                   <div class="col-10 activity-content">
                     <div class="activity-title">${log.action}</div>
                     <ul class="list-inline text-secondary">
-                      ${
-                        log.role === "Head Admin"
-                          ? `<li class="list-inline-item activity-info">Email: ${log.email}</li>`
-                          : ""
-                      }
+                      <li class="list-inline-item activity-info">Email: ${log.email}</li>
                       <li class="list-inline-item activity-info">IP Address: ${
                         log.ip_address
                       }</li>
@@ -178,17 +166,9 @@ $(document).ready(function () {
                 <div class="col-10 activity-content">
                   <div class="activity-title">${log.action}</div>
                   <ul class="list-inline text-secondary">
-                    ${
-                      log.role === "Head Admin"
-                        ? `<li class="list-inline-item activity-info">Email: ${log.email}</li>`
-                        : ""
-                    }
-                    <li class="list-inline-item activity-info">IP Address: ${
-                      log.ip_address
-                    }</li>
-                    <li class="list-inline-item activity-info">Browser: ${
-                      log.browser
-                    }</li>
+                    <li class="list-inline-item activity-info">Email: ${log.email}</li>
+                    <li class="list-inline-item activity-info">IP Address: ${log.ip_address}</li>
+                    <li class="list-inline-item activity-info">Browser: ${log.browser}</li>
                   </ul>
                 </div>
               </div>

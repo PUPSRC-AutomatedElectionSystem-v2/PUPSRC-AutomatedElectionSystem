@@ -182,9 +182,9 @@ ConfigPage.eventListeners = new Map();
  * @param {function} handler - The function to be executed when the event is triggered.
  */
 ConfigPage.addEventListenerAndStore = function (element, event, handler) {
-    element.addEventListener(event, handler);
     const key = `${element}-${event}`;
     ConfigPage.eventListeners.set(key, handler);
+    element.addEventListener(event, handler);
 }
 
 /**
@@ -436,7 +436,7 @@ ConfigPage.TableHandler = class {
             if (ConfigPage.DELETE_BUTTON && ConfigPage.DELETE_LABEL) {
                 this.handleDeleteLabel(false, SELECTED_COUNT);
                 ConfigPage.delEventListener(ConfigPage.DELETE_BUTTON, 'click');
-                ConfigPage.addEventListenerAndStore(ConfigPage.DELETE_BUTTON, 'click', this.handleDeleteBtn.bind(this));
+                ConfigPage.addEventListenerAndStore(ConfigPage.DELETE_BUTTON, 'click', ConfigPage.handleDeleteBtn);
             }
             ConfigPage.DELETE_BUTTON.disabled = false;
         } else {
@@ -493,7 +493,7 @@ ConfigPage.TableHandler = class {
                             const { data, success, error } = result;
 
                             if (success) {
-                                ConfigPage.handleResponseStatus(200, data, 'FAQ updated successfuly.');
+                                ConfigPage.handleResponseStatus(200, data, 'FAQ updated successfully.');
                                 // let processedData = ConfigPage.processData(data);
                                 // console.log(processedData)
                                 // this.updateData(processedData);
@@ -572,49 +572,6 @@ ConfigPage.TableHandler = class {
         });
 
         return data;
-    }
-
-    static async handleDeleteBtn() {
-        ConfigPage.DELETE_BUTTON.disabled = true;
-
-        if (await
-            ConfigPage.showConfirmModal(ConfigPage.ConfirmDeleteModal, ConfigPage.ConfirmModalInstance, 'confirmDeleteInput', 'Confirm Delete', true)
-            == 'true') {
-            const selectedData = document.querySelectorAll(`table tbody tr.selected`);
-            const deleteData = this.extractData(selectedData);
-
-            ConfigPage.postData(deleteData, 'DELETE')
-                .then(function (result) {
-                    try {
-                        const { data, success, error } = result;
-
-                        if (success) {
-                            console.log(data)
-                            let processedData = ConfigPage.processData(data);
-                            console.log(processedData)
-                            this.deleteEntry(processedData)
-                                .then(() => {
-                                    // ConfigPage.handleSucessResponse();
-
-                                    ConfigPage.handleResponseStatus(200, data, 'FAQ deleted successfuly.');
-                                })
-                                .catch((error) => {
-                                    console.error("Error inserting data:", error);
-                                });
-
-                        } else if (error.data) {
-                            // error.data.forEach(item => {
-
-
-                            // });
-                        }
-                    }
-                    catch (e) {
-                        console.error('POST request failed:', e);
-                    }
-                }.bind(this))
-        }
-
     }
 
     static deleteEntry(DATA, isdraw = false) {
@@ -811,17 +768,61 @@ ConfigPage.handleModalDispose = function () {
     ConfigPage.modalInstance.instance.dispose();
 }
 
+ConfigPage.handleDeleteBtn = async function () {
+    ConfigPage.DELETE_BUTTON.disabled = true;
+
+    if (await
+        ConfigPage.showConfirmModal(ConfigPage.ConfirmDeleteModal, ConfigPage.ConfirmModalInstance, 'confirmDeleteInput', 'Confirm Delete', true)
+        == 'true') {
+        const selectedData = document.querySelectorAll(`table tbody tr.selected`);
+        const deleteData = ConfigPage.TableHandler.extractData(selectedData);
+
+        ConfigPage.postData(deleteData, 'DELETE')
+            .then(function (result) {
+                try {
+                    const { data, success, error } = result;
+
+                    if (success) {
+                        console.log(data)
+                        let processedData = ConfigPage.processData(data);
+                        console.log(processedData)
+                        ConfigPage.TableHandler.deleteEntry(processedData)
+                            .then(() => {
+                                // ConfigPage.handleSucessResponse();
+
+                                ConfigPage.handleResponseStatus(200, data, 'FAQ deleted successfully.');
+                            })
+                            .catch((error) => {
+                                console.error("Error inserting data:", error);
+                            });
+
+                    } else if (error.data) {
+                        // error.data.forEach(item => {
+
+
+                        // });
+                    }
+                }
+                catch (e) {
+                    console.error('POST request failed:', e);
+                }
+            })
+    }
+
+}
+
 ConfigPage.showConfirmModal = async function (modal, instanceRef, inputId = null, inputVal = null, isDisabled = false) {
     // https://stackoverflow.com/questions/65454144/javascript-await-bootstrap-modal-close-by-user
     instanceRef.instance = new bootstrap.Modal(modal);
     instanceRef.instance.show();
+    console.log('showConfirmModal');
 
     if (isDisabled) {
         ConfigPage.handleConfirmInput(modal, inputId, inputVal);
     }
 
-    modal.removeEventListener('hidden.bs.modal', ConfigPage.handleConfirmModalDispose)
-    modal.addEventListener('hidden.bs.modal', ConfigPage.handleConfirmModalDispose)
+    modal.removeEventListener('hidden.bs.modal', ConfigPage.handleConfirmModalDispose);
+    modal.addEventListener('hidden.bs.modal', ConfigPage.handleConfirmModalDispose);
 
     return new Promise(resolve => {
 
@@ -1106,8 +1107,11 @@ ConfigPage.handleDescValidate = function (delta, old, source) {
 
 }
 
+ConfigPage.EditorModalELement;
+ConfigPage.EditorModal_Instance;
+
 ConfigPage.EditorModal = class {
-    static modalElement = document.querySelector('.modal:has(.modal-header.editor)');
+    static modalElement = ConfigPage.EditorModalELement = document.querySelector('.modal:has(.modal-header.editor)');
     static data;
     static mode;
     static modalInstance;
@@ -1127,18 +1131,18 @@ ConfigPage.EditorModal = class {
 
         if (this.modalElement) {
 
-            this.modalInstance = new bootstrap.Modal(this.modalElement);
+            this.modalInstance = ConfigPage.EditorModal_Instance = new bootstrap.Modal(this.modalElement);
             this.modalInstance.show();
 
             ConfigPage.delEventListener(this.modalElement, 'close');
             ConfigPage.addEventListenerAndStore(this.modalElement, 'close', ConfigPage.TableHandler.deselectAll());
 
             this.modalElement.removeEventListener('hidden.bs.modal', event => {
-                this.modalInstance.dispose();
+                ConfigPage.EditorModal_Instance.dispose();
                 ConfigPage.TableHandler.deselectAll();
             }).bind(this)
             this.modalElement.addEventListener('hidden.bs.modal', event => {
-                this.modalInstance.dispose();
+                ConfigPage.EditorModal_Instance.dispose();
                 ConfigPage.TableHandler.deselectAll();
             }).bind(this)
         }
@@ -1486,7 +1490,7 @@ ConfigPage.EditorModal = class {
                                 .then(() => {
                                     // ConfigPage.handleSucessResponse();
 
-                                    ConfigPage.handleResponseStatus(200, data, 'FAQ added successfuly.');
+                                    ConfigPage.handleResponseStatus(200, data, 'FAQ added successfully.');
                                 })
                                 .catch((error) => {
                                     console.error("Error inserting data:", error);
@@ -1500,7 +1504,7 @@ ConfigPage.EditorModal = class {
                                 .then(() => {
                                     // ConfigPage.handleSucessResponse();
 
-                                    ConfigPage.handleResponseStatus(200, data, 'FAQ updated successfuly.');
+                                    ConfigPage.handleResponseStatus(200, data, 'FAQ updated successfully.');
                                 })
                                 .catch((error) => {
                                     console.error("Error inserting data:", error);

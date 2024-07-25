@@ -22,7 +22,7 @@ $warning_message_json = json_encode($warning_message);
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
   <!-- Preloader Stylesheet and Image -->
   <link rel="preload" href="images/resc/ivote-icon.webp" as="image">

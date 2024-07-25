@@ -4,6 +4,7 @@ include_once str_replace('/', DIRECTORY_SEPARATOR,  '../classes/file-utils.php')
 require_once FileUtils::normalizeFilePath('../error-reporting.php');
 require_once FileUtils::normalizeFilePath('../classes/db-config.php');
 require_once FileUtils::normalizeFilePath('../classes/db-connector.php');
+require_once FileUtils::normalizeFilePath('../classes/logger.php');
 
 class VoteGuidelineModel
 {
@@ -116,6 +117,9 @@ class VoteGuidelineModel
 
             $stmt->close();
 
+            $logger = new Logger($_SESSION['role'], ADD_VOTING_GUIDELINE);
+            $logger->logActivity();
+
             return $inserted_item;
         } catch (Exception $e) {
             self::$query_message = 'set ' . $e->getMessage();
@@ -141,6 +145,9 @@ class VoteGuidelineModel
             $stmt->execute();
 
             $stmt->close();
+
+            $logger = new Logger($_SESSION['role'], UPDATE_VOTING_GUIDELINE);
+            $logger->logActivity();
 
             return $item;
         } catch (Exception $e) {
@@ -168,6 +175,9 @@ class VoteGuidelineModel
 
             $stmt->close();
 
+            $logger = new Logger($_SESSION['role'], UPDATE_VOTING_GUIDELINE);
+            $logger->logActivity();
+
             return $item;
         } catch (Exception $e) {
 
@@ -194,6 +204,9 @@ class VoteGuidelineModel
             $stmt->execute();
 
             $stmt->close();
+
+            $logger = new Logger($_SESSION['role'], DELETE_VOTING_GUIDELINE);
+            $logger->logActivity();
 
             return $item;
         } catch (Exception $e) {

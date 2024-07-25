@@ -4,7 +4,7 @@ include_once 'modals.php';
 (new class
 {
     use ConfigGuard;
-})::generateCSRFToken(time() + (60 * 20));
+})::generateCSRFToken(time() + (60 * 30));
 ?>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.14.0-beta2/dist/css/bootstrap-select.min.css">

@@ -115,7 +115,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                             class="fw-semibold border border-danger text-danger alert alert-danger alert-dismissible fade show  custom-alert"
                                             role="alert">
                                             <div class="d-flex align-items-center">
-                                                <span class=""><?php echo $error_message; ?></span>
+                                                <span class="pe-2"><?php echo $error_message; ?></span>
                                                 <button type="button" class="btn-sm btn-close shadow-none"
                                                     data-bs-dismiss="alert" aria-label="Close"></button>
                                             </div>
@@ -131,10 +131,10 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                             <div class="col-12 d-flex justify-content-end">
                                 <div class="col-xl-7 col-md-7">
                                     <div class="form-group">
-                                        <label for="student_id" class="fs-8 spacing-3">Student ID<span
+                                        <label for="student_id" class="fs-8 spacing-3">Student Number<span
                                                 class="asterisk fw-medium">*</span></label>
                                         <input type="text" class="form-control pt-2 bg-white text-black"
-                                            name="student_id" id="student_id" placeholder="Email Address"
+                                            name="student_number" id="student_number" placeholder="Ex: 2024-00XXX-SR-0"
                                             autocomplete="email" required>
                                     </div>
                                 </div>
@@ -183,7 +183,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                                 <label for="middle_name" class="fs-8 spacing-3">Middle Name</label>
                                                 <input type="text" class="form-control pt-2 bg-white text-black"
                                                     name="middle_name" id="middle_name" placeholder="Middle Name"
-                                                    autocomplete="off" required>
+                                                    autocomplete="off">
                                             </div>
                                         </div>
 
@@ -193,7 +193,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                                 <label for="suffix" class="fs-8 spacing-3">Suffix</label>
                                                 <input type="text" class="form-control pt-2 bg-white text-black"
                                                     name="suffix" id="suffix" placeholder="Suffix"
-                                                    autocomplete="email" required>
+                                                    autocomplete="email">
                                             </div>
                                         </div>
                                     </div>
@@ -209,7 +209,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                         <label for="email" class="fs-8 spacing-3">Email Address<span
                                                 class="asterisk fw-medium">*</span></label>
                                         <input type="text" class="form-control pt-2 bg-white text-black" name="email"
-                                            id="email" placeholder="Email Address" autocomplete="email" required>
+                                            id="email" placeholder="Ex: johndoe@gmail.com" autocomplete="email" required>
                                     </div>
                                 </div>
                             </div>

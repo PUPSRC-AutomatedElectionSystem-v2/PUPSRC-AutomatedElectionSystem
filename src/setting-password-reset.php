@@ -37,8 +37,7 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
         <link rel="stylesheet" href="styles/setting-email.css" />
         <link rel="stylesheet" href="<?php echo '../src/styles/orgs/' . $org_acronym . '.css'; ?>">
         <!-- Icons -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-        <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+        <script src="../src/scripts/feather.js"></script>
         <!-- Jquery-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
@@ -114,45 +113,47 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
                                         <div id="password-mismatch-error" class="ps-1 text-danger fw-bold mt-2" style="display: none; font-size: 12px;">PASSWORDS DO NOT MATCH.</div>
                                     </div>
                                 </div>
-                                <div class="pb-4">
-                                    <center><button class="btn main-bg-color text-white mt-3 mb-3" id="submit" type="submit" disabled>Set Password</button></center>
+                            <div class="pb-4">
+                                <center><button class="btn main-bg-color text-white mt-3 mb-3" id="submit" type="submit" disabled>Set Password</button></center>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Success Modal -->
+            <div class="modal" id="successPasswordResetModal" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content" id="success-modal">
+                        <div class="modal-body">
+                            <div class="text-center">
+                                <div class="col-md-12">
+                                    <img src="images/resc/check-animation.gif" class="check-perc" alt="Checked Logo">
                                 </div>
-                                
-                                
-
-                                <!-- Success Modal -->
-                                <div class="modal" id="successPasswordResetModal" tabindex="-1" role="dialog">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content" id="success-modal">
-                                            <div class="modal-body">
-                                                <div class="text-center">
-                                                    <div class="col-md-12">
-                                                        <img src="images/resc/check-animation.gif" class="check-perc" alt="Checked Logo">
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12 pb-3">
-                                                            <p class="fw-bold fs-3 text-success spacing-4">Password Updated</p>
-                                                            <p class="fw-medium spacing-3">Your password has been successfully updated! Please log in again.</p>
-                                                            <button class="button-check main-bg-color text-white py-2 px-4 custom-link" onclick="window.location.href='includes/voter-logout.php'"><b>Back to Landing Page</b></button>
-                                                        </div>
-                                                    </div>
-                                                    <p class="timer">Redirecting to landing page in <strong>10</strong> seconds...</p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="row">
+                                    <div class="col-md-12 pb-3">
+                                        <p class="fw-bold fs-3 text-success spacing-4">Password Updated</p>
+                                        <p class="fw-medium spacing-3">Your password has been successfully updated! Please log in again.</p>
+                                        <button class="button-check main-bg-color text-white py-2 px-4 custom-link" onclick="window.location.href='includes/voter-logout.php'"><b>Back to Landing Page</b></button>
                                     </div>
                                 </div>
+                                <p class="timer">Redirecting to landing page in <strong>10</strong> seconds...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
-                                <script>
-                                    $(document).ready(function() {
-                                        $('#submit').click(function(event) {
-                                            event.preventDefault(); // Prevent form submission
-                                            $('#successEmailModal').modal('show');
-                                        });
-                                    });
-                                </script>
+            <script>
+                $(document).ready(function() {
+                    $('#submit').click(function(event) {
+                        event.preventDefault(); // Prevent form submission
+                        $('#successEmailModal').modal('show');
+                    });
+                });
+            </script>
 
         </main>
+
         <div class="footer">
             <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
         </div>

@@ -64,7 +64,7 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
         include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/topnavbar.php');
         ?>
 
-<main>
+        <main>
             <div class="container" style="margin-top: 5%; margin-bottom:5%;">
                 <div class="row">
                     <!-- left side -->
@@ -145,7 +145,7 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
                                         <br>
                                         <br>
                                         <br>
-                                        </form>
+                                    </form>
                                     </div>
                                 </div>
                             </div>
@@ -160,7 +160,6 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
         </div>
 
         <script src="../src/scripts/feather.js"></script>
-        <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
         <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="scripts/user-setting-password.js"></script>
         <script src="scripts/loader.js"></script>

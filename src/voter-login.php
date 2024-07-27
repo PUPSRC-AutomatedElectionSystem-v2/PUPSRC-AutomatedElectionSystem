@@ -68,6 +68,8 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
 
     <!-- Bootstrap JavaScript -->
     <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- CDN jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <!-- Custom JavaScript -->
@@ -78,21 +80,16 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
 <body class="login-body" id="<?php echo strtoupper($org_name); ?>-body">
 
     <!-- Preloader -->
-    <?php include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/loader.html'); ?>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top" id="login-navbar">
-        <div class="container-fluid d-flex justify-content-center align-items-center">
-            <a href="landing-page.php"><img src="images/resc/iVOTE-Landing2.webp" id="ivote-logo-landing-header" alt="ivote-logo"></a>
-        </div>
-    </nav>
-
+    <?php 
+    include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/loader.html');
+    include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/alt-header.php'); 
+    ?>
 
     <div class="container-fluid">
-        <div class="row">
+        <div class="row parent-row">
             <div class="col-md-6 login-left-section">
                 <div class="organization-names">
-                    <img src="images/logos/<?php echo $org_name; ?>.webp" class="login-logo pb-3" alt="<?php echo strtoupper($org_name) . ' '; ?>Logo">
+                    <img src="images/logos/<?php echo $org_name; ?>.webp" class="login-logo pb-3" loading="lazy" alt="<?php echo strtoupper($org_name) . ' '; ?>Logo">
                     <div class="org-full-name px-5"><?php echo strtoupper($org_full_name); ?></div>
                     <div class="login-AES px-4">AUTOMATED ELECTION SYSTEM</div>
 
@@ -106,7 +103,7 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
                 </div>
             </div>
 
-            <div class="col-md-6 login-right-section">
+            <div class="col-md-6 col-xs-12 login-right-section">
 
                 <div>
                     <form id="loginForm" action="includes/voter-login-inc.php" method="post" class="login-form needs-validation" novalidate>

@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-white">
   <div class="container-fluid py-1">
     <div class="ps-0 ps-lg-5">
-      <img src="../src/images/resc/ivote-logo.webp" alt="Logo" width="50px">
+      <img src="images/resc/ivote-logo.webp" loading="lazy" alt="Logo" width="50px">
     </div>
     <div class="dropdown ms-auto">
       <a class="nav-link d-flex align-items-center main-color pe-0 pe-lg-5" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

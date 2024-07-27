@@ -25,6 +25,7 @@ body {
     background-color: white;
     opacity: 95%;
     min-height: 55px;
+    z-index: 10000;
 }
 
 .navbar .nav-link {

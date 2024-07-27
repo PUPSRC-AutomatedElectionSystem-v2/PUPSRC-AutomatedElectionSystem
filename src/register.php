@@ -45,6 +45,8 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="2024 BSIT 3-1" content="PUPSRC iVOTE">
 
     <!-- Preloader Stylesheet and Image -->
     <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
@@ -68,8 +70,12 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
     <!-- <link rel="stylesheet" href="styles/dist/landing-animation.css"> -->
 
     <!-- Bootstrap JavaScript -->
-    <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- CDN jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
+
+    <!-- Custom JavaScript -->
     <script src="scripts/register.js" defer></script>
     <script src="scripts/loader.js" defer></script>
 

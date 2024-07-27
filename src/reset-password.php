@@ -77,13 +77,8 @@ if (isset($_SESSION['error_message'])) {
 
     <?php
     include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/loader.html');
+    include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/alt-header.php'); 
     ?>
-
-    <nav class="navbar navbar-expand-lg fixed-top" id="login-navbar">
-        <div class="container-fluid d-flex justify-content-center align-items-center">
-            <a href="landing-page"><img src="images/resc/iVOTE-Landing2.webp" id="ivote-logo-landing-header" alt="ivote-logo"></a>
-        </div>
-    </nav>
 
     <div class="container-fluid">
         <div class="row justify-content-center align-items-center">

@@ -9,6 +9,7 @@ body {
 #login-navbar {
     background-color: white;
     min-height: 55px;
+    z-index: 10000;
 }
 
 #ivote-logo-landing-header {

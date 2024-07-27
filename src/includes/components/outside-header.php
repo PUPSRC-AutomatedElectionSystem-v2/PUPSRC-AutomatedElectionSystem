@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg fixed-top" id="mainNav">
     <div class="container">
       <!-- <a class="navbar-brand" href="#">Your Brand</a> -->
-      <img src="images/resc/ivote-icon-2.webp" id="ivote-logo-landing-header" alt="ivote-logo">
+      <img src="images/resc/ivote-icon-2.webp" id="ivote-logo-landing-header" loading="lazy" alt="ivote-logo">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>

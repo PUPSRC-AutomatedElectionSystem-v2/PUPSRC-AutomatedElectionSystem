@@ -50,8 +50,10 @@ SessionManager::checkUserRoleAndRedirect();
     <title>Master List</title>
 
     <!-- Bootstrap JavaScript -->
-    <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- CDN jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
 
     <!-- Custom JavaScript -->
     <script src="scripts/loader.js" defer></script>
@@ -62,15 +64,9 @@ SessionManager::checkUserRoleAndRedirect();
 <body>
 
     <?php 
-    include_once FileUtils::normalizeFilePath('includes/components/loader.html'); 
+    include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/loader.html'); 
+    include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/alt-header.php'); 
     ?>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top" id="login-navbar">
-        <div class="container-fluid d-flex justify-content-center align-items-center">
-            <a href="landing-page"><img src="images/resc/iVOTE-Landing2.webp" id="ivote-logo-landing-header" alt="ivote-logo"></a>
-        </div>
-    </nav>
 
     <section class="account-section">
         <div class="container account-container" id="memMasterList">

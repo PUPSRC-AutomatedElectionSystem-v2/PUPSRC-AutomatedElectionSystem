@@ -36,7 +36,6 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
         <link rel="stylesheet" href="styles/user-setting-password.css" />
         <link rel="stylesheet" href="<?php echo '../src/styles/orgs/' . $org_acronym . '.css'; ?>">
         <!-- Icons -->
-        <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
         <style>
@@ -159,7 +158,7 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
             <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
         </div>
 
-        <script src="../src/scripts/feather.js"></script>
+        <script src="scripts/feather.js"></script>
         <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="scripts/user-setting-password.js"></script>
         <script src="scripts/loader.js"></script>

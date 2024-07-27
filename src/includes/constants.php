@@ -64,8 +64,8 @@ define('PERMANENT_DELETE_MULTIPLE_ADMIN_ACCOUNTS', 'permanent_delete_multiple_ad
 /* Action logs message */
 
 const STUDENT_VOTER_ACTIONS = array(
-    LOGIN => 'You <strong>logged</strong> in to your account.',
-    LOGOUT => 'You <strong>logged</strong> out of your account.',
+    LOGIN => 'You <strong>logged in</strong> to your account.',
+    LOGOUT => 'You <strong>logged out</strong> of your account.',
     VOTED => 'You <strong>casted</strong> your vote.',
     UPDATE_EMAIL => 'You <strong>changed</strong> your email address.',
     CHANGE_PASSWORD => '<strong>You changed</strong> your password.',

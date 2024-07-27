@@ -24,8 +24,10 @@ $(document).ready(function () {
     scrollTopPageBtn.prop("disabled", true).removeClass("show");
 
     $("html, body").animate({ scrollTop: 0 }, 300, function () {
-      scrollTopPageBtn.prop("disabled", false);
-      canShowScrollTop = true;
+      if ($(window).scrollTop() === 0) {
+        scrollTopPageBtn.prop("disabled", false);
+        canShowScrollTop = true;
+      }
     });
 
     return false;
@@ -127,12 +129,8 @@ $(document).ready(function () {
                     <div class="activity-title">${log.action}</div>
                     <ul class="list-inline text-secondary">
                       <li class="list-inline-item activity-info">Email: ${log.email}</li>
-                      <li class="list-inline-item activity-info">IP Address: ${
-                        log.ip_address
-                      }</li>
-                      <li class="list-inline-item activity-info">Browser: ${
-                        log.browser
-                      }</li>
+                      <li class="list-inline-item activity-info">IP Address: ${log.ip_address}</li>
+                      <li class="list-inline-item activity-info">Browser: ${log.browser}</li>
                     </ul>
                   </div>
                 </div>
@@ -166,9 +164,9 @@ $(document).ready(function () {
                 <div class="col-10 activity-content">
                   <div class="activity-title">${log.action}</div>
                   <ul class="list-inline text-secondary">
-                    <li class="list-inline-item activity-info">Email: ${log.email}</li>
-                    <li class="list-inline-item activity-info">IP Address: ${log.ip_address}</li>
-                    <li class="list-inline-item activity-info">Browser: ${log.browser}</li>
+                    <li class="list-inline-item py-1 activity-info">Email: ${log.email}</li>
+                    <li class="list-inline-item py-1 activity-info">IP Address: ${log.ip_address}</li>
+                    <li class="list-inline-item py-1 activity-info">Browser: ${log.browser}</li>
                   </ul>
                 </div>
               </div>

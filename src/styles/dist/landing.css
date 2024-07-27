@@ -584,11 +584,13 @@ a {
   background-color: white;
   opacity: 95%;
   min-height: 55px;
+  z-index: 10000;
 }
 
 #login-navbar {
   background-color: white;
   min-height: 55px;
+  z-index: 10000;
 }
 
 .navbar .nav-link {
@@ -995,6 +997,13 @@ span {
   color: #FFF !important;
 }
 
+.acc-list-link {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 12.19px;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .login-body {
     padding-top: 15%;
@@ -1009,7 +1018,7 @@ span {
   }
 
   .login-logo {
-    margin-top: -30px;
+    margin-top: -1.875rem;
     width: 74.67px;
     height: 100%;
   }
@@ -1029,9 +1038,9 @@ span {
   }
 
   .login-form {
-    margin-top: -10%;
+    /* margin-top: -10%; */
     width: 330px;
-    border-radius: 20px;
+    border-radius: 8px;
     opacity: 0px;
     padding: 30px;
   }
@@ -1084,6 +1093,10 @@ span {
     font-weight: 300;
     line-height: 14.63px;
     text-align: center;
+  }
+
+  .acc-list-link {
+    font-size: 0.688rem;
   }
 
   #index-AES {
@@ -1214,6 +1227,39 @@ span {
     width: 160px;
   }
 
+  .login-right-section{
+    margin-top: -3.438em;
+  }
+
+  .parent-row {
+    position: relative;
+  }
+
+  .login-logo {
+    position: relative;
+    left: 50%;
+    bottom: -3.125em;
+    transform: translateX(-50%);
+    z-index: 10;
+    width: 90px;
+  }
+
+  .login-form {
+    position: relative;
+    width: 310px;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .login-account {
+    padding-top: 15px;
+  }
+
+  .org-full-name, .login-AES {
+    display: none;
+  }
+
   .modal-content,
   .modal-content#max-modal {
     width: 300px;
@@ -1267,30 +1313,25 @@ span {
   } */
 
   #index-PUPSRC {
-    font-size: 15px;
+    font-size: 1.25rem;
     font-weight: 700;
-    line-height: 18.29px;
+    line-height: 1.143em;
   }
 
   #index-AES {
-    font-size: 15px;
+    font-size: 1.125rem;
     font-weight: 700;
-    line-height: 18.29px;
+    line-height: 1.143em;
     text-align: center;
     margin-bottom: 10px;
   }
 
   .index-button {
-    width: 152px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    font-size: 11px;
+    width: 75%;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 14px;
     font-weight: 700;
-  }
-
-  .login-form {
-    width: 295px;
-    border-radius: 20px;
   }
 
   .forgot-password-title {

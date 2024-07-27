@@ -5,7 +5,7 @@
 						<div class="row">
 							<!-- First row content -->
 							<div class="col-md-12">
-								<img src="images/resc/iVOTE4.webp" alt="" class="iVote-logo"
+								<img src="images/resc/iVOTE4.webp" loading="lazy" alt="" class="iVote-logo"
 									style="width: 100%; height: 3rem;">
 							</div>
 						</div>
@@ -52,13 +52,13 @@
 							<!-- Third row content -->
 							<div class="col-md-12 d-flex justify-content-between pt-xl-1">
 								<a href="<?php echo ($twitter) ?>">
-									<img src="images/resc/icons/twitter.webp" alt="" class="soc-med-icons">
+									<img src="images/resc/icons/twitter.webp" loading="lazy" alt="" class="soc-med-icons">
 								</a>
 								<a href="<?php echo ($facebook) ?>">
-									<img src="images/resc/icons/facebook.webp" alt="" class="soc-med-icons">
+									<img src="images/resc/icons/facebook.webp" loading="lazy" alt="" class="soc-med-icons">
 								</a>
 								<a href="<?php echo ($instagram) ?>">
-									<img src="images/resc/icons/instagram.webp" alt="" class="soc-med-icons">
+									<img src="images/resc/icons/instagram.webp" loading="lazy" alt="" class="soc-med-icons">
 								</a>
 							</div>
 						</div>

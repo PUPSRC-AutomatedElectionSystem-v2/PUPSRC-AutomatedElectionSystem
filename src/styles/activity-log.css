@@ -4,6 +4,17 @@
     justify-content: center;
 }
 
+.illus {
+    opacity: 0.7;
+    width: 30% !important;
+    height: 100% !important;
+}
+
+.empty-state p{
+    margin-bottom: 0 !important;
+    color: var(--empty-state-gray);
+}
+
 .card {
     box-shadow: 0px 0px 4px 0px #0000001A;
 }
@@ -158,6 +169,10 @@ ul.timeline > li:before {
     stroke-width: 2px;
 }
 
+.view-more-activities {
+    font-size: 0.875rem;
+}
+
 
 /* --- MEDIAS --- */
 
@@ -213,14 +228,18 @@ ul.timeline > li:before {
     }
 
     .activity-title {
-        font-size: 10px;
+        font-size: 0.625rem;
         font-weight: 500;
     }
 
+    .view-more-activities {
+        font-size: 0.625rem;
+    }
+
     .list-inline, .activity-info {
-        font-size: 7px;
+        font-size: 0.438rem;
         font-weight: 500;
-        line-height: 7.31px;
+        line-height: 0.457em;
         letter-spacing: 0.04em;
         text-align: left;
         padding-top: 3px;
@@ -228,7 +247,7 @@ ul.timeline > li:before {
     }
 
     .time {
-        font-size: 7px;
+        font-size: 0.438rem;
     }
 
 
@@ -241,17 +260,17 @@ ul.timeline > li:before {
     }
 
     .card-title {
-        font-size: 16px;
+        font-size: 1rem;
         /* margin-top: -15px; */
     }
 
     .card-subtitle {
         padding-top: -10px;
-        font-size: 11px;
+        font-size: 0.688rem;
     }
 
     .dropdown-center .btn {
-        font-size: 10px;
+        font-size: 0.625rem;
     }
     
     #scrollTopBtn {
@@ -278,6 +297,6 @@ ul.timeline > li:before {
     }
 
     .custom-popover {
-        font-size: 10px;
+        font-size: 0.625rem;
     }
 }

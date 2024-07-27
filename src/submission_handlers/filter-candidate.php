@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 include_once str_replace('/', DIRECTORY_SEPARATOR, '../includes/classes/file-utils.php');
 require_once FileUtils::normalizeFilePath('../includes/classes/db-connector.php');

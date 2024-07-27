@@ -84,16 +84,22 @@ function loadPage(tableId, paginationId, ajaxUrl, page, searchTerm = "", sortBy 
                     const formattedDate = formatDate(candidate.candidate_creation);
                     const isChecked = selectedAdminIds.includes(candidate.candidate_id) ? "checked" : "";
 
+                    // Construct the name string conditionally
+                    let nameString = `${candidate.first_name} ${candidate.middle_name} ${candidate.last_name}`;
+                    if (candidate.suffix && candidate.suffix.trim()) {
+                        nameString += ` ${candidate.suffix}`;
+                    }
+
                     const row = `
             <tr>
               <td class="col-md-1 text-center checkbox-delete-admin ${deleteAdminState ? "" : "d-none"}">
                 <input type="checkbox" class="adminCheckbox" data-id="${candidate.candidate_id}" ${isChecked}>
               </td>
-              <td class="col-md-4 text-center text-truncate"><a href="candidate-details.php?candidate_id=${candidate.candidate_id}">${candidate.first_name} ${candidate.middle_name} ${candidate.last_name} ${candidate.suffix}</a></td>
+              <td class="col-md-4 text-center text-truncate"><a href="candidate-details.php?candidate_id=${candidate.candidate_id}">${nameString}</a></td>
               <td class="col-md-3 text-center text-truncate">
                 <span class="text-center">${candidate.position}</span>
               </td>
-              <td class="col-md-3 text-center textx truncate">
+              <td class="col-md-3 text-center text-truncate">
                 <span>${formattedDate}</span>
               </td>
             </tr>
@@ -452,7 +458,7 @@ $(document).ready(function () {
     });
 
     // Add event listener for filter options
-    $(document).on('click', '.dropdown-item', function () {
+    $(document).on('click', '.pfilter', function () {
         var filter = $(this).data('filter');
         $('#filterForm').append('<input type="hidden" name="filter[]" value="' + filter + '">');
         $('#filterForm').submit();
@@ -472,7 +478,7 @@ $(document).ready(function () {
             var dropdownMenu = $('#filterMenu');
             data.positions.forEach(function (position) {
                 dropdownMenu.append(
-                    '<div class="dropdown-item" data-filter="' + position.title + '">' +
+                    '<div class="dropdown-item pfilter" data-filter="' + position.title + '">' +
                     '<input type="checkbox" class="filter-checkbox" value="' + position.title + '"> ' +
                     '<label>' + position.title + '</label>' +
                     '</div>'
@@ -484,20 +490,27 @@ $(document).ready(function () {
         }
     });
 
-    // Handle filter option click
-    $(document).on('click', '.dropdown-item', function (e) {
-        e.preventDefault(); // Prevent the default action
-
-        var checkbox = $(this).find('.filter-checkbox');
-        checkbox.prop('checked', !checkbox.prop('checked'));
-
-        var filter = checkbox.val();
-        if (checkbox.prop('checked')) {
-            $('#filterForm').append('<input type="hidden" name="filter[]" value="' + filter + '">');
-        } else {
-            $('#filterForm input[value="' + filter + '"]').remove();
+    $(document).ready(function () {
+        // Escape potentially harmful characters from the filter value
+        function sanitize(value) {
+            return $('<div>').text(value).html();
         }
 
-        applyFilters(); // Apply filters after selection
+        // Handle filter option click
+        $(document).on('click', '.pfilter', function (e) {
+            e.preventDefault(); // Prevent the default action
+
+            var checkbox = $(this).find('.filter-checkbox');
+            checkbox.prop('checked', !checkbox.prop('checked'));
+
+            var filter = sanitize(checkbox.val());
+            if (checkbox.prop('checked')) {
+                $('#filterForm').append('<input type="hidden" name="filter[]" value="' + filter + '">');
+            } else {
+                $('#filterForm input[value="' + filter + '"]').remove();
+            }
+
+            applyFilters(); // Apply filters after selection
+        });
     });
 });

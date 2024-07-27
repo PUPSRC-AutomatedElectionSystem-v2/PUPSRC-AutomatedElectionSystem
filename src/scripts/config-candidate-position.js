@@ -808,7 +808,17 @@ ConfigPage = {
     postData: function (post_data) {
         let url = 'src/includes/classes/config-candidate-pos-controller.php';
         let method = 'PUT';
+        post_data.csrf_token = `${ConfigPage.CSRF_TOKEN}`;
+        console.log('Type of post_data:', typeof post_data);
+        if (Array.isArray(post_data)) {
+            post_data.push({ csrf_token: `${ConfigPage.CSRF_TOKEN}` });
+        } else if (typeof post_data === 'object') {
+            post_data = { ...post_data, csrf_token: `${ConfigPage.CSRF_TOKEN}` };
+        }
+
+
         let json_data = JSON.stringify(post_data);
+        console.log("json_data after stringify:", json_data);
 
         if ('update_sequence' in post_data) {
             method = 'UPDATE';
@@ -817,7 +827,6 @@ ConfigPage = {
 
             method = 'DELETE';
         }
-
 
         return fetch(url, {
             method: method,
@@ -846,8 +855,10 @@ ConfigPage = {
             });
     },
 
-    fetchData: function () {
+    fetchData: function (requestData) {
         var url = 'src/includes/classes/config-candidate-pos-controller.php';
+        const queryParams = new URLSearchParams(requestData);
+        url = `${url}?${queryParams.toString()}`;
 
         fetch(url)
             .then(function (response) {
@@ -900,6 +911,13 @@ ConfigPage = {
     descriptionLimit: 1000,
 
 }
+
+Object.defineProperty(ConfigPage, 'CSRF_TOKEN', {
+    value: setCSRFToken(),
+    writable: false,
+    enumerable: false,
+    configurable: false
+});
 
 ConfigPage.handleDescValidate = function (delta, old, source) {
     if (source == 'user' || source == 'save-btn') {
@@ -1632,7 +1650,7 @@ ConfigPage.positionInput;
 ConfigPage.saveFunc = () => ConfigPage.onSavePosition(ConfigPage.positionInput, ConfigPage.quill);
 ConfigPage.typingTimeout;
 
-ConfigPage.fetchData();
+ConfigPage.fetchData({ csrf: ConfigPage.CSRF_TOKEN });
 ConfigPage.startTableListener();
 
 ConfigPage.toastContainer = document.querySelector('.toast-container');

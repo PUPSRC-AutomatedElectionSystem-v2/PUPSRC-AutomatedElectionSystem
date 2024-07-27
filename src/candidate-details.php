@@ -72,9 +72,9 @@ if (isset($_SESSION['voter_id'])) {
                 <div class="container mb-5 ps-5 breadcrumbs-cont">
                     <div class="row justify-content-center">
                         <div class="col-md-11">
-                            <div class="breadcrumbs d-flex">
+                            <div class="breadcrumbs d-flex flex-wrap justify-content-center justify-content-md-start">
                                 <button type="button" class=" btn-white d-flex align-items-center spacing-8 fs-8">
-                                    <i data-feather="users" class="white im-cust feather-2xl"></i> <span class = "hide-text">CANDIDATES</span> 
+                                    <i data-feather="users" class="white im-cust feather-2xl"></i> <span class="hide-text">CANDIDATES</span>
                                 </button>
                                 <button type="button" class="btn-back spacing-8 fs-8" onclick="window.location.href='manage-candidate.php'">MANAGE CANDIDATES</button>
                                 <button type="button" class="btn btn-current rounded-pill spacing-8 fs-8">CANDIDATE
@@ -113,7 +113,7 @@ if (isset($_SESSION['voter_id'])) {
                                         <div class="col-md-1 d-flex align-items-center">
                                             <div class="divider"></div>
                                         </div>
-                                        <div class="col-md-5 mt-md-4">
+                                        <div class="col-md-5 mt-md-4 right-side-cont">
                                             <div class="row">
                                                 <div class="col-md-12 mx-auto">
                                                     <!-- Candidacy Position -->
@@ -122,8 +122,6 @@ if (isset($_SESSION['voter_id'])) {
                                                 </div>
                                             </div>
                                             <!-- Block Section -->
-
-                                        
                                             <div class="row">
                                                 <div class="col-md-12 mx-auto">
                                                     <p class="fw-bold fs-7 main-color">Block Section</p>
@@ -138,6 +136,8 @@ if (isset($_SESSION['voter_id'])) {
                                                 </div>
                                             </div>
                                         </div>
+
+
                                     </div>
                                 </div>
                             </div>

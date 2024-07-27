@@ -7,10 +7,10 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/default-time-zone
 
 SessionManager::checkUserRoleAndRedirect();
 
-$token = $_GET['token'];
-$token_hash = hash('sha256', $token);
+$verification_token = $_GET['token'];
+$verification_token_hash = hash('sha256', $verification_token);
 
-// Get the org name from the URL
+// gets the org name from the URL
 $url_org_name = $_GET['orgName'];
 $org_name = $url_org_name;
 $_SESSION['organization'] = $org_name;
@@ -19,24 +19,15 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/session-exchange.
 
 $connection = DatabaseConnection::connect();
 
-$sql = "SELECT reset_token_hash, reset_token_expires_at FROM voter WHERE reset_token_hash = ?";
+$sql = "SELECT verification_token FROM voter WHERE verification_token = ?";
 $stmt = $connection->prepare($sql);
-$stmt->bind_param("s", $token_hash);
+$stmt->bind_param("s", $verification_token_hash);
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 
 if (!$row) {
-    $_SESSION['error_message'] = 'Reset link was not found.';
-    header("Location: voter-login.php");
-    exit();
-}
-
-$expiry_time = strtotime($row["reset_token_expires_at"]);
-$current_time = time();
-
-if ($expiry_time <= $current_time) {
-    $_SESSION['error_message'] = 'Reset link has expired.';
+    $_SESSION['error_message'] = 'Account setup link was not found.';
     header("Location: voter-login.php");
     exit();
 }
@@ -55,6 +46,11 @@ if (isset($_SESSION['error_message'])) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- Preloader Stylesheet and Image -->
+    <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
+    <link rel="preload" href="styles/loader.css" as="style" />
+    <link rel="stylesheet" href="styles/loader.css" />
+
     <!-- Fontawesome Link for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
 
@@ -67,10 +63,17 @@ if (isset($_SESSION['error_message'])) {
     <link href="https://fonts.googleapis.com/css2?family=Akronim&family=Anton&family=Aoboshi+One&family=Audiowide&family=Black+Han+Sans&family=Braah+One&family=Bungee+Outline&family=Hammersmith+One&family=Krona+One&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet" />
 
     <link rel="stylesheet" href="styles/dist/landing.css">
-    <link rel="stylesheet" href="styles/loader.css">
     <link rel="stylesheet" href="styles/orgs/<?php echo $org_name; ?>.css">
     <link rel="icon" href="images/resc/ivote-favicon.png" type="image/x-icon">
     <title>Reset Password</title>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="scripts/save-password.js" defer></script>
+    <script src="scripts/loader.js" defer></script>
 </head>
 
 <body class="login-body reset-password-body">
@@ -84,7 +87,7 @@ if (isset($_SESSION['error_message'])) {
         <div class="row justify-content-center align-items-center">
             <div class="col-12 col-md-6 reset-password-form">
                 <form class="needs-validation" id="reset-password-form" novalidate enctype="multipart/form-data">
-                    <input type="hidden" id="token" name="token" value="<?= htmlspecialchars($token) ?>">
+
                     <div class="img-container">
                         <img src="images/resc/icons/forgot-pass.png" alt="Forgot Password Icon" class="forgot-password-icon">
                     </div>
@@ -145,6 +148,8 @@ if (isset($_SESSION['error_message'])) {
                             <button class="btn login-sign-in-button mt-3 mb-3 px-4 fs-7 fw-semibold" id="SCO-login-button" type="submit" name="new-password-submit">Set Password</button>
                             
                         </div>
+
+                        <input type="hidden" id="verificationToken" name="verification-token" value="<?= htmlspecialchars($verification_token) ?>">
                     </div>
 
                 </form>
@@ -165,8 +170,8 @@ if (isset($_SESSION['error_message'])) {
 
                         <div class="row">
                             <div class="col-md-12 pb-3">
-                                <p class="fw-bold fs-3 text-success spacing-4">Password Updated!</p>
-                                <p class="fw-medium spacing-5">Your password has been changed successfully. Use your new password to log in.
+                                <p class="fw-bold fs-3 text-success spacing-4">Account Setup Finished!</p>
+                                <p class="fw-medium spacing-5">Your password has been set successfully. You may now use your email address and password to log in.
                                 </p>
                                 <!-- Button to redirect to login here -->
                                 <!-- Sample only -->
@@ -179,13 +184,6 @@ if (isset($_SESSION['error_message'])) {
             </div>
         </div>
     </div>
-
-
-
-    <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="scripts/reset-password.js"></script>
-    <script src="scripts/loader.js"></script>
 
 </body>
 

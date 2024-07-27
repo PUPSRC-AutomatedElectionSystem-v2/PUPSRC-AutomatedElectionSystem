@@ -17,7 +17,6 @@ $(document).ready(function () {
     /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[\W_])[^\s]{8,20}$/;
   const nameRegex = /^[a-zA-ZñÑ]+([ ,.'-][a-zA-ZñÑ]+)*$/;
 
-
   let isDirty = false;
   let targetUrl = "";
 
@@ -53,6 +52,39 @@ $(document).ready(function () {
       showModal("pendingChangesModal");
     }
   });
+
+  /* ----------------------------------------------------
+      START: CHECK OPEN ORGANIZATIONS FOR REGISTRATION 
+  ------------------------------------------------------- */
+
+  $.ajax({
+    url: "includes/check-open-reg.php",
+    type: "GET",
+    success: function (response) {
+      updateDropdown(response);
+    },
+    error: function (xhr, status, error) {
+      console.error(error);
+    },
+  });
+
+  function updateDropdown(response) {
+    const select = organization;
+    select.find("option").each(function () {
+      const value = $(this).val();
+      if (value && response[value]) {
+        if (response[value] === "closed") {
+          $(this).addClass("text-secondary");
+          $(this).attr("disabled", "disabled");
+        } else if (response[value] === "open") {
+          $(this).addClass("fw-semibold");
+        }
+      }
+    });
+  }
+  /* ----------------------------------------------------
+      END: CHECK OPEN ORGANIZATIONS FOR REGISTRATION 
+  ------------------------------------------------------- */
 
   function loadTermsAndPrivacyPolicy() {
     $.getJSON("includes/misc/terms-and-privacy.json", function (data) {

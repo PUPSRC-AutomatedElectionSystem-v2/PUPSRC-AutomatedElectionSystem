@@ -14,8 +14,8 @@
   }
   
   .loader {
-    width: 110px;
-    height: 110px;
+    width: 95px;
+    height: 95px;
     border-radius: 50%;
     position: relative;
     background: url('../images/resc/ivote-icon.webp') center center no-repeat;

@@ -185,6 +185,7 @@ a {
 #mainNav {
   min-height: 55px;
   background-color: rgb(255, 255, 255, 0.95);
+  z-index: 10000;
 }
 
 .navbar .nav-link {

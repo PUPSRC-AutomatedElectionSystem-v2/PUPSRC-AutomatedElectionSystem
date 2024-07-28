@@ -1,68 +1,73 @@
-document.addEventListener("DOMContentLoaded", () => {
-  fetch("includes/misc/voter-faqs.json")
-    .then((response) => response.json())
-    .then((data) => {
+$(document).ready(function () {
+  $.getJSON("includes/load-faqs.php")
+    .done(function (data) {
       const faqs = data.faqs;
-      const accordion = document.getElementById("accordion");
+      const $accordion = $("#accordion");
 
       faqs.forEach((faq, index) => {
-        const faqRadius = document.createElement("div");
-        faqRadius.className = "radius-5";
+        const $faqRadius = $("<div>").addClass("radius-5");
 
-        const faqItem = document.createElement("div");
-        faqItem.className = "accordion-item border border-0 my-4 shadow-sm";
+        const $faqItem = $("<div>").addClass(
+          "accordion-item border border-0 my-4 shadow-sm"
+        );
 
-        const faqHeader = document.createElement("h2");
-        faqHeader.className = "accordion-header";
+        const $faqHeader = $("<h2>").addClass("accordion-header");
 
-        const faqButton = document.createElement("button");
-        faqButton.className = "accordion-button collapsed";
-        faqButton.type = "button";
-        faqButton.setAttribute("data-bs-toggle", "collapse");
-        faqButton.setAttribute("data-bs-target", `#faq${index}`);
-        faqButton.setAttribute("aria-expanded", "false");
-        faqButton.setAttribute("aria-controls", `faq${index}`);
+        const $faqButton = $("<button>")
+          .addClass("accordion-button collapsed")
+          .attr("type", "button")
+          .attr("data-bs-toggle", "collapse")
+          .attr("data-bs-target", `#faq${index}`)
+          .attr("aria-expanded", "false")
+          .attr("aria-controls", `faq${index}`);
 
-        const faqQuestion = document.createElement("div");
-        faqQuestion.className = "px-3 fw-semibold faq-question";
-        faqQuestion.innerText = faq.question;
+        const $faqQuestion = $("<div>")
+          .addClass("px-3 fw-semibold faq-question")
+          .text(faq.question);
 
-        const plusIcon = document.createElement("span");
-        plusIcon.className = "accordion-button-icon plus-icon me-2";
-        plusIcon.innerHTML =
-          '<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/></svg>';
+        const $plusIcon = $("<span>")
+          .addClass("accordion-button-icon plus-icon me-2")
+          .html(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-plus-circle-fill" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M8.5 4.5a.5.5 0 0 0-1 0v3h-3a.5.5 0 0 0 0 1h3v3a.5.5 0 0 0 1 0v-3h3a.5.5 0 0 0 0-1h-3z"/></svg>'
+          );
 
-        const minusIcon = document.createElement("span");
-        minusIcon.className = "accordion-button-icon minus-icon d-none me-2";
-        minusIcon.innerHTML =
-          '<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z"/></svg>';
+        const $minusIcon = $("<span>")
+          .addClass("accordion-button-icon minus-icon d-none me-2")
+          .html(
+            '<svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-dash-circle-fill" viewBox="0 0 16 16"><path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h7a.5.5 0 0 0 0-1z"/></svg>'
+          );
 
-        faqButton.appendChild(faqQuestion);
-        faqButton.appendChild(plusIcon);
-        faqButton.appendChild(minusIcon);
+        $faqButton.append($faqQuestion, $plusIcon, $minusIcon);
+        $faqHeader.append($faqButton);
+        $faqItem.append($faqHeader);
 
-        faqHeader.appendChild(faqButton);
-        faqItem.appendChild(faqHeader);
+        const $faqCollapse = $("<div>")
+          .attr("id", `faq${index}`)
+          .addClass("accordion-collapse collapse")
+          .attr("data-bs-parent", "#accordion");
 
-        const faqCollapse = document.createElement("div");
-        faqCollapse.id = `faq${index}`;
-        faqCollapse.className = "accordion-collapse collapse";
-        faqCollapse.setAttribute("data-bs-parent", "#accordion");
+        const $faqBody = $("<div>").addClass("accordion-body faq-answer ms-3");
 
-        const faqBody = document.createElement("div");
-        faqBody.className = "accordion-body faq-answer ms-3";
-        faqBody.innerText = faq.answer;
+        const deltaJson = faq.answer;
+        const quillContainer = $("<div>")[0];
+        const quill = new Quill(quillContainer);
+        quill.setContents(deltaJson);
+        const htmlContent = quill.root.innerHTML;
+        $(quillContainer).html(htmlContent);
 
-        faqCollapse.appendChild(faqBody);
-        faqItem.appendChild(faqCollapse);
+        $faqBody.append(quillContainer);
+        $faqCollapse.append($faqBody);
+        $faqItem.append($faqCollapse);
 
-        faqRadius.appendChild(faqItem);
-        accordion.appendChild(faqRadius);
+        $faqRadius.append($faqItem);
+        $accordion.append($faqRadius);
       });
 
       addFaqsElements();
     })
-    .catch((error) => console.error("Error fetching FAQ data:", error));
+    .fail(function (error) {
+      console.error("Error fetching FAQ data:", error);
+    });
 });
 
 function addFaqsElements() {
@@ -102,25 +107,25 @@ function addFaqsElements() {
 
   function updatePaginationControls(totalItems) {
     const totalPages = Math.ceil(totalItems / itemsPerPage);
-    const paginationElement = $("#pagination");
-    paginationElement.empty();
+    const $paginationElement = $("#pagination");
+    $paginationElement.empty();
 
     // Previous arrow
-    const previousLi = $("<li>").addClass("page-item");
-    const previousLink = $("<a>")
+    const $previousLi = $("<li>").addClass("page-item");
+    const $previousLink = $("<a>")
       .addClass("page-link")
       .attr("href", "#")
       .html('<span aria-hidden="true" class="fas fa-chevron-left"></span>');
     if (currentPage === 1) {
-      previousLi.addClass("disabled");
+      $previousLi.addClass("disabled");
     } else {
-      previousLink.on("click", function (event) {
+      $previousLink.on("click", function (event) {
         event.preventDefault();
         paginateFAQs($(".accordion-item"), currentPage - 1);
       });
     }
-    previousLi.append(previousLink);
-    paginationElement.append(previousLi);
+    $previousLi.append($previousLink);
+    $paginationElement.append($previousLi);
 
     const visiblePages = 4;
     let startPage = currentPage - Math.floor(visiblePages / 2);
@@ -132,87 +137,86 @@ function addFaqsElements() {
     }
 
     if (startPage > 1) {
-      const firstLi = $("<li>").addClass("page-item");
-      const firstLink = $("<a>")
+      const $firstLi = $("<li>").addClass("page-item");
+      const $firstLink = $("<a>")
         .addClass("page-link")
         .attr("href", "#")
         .text("1");
-      firstLink.on("click", function (event) {
+      $firstLink.on("click", function (event) {
         event.preventDefault();
         paginateFAQs($(".accordion-item"), 1);
       });
-      firstLi.append(firstLink);
-      paginationElement.append(firstLi);
+      $firstLi.append($firstLink);
+      $paginationElement.append($firstLi);
 
       if (startPage > 2) {
-        const ellipsisLi = $("<li>")
+        const $ellipsisLi = $("<li>")
           .addClass("page-item disabled")
           .append(
             "<span class='page-link' style='border: none; background: transparent; color: #000;'>...</span>"
           );
-        paginationElement.append(ellipsisLi);
+        $paginationElement.append($ellipsisLi);
       }
     }
 
     for (let i = startPage; i <= endPage; i++) {
       const liClass = i === currentPage ? "page-item active" : "page-item";
-      const linkClass = "page-link";
-      const liElement = $("<li>").addClass(liClass);
-      const linkElement = $("<a>")
-        .addClass(linkClass)
+      const $liElement = $("<li>").addClass(liClass);
+      const $linkElement = $("<a>")
+        .addClass("page-link")
         .attr("href", "#")
         .text(i);
 
-      linkElement.on("click", function (event) {
+      $linkElement.on("click", function (event) {
         event.preventDefault();
         paginateFAQs($(".accordion-item"), i);
       });
 
-      liElement.append(linkElement);
-      paginationElement.append(liElement);
+      $liElement.append($linkElement);
+      $paginationElement.append($liElement);
     }
 
     if (endPage < totalPages) {
       if (endPage < totalPages - 1) {
-        const ellipsisLi = $("<li>")
+        const $ellipsisLi = $("<li>")
           .addClass("page-item disabled")
           .append(
             "<span class='page-link' style='border: none; background: transparent; color: #000;'>...</span>"
           );
-        paginationElement.append(ellipsisLi);
+        $paginationElement.append($ellipsisLi);
       }
 
-      const lastLi = $("<li>").addClass("page-item");
-      const lastLink = $("<a>")
+      const $lastLi = $("<li>").addClass("page-item");
+      const $lastLink = $("<a>")
         .addClass("page-link")
         .attr("href", "#")
         .text(totalPages);
-      lastLink.on("click", function (event) {
+      $lastLink.on("click", function (event) {
         event.preventDefault();
         paginateFAQs($(".accordion-item"), totalPages);
       });
-      lastLi.append(lastLink);
-      paginationElement.append(lastLi);
+      $lastLi.append($lastLink);
+      $paginationElement.append($lastLi);
     }
 
     // Next arrow
-    const nextLi = $("<li>").addClass("page-item");
-    const nextLink = $("<a>")
+    const $nextLi = $("<li>").addClass("page-item");
+    const $nextLink = $("<a>")
       .addClass("page-link")
       .attr("href", "#")
       .html('<span aria-hidden="true" class="fas fa-chevron-right"></span>');
     if (currentPage === totalPages) {
-      nextLi.addClass("disabled");
+      $nextLi.addClass("disabled");
     } else {
-      nextLink.on("click", function (event) {
+      $nextLink.on("click", function (event) {
         event.preventDefault();
         paginateFAQs($(".accordion-item"), currentPage + 1);
       });
     }
-    nextLi.append(nextLink);
-    paginationElement.append(nextLi);
+    $nextLi.append($nextLink);
+    $paginationElement.append($nextLi);
   }
 
-  const faqItems = $(".accordion-item");
-  paginateFAQs(faqItems, currentPage);
+  const $faqItems = $(".accordion-item");
+  paginateFAQs($faqItems, currentPage);
 }

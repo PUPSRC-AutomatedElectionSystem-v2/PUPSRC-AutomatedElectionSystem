@@ -54,7 +54,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
         <body>
 
-            <?php 
+            <?php
             include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/loader.html');
             include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/sidebar.php');
             ?>
@@ -66,11 +66,14 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                         <div class="col-md-11">
                             <div class="breadcrumbs d-flex">
                                 <button type="button" class=" btn-white d-flex align-items-center spacing-8 fs-8">
-                                    <i data-feather="users" class="white im-cust feather-2xl"></i> <span class="hide-text">MANAGE USERS</span>
+                                    <i data-feather="users" class="white im-cust feather-2xl"></i> <span
+                                        class="hide-text">MANAGE USERS</span>
                                 </button>
                                 <button type="button" class="btn-back spacing-8 fs-8"
-                                    onclick="redirectToPage('manage-voters.php')">VOTERS<span class="hide-text">' ACCOUNTS</span></button>
-                                <button type="button" class="btn btn-current rounded-pill spacing-8 fs-8"><span class="hide-text">VOTER</span> PROFILE</button>
+                                    onclick="redirectToPage('manage-voters.php')">VOTERS<span class="hide-text">'
+                                        ACCOUNTS</span></button>
+                                <button type="button" class="btn btn-current rounded-pill spacing-8 fs-8"><span
+                                        class="hide-text">VOTER</span> PROFILE</button>
                             </div>
                         </div>
                     </div>
@@ -82,170 +85,125 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                             <div class="row justify-content-center">
                                 <div class="col-md-11">
                                     <div class="card-box manage-voters">
-                                        <div class="row">
-                                            <!-- FIRST COLUMN -->
-                                            <div class="col-md-7 p-sm-5">
-                                                <!-- Header of Left Column -->
-                                                <div class="row pdf-dtls">
-                                                    <!-- COR Name -->
-                                                    <div class="col-sm-6 col-12 d-flex flex-row">
-                                                        <p class="fw-bold fs-7">
-                                                            <i class="fas fa-paperclip fa-sm"></i>
-                                                            <span class="ps-sm-1 spacing-5"><?php echo $row["cor"] ?></span>
+
+                                        <section class="validate-header">
+                                            <div class="row">
+                                                <div class="col-md-12 text-center-cont">
+                                                    <!-- Title -->
+                                                    <p class="fw-bold fs-3 main-color spacing-4 title">Account Details
+                                                    </p>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row line-cont">
+                                                <div class="col-md-12 d-flex justify-content-center">
+                                                    <!-- Divider -->
+                                                    <div class="text-center-cont horizontal-line"></div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row description">
+                                                <div class="col-md-12 text-center-cont">
+                                                    <!-- Description -->
+                                                    <p class="fw-medium fs-7 spacing-6 sub-title">The following are the voter's
+                                                    provided information.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </section>
+                                        <div class="row information">
+                                            <section>
+                                                <div class="row">
+                                                    <div class="col-md-3 text-center-cont">
+                                                        <p class="fw-bold fs-6 main-color spacing-4">Last Name</p>
+                                                        <p class="fw-medium fs-6 text-truncate">
+                                                            <?php echo $row["last_name"] ?>
                                                         </p>
                                                     </div>
-                                                    <!-- Download + Full Screen Name -->
-                                                    <div class="col-sm-6 col-12 d-flex flex-row-reverse">
-                                                        <div class="row funcs">
-                                                            <div class="col-12 col-sm-12"> <!-- Adjusted column size -->
-                                                                <!-- Download -->
-                                                                <a href="<?php echo "user_data/$org_name/cor/" . $row['cor']; ?>"
-                                                                    download class="d-inline-flex align-items-center">
-                                                                    <i class="fas fa-download fa-sm"></i>
-                                                                    <span
-                                                                        class="fs-7 ps-sm-2 spacing-5 fw-medium">Download</span>
-                                                                </a>
-                                                                <i class="fa-solid fa-expand fa-sm fullscreen-icon"></i>
-                                                            </div>
-                                                        </div>
+
+                                                    <div class="col-md-3 text-center-cont padding-top-place">
+                                                        <p class="fw-bold fs-6 main-color spacing-4">First Name</p>
+                                                        <p class="fw-medium fs-6 text-truncate">
+                                                            <?php echo $row["first_name"] ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="col-md-3 text-center-cont padding-top-place">
+                                                        <p class="fw-bold fs-6 main-color spacing-4">Middle Name</p>
+                                                        <p class="fw-medium fs-6 text-truncate">
+                                                            <?php echo !empty($row["middle_name"]) ? htmlspecialchars($row["middle_name"]) : 'N/A'; ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="col-md-3 text-center-cont padding-top-place">
+                                                        <p class="fw-bold fs-6 main-color spacing-4">Suffix</p>
+                                                        <p class="fw-medium fs-6 text-truncate">
+                                                            <?php echo !empty($row["suffix"]) ? htmlspecialchars($row["suffix"]) : 'N/A'; ?>
+                                                        </p>
                                                     </div>
 
                                                 </div>
+                                            </section>
 
-                                                <!-- PDF Container -->
-                                                <div class="d-flex justify-content-center" style="height: 50vh;">
-                                                    <iframe id="pdfViewer"
-                                                        src="<?php echo "user_data/$org_name/cor/" . $row['cor']; ?>"
-                                                        width="100%" height="100%" frameborder="0" class="cor"></iframe>
+                                            <section class="pt-5">
+                                                <div class="row">
+                                                    <div class="col-md-3 text-center-cont padding-top-place">
+                                                        <p class="fw-bold fs-6 main-color spacing-4">Student ID</p>
+                                                        <p class="fw-medium fs-6 text-truncate">
+                                                            <?php echo $row["student_id"] ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="col-md-3 text-center-cont padding-top-place">
+                                                        <p class="fw-bold fs-6 main-color spacing-4">Email Address</p>
+                                                        <p class="fw-medium fs-6 text-truncate">
+                                                            <?php echo $row["email"] ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="col-md-3 text-center-cont padding-top-place">
+                                                        <!-- Status -->
+                                                        <p class="fw-bold fs-6 main-color spacing-4">Date Registered</p>
+                                                        <p class="fw-medium fs-6">
+                                                            <?php
+                                                            $date = new DateTime($row["acc_created"]);
+                                                            echo $date->format('F j, Y');
+                                                            ?>
+                                                        </p>
+                                                    </div>
+
+                                                    <div class="col-md-3 text-center-cont padding-top-place">
+                                                        <!-- Date -->
+                                                        <p class="fw-bold fs-6 main-color spacing-4">Date Verified</p>
+                                                        <p class="fw-medium fs-6 ">
+                                                            <?php
+                                                            $date = new DateTime($row["status_updated"]);
+                                                            echo $date->format('F j, Y');
+                                                            ?>
+                                                        </p>
+                                                    </div>
                                                 </div>
+                                            </section>
                                             </div>
-                                            <!-- SECOND COLUMN -->
-                                            <div class="col-md-5 p-sm-5">
-                                                <!-- Header -->
-                                                <section>
-                                                    <div class="row information">
-                                                        <div class="col-md-12 text-center">
-                                                            <!-- Title -->
-                                                            <p class="fw-bold fs-3 main-color spacing-4">Voter Details
-                                                            </p>
-                                                            </p>
-                                                        </div>
+                                            <!-- Buttons -->
+                                            <section>
+                                                <div class="row py-sm-5 px-sm-5 del-btn">
+                                                    <div class="col-md-12 text-end">
+                                                        <button
+                                                            class="del-no-border px-sm-5 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6"
+                                                            id="reject-btn" data-toggle="modal"
+                                                            data-target="#rejectModal">Delete Account</button>
                                                     </div>
-
-                                                    <div class="row">
-                                                        <div class="col-md-12 d-flex justify-content-center">
-                                                            <!-- Divider -->
-                                                            <div class="text-center horizontal-line"></div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row information">
-                                                        <div class="col-md-12 pt-sm-4">
-                                                            <!-- Description -->
-                                                            <p class="fw-medium fs-7 spacing-6">The following are the voter's
-                                                                provided information.</p>
-                                                        </div>
-                                                    </div>
-                                                </section>
-
-                                                <!-- Student Information -->
-                                                <section>
-                                                    <div class="row pt-sm-4 information">
-                                                        <div class="col-md-12">
-                                                            <!-- Email -->
-                                                            <p class="fw-bold fs-6 main-color spacing-4">Email Address</p>
-                                                            <p class="fw-medium fs-6 pt-sm-2 text-truncate">
-                                                                <?php echo $row["email"] ?>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row pt-sm-4 information">
-                                                        <div class="col-md-12">
-                                                            <!-- Status -->
-                                                            <p class="fw-bold fs-6 main-color spacing-4">Date Registered</p>
-                                                            <p class="fw-medium fs-6 pt-sm-2">
-                                                                <?php
-                                                                $date = new DateTime($row["acc_created"]);
-                                                                echo $date->format('F j, Y');
-                                                                ?>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row pt-sm-4 information">
-                                                        <div class="col-md-12">
-                                                            <!-- Date -->
-                                                            <p class="fw-bold fs-6 main-color spacing-4">Date Verified</p>
-                                                            <p class="fw-medium fs-6 pt-sm-2">
-                                                                <?php
-                                                                $date = new DateTime($row["status_updated"]);
-                                                                echo $date->format('F j, Y');
-                                                                ?>
-                                                            </p>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="row pt-sm-4">
-                                                        <div class="col-12 acc-status">
-                                                            <!-- Status -->
-                                                            <div class="row pt-sm-4 status-acc">
-                                                            <p class="fw-bold fs-6 main-color spacing-4">Account Status</p>
-                                                            
-                                                                <div class="col-sm-5 col-12">
-
-                                                                    <?php
-                                                                    $status = $row["account_status"];
-                                                                    $statusClass = '';
-
-                                                                    switch ($status) {
-                                                                        case 'verified':
-                                                                            $statusClass = 'active-status';
-                                                                            break;
-                                                                        case 'invalid':
-                                                                            $statusClass = 'inactive-status';
-                                                                            break;
-                                                                        default:
-                                                                            $statusClass = '';
-                                                                            break;
-                                                                    }
-                                                                    ?>
-                                                                    <span class="status-background <?php echo $statusClass; ?>">
-                                                                        <?php echo ucfirst($status); ?></span>
-                                                                </div>
-                                                                <div class="col-sm-5 col-12 status-update">
-                                                                    <!-- Status -->
-                                                                    <p class="fw-bold fs-8 spacing-4 no-padding">Last update on:
-                                                                    </p>
-                                                                    <p class="fw-medium fs-8 no-padding">
-                                                                        <?php
-                                                                        $date = new DateTime($row["status_updated"]);
-                                                                        echo $date->format('F j, Y');
-                                                                        ?>
-                                                                    </p>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                </section>
-                                                <!-- Buttons -->
-                                                <section>
-                                                    <div class="row pt-sm-5 del-btn">
-                                                        <div class="col-md-12 text-end">
-                                                            <button
-                                                                class="del-no-border px-sm-5 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6"
-                                                                id="reject-btn" data-toggle="modal"
-                                                                data-target="#rejectModal">Delete Account</button>
-                                                        </div>
-                                                    </div>
-                                                </section>
-                                            </div>
-                                        </div>
+                                                </div>
+                                            </section>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
 
             </div>
 
@@ -323,99 +281,13 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
                                 <div class="col-md-12 pt-1 d-flex justify-content-center">
                                     <button class="btn btn-success px-sm-5 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6"
-                                        onClick="redirectToPage('recycle-bin.php')" aria-label="Close">Go To Recycle Bin</button>
+                                        onClick="redirectToPage('recycle-bin.php')" aria-label="Close">Go To Recycle
+                                        Bin</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-
-            <!-- The following block of codes of modals,
-            "TOTAL DELETION" can be used for the Trashbin Module. -->
-
-                <!-- TOTAL DELETION: Confirm Delete Modal -->
-                <div class="modal" id="totalDeleteModal" tabindex="-1" role="dialog">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body">
-
-                                <div class="row p-4">
-                                    <div class="col-md-12 pb-3">
-                                        <div class="text-center">
-                                            <div class="col-md-12 p-3">
-                                                <img src="images/resc/warning.png" alt="iVote Logo">
-                                            </div>
-
-                                            <div class="row">
-                                                <div class="col-md-12 pb-3 confirm-delete">
-                                                    <p class="fw-bold fs-3 danger spacing-4">Confirm Delete?</p>
-                                                    <p class="pt-2 fw-medium spacing-5">A heads up: this action <span
-                                                            class="fw-bold">cannot be undone!</span></p>
-                                                    <p class="fw-medium spacing-5 pt-1">Type '<span class="fw-bold">Confirm
-                                                            Delete</span>' to proceed.</p>
-                                                </div>
-                                            </div>
-
-                                            <div class="row justify-content-center"> <!-- Add justify-content-center class -->
-                                                <div class="col-md-11 pb-3 pt-3 confirm-delete text-center mx-auto">
-                                                    <!-- Add mx-auto class -->
-                                                    <form action="#" method="post">
-                                                        <div class="form-group">
-                                                            <input type="text" class="form-control pt-2 bg-primary text-black"
-                                                                id="confirm-deletion" placeholder="Type here..."
-                                                                oninput="validateConfirmation()">
-                                                        </div>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 pt-3 text-center">
-                                        <div class="d-inline-block">
-                                            <button class="btn btn-light px-sm-5 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6"
-                                                onClick="closeModal()" aria-label="Close">Cancel</button>
-                                        </div>
-                                        <div class="d-inline-block">
-                                            <form class="d-inline-block">
-                                                <input type="hidden" id="voter_id" name="voter_id"
-                                                    value="<?php echo $voter_id; ?>">
-                                                <button class="btn btn-danger px-sm-5 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6"
-                                                    type="submit" id="confirm-delete" value="delete" disabled>Delete</button>
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- TOTAL DELETION SUCCESS: Deleted Successfully Modal -->
-                <div class="modal" id="deleteDone" tabindex="-1" role="dialog">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <div class="d-flex justify-content-end">
-                                    <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray"
-                                        onclick="redirectToPage('manage-voters.php')">
-                                    </i>
-                                </div>
-                                <div class="text-center p-4">
-                                    <div class="row">
-                                        <div class="col-md-12">
-                                            <p class="fw-bold fs-3 danger spacing-4">Account Deleted</p>
-                                            <p class="fw-medium spacing-5">The account has been successfully deleted.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
 
                 <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
                 <script src="scripts/script.js"></script>

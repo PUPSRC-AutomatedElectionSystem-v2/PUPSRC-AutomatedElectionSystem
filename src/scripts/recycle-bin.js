@@ -5,50 +5,54 @@ $(document).ready(function() {
 return $('.select-checkbox:checked').length > 0;
 }
 // Event listener for the Close button in the delete success modal
-$('#refreshPageBtn').on('click', function() {
-// Refresh the page
-location.reload();
-});
-$('#refreshPageBtn2').on('click', function() {
-// Refresh the page
-location.reload();
-});
+
 });
 
 $(document).ready(function() {
-$('.email-link').on('click', function(event) {
-event.preventDefault();
+    $('.email-link').on('click', function(event) {
+        event.preventDefault();
 
-var voterId = $(this).data('voter-id');
+        var voterId = $(this).data('voter-id');
 
-$.ajax({
-type: 'POST',
-url: 'submission_handlers/recycle-bin-modal.php',
-data: { voter_id: voterId },
-dataType: 'json',
-success: function(response) {
-if (response.cor) {
-    var formattedCorLink = `user_data/${orgName}/cor/` + response.cor;
-$('#modal-voter-id').text(voterId);
-$('#pdfViewer').attr('src', formattedCorLink); // Set src attribute of pdfViewer
-$('#modal-download-link').attr('href', formattedCorLink); // Set href attribute of modal-download-link
-$('#modal-email').text(response.email);
-var statusUpdatedDate = new Date(response.status_updated);
-var formattedStatusUpdated = statusUpdatedDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' | ' + statusUpdatedDate.toLocaleDateString([], { month: 'short', day: '2-digit', year: 'numeric' });
-$('#modal-status-updated').text('Deleted at: ' + formattedStatusUpdated);
+        $.ajax({
+            type: 'POST',
+            url: 'submission_handlers/recycle-bin-modal.php',
+            data: { voter_id: voterId },
+            dataType: 'json',
+            success: function(response) {
+                if (response) {
+                    $('#modal-voter-id').text(voterId);
+                    $('#modal-email').text(response.email);
 
-$('#modal-acc-created').text(response.acc_created);
-$('#voterDetailsModal').modal('show');
-} else {
-alert(response.error || 'An error occurred');
-}
-},
-error: function() {
-alert('An error occurred while fetching the data');
-}
+                    var statusUpdatedDate = new Date(response.status_updated);
+                    var formattedStatusUpdated = statusUpdatedDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' | ' + statusUpdatedDate.toLocaleDateString([], { month: 'short', day: '2-digit', year: 'numeric' });
+                    $('#modal-status-updated').text('Deleted at: ' + formattedStatusUpdated);
+
+                    $('#modal-acc-created').text(response.acc_created);
+
+                    // Combine name components with spaces, handling empty middle_name and suffix
+                    var fullName = response.first_name;
+                    if (response.middle_name) {
+                        fullName += ' ' + response.middle_name;
+                    }
+                    fullName += ' ' + response.last_name;
+                    if (response.suffix) {
+                        fullName += ' ' + response.suffix;
+                    }
+                    $('#modal-name').text(fullName);
+
+                    $('#voterDetailsModal').modal('show');
+                } else {
+                    alert(response.error || 'An error occurred');
+                }
+            },
+            error: function() {
+                alert('An error occurred while fetching the data');
+            }
+        });
+    });
 });
-});
-});
+
 
 
 

@@ -3,15 +3,7 @@
                       function isAnyCheckboxChecked() {
       return $('.select-checkbox:checked').length > 0;
   }
-  // Event listener for the Close button in the delete success modal
-  $('#refreshPageBtn').on('click', function() {
-      // Refresh the page
-      location.reload();
-  });
-  $('#refreshPageBtn2').on('click', function() {
-      // Refresh the page
-      location.reload();
-  });
+
 });
 
 

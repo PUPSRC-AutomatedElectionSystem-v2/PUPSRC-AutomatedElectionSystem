@@ -70,10 +70,10 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
     <!-- <link rel="stylesheet" href="styles/dist/landing-animation.css"> -->
 
     <!-- Bootstrap JavaScript -->
-    <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- CDN jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <!-- Custom JavaScript -->
     <script src="scripts/register.js" defer></script>

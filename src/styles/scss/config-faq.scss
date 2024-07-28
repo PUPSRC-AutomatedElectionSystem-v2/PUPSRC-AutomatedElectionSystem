@@ -270,9 +270,12 @@ body dialog.modal-native {
                 align-self: end;
                 margin-bottom: 1vh;
 
-                // margin-left: ;
                 button {
-                    border: 1px solid light-dark(var(--main-black), #ccc);
+                    border: 1px solid light-dark(transparent, #ccc);
+
+                    @media (prefers-color-scheme: light) {
+                        background-color: transparent;
+                    }
 
                     &:not(:hover) {
                         color: light-dark(var(--main-black), #f5f5f5);
@@ -280,7 +283,7 @@ body dialog.modal-native {
                 }
             }
 
-            .answer-container:has(:focus-within, .ql-editor[contenteditable="true"]) {
+            .answer-container:has(:focus-within):has(.ql-editor[contenteditable="true"]) {
                 .ql-toolbar {
                     display: inline-block;
                 }

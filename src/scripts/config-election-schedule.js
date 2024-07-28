@@ -1,4 +1,8 @@
-import { initializeConfigurationJS as ConfigJS, EventListenerUtils as EventUtils } from './configuration.js';
+import {
+    initializeConfigurationJS as ConfigJS,
+    EventListenerUtils as EventUtils,
+    isScheduleOngoing as checkElection
+} from './configuration.js';
 import InputValidator from './input-validator.js';
 
 /**
@@ -256,7 +260,7 @@ ConfigPage.setFetchedSchedule = function (data, isUTC = false) {
 
     let scheduleSettings = document.querySelector(`.schedule.card-box`);
 
-    if (data[0]) {
+    if (data[0] && checkElection(data[0].electionEnd)) {
 
         const { startDateTime, endDateTime, startDate, startTime, endDate, endTime } = ConfigPage.processDateTime(data, isUTC);
 

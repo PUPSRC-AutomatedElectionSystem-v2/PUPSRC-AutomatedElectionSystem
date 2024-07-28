@@ -1115,6 +1115,31 @@ ConfigPage.EditorModal = class {
     static data;
     static mode;
     static modalInstance;
+    static formatButtons = [
+        { className: 'ql-bold', icon: 'bold' },
+        { className: 'ql-italic', icon: 'italic' },
+        { className: 'ql-underline', icon: 'underline' },
+        {
+            className: 'ql-list', value: 'bullet', svg: `<svg viewBox="0 0 18 18">
+                <line class="ql-stroke" x1="6" x2="15" y1="4" y2="4"></line><line class="ql-stroke" x1="6" x2="15" y1="9" y2="9"></line>
+                <line class="ql-stroke" x1="6" x2="15" y1="14" y2="14"></line><line class="ql-stroke" x1="3" x2="3" y1="4" y2="4"></line>
+                <line class="ql-stroke" x1="3" x2="3" y1="9" y2="9"></line><line class="ql-stroke" x1="3" x2="3" y1="14" y2="14"></line>
+            </svg>` },
+        {
+            className: 'ql-list', value: 'ordered', svg: `<svg viewBox="0 0 18 18">
+                <line class="ql-stroke" x1="7" x2="15" y1="4" y2="4"></line>
+                <line class="ql-stroke" x1="7" x2="15" y1="9" y2="9"></line>
+                <line class="ql-stroke" x1="7" x2="15" y1="14" y2="14"></line><line class="ql-stroke ql-thin" x1="2.5" x2="4.5" y1="5.5" y2="5.5"></line>
+                <path class="ql-fill" d="M3.5,6A0.5,0.5,0,0,1,3,5.5V3.085l-0.276.138A0.5,0.5,0,0,1,2.053,3c-0.124-.247-0.023-0.324.224-0.447l1-.5A0.5,0.5,0,0,1,4,2.5v3A0.5,0.5,0,0,1,3.5,6Z"></path>
+                <path class="ql-stroke ql-thin" d="M4.5,10.5h-2c0-.234,1.85-1.076,1.85-2.234A0.959,0.959,0,0,0,2.5,8.156"></path><path class="ql-stroke ql-thin" d="M2.5,14.846a0.959,0.959,0,0,0,1.85-.109A0.7,0.7,0,0,0,3.75,14a0.688,0.688,0,0,0,.6-0.736,0.959,0.959,0,0,0-1.85-.109"></path>
+            </svg>` },
+        { className: 'ql-link', icon: 'link-2' },
+        {
+            className: 'ql-clean', svg: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" id="format-clear">
+                                          <path fill="none" d="M0 0h24v24H0V0z" fill="currentColor"></path>
+                                          <path d="M20 8V5H6.39l3 3h1.83l-.55 1.28 2.09 2.1L14.21 8zM3.41 4.86L2 6.27l6.97 6.97L6.5 19h3l1.57-3.66L16.73 21l1.41-1.41z" fill="currentColor"></path>
+                                        </svg>` }
+    ];
 
     static show(data, isEdit, isAdd = false) {
         this.isEdit = isEdit;
@@ -1148,10 +1173,28 @@ ConfigPage.EditorModal = class {
         }
     }
 
+    static createFormatBtn(toolbar) {
+        this.formatButtons.forEach(button => {
+            let btn = document.createElement('button');
+            btn.className = button.className;
+            btn.value = button?.value;
+            btn.setAttribute('tabindex', 0);
+            if (button.icon) {
+                let icon = document.createElement('i');
+                icon.setAttribute('data-feather', button.icon);
+                btn.appendChild(icon);
+            } else if (button.svg) {
+                btn.innerHTML = button.svg;
+            }
+            toolbar.appendChild(btn);
+        });
+    }
+
     static #updateContent(data) {
         this.data = data;
 
         this.#setEditField();
+        feather.replace();
         let modalActionDiv = this.#initBtn();
         let modalBody = this.modalElement.querySelector('.modal-body');
         modalBody.append(modalActionDiv);
@@ -1235,6 +1278,10 @@ ConfigPage.EditorModal = class {
         let answerLabelContainer = document.createElement('div');
         answerLabelContainer.classList.add('label-container', 'form-content');
 
+        let formatToolbar = document.createElement('div');
+        formatToolbar.id = `format-toolbar`;
+        formatToolbar.className = 'ql-toolbar ql-snow';
+        this.createFormatBtn(formatToolbar);
 
         let answerTextArea = document.createElement('div');
         answerTextArea.maxLength = 500;
@@ -1279,6 +1326,7 @@ ConfigPage.EditorModal = class {
 
 
         answerLabelContainer.prepend(answerTextAreaLabel);
+        answerLabelContainer.append(formatToolbar);
         answerContainer.prepend(answerLabelContainer);
         answerContainer.append(answerTextArea);
         modalBody.insertBefore(answerAlert, modalBody.firstChild);
@@ -1290,7 +1338,7 @@ ConfigPage.EditorModal = class {
 
         ConfigPage.quill = new Quill('#faq-answer', {
             modules: {
-                toolbar: false
+                toolbar: '#format-toolbar'
             },
             placeholder: 'Type FAQ answer here.',
         });

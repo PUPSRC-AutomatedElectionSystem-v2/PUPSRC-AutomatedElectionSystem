@@ -79,3 +79,10 @@ export class EventListenerUtils {
     }
 
 }
+
+export function isScheduleOngoing(datetimeEnd) {
+    const scheduleEnd = new Date(datetimeEnd);
+    const now = new Date();
+
+    return scheduleEnd >= now;
+}

@@ -42,6 +42,13 @@ body {
     /* padding-left: 20px; */
 }
 
+#fullName {
+    font-size: 0.938rem;
+    font-weight: 600;
+    line-height: 1.143em;
+    letter-spacing: 0.05em;
+}
+
 .account-container {
     padding: 30px 50px;
 }
@@ -152,12 +159,30 @@ body {
     color: black;
 }
 
-.verify-email {
-    font-size: 1.563rem;
+.account-activation-title {
+    font-size: 1.688rem;
     font-weight: 700;
     line-height: 1.905rem;
     letter-spacing: 0.03em;
     text-align: center;
+    color: var(--main-color);
+}
+
+.account-activation-wrapper {
+    padding: 5%;
+}
+
+.setup-link-modal-content {
+    font-size: 0.813rem;
+    font-weight: 500;
+    line-height: 1.143em;
+    letter-spacing: 0.05em;
+}
+
+.email-input {
+    font-size: 0.813rem;
+    font-weight: 500;
+    padding: 10px 6px;
 }
 
 .tbl-masterlist, .guidelines {
@@ -171,6 +196,10 @@ body {
 
 .nav-back {
     font-size: 0.8rem;
+}
+
+#emailErrorMessage {
+    font-size: 0.813rem;
 }
 
 @media (max-width: 768px) {
@@ -275,13 +304,36 @@ body {
       font-weight: 500;
       line-height: 1rem;
       margin: -10px -30px 0px;
-    }  
+    }
+    
+    .account-activation-wrapper {
+        padding: 5% 0%;
+    }
 
-    .verify-email {
-        font-size: 1rem;
+    .setup-link-modal-content, .email-input {
+        font-size: 0.625rem;
+    }
+
+    #fullName {
+        font-size: 0.75rem;
+    }
+
+    .account-activation-title {
+        font-size: 1.1rem;
         font-weight: 700;
         line-height: 1.067rem;
         text-align: center;
+    }
+
+    #cancelSendAccSetupLinkBtn, #sendAccSetupLink {
+        font-size: 0.625rem;
+        height: 30px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #emailErrorMessage {
+        font-size: 0.625rem;
     }
 
     .pagination li {

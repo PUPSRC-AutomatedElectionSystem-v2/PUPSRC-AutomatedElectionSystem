@@ -50,10 +50,10 @@ SessionManager::checkUserRoleAndRedirect();
     <title>Master List</title>
 
     <!-- Bootstrap JavaScript -->
-    <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
     <!-- CDN jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <!-- Custom JavaScript -->
     <script src="scripts/loader.js" defer></script>
@@ -75,7 +75,7 @@ SessionManager::checkUserRoleAndRedirect();
                 <div class="col-12">
 
                     <div class="mt-3">
-                        <a href="voter-login" class="spacing-5 link-offset-1 nav-back"><i data-feather="arrow-left" class="feather-sm im-cust"></i><u>Go back to login page</u></a>                        
+                        <a href="voter-login" class="spacing-5 link-offset-1 fw-semibold text-muted nav-back"><i data-feather="arrow-left" class="feather-sm im-cust"></i><u>Go back to login page</u></a>                        
                     </div>
 
                     <div class="table-wrapper rounded-3 tbl-masterlist shadow-sm">
@@ -163,24 +163,27 @@ SessionManager::checkUserRoleAndRedirect();
                     <div class="modal-content">
                         <div class="modal-body">
                             <div class="row">
-                                <div class="col-md-12">
-                                    <h1 class="fw-bold main-color text-center spacing-4 verify-email">Email Address</h1>
+                                <div class="col-md-12 account-activation-wrapper">
+                                    <div class="fw-bold main-color text-center spacing-4 account-activation-title">Account Activation</div>
                                     <form id="sendAccSetupLinkForm" method="POST">
                                         <input type="hidden" id="voterId" name="voter_id">
-                                        <p><strong id="fullName"></strong></p>
-                                        <div class="mb-1">
-                                            <!-- <label for="email" class="form-label">Email address</label> -->
-                                            <input type="email" class="form-control bg-primary shadow-sm" id="email" name="email" placeholder="Enter your email address">
+                                        <div class="mt-4 mb-1 text-center" id="fullName"></div>
+                                        <div class="mt-4 setup-link-modal-content text-center">
+                                            Kindly enter the email address you provided to the organization to receive account setup instructions.
                                         </div>
-                                        <div id="emailErrorMessage" class="fs-7 text-danger mb-4 fw-medium me-5">
+                                        <div class="mt-4">
+                                            <!-- <label for="email" class="form-label">Email address</label> -->
+                                            <input type="email" class="form-control bg-white shadow-sm email-input" id="email" name="email" placeholder="Enter your email address here...">
+                                        </div>
+                                        <div id="emailErrorMessage" class="text-danger mb-4 mt-1 fw-medium me-5">
                                             <!-- Display error messages here -->
                                         </div>
                                         <div class="row d-flex justify-content-center">
                                             <div class="col-5">
-                                                <button type="button" class="btn btn-secondary w-100" id="cancelSendAccSetupLinkBtn" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="button" class="btn btn-secondary fw-medium w-100" id="cancelSendAccSetupLinkBtn" data-bs-dismiss="modal">Cancel</button>
                                             </div>
                                             <div class="col-7">
-                                                <button type="submit" id="sendAccSetupLink" class="btn btn-org-color w-100">Send Setup Link</button>
+                                                <button type="submit" id="sendAccSetupLink" class="btn btn-org-color fw-semibold w-100">Send Setup Link</button>
                                             </div>                                            
                                         </div>
                                     </form>

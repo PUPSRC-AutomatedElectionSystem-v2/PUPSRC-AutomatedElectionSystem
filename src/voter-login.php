@@ -211,7 +211,7 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
                     <form class="needs-validation" id="forgot-password-form" name="forgot-password-form" novalidate enctype="multipart/form-data">
                         <div class="col-12 col-md-12">
                             <div class="d-flex align-items-start mb-0 pb-0 forgot-pass-email-title">
-                                <p for="email" class="form-label text-start ps-1 pb-3 forgot-password-subtitle">Don't sweat it, enter your registered email address below to recover your account.</p>
+                                <div for="email" class="form-label text-center pb-3 forgot-password-subtitle">Don't sweat it, enter your registered email address below to recover your account.</div>
                                 <!-- <p>Email Address</p> -->
                             </div>
                             <input type="email" class="form-control shadow-sm email" id="email" name="email" placeholder="Email Address" autocomplete="email">
@@ -233,7 +233,7 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
                                     <button type="button" id="cancelReset" class="btn border border-0 cancel-button w-100" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                                 <div class="col-7" id="sendBtnContainer">
-                                    <button class="btn send-link-button w-100" id="<?php echo strtoupper($org_name); ?>-login-button" type="submit" name="send-email-btn">Send Link</button>
+                                    <button class="btn fw-semibold send-link-button w-100" id="<?php echo strtoupper($org_name); ?>-login-button" type="submit" name="send-email-btn">Send Link</button>
                                     <script>
                                         const ORG_NAME = "<?php echo strtoupper($org_name) . '-login-button'; ?>";
                                     </script>

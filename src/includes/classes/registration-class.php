@@ -1,8 +1,6 @@
 <?php
 include_once str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/file-utils.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/db-config.php');
-include_once FileUtils::normalizeFilePath(__DIR__ . '/../mailer.php');
-include_once FileUtils::normalizeFilePath(__DIR__ . '/email-sender.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/../session-handler.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/../error-reporting.php');
 include_once FileUtils::normalizeFilePath(__DIR__ . '/../default-time-zone.php');
@@ -18,6 +16,7 @@ class Registration {
     private $confirm_password;
     private $organization;
     private $connection;
+    private $sco_connection;
     private const ACCOUNT_STATUS = 'for_verification';
     private const ROLE = 'student_voter';
 
@@ -33,12 +32,20 @@ class Registration {
         $this->organization = $organization;
 
         $this->initializeDatabaseConnection();
+        $this->initializeScoDatabaseConnection();
     }
 
     // Initialize database connection to organization db
     private function initializeDatabaseConnection() {
         $config = DatabaseConfig::getOrganizationDBConfig($this->organization);
         $this->connection = new mysqli($config['host'], $config['username'], $config['password'], $config['database']);
+    }
+
+    // Initialize database connection to sco org db
+    private function initializeScoDatabaseConnection() {
+        $sco = 'sco';
+        $config = DatabaseConfig::getOrganizationDBConfig($sco);
+        $this->sco_connection = new mysqli($config['host'], $config['username'], $config['password'], $config['database']);
     }
 
     // Call every validation and insertion methods
@@ -79,6 +86,17 @@ class Registration {
         if(empty($this->student_number)) {
             throw new Exception("Student number cannot be empty.");
         }
+
+        $sql = "SELECT student_id FROM voter WHERE student_id = ?";
+        $stmt = $this->sco_connection->prepare($sql);
+        $stmt->bind_param("s", $this->student_number);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        if($result->num_rows > 0) {
+            throw new Exception("{$this->student_number} is already registered.");
+        }
+        $stmt->close();
 
         if(!preg_match($student_number_regex, $this->student_number)) {
             throw new Exception("Please follow the proper format for student number.");
@@ -151,21 +169,19 @@ class Registration {
 
     // Additional to check if email address already exists
     private function validateEmailNotExist() {
-        $config = DatabaseConfig::getOrganizationDBConfig($this->organization);
-        $connection = new mysqli($config['host'], $config['username'], $config['password'], $config['database']);
+        $this->initializeScoDatabaseConnection();
         
         $sql = "SELECT email FROM voter WHERE BINARY email = ?";
-        $stmt = $connection->prepare($sql);
+        $stmt = $this->sco_connection->prepare($sql);
         $stmt->bind_param("s", $this->email);
         $stmt->execute();
         $result = $stmt->get_result();
 
         if($result->num_rows > 0) {
-            throw new Exception("This email is already taken.");
+            throw new Exception("{$this->email} is already taken.");
         }
 
         $stmt->close();
-        $connection->close();  
     }
 
     // Check if password and retype password matches
@@ -201,13 +217,11 @@ class Registration {
 
     // Insert another set of data into the db_sco
     private function insertIntoScoDB() {
-        $sco = 'sco';
-        $config = DatabaseConfig::getOrganizationDBConfig($sco);
-        $sco_connection = new mysqli($config['host'], $config['username'], $config['password'], $config['database']);
+        $this->initializeScoDatabaseConnection();
 
         $hashed_password = password_hash($this->password, PASSWORD_DEFAULT);
         $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, email, password, account_status, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = $sco_connection->prepare($sql);
+        $stmt = $this->sco_connection->prepare($sql);
 
         $account_status = self::ACCOUNT_STATUS;
         $role = self::ROLE;
@@ -219,11 +233,12 @@ class Registration {
         }
 
         $stmt->close();
-        $sco_connection->close();
     }
 
     // Send an email notice to user
     private function sendEmailNotice() {
+        include_once FileUtils::normalizeFilePath(__DIR__ . '/../mailer.php');
+        include_once FileUtils::normalizeFilePath(__DIR__ . '/email-sender.php');
         $mailer = new EmailSender($mail);
         $mailer->sendForVerificationStatus($this->email);
     }
@@ -231,16 +246,19 @@ class Registration {
     // Start transaction into db but no insertion until commit is made or call
     private function beginTransaction() {
         $this->connection->begin_transaction();
+        $this->sco_connection->begin_transaction();
     }
 
     // Make insertion permanent if there are no exceptions
     private function commitTransaction() {
         $this->connection->commit();
+        $this->sco_connection->commit();
     }
 
     // Undo transaction if there are catched exceptions
     private function rollbackTransaction() {
         $this->connection->rollback();
+        $this->sco_connection->rollback();
     }
 
     // Closed database connection when no longer referenced
@@ -248,6 +266,8 @@ class Registration {
         if($this->connection) {
             $this->connection->close();
         }
+        if($this->sco_connection) {
+            $this->sco_connection->close();
+        }
     }
-
 }

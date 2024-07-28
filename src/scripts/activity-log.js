@@ -34,12 +34,12 @@ $(document).ready(function () {
   });
 
   $(window).scroll(function () {
-    let scrollTop = $(window).scrollTop();
-
-    if (scrollTop > 0 && canShowScrollTop) {
-      scrollTopPageBtn.addClass("show");
-    } else {
-      scrollTopPageBtn.removeClass("show");
+    if (canShowScrollTop) {
+      if ($(this).scrollTop() > 0) {
+        scrollTopPageBtn.addClass("show");
+      } else {
+        scrollTopPageBtn.removeClass("show");
+      }
     }
   });
   /* ----------------------------------------------------
@@ -88,7 +88,7 @@ $(document).ready(function () {
           `.activity-log-content [data-date="${date}"] .timeline`
         );
         if (existingCard.length > 0) {
-          // Append logs to existing card
+          // appends logs to existing card
           logGroups[date].forEach((log) => {
             let item = `
               <li>
@@ -99,9 +99,9 @@ $(document).ready(function () {
                   <div class="col-10 activity-content">
                     <div class="activity-title">${log.action}</div>
                     <ul class="list-inline text-secondary">
-                      <li class="list-inline-item activity-info">Email: ${log.email}</li>
-                      <li class="list-inline-item activity-info">IP Address: ${log.ip_address}</li>
-                      <li class="list-inline-item activity-info">Browser: ${log.browser}</li>
+                      <li class="list-inline-item py-1 activity-info">Email: ${log.email}</li>
+                      <li class="list-inline-item py-1 activity-info">IP Address: ${log.ip_address}</li>
+                      <li class="list-inline-item py-1 activity-info">Browser: ${log.browser}</li>
                     </ul>
                   </div>
                 </div>
@@ -128,9 +128,9 @@ $(document).ready(function () {
                   <div class="col-10 activity-content">
                     <div class="activity-title">${log.action}</div>
                     <ul class="list-inline text-secondary">
-                      <li class="list-inline-item activity-info">Email: ${log.email}</li>
-                      <li class="list-inline-item activity-info">IP Address: ${log.ip_address}</li>
-                      <li class="list-inline-item activity-info">Browser: ${log.browser}</li>
+                      <li class="list-inline-item py-1 activity-info">Email: ${log.email}</li>
+                      <li class="list-inline-item py-1 activity-info">IP Address: ${log.ip_address}</li>
+                      <li class="list-inline-item py-1 activity-info">Browser: ${log.browser}</li>
                     </ul>
                   </div>
                 </div>

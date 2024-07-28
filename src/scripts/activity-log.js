@@ -23,12 +23,12 @@ $(document).ready(function () {
     canShowScrollTop = false;
     scrollTopPageBtn.prop("disabled", true).removeClass("show");
 
-    $("html, body").animate({ scrollTop: 0 }, 300, function () {
-      if ($(window).scrollTop() === 0) {
-        scrollTopPageBtn.prop("disabled", false);
-        canShowScrollTop = true;
-      }
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
     });
+    scrollTopPageBtn.prop("disabled", false);
+    canShowScrollTop = true;
 
     return false;
   });

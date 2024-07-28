@@ -138,7 +138,10 @@
 					</ul>
 				<?php elseif ($_SESSION['role'] === 'admin'): ?>
 					<a href="manage-voters.php"
-						class="submenu-item <?php echo basename($_SERVER['PHP_SELF']) == 'manage-voters.php' ? 'active' : ''; ?>">
+						class="submenu-item <?php echo (basename($_SERVER['PHP_SELF']) == 'manage-voters.php' ||
+									basename($_SERVER['PHP_SELF']) == 'validate-voter.php' ||
+									basename($_SERVER['PHP_SELF']) == 'voter-details.php')
+								? 'active' : ''; ?>">
 						<div class="submenu-content">
 							<i data-feather="users" class="white mb-xl-1"></i>
 							<span style="padding-left: 0.7rem;">Manage Voters</span>

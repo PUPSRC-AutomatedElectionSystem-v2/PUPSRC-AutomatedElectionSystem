@@ -1,4 +1,15 @@
-import { initializeConfigurationJS as ConfigJS } from './configuration.js';
+import {
+    initializeConfigurationJS as ConfigJS,
+    IsScheduleDone,
+    NotificationManager,
+    ElectionSchedule,
+    RegistrationSchedule,
+    registrationNotifHandler,
+    electionNotifHandler,
+    checkNotificationCookie,
+    setNotificationCookie,
+    createToast,
+} from './configuration.js';
 import InputValidator from './input-validator.js';
 
 
@@ -34,27 +45,6 @@ ConfigPage = null;
 ConfigPage = {};
 
 ConfigPage = {
-
-    fetchSchedule: function (requestData) {
-        let url = `src/includes/classes/config-election-sched-controller.php`;
-        const queryParams = new URLSearchParams(requestData);
-        url = `${url}?${queryParams.toString()}`;
-
-        fetch(url)
-            .then(function (response) {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(function (data) {
-                // process shedule data
-
-            })
-            .catch(function (error) {
-                console.error('GET request error:', error);
-            });
-    },
 
     fetchVoteGuidelines: function (requestData) {
         let url = `src/includes/classes/config-vote-guideline-controller.php`;
@@ -236,14 +226,6 @@ Object.defineProperty(ConfigPage, 'CSRF_TOKEN', {
 });
 
 ConfigPage.vote_rule_validate = new InputValidator(ConfigPage.customValidation);
-
-try {
-    ConfigPage.fetchSchedule({ csrf: ConfigPage.CSRF_TOKEN });
-} catch (error) {
-    console.warn(error);
-}
-
-
 
 ConfigPage.processData = function (data) {
     const TABLE_DATA = [];
@@ -840,46 +822,20 @@ ConfigPage.handleConfirmInput = function (modal, inputId, inputVal) {
 
 ConfigPage.toastContainer = document.querySelector('.toast-container');
 
+ConfigPage.electionWatcher = new ElectionSchedule({ csrf: ConfigPage.CSRF_TOKEN }, ConfigPage.toastContainer);
+ConfigPage.registrationWatcher = new RegistrationSchedule({ csrf: ConfigPage.CSRF_TOKEN }, ConfigPage.toastContainer);
+
+ConfigPage.electionWatcher.fetch();
+ConfigPage.registrationWatcher.fetch();
+
 ConfigPage.handleResponseStatus = function (statusCode, data, message = '') {
     if (statusCode >= 400) {
         // if (statusCode == 401) {
-        ConfigPage.createToast(ConfigPage.errorDictionary[data.message] || data.message, 'danger');
+        createToast(ConfigPage.errorDictionary[data.message] || data.message, 'danger', ConfigPage.toastContainer);
     }
     else if (statusCode == 200) {
-        ConfigPage.createToast(message, 'success');
+        createToast(message, 'success', ConfigPage.toastContainer);
     }
-}
-
-ConfigPage.createToast = function (message, type) {
-    const toast = document.createElement('div');
-    toast.classList.add('toast');
-
-    const toastBody = document.createElement('div');
-    toastBody.classList.add('toast-body', `text-bg-${type}`);
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('toast-content');
-    messageDiv.textContent = message;
-    toastBody.prepend(messageDiv);
-
-
-    const closeContainer = document.createElement('div');
-    const closeButton = document.createElement('button');
-    closeButton.classList.add('btn-close');
-    closeButton.setAttribute('type', 'button');
-    closeButton.setAttribute('data-bs-dismiss', 'toast');
-    closeButton.setAttribute('aria-label', 'Close');
-
-    closeContainer.appendChild(closeButton);
-    toastBody.appendChild(closeContainer);
-    toast.appendChild(toastBody);
-
-    ConfigPage.toastContainer.appendChild(toast);
-
-    toast.addEventListener('hidden.bs.toast', () => {
-        toast.remove();
-    });
-
-    new bootstrap.Toast(toast).show();
 }
 
 ConfigPage.FindLastSequence = function (table_id = 'config-table') {

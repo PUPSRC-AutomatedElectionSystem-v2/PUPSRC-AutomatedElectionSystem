@@ -1,7 +1,14 @@
 import {
     initializeConfigurationJS as ConfigJS,
     EventListenerUtils as EventUtils,
-    isScheduleOngoing as checkElection
+    IsScheduleDone,
+    NotificationManager,
+    RegistrationSchedule,
+    registrationNotifHandler,
+    electionNotifHandler,
+    checkNotificationCookie,
+    setNotificationCookie,
+    createToast,
 } from './configuration.js';
 import InputValidator from './input-validator.js';
 
@@ -254,13 +261,40 @@ ConfigPage.isoDateConverter = function (date) {
     return `${year}-${month}-${day}`;
 }
 
+ConfigPage.electionNotifHandlerStart = function (notifId) {
+    let pushId = electionNotifHandler(notifId, ConfigPage.toastContainer, true);
+};
+
+ConfigPage.electionNotifHandlerEnd = function (notifId) {
+    let pushId = electionNotifHandler(notifId, ConfigPage.toastContainer, false);
+
+};
+
 ConfigPage.setFetchedSchedule = function (data, isUTC = false) {
     ConfigPage.datePickerStart.setAttribute('min', ConfigPage.TODAY);
     ConfigPage.datePickerEnd.setAttribute('min', ConfigPage.TODAY);
 
     let scheduleSettings = document.querySelector(`.schedule.card-box`);
 
-    if (data[0] && checkElection(data[0].electionEnd)) {
+    const schedule = new IsScheduleDone(data[0].electionEnd);
+    const isDone = schedule.check();
+
+    if (data[0] && isDone) {
+
+        if (!this.electionStartNotif) {
+            this.electionStartNotif = new NotificationManager(data[0].electionStart, ConfigPage.electionNotifHandlerStart);
+            this.electionStartNotif.push();
+        } else {
+            this.electionStartNotif.update(data[0].electionStart);
+        }
+
+        if (!this.electionEndNotif) {
+            this.electionEndNotif = new NotificationManager(data[0].electionEnd, ConfigPage.electionNotifHandlerEnd);
+            this.electionEndNotif.push();
+        } else {
+
+            this.electionEndNotif.update(data[0].electionEnd);
+        }
 
         const { startDateTime, endDateTime, startDate, startTime, endDate, endTime } = ConfigPage.processDateTime(data, isUTC);
 
@@ -453,7 +487,7 @@ ConfigPage.postData = function (post_data) {
 ConfigPage.handleResponseStatus = function (statusCode, data) {
     if (statusCode >= 400) {
         // if (statusCode == 401) {
-        ConfigPage.createToast(ConfigPage.errorDictionary[data.message] || data.message, 'danger');
+        createToast(ConfigPage.errorDictionary[data.message] || data.message, 'danger', ConfigPage.toastContainer);
     }
 }
 
@@ -493,6 +527,10 @@ Object.defineProperty(ConfigPage, 'CSRF_TOKEN', {
 
 console.log(ConfigPage.CSRF_TOKEN);
 ConfigPage.fetchData({ csrf: ConfigPage.CSRF_TOKEN });
+
+ConfigPage.toastContainer = document.querySelector('.toast-container-unstacked');
+let registrationWatcher = new RegistrationSchedule({ csrf: ConfigPage.CSRF_TOKEN }, ConfigPage.toastContainer);
+registrationWatcher.fetch();
 
 ConfigPage.startDateValidation = {
     clear_invalid: false,
@@ -771,50 +809,6 @@ ConfigPage.showDiscardModal = async function () {
 ConfigPage.addEventListenerAndStore(ConfigPage.submitBtn, 'click', ConfigPage.handleSetSchedule);
 ConfigPage.addEventListenerAndStore(ConfigPage.cancelBtn, 'click', ConfigPage.handleDiscardSchedule);
 
-
-
-
-
-ConfigPage.toastContainer = document.querySelector('.toast-container-unstacked');
-
-ConfigPage.createToast = function (message, type) {
-    const toast = document.createElement('div');
-    toast.classList.add('toast');
-
-    const toastBody = document.createElement('div');
-    toastBody.classList.add('toast-body', `text-bg-${type}`);
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('toast-content');
-    messageDiv.textContent = message;
-    toastBody.prepend(messageDiv);
-
-
-    const closeContainer = document.createElement('div');
-    const closeButton = document.createElement('button');
-    closeButton.classList.add('btn-close');
-    closeButton.setAttribute('type', 'button');
-    closeButton.setAttribute('data-bs-dismiss', 'toast');
-    closeButton.setAttribute('aria-label', 'Close');
-
-    closeContainer.appendChild(closeButton);
-    toastBody.appendChild(closeContainer);
-    toast.appendChild(toastBody);
-
-    ConfigPage.toastContainer.appendChild(toast);
-
-    toast.addEventListener('hidden.bs.toast', () => {
-        toast.remove();
-    });
-
-    let toastElList = [].slice.call(
-        document.querySelectorAll('.toast'))
-    let toastList = toastElList.map(function (toastEl) {
-        return new bootstrap.Toast(toastEl)
-    })
-
-    toastList.forEach(toast => toast.hide())
-    new bootstrap.Toast(toast).show();
-}
 
 ConfigPage.setToViewOnlyState = function () {
 

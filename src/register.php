@@ -1,6 +1,5 @@
 <?php
 include_once str_replace('/', DIRECTORY_SEPARATOR, 'includes/classes/file-utils.php');
-require_once FileUtils::normalizeFilePath('includes/classes/db-config.php');
 require_once FileUtils::normalizeFilePath('includes/classes/csrf-token.php');
 require_once FileUtils::normalizeFilePath('includes/session-handler.php');
 require_once FileUtils::normalizeFilePath('includes/classes/session-manager.php');
@@ -9,25 +8,6 @@ require_once FileUtils::normalizeFilePath('includes/error-reporting.php');
 SessionManager::checkUserRoleAndRedirect();
 
 $csrf_token = CsrfToken::generateCSRFToken();
-
-// Set a new org value connecting to a diff db
-$organization = 'sco';
-$config = DatabaseConfig::getOrganizationDBConfig($organization);
-
-// Creates database connection
-$connection = new mysqli($config['host'], $config['username'], $config['password'], $config['database']);
-
-$sql = "SELECT email FROM voter";
-$result = $connection->query($sql);
-
-$emails = array();
-
-if ($result->num_rows > 0) {
-    // Fetch and store all emails in the array
-    while ($row = $result->fetch_assoc()) {
-        $emails[] = $row['email'];
-    }
-}
 
 if (isset($_SESSION['error_message'])) {
     $error_message = $_SESSION['error_message'];
@@ -54,15 +34,13 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
     <link rel="stylesheet" href="styles/loader.css" />
 
     <link rel="icon" type="image/x-icon" href="images/resc/ivote-favicon.png">
-
-    <!-- Preloader Stylesheet and Image -->
-    <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
-    <link rel="stylesheet" href="styles/loader.css" />
-
-    <link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <title>Register</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+
+    <!-- Bootstrap 5 -->
+    <link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
+    
     <!-- Custom Stylesheets -->
     <link rel="stylesheet" href="styles/dist/register.css">
     <link rel="stylesheet" href="styles/core.css" />
@@ -78,13 +56,6 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
     <!-- Custom JavaScript -->
     <script src="scripts/register.js" defer></script>
     <script src="scripts/loader.js" defer></script>
-
-    <script>
-        // Will be used for validation of existing emails 
-        const emails = <?php echo json_encode($emails); ?>
-        // Will be used to display success modal 
-        const registrationSuccess = <?php echo json_encode($registration_success); ?>
-    </script>
 </head>
 
 <body>
@@ -114,30 +85,31 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
 
                         <!-- Displays error message -->
                         <?php if (isset($error_message)): ?>
-                            <div class="row pt-3">
+                            <div class="row mt-3">
                                 <div class="col-12 d-flex justify-content-end">
                                     <div class="col-xl-7 col-md-7">
                                         <div id="serverSideErrorMessage"
-                                            class="fw-semibold border border-danger text-danger alert alert-danger alert-dismissible fade show  custom-alert"
+                                            class="fw-semibold border border-danger text-danger alert alert-danger alert-dismissible fade show"
+                                            style="word-break: break-word;"
                                             role="alert">
-                                            <div class="d-flex align-items-center">
-                                                <span class="pe-2"><?php echo $error_message; ?></span>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span class="pe-1"><?php echo $error_message; ?></span>
                                                 <button type="button" class="btn-sm btn-close shadow-none"
                                                     data-bs-dismiss="alert" aria-label="Close"></button>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div>    
                                 </div>
                             </div>
-
                         <?php endif; ?>
+                        
 
                         <!-- Student ID -->
                         <div class="row pt-3">
                             <div class="col-12 d-flex justify-content-end">
                                 <div class="col-xl-7 col-md-7">
                                     <div class="form-group">
-                                        <label for="student_id" class="fs-8 spacing-3">Student Number<span
+                                        <label for="student_number" class="fs-8 spacing-3">Student Number<span
                                                 class="asterisk fw-medium">*</span></label>
                                         <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
                                             name="student_number" id="student_number" placeholder="Ex: 2024-00XXX-SR-0"
@@ -147,7 +119,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                             </div>
                         </div>
 
-                        <!-- Last + First Name -->
+                        <!-- First + Middle Name -->
                         <div class="row">
                             <div class="col-12 d-flex justify-content-end">
                                 <div class="col-xl-7 col-md-7">
@@ -163,6 +135,25 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                             </div>
                                         </div>
 
+                                        <!-- Middle Name -->
+                                        <div class="col-md-6 pt-2">
+                                            <div class="form-group">
+                                                <label for="middle_name" class="fs-8 spacing-3">Middle Name</label>
+                                                <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
+                                                    name="middle_name" id="middle_name" placeholder="Middle Name"
+                                                    autocomplete="off">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Last Name + Suffix -->
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-end">
+                                <div class="col-xl-7 col-md-7">
+                                    <div class="row">
                                         <!-- Last Name -->
                                         <div class="col-md-6 pt-2">
                                             <div class="form-group">
@@ -171,25 +162,6 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                                 <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
                                                     name="last_name" id="last_name" placeholder="Last Name"
                                                     autocomplete="email" required>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Middle Name + Suffix -->
-                        <div class="row">
-                            <div class="col-12 d-flex justify-content-end">
-                                <div class="col-xl-7 col-md-7">
-                                    <div class="row">
-                                        <!-- Middle Name -->
-                                        <div class="col-md-6 pt-2">
-                                            <div class="form-group">
-                                                <label for="middle_name" class="fs-8 spacing-3">Middle Name</label>
-                                                <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
-                                                    name="middle_name" id="middle_name" placeholder="Middle Name"
-                                                    autocomplete="off">
                                             </div>
                                         </div>
 
@@ -282,7 +254,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                             class="d-flex flex-sm-row flex-md-row flex-lg-row align-items-start align-items-sm-center check-terms-privacy">
                                             <input type="checkbox" value="" id="privacyTerms"
                                                 class="mb-sm-0 me-sm-2 me-md-2">
-                                            <label class="form-check-label fs-7 mb-0 policy-terms-conditions">
+                                            <label for="privacyTerms" class="form-check-label fs-7 mb-0 policy-terms-conditions">
                                                 I agree with the
                                                 <a role="button" id="termsConditionsLink"
                                                     class="underline text-primary">Terms &
@@ -326,6 +298,12 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
         </div>
     </div>
 
+
+    <script>
+        // Will be used to display success modal 
+        const registrationSuccess = <?php echo json_encode((bool)$registration_success); ?>
+    </script>
+
     <!-- Registered Successfully Modal -->
     <div class="modal" id="registerSuccessModal" data-bs-keyboard="false" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -348,34 +326,6 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                 <p class="fw-medium spacing-5 pt-2" id="successSubtitle">We'll notify you via email once
                                     your account has been
                                     verified.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Only PDF Files Are Allowed Modal -->
-    <div class="modal" id="onlyPDFAllowedModal" data-bs-keyboard="false" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="d-sm-flex text-end justify-content-end">
-                        <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray" id="onlyPDFClose">
-                        </i>
-                    </div>
-                    <div class="text-center">
-                        <div class="col-md-12">
-                            <img src="images/resc/warning.png" class="warning-icon" alt="Warning Icon">
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-12 pb-3 pt-4">
-                                <p class="fw-bold danger spacing-4" id="dangerTitle">Only PDF files are allowed</p>
-                                <p class="fw-medium spacing-5 pt-2" id="dangerSubtitle">Please also ensure the file is
-                                    no larger than 25 mb. Let's try that again!
                                 </p>
                             </div>
                         </div>

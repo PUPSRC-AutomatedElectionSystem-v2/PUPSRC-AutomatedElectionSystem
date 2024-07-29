@@ -123,6 +123,11 @@ $(document).ready(function () {
     input.value = input.value.replace(/\s{2,}/g, " ");
   }
 
+  function validateCaptcha() {
+    const captchaResponse = grecaptcha.getResponse();
+    return captchaResponse.length > 0;
+  }
+
   // Checks for valid student number
   function validateStudentNumber(input, showErrorMessages = false) {
     let studentNumberValue = input.val().trim();
@@ -370,8 +375,8 @@ $(document).ready(function () {
       password,
       false
     );
-    // const corValid = validateCOR(false);
     const termsChecked = validateTermsCheckbox();
+    const captchaValid = validateCaptcha();
 
     if (
       firstNameValid &&
@@ -383,7 +388,8 @@ $(document).ready(function () {
       orgValid &&
       passwordValid &&
       retypePassValid &&
-      termsChecked
+      termsChecked &&
+      captchaValid
     ) {
       submitButton.removeAttr("disabled");
     } else {
@@ -450,6 +456,10 @@ $(document).ready(function () {
   privacyAndTerms.on("input", function () {
     checkFormValidity();
   });
+
+  window.recaptchaCallback = function () {
+    checkFormValidity();
+  };
 
   /* ----------------------------------------------------
                 END: ON INPUT EVENTS 

@@ -67,7 +67,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
 
 			<div class="container">
-				<div class="row justify-content-center">
+				<div class="row justify-content-center" id="all-tables-container">
 					<!-- FOR VERIFICATION TABLE -->
 					<div class="col-md-10 card-box">
 						<div class="container-fluid">
@@ -141,7 +141,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 																			style="color: black"></i>
 																		<input class="search-input fs-7 spacing-6 fw-medium"
 																			type="text" placeholder=" Search..."
-																			id="searchPending">
+																			id="searchPending" maxlength="100">
 																	</div>
 																</div>
 															</div>
@@ -319,7 +319,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 																				style="color: black"></i>
 																			<input class="search-input fs-7 spacing-6 fw-medium"
 																				type="text" placeholder=" Search..."
-																				id="searchVerified">
+																				id="searchVerified" maxlength="100">
 																		</div>
 																	</div>
 

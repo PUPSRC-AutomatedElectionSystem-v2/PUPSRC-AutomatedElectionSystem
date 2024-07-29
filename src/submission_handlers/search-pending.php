@@ -14,7 +14,16 @@ $limit = 5;
 $offset = ($page - 1) * $limit;
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 
-$searchCondition = $search ? "AND email LIKE '%$search%'" : "";
+$searchCondition = '';
+if ($search) {
+    $searchParts = explode(' ', $search);
+    $searchConditions = [];
+    foreach ($searchParts as $part) {
+        $part = $conn->real_escape_string($part); // Escape special characters for SQL
+        $searchConditions[] = "(first_name LIKE '%$part%' OR last_name LIKE '%$part%')";
+    }
+    $searchCondition = 'AND ' . implode(' AND ', $searchConditions);
+}
 
 $query = "SELECT * FROM voter WHERE account_status = 'for_verification' AND role = 'student_voter' $searchCondition LIMIT $limit OFFSET $offset";
 $to_verify = $queryExecutor->executeQuery($query);
@@ -23,7 +32,7 @@ $voters = [];
 while ($row = $to_verify->fetch_assoc()) {
     $voters[] = [
         'voter_id' => $row['voter_id'],
-        'email' => $row['email'],
+        'email' => $row['first_name'] . ' ' . $row['last_name'],
         'acc_created' => $row['acc_created']
     ];
 }

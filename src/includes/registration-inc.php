@@ -6,7 +6,7 @@ require_once FileUtils::normalizeFilePath('classes/csrf-token.php');
 require_once FileUtils::normalizeFilePath('error-reporting.php');
 
 // Google reCaptcha credentials
-$secret_key = '6Ld9eRoqAAAAAB0rM2NqCB8jgY1po3yhvawfaR62';
+$secret_key = '6LeIiRoqAAAAAKsCP5vR2Hds1-wQkFwzO5OyBJF0';
 $api_url = 'https://www.google.com/recaptcha/api/siteverify';
 
 if($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["sign-up"])) {

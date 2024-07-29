@@ -281,7 +281,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
 
                                         <!-- reCaptcha -->
                                          <div class="mb-4 d-flex justify-content-start align-items-center">
-                                            <div class="g-recaptcha" data-sitekey="6Ld9eRoqAAAAAEK5j-A5RNrPnC_L0gZ7dvHvg5up" data-callback="recaptchaCallback">Submit</div>                                            
+                                            <div class="g-recaptcha" data-sitekey="6LeIiRoqAAAAAPAWG8jGuDGW5i0A9gU4_y5o6mcw" data-callback="recaptchaCallback">Submit</div>                                            
                                          </div>
 
                                         <button

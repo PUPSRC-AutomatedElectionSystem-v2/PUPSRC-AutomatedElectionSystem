@@ -56,6 +56,9 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
     <!-- Custom JavaScript -->
     <script src="scripts/register.js" defer></script>
     <script src="scripts/loader.js" defer></script>
+
+    <!-- Google reCAPTCHA API -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -85,7 +88,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
 
                         <!-- Displays error message -->
                         <?php if (isset($error_message)): ?>
-                            <div class="row mt-3">
+                            <div class="row mt-3 mb-0">
                                 <div class="col-12 d-flex justify-content-end">
                                     <div class="col-xl-7 col-md-7">
                                         <div id="serverSideErrorMessage"
@@ -109,7 +112,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                             <div class="col-12 d-flex justify-content-end">
                                 <div class="col-xl-7 col-md-7">
                                     <div class="form-group">
-                                        <label for="student_number" class="fs-8 spacing-3">Student Number<span
+                                        <label for="student_number" class="fs-8 spacing-3">Student Number <span
                                                 class="asterisk fw-medium">*</span></label>
                                         <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
                                             name="student_number" id="student_number" placeholder="Ex: 2024-00XXX-SR-0"
@@ -127,7 +130,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                         <!-- First Name -->
                                         <div class="col-md-6 pt-2">
                                             <div class="form-group">
-                                                <label for="first_name" class="fs-8 spacing-3">First Name<span
+                                                <label for="first_name" class="fs-8 spacing-3">First Name <span
                                                         class="asterisk fw-medium">*</span></label>
                                                 <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
                                                     name="first_name" id="first_name" placeholder="First Name"
@@ -157,7 +160,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                         <!-- Last Name -->
                                         <div class="col-md-6 pt-2">
                                             <div class="form-group">
-                                                <label for="last_name" class="fs-8 spacing-3">Last Name<span
+                                                <label for="last_name" class="fs-8 spacing-3">Last Name <span
                                                         class="asterisk fw-medium">*</span></label>
                                                 <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
                                                     name="last_name" id="last_name" placeholder="Last Name"
@@ -184,7 +187,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                             <div class="col-12 d-flex justify-content-end">
                                 <div class="col-xl-7 col-md-7">
                                     <div class="form-group">
-                                        <label for="email" class="fs-8 spacing-3">Email Address<span
+                                        <label for="email" class="fs-8 spacing-3">Email Address <span
                                                 class="asterisk fw-medium">*</span></label>
                                         <input type="text" class="form-control pt-2 bg-white fs-7 text-black" name="email"
                                             id="email" placeholder="Ex: johndoe@gmail.com" autocomplete="email" required>
@@ -197,7 +200,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                         <div class="row pt-2">
                             <div class="col-12 d-flex justify-content-end">
                                 <div class="col-xl-7 col-md-7">
-                                    <label for="org" class="fs-8 spacing-3">Organization<span
+                                    <label for="org" class="fs-8 spacing-3">Organization <span
                                             class="asterisk fw-medium">*</span></label>
                                     <select class="form-select form-control bg-white fs-7 text-black"
                                         style="color: red; background-color: blue;" name="org" id="org" required>
@@ -275,6 +278,12 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                             <div class="col-12 d-flex justify-content-end">
                                 <div class="col-xl-7 col-md-7">
                                     <div id="submit-container">
+
+                                        <!-- reCaptcha -->
+                                         <div class="mb-4 d-flex justify-content-start align-items-center">
+                                            <div class="g-recaptcha" data-sitekey="6Ld9eRoqAAAAAEK5j-A5RNrPnC_L0gZ7dvHvg5up" data-callback="recaptchaCallback">Submit</div>                                            
+                                         </div>
+
                                         <button
                                             class="btn btn-primary px-sm-5 py-2 btn-sm fw-bold fs-6 spacing-6 w-100 text-white"
                                             type="submit" id="sign-up" name="sign-up" disabled>Sign

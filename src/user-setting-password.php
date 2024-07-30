@@ -85,7 +85,7 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
                                             <div class="mb-0" style="font-size: 18px; font-weight:600">
                                                 <a href="../src/user-setting-information.php" class="custom-link"> Information </a>
                                             </div>
-                                            <div class="mb-0 des">See your account information like your email address and certificate of registration.</div>
+                                            <div class="mb-0 des">See your account information like your email address, student number and full name.</div>
                                         </div>
                                     </div>
                                     <div class="main-color d-flex align-items-center pb-4">

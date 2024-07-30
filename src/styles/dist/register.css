@@ -109,7 +109,8 @@
 
 #serverSideErrorMessage, #serverSideInfoMessage {
   font-size: 10px;
-  font-weight: 700
+  font-weight: 700;
+  background-color: rgba(238, 28, 35, 0.03);
 }
 
 /* --- For mobile--- */
@@ -340,20 +341,6 @@ footer {
 #termsConditionsModal .modal-body {
   overflow-y: auto !important;
   height: 70vh;
-}
-
-.custom-alert, .custom-info {
-  width: 100%;
-  max-width: 360px;
-  font-size: 15px;
-  padding: 3%;
-  margin-bottom: -10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: left;
-  background-color: rgba(238, 28, 35, 0.03);
-  /* Background color with 80% opacity */
 }
 
 .yellow-warning {

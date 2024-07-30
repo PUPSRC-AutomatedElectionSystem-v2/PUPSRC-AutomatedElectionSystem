@@ -83,9 +83,42 @@ function getActivityLogs($filter, $role, $voter_id, $limit, $offset) {
     }
 
     $stmt->close();
-    $connection->close();
 
     return $logs;
+}
+
+
+function getTotalLogs($filter, $role, $voter_id) {
+    $connection = DatabaseConnection::connect();
+    $sql = "SELECT COUNT(*) as total FROM activity_log al
+            JOIN voter v ON al.voter_id = v.voter_id";
+
+    if ($role !== ROLE_HEAD_ADMIN) {
+        $sql .= " WHERE al.voter_id = ?";
+    }
+
+    if ($filter === 'adminActLogs') {
+        $sql .= ($role !== ROLE_HEAD_ADMIN) ? " AND v.role = 'admin'" : " WHERE v.role = 'admin'";
+    } 
+    elseif ($filter === 'voterActLogs') {
+        $sql .= ($role !== ROLE_HEAD_ADMIN) ? " AND v.role = 'student_voter'" : " WHERE v.role = 'student_voter'";
+    }
+
+    $stmt = $connection->prepare($sql);
+
+    if ($role !== ROLE_HEAD_ADMIN) {
+        $stmt->bind_param('i', $voter_id);
+    }
+
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_assoc();
+    $total_logs = $row['total'];
+
+    $stmt->close();
+    $connection->close();
+
+    return $total_logs;
 }
 
 if (isset($_POST['filter']) && isset($_POST['page'])) {
@@ -97,8 +130,8 @@ if (isset($_POST['filter']) && isset($_POST['page'])) {
     $offset = ($page - 1) * $limit;
 
     $logs = getActivityLogs($filter, $role, $voter_id, $limit, $offset);
-    $total_logs = count($logs);
-    $hasMore = $total_logs === $limit;
+    $total_logs = getTotalLogs($filter, $role, $voter_id);
+    $hasMore = ($offset + $limit) < $total_logs;
 
     echo json_encode([
         'logs' => $logs,

@@ -33,7 +33,13 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
 
   <!-- Bootstrap JavaScript -->
   <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- CDN jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <!-- CDN Quill -->
+  <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+
   <!-- Custom JavaScript -->
   <script src="scripts/voter-faqs.js" defer></script>
   <script src="scripts/loader.js" defer></script>

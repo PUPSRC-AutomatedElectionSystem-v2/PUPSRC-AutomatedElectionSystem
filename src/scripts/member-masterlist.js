@@ -59,10 +59,6 @@ $(document).ready(function () {
     resetFormState(emailErrorMessageContainer, sendAccSetupLink, emailField);
   });
 
-  // cancelVerifyTokenBtn.on("click", function () {
-  //   resetFormState(tokenErrorMessageContainer, verifyTokenBtn, tokenField);
-  // });
-
   // validate email format
   emailField.on("input", function () {
     if (!emailRegex.test(emailField.val())) {
@@ -91,7 +87,7 @@ $(document).ready(function () {
 
     // Set the modal input values
     voterIdField.val(voterId);
-    fullNameField.text(fullName);
+    fullNameField.text("Hello, " + fullName);
 
     sendAccSetupLinkModal.modal("show");
   });

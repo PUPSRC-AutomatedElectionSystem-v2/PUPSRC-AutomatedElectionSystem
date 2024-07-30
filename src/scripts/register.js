@@ -106,7 +106,6 @@ $(document).ready(function () {
     org: { touched: false },
     password: { touched: false },
     retypePass: { touched: false },
-    // cor: { touched: false },
   };
 
   function preventSpaces(event) {
@@ -214,15 +213,10 @@ $(document).ready(function () {
     const errorElement = input.next();
 
     const isValidFormat = validateEmailFormat(emailValue);
-    const isExistingEmail = emails.includes(emailValue);
 
     if (!isValidFormat) {
       if (showErrorMessages && fields.email.touched)
         showError(input, errorElement, "Please provide a valid email address.");
-      return false;
-    } else if (isExistingEmail) {
-      if (showErrorMessages && fields.email.touched)
-        showError(input, errorElement, "This email address is already taken.");
       return false;
     } else {
       clearError(input, errorElement);
@@ -284,42 +278,6 @@ $(document).ready(function () {
       return true;
     }
   }
-
-  // function validateCOR(showErrorMessages = false) {
-  //   const file = $("#cor").prop("files")[0];
-  //   const errorElement = $("#cor").next();
-
-  //   if (!file) {
-  //     if (showErrorMessages && fields.cor.touched)
-  //       showError(
-  //         $("#cor"),
-  //         errorElement,
-  //         "Please upload your Certificate of Registration."
-  //       );
-  //     return false;
-  //   }
-
-  //   const fileName = file.name;
-  //   const fileExtension = fileName.split(".").pop().toLowerCase();
-
-  //   // Check if file is PDF extension
-  //   if (fileExtension !== "pdf") {
-  //     $("#cor").val("");
-  //     showModal("onlyPDFAllowedModal");
-  //     return false;
-  //   }
-
-  //   // Check if file size exceeds 25mb
-  //   const fileSizeInMB = file.size / (1024 * 1024);
-  //   if (fileSizeInMB > 25) {
-  //     $("#cor").val("");
-  //     showModal("onlyPDFAllowedModal");
-  //     return false;
-  //   }
-
-  //   clearError($("#cor"), errorElement);
-  //   return true;
-  // }
 
   // Check if terms and conditions checkbox ticked?
   function validateTermsCheckbox() {
@@ -425,7 +383,6 @@ $(document).ready(function () {
       orgValid &&
       passwordValid &&
       retypePassValid &&
-      // corValid &&
       termsChecked
     ) {
       submitButton.removeAttr("disabled");

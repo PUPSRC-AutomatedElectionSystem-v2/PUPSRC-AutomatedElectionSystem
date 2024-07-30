@@ -831,6 +831,13 @@ span {
   z-index: 1;
 }
 
+.forgot-password-subtitle {
+  font-size: 0.938rem;
+  font-weight: 500;
+  line-height: 1.143em;
+  letter-spacing: 0.05em;
+}
+
 .img-container {
   /* text-align: center !important; */
   margin-bottom: -110px;
@@ -1262,7 +1269,7 @@ span {
 
   .modal-content,
   .modal-content#max-modal {
-    width: 300px;
+    width: 100%;
   }
 
   .close-mark {
@@ -1367,10 +1374,10 @@ span {
     box-sizing: border-box;
   }
 
-  .cancel-button {
+  /* .cancel-button {
     background-color: #CDCDCD;
     color: #515050;
-  }
+  } */
 
   #email-error {
     font-size: .674em;

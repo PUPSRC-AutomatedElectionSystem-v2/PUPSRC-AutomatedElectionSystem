@@ -139,6 +139,13 @@ $(document).ready(function () {
     }
   });
 
+  $(document).ready(function() {
+    $('#submit').click(function(event) {
+        event.preventDefault(); // Prevent form submission
+        $('#successEmailModal').modal('show');
+    });
+  });
+
   // Process new password
   $("#submit").click(function (event) {
     event.preventDefault();

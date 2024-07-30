@@ -38,6 +38,8 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
         <link rel="stylesheet" href="<?php echo '../src/styles/orgs/' . $org_acronym . '.css'; ?>">
         <!-- Jquery-->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <!-- Icons -->
+        <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
         <style>
             .nav-link:hover,
@@ -65,7 +67,6 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
         ?>
 
         <main>
-
             <div class="container-fluid">
                 <div class="row justify-content-center align-items-center">
                     <div class="col-12 col-md-6 reset-password-form" style="margin-top: 170px; margin-bottom: 140px;">
@@ -140,16 +141,6 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
                     </div>
                 </div>
             </div>
-
-            <script>
-                $(document).ready(function() {
-                    $('#submit').click(function(event) {
-                        event.preventDefault(); // Prevent form submission
-                        $('#successEmailModal').modal('show');
-                    });
-                });
-            </script>
-
         </main>
 
         <div class="footer">

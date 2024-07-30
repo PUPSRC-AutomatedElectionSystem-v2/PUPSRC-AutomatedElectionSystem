@@ -313,9 +313,6 @@ body dialog.modal-native {
 
 
 .dt-rowReorder-float {
-    vertical-align: middle;
-    cursor: -webkit-grabbing;
-    cursor: grabbing;
     @extend %input-text-editable;
 
     input[type="text"].text-editable {
@@ -327,13 +324,6 @@ tr.dt-rowReorder-moving {
     input[type="text"].text-editable {
         font-weight: bold;
     }
-
-    outline: calc(0.5px + 0.06dvw) dotted #0075FF;
-}
-
-div.dt-rowReorder-float-parent {
-    outline: calc(1px + 0.1dvw) solid var(--main-color);
-    border-radius: none;
 }
 
 .dt-scroll-foot {

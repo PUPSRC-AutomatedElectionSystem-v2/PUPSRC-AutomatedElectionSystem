@@ -91,10 +91,12 @@ trait ConfigGuard
      */
     public static function validateCSRFToken($csrf_token)
     {
-        if (!isset($csrf_token) || !isset($_SESSION['csrf']['token'])) {
+        $session_csrf_token = isset($_SESSION['csrf']['token']) ? $_SESSION['csrf']['token'] : $_SESSION['csrf_token'];
+        $session_csrf_expiry = isset($_SESSION['csrf']['expiry']) ? $_SESSION['csrf']['expiry'] : $_SESSION['csrf_expiry'];
+        if (!isset($csrf_token) || !isset($session_csrf_token)) {
             self::displayUnsetToken();
         }
-        if ($csrf_token != $_SESSION['csrf']['token'] || time() >= $_SESSION['csrf']['expiry']) {
+        if ($csrf_token != $session_csrf_token || time() >= $session_csrf_expiry) {
             self::displayUnsetToken();
         }
     }

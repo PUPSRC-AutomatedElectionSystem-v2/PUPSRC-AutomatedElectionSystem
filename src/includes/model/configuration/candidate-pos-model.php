@@ -160,7 +160,7 @@ class CandidatePosition
                     'data_id' => $data['data_id'],
                     'sequence' => $data['sequence'],
                     'value' => $data['value'],
-                    'max_votes' => $data['max_votes'],
+                    // 'max_votes' => $data['max_votes'],
                     'description' => $data['description']
                 ];
             }

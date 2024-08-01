@@ -303,4 +303,12 @@ table.table {
 }
 /* -- End of: Changing Status */
 
+.search-input {
+    font-family: 'Montserrat', 'FontAwesome';
+    
+}
 
+.search-input::placeholder {
+    text-transform: none !important;
+    padding-left: 7px
+}

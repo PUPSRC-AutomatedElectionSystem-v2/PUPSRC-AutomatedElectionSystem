@@ -137,10 +137,8 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
 																	<!-- Search -->
 																	<div class="search-container">
-																		<i data-feather="search" class="feather-xs im-cust-2"
-																			style="color: black"></i>
 																		<input class="search-input fs-7 spacing-6 fw-medium"
-																			type="text" placeholder=" Search..."
+																			type="text" placeholder="&#xf002;  Search..."
 																			id="searchPending" maxlength="100">
 																	</div>
 																</div>
@@ -156,8 +154,8 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 																</th>
 																<th
 																	class="col-md-6 tl-left text-center del-center fs-7 fw-bold spacing-5">
-																	<i data-feather="mail" class="feather-xs im-cust"></i>Email
-																	Address
+																	<i data-feather="user" class="feather-xs im-cust"></i>Full
+																	Name
 																</th>
 																<th
 																	class="col-md-6 tl-right text-center fs-7 fw-bold spacing-5">
@@ -314,11 +312,8 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
 																		<!-- Search -->
 																		<div class="search-container">
-																			<i data-feather="search"
-																				class="feather-xs im-cust-2"
-																				style="color: black"></i>
 																			<input class="search-input fs-7 spacing-6 fw-medium"
-																				type="text" placeholder=" Search..."
+																			type="text" placeholder="&#xf002;  Search..."
 																				id="searchVerified" maxlength="100">
 																		</div>
 																	</div>
@@ -337,9 +332,8 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 																	</th>
 																	<th
 																		class="col-md-3 del-center tl-left text-center fs-7 fw-bold spacing-5">
-																		<i data-feather="mail"
-																			class="feather-xs im-cust"></i>Email
-																		Address
+																		<i data-feather="user"
+																			class="feather-xs im-cust"></i>Full Name
 																	</th>
 
 																	<th class="col-md-3 text-center fs-7 fw-bold spacing-5">
@@ -479,8 +473,8 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 									<div class="row">
 										<div class="col-md-12 pb-3">
 											<p class="fw-bold fs-3 success-color spacing-4">Deleted successfully</p>
-											<p class="fw-medium spacing-5 fs-7">The deleted account(s) has been moved to <span
-													class="fw-bold">Recycle Bin</span>.
+											<p class="fw-medium spacing-5 fs-7">The deleted account(s) has been moved to
+												<span class="fw-bold">Recycle Bin</span>.
 											</p>
 										</div>
 									</div>

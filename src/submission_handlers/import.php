@@ -68,99 +68,12 @@ function generatePassword($length = 10) {
     return $password;
 }
 
-function importCSV($filePath, $conn) {
-    $duplicates = checkForDuplicates($filePath, 'csv');
-    if (!empty($duplicates)) {
-        return [
-            'status' => 'error',
-            'message' => "Import failed due to duplicate entries in the file.",
-            'duplicates' => $duplicates
-        ];
-    }
-
-    $file = fopen($filePath, 'r');
-    $headers = fgetcsv($file);
-    
-    if (!validateHeaders($headers)) {
-        fclose($file);
-        return ['status' => 'error', 'message' => "Invalid headers. Please ensure the headers are in the correct order."];
-    }
-    
-    $invalidIds = [];
-    $databaseDuplicates = [];
-
-    while (($data = fgetcsv($file)) !== FALSE) {
-        $result = validateData($data, $conn);
-        if ($result === 'invalid_id') {
-            $invalidIds[] = $data[0];
-        } elseif ($result === 'duplicate') {
-            $databaseDuplicates[] = $data[0];
-        }
-    }
-
-    fclose($file);
-    
-    if (!empty($invalidIds) || !empty($databaseDuplicates)) {
-        return [
-            'status' => 'error', 
-            'message' => "Import failed due to invalid or duplicate entries.", 
-            'invalidIds' => $invalidIds,
-            'databaseDuplicates' => $databaseDuplicates
-        ];
-    }
-    
-    // If no issues, proceed with actual import
-    $count = actualImport($filePath, $conn);
-    return ['status' => 'success', 'message' => "CSV import completed. Rows imported: $count"];
-}
-
-function importExcel($filePath, $conn) {
-    $duplicates = checkForDuplicates($filePath, 'excel');
-    if (!empty($duplicates)) {
-        return [
-            'status' => 'error',
-            'message' => "Import failed due to duplicate entries in the file.",
-            'duplicates' => $duplicates
-        ];
-    }
-
-    $spreadsheet = IOFactory::load($filePath);
-    $worksheet = $spreadsheet->getActiveSheet();
-    $rows = $worksheet->toArray();
-    
-    $headers = $rows[0];
-    if (!validateHeaders($headers)) {
-        return ['status' => 'error', 'message' => "Invalid headers. Please ensure the headers are in the correct order."];
-    }
-    
-    array_shift($rows); // Remove header row
-    $invalidIds = [];
-    $databaseDuplicates = [];
-
-    foreach ($rows as $row) {
-        $result = validateData($row, $conn);
-        if ($result === 'invalid_id') {
-            $invalidIds[] = $row[0];
-        } elseif ($result === 'duplicate') {
-            $databaseDuplicates[] = $row[0];
-        }
-    }
-
-    if (!empty($invalidIds) || !empty($databaseDuplicates)) {
-        return [
-            'status' => 'error', 
-            'message' => "Import failed due to invalid or duplicate entries.", 
-            'invalidIds' => $invalidIds,
-            'databaseDuplicates' => $databaseDuplicates
-        ];
-    }
-    
-    // If no issues, proceed with actual import
-    $count = actualImport($filePath, $conn, 'excel');
-    return ['status' => 'success', 'message' => "Excel import completed. Rows imported: $count"];
-}
-
 function validateData($data, $conn) {
+    // Check if required fields are not empty
+    if (empty($data[1]) || empty($data[2]) || empty($data[5]) || empty($data[6])) {
+        return 'invalid_id';
+    }
+
     // Validate Student ID format
     if (!preg_match('/^\d{4}-\d{5}-SR-0$/', $data[0])) {
         return 'invalid_id';
@@ -197,6 +110,91 @@ function validateData($data, $conn) {
     $checkStmt->close();
 
     return true;
+}
+
+function importCSV($filePath, $conn) {
+    $fileDuplicates = checkForDuplicates($filePath, 'csv');
+    error_log("File duplicates: " . json_encode($fileDuplicates));
+    
+    $file = fopen($filePath, 'r');
+    $headers = fgetcsv($file);
+    
+    if (!validateHeaders($headers)) {
+        fclose($file);
+        return ['status' => 'error', 'message' => "Invalid headers. Please ensure the headers are in the correct order."];
+    }
+    
+    $invalidIds = [];
+    $databaseDuplicates = [];
+
+    while (($data = fgetcsv($file)) !== FALSE) {
+        $result = validateData($data, $conn);
+        if ($result === 'invalid_id') {
+            $invalidIds[] = $data[0];
+        } elseif ($result === 'duplicate') {
+            $databaseDuplicates[] = $data[0];
+        }
+    }
+
+    fclose($file);
+    
+    $allDuplicates = array_unique(array_merge($fileDuplicates, $databaseDuplicates));
+    
+    if (!empty($invalidIds) || !empty($allDuplicates)) {
+        return [
+            'status' => 'error', 
+            'errorType' => 'duplicates',
+            'message' => "Import failed due to invalid or duplicate entries. Please Check your CSV/XLS file", 
+            'invalidIds' => $invalidIds,
+            'duplicates' => $allDuplicates
+        ];
+    }
+    
+    // If no issues, proceed with actual import
+    $count = actualImport($filePath, $conn);
+    return ['status' => 'success', 'message' => "CSV import completed. Rows imported: $count"];
+}
+
+function importExcel($filePath, $conn) {
+    $fileDuplicates = checkForDuplicates($filePath, 'excel');
+
+    $spreadsheet = IOFactory::load($filePath);
+    $worksheet = $spreadsheet->getActiveSheet();
+    $rows = $worksheet->toArray();
+    
+    $headers = $rows[0];
+    if (!validateHeaders($headers)) {
+        return ['status' => 'error', 'message' => "Invalid headers. Please ensure the headers are in the correct order."];
+    }
+    
+    array_shift($rows); // Remove header row
+    $invalidIds = [];
+    $databaseDuplicates = [];
+
+    foreach ($rows as $row) {
+        $result = validateData($row, $conn);
+        if ($result === 'invalid_id') {
+            $invalidIds[] = $row[0];
+        } elseif ($result === 'duplicate') {
+            $databaseDuplicates[] = $row[0];
+        }
+    }
+
+    $allDuplicates = array_unique(array_merge($fileDuplicates, $databaseDuplicates));
+
+    if (!empty($invalidIds) || !empty($allDuplicates)) {
+        return [
+            'status' => 'error', 
+            'errorType' => 'duplicates',
+            'message' => "Import failed due to invalid or duplicate entries. Please Check your CSV/XLS file", 
+            'invalidIds' => $invalidIds,
+            'duplicates' => $allDuplicates
+        ];
+    }
+    
+    // If no issues, proceed with actual import
+    $count = actualImport($filePath, $conn, 'excel');
+    return ['status' => 'success', 'message' => "Excel import completed. Rows imported: $count"];
 }
 
 function checkForDuplicates($filePath, $type = 'csv') {
@@ -276,14 +274,16 @@ function insertData($data, $conn) {
     $password = generatePassword();
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $suffix = empty($data[4]) ? NULL : $data[4];
+    // Use empty string instead of NULL for middle_name and suffix if they're empty
+    $middleName = empty($data[3]) ? '' : $data[3];
+    $suffix = empty($data[4]) ? '' : $data[4];
 
-    $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, email, password, role, account_status, voter_status, vote_status) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, year_level, section, email, password, role, account_status, voter_status, vote_status) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     try {
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssssssssss", $data[0], $data[1], $data[2], $data[3], $suffix, $data[7], $hashedPassword, $role, $accountStatus, $voterStatus, $voteStatus);
+        $stmt->bind_param("sssssssssssss", $data[0], $data[1], $data[2], $middleName, $suffix, $data[5], $data[6], $data[7], $hashedPassword, $role, $accountStatus, $voterStatus, $voteStatus);
         $result = $stmt->execute();
         $stmt->close();
         

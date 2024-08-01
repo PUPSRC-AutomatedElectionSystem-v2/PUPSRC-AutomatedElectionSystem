@@ -1,43 +1,5 @@
 // ----- FORM SUBMISSIONS -----
 
-const fullscreenIcon = document.querySelector(".fullscreen-icon");
-const pdfContainer = document.querySelector(".cor");
-
-fullscreenIcon.addEventListener("click", function () {
-  if (
-    !document.fullscreenElement &&
-    !document.mozFullScreenElement &&
-    !document.webkitFullscreenElement &&
-    !document.msFullscreenElement
-  ) {
-    if (pdfContainer.requestFullscreen) {
-      pdfContainer.requestFullscreen();
-    } else if (pdfContainer.mozRequestFullScreen) {
-      pdfContainer.mozRequestFullScreen();
-    } else if (pdfContainer.webkitRequestFullscreen) {
-      pdfContainer.webkitRequestFullscreen();
-    } else if (pdfContainer.msRequestFullscreen) {
-      pdfContainer.msRequestFullscreen();
-    }
-  } else {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.mozCancelFullScreen) {
-      document.mozCancelFullScreen();
-    } else if (document.webkitExitFullscreen) {
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) {
-      document.msExitFullscreen();
-    }
-  }
-
-  if (document.fullscreenElement) {
-    pdfContainer.style.height = "100vh !important";
-  }
-});
-
-// ----- FORM SUBMISSIONS -----
-
 function redirectToPage(url) {
   window.location.href = url;
 }

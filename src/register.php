@@ -306,7 +306,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
 
         <div class="col-md-6 d-flex align-items-center slide-in">
             <div class="register-img-container">
-                <img src="images/resc/voting.webp" alt="ivote-register" class="register-img" style="margin-left: 50px">
+                <img src="images/resc/voting.webp" alt="ivote-register" class="register-img" style="margin-left: 50px; margin-bottom: 8rem">
             </div>
         </div>
     </div>

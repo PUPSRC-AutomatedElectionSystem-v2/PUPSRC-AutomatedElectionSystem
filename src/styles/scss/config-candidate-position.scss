@@ -248,6 +248,29 @@ body dialog.modal-native {
             }
         }
 
+
+
+
+        .ql-toolbar {
+
+            button svg {
+
+                path,
+                rect,
+                line {
+                    @media (prefers-color-scheme: dark) {
+
+                        stroke: var(--main-black);
+
+                    }
+                }
+            }
+
+        }
+
+
+
+
     }
 
 

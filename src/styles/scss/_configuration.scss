@@ -118,11 +118,6 @@ body {
                 color: light-dark(var(--main-color), color-mix(in srgb, var(--main-color), white 50%));
                 border: clamp(1px, 1px + 0.01vw, 5px) solid light-dark(var(--main-color), color-mix(in srgb, var(--main-color), white 50%));
 
-                @media (prefers-color-scheme: dark) {
-                    // filter: contrast(1.5);
-                }
-
-                // outline: clamp(1px, 1px + 0.01vw, 5px) solid light-dark(var(--main-color), var(--main-color));
 
                 &:disabled {
                     opacity: 0.7;
@@ -231,9 +226,9 @@ body {
                     color: var(--white);
                     background-color: var(--main-color);
 
-                    @media (prefers-color-scheme: dark) {
-                        filter: saturate(85%);
-                    }
+                    // @media (prefers-color-scheme: dark) {
+                    //     filter: saturate(85%);
+                    // }
 
                     button.modal-close {
                         border: none;
@@ -680,9 +675,9 @@ tr.dt-rowReorder-moving {
     font-weight: bold;
     outline: calc(0.5px + 0.06dvw) dotted #0075FF;
 
-    @media (prefers-color-scheme: dark) {
-        background-color: var(--main-black);
-    }
+    // @media (prefers-color-scheme: dark) {
+    //     background-color: var(--main-black);
+    // }
 
 }
 
@@ -691,10 +686,10 @@ div.dt-rowReorder-float-parent {
     border-radius: none;
 
     table.dt-rowReorder-float {
-        @media (prefers-color-scheme: dark) {
-            background: color-mix(in srgb, var(--main-black), white);
-            color: var(--main-black);
-        }
+        // @media (prefers-color-scheme: dark) {
+        //     background: color-mix(in srgb, var(--main-black), white);
+        //     color: var(--main-black);
+        // }
 
     }
 

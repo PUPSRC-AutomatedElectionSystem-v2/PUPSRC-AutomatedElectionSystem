@@ -57,9 +57,10 @@ if (isset($_SESSION['voter_id']) && isset($_SESSION['role']) && $_SESSION['role'
     <link rel="stylesheet" href="styles/profile.css" />
     <link rel="stylesheet" href="<?php echo '../src/styles/orgs/' . $org_acronym . '.css'; ?>">
     <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
 
     <style>
         .nav-link:hover,
@@ -168,7 +169,7 @@ if (isset($_SESSION['voter_id']) && isset($_SESSION['role']) && $_SESSION['role'
                                         <div class="text-center">
                                             <div class="pb-3">
                                             <h4 class="email-add">Student Number:</h4> 
-                                            <p class="user-email-1"> <?php echo $row['student_number']; ?> </p>
+                                            <p class="user-email-1"> <?php echo $row['student_id']; ?> </p>
                                             </div>
                                             <h4 class="email-add">Full Name:</h4> 
                                             <p class="user-email-1"><?php echo $row['first_name'] . ' ' . $row['middle_name'] . ' ' . $row['last_name']; ?> </p>
@@ -284,9 +285,8 @@ if (isset($_SESSION['voter_id']) && isset($_SESSION['role']) && $_SESSION['role'
         <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
     </div>
 
-    <script src="../src/scripts/feather.js"></script>
+    <script src="scripts/feather.js"></script>
     <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="scripts/loader.js"></script>
     <script src="scripts/change-email.js"></script>
 </body>

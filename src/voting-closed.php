@@ -42,10 +42,10 @@ if(isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['rol
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
   <!-- Bootstrap 5 code -->
   <link type="text/css" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../src/styles/feedback-suggestions.css">
+  <link rel="stylesheet" href="styles/feedback-suggestions.css">
   <link rel="stylesheet" href="styles/loader.css" />
-  <link rel="stylesheet" href="<?php echo '../src/styles/orgs/' . $org_acronym . '.css'; ?>">
-  <!-- Icons -->
+  <link rel="stylesheet" href="<?php echo 'styles/orgs/' . $org_acronym . '.css'; ?>">
+
   <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
@@ -67,7 +67,7 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/topnav
     <div class="row justify-content-md-center align-items-center">
         <div class="col-lg-6 col-sm-12 order-sm-2">
             <div class="voting-closed text-center">
-                <?php echo '<img src="../src/images/resc/closed-election-year/'. $org_acronym .'-closed-elec.png" alt="Closed Election Image" class="img-fluid">';?>
+                <?php echo '<img src="images/resc/closed-election-year/'. $org_acronym .'-closed-elec.png" alt="Closed Election Image" class="img-fluid">';?>
             </div>
         </div>
         <div class="col-lg-6 col-sm-12 order-sm-1">

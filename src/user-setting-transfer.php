@@ -289,8 +289,6 @@ $row = $result->fetch_assoc();
 
   <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
 
-
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="scripts/transfer-org.js"></script>
   <script src="scripts/loader.js"></script>

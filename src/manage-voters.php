@@ -497,7 +497,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 				</div>
 
 				<script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-				<script src="scripts/script.js"></script>
+				<script type="module" src="scripts/script.js"></script>
 				<script src="scripts/feather.js"></script>
 				<script src="scripts/table-funcs.js"></script>
 	</body>

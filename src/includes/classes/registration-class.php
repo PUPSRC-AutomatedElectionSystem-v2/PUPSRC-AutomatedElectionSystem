@@ -118,23 +118,25 @@ class Registration {
         if (strlen($this->first_name) > $max_length) {
             throw new Exception("First name must not exceed 100 characters.");
         }
-    
-        if ($this->middle_name !== NULL && strlen($this->middle_name) > $max_length) {
+
+        if ($this->middle_name && strlen($this->middle_name) > $max_length) {
             throw new Exception("Middle name must not exceed 100 characters.");
         }
         else {
-            $this->middle_name = NULL;
+            // Assigns NULL to middle name if it's empty
+            $this->middle_name = empty($this->middle_name) ? NULL : $this->middle_name;
         }
     
         if (strlen($this->last_name) > $max_length) {
             throw new Exception("Last name must not exceed 100 characters.");
         }
-    
-        if ($this->suffix !== NULL && strlen($this->suffix) > $suffix_max_length) {
+
+        if ($this->suffix && strlen($this->suffix) > $suffix_max_length) {
             throw new Exception("Suffix must not exceed 10 characters.");
         }
         else {
-            $this->suffix = NULL;
+            // Assigns NULL to suffix name if it's empty
+            $this->suffix = empty($this->suffix) ? NULL : $this->suffix;
         }
     }
 

@@ -79,30 +79,11 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/topnav
                     Your ballot is securely cast!
                 </div>
                 <div class="header-sub text-center pb-2">
-                    Stay tuned for the upcoming announcement of the newly appointed committee members on 
-                    <?php echo strtoupper($org_acronym); ?>'s
-                      <?php if ($org_acronym == 'acap'){
-                        echo '<a href="https://www.facebook.com/ACAPpage">';
-                      } else if ($org_acronym == 'aeces'){
-                        echo '<a href="https://www.facebook.com/OfficialAECES">';
-                      } else if ($org_acronym == 'elite'){
-                        echo '<a href="https://www.facebook.com/ELITE.PUPSRC">';
-                      } else if ($org_acronym == 'give'){
-                        echo '<a href="https://www.facebook.com/educgive">';
-                      } else if ($org_acronym == 'jehra'){
-                        echo '<a href="https://www.facebook.com/PUPSRCJEHRA">';
-                      } else if ($org_acronym == 'jpia'){
-                        echo '<a href="https://www.facebook.com/JPIA.PUPSRC">';
-                      } else if ($org_acronym == 'piie'){
-                        echo '<a href="https://www.facebook.com/piiepup">';
-                      } else if ($org_acronym == 'jmap'){
-                        echo '<a href="https://www.facebook.com/JMAPPUPSRCOfficial">';
-                      }else if ($org_acronym == 'sco'){
-                        echo '<a href="https://www.facebook.com/thepupsrcstudentcouncil">';
-                      }
-                      ?>
-                      Facebook</a> page. We sincerely appreciate your participation,&nbsp;<?php echo $org_personality ?>!
-                </div>
+                  Stay tuned for the upcoming announcement of the newly appointed committee members on 
+                  <?php echo strtoupper($org_acronym); ?>'s
+                  <a href="<?php echo $facebook; ?>" target="_blank">Facebook</a> page. 
+                  We sincerely appreciate your participation, <?php echo $org_personality; ?>!
+              </div>
             </div>
         </div> 
     </div>

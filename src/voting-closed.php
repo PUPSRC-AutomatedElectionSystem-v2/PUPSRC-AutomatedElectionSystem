@@ -78,40 +78,8 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/topnav
                 <div class="header-sub text-center px-2 px-sm-2 pb-sm-4 pb-lg-2 pb-4">
                     Stay tuned for the continuation of the voting process on
                     <?php echo strtoupper($org_acronym); ?>'s
-                    <?php 
-                    switch ($org_acronym) {
-                        case 'acap':
-                            echo '<a href="https://www.facebook.com/ACAPpage">';
-                            break;
-                        case 'aeces':
-                            echo '<a href="https://www.facebook.com/OfficialAECES">';
-                            break;
-                        case 'elite':
-                            echo '<a href="https://www.facebook.com/ELITE.PUPSRC">';
-                            break;
-                        case 'give':
-                            echo '<a href="https://www.facebook.com/educgive">';
-                            break;
-                        case 'jehra':
-                            echo '<a href="https://www.facebook.com/PUPSRCJEHRA">';
-                            break;
-                        case 'jpia':
-                            echo '<a href="https://www.facebook.com/JPIA.PUPSRC">';
-                            break;
-                        case 'piie':
-                            echo '<a href="https://www.facebook.com/piiepup">';
-                            break;
-                        case 'jmap':
-                            echo '<a href="https://www.facebook.com/JMAPPUPSRCOfficial">';
-                            break;
-                        case 'sco':
-                            echo '<a href="https://www.facebook.com/thepupsrcstudentcouncil">';
-                            break;
-                        default:
-                            break;
-                    }
-                    ?>
-                    Facebook</a> page. We appreciate your patience, &nbsp;<?php echo $org_personality ?>! Your understanding is greatly valued.
+                    <a href="<?php echo $facebook; ?>" target="_blank">Facebook</a> page. 
+                    We appreciate your patience, <?php echo $org_personality; ?>! Your understanding is greatly valued.
                 </div>
             </div>
         </div>

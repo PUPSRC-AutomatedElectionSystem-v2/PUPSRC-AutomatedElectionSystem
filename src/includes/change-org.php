@@ -11,7 +11,7 @@ require_once FileUtils::normalizeFilePath('classes/change-org-class.php');
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     $formHandler = new FormHandler();
-    $formHandler->processForm($_POST, $_FILES);
+    $formHandler->processForm($_POST);
 } else {
     // If the form is not submitted via POST method, redirect the user to the form page
     header("Location: ../transfer-org.php?page=2 ");

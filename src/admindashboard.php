@@ -160,7 +160,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                 <img src="images/resc/Dashboard/candidate-empty-state.jpg" style="height:220px; width:auto;">
                 <h5 class="fs-6 gray">No candidates found.</h5>
                 <h5 class="fs-7 gray mb-3 pb-3 pt-0">Add your first candidate to view live voting!</h5>
-                <a href="add-candidate.php" class=" p-2  main-bg-color fw-bold px-4 hover-color"><i class="bi bi-plus-circle-fill text-center me-1"></i> Add Candidates</a>
+                <a href="add-candidate" class=" p-2  main-bg-color fw-bold px-4 hover-color"><i class="bi bi-plus-circle-fill text-center me-1"></i> Add Candidates</a>
             </div>
         </div>
     <?php } else { ?>
@@ -182,7 +182,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
             <img src="images/resc/Dashboard/admin-empty-state.jpeg" style="height:200px; width:auto;">
             <h5 class="fs-6 gray">Election period has not yet started.</h5>
             <h5 class="fs-7 gray mb-3 pb-3 pt-0">Set the election schedule to start viewing!</h5>
-            <a href="configuration.php" class=" p-2  main-bg-color fw-bold px-4 hover-color"><i class="bi bi-plus-circle-fill text-center me-1"></i> Set Schedule</a>
+            <a href="configuration" class=" p-2  main-bg-color fw-bold px-4 hover-color"><i class="bi bi-plus-circle-fill text-center me-1"></i> Set Schedule</a>
         </div>
     </div>
     
@@ -366,7 +366,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="scripts/script.js"></script>
+    <script type="module" src="scripts/script.js"></script>
     <script src="scripts/admin_dashboard.js"></script>
     <script src="scripts/feather.js"></script>
     

@@ -202,7 +202,7 @@ $phpDateTimeNow = new DateTimeUtils();
         new ResourceLoader('vendor/node_modules/jquery/dist/jquery.min.js', 'https://code.jquery.com/jquery-3.7.1.slim.min.js', 'script', "sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=", 'anonymous');
     </script> -->
     <!-- Main Scripts -->
-    <script src="src/scripts/script.js" defer></script>
+    <script type="module" src="src/scripts/script.js" defer></script>
     <script src="src/scripts/loader.js" defer></script>
     <script rel="preload" src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js" as="script"></script>
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>

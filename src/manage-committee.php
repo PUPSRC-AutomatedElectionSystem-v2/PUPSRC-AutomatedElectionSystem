@@ -67,7 +67,7 @@ if (isset($_SESSION['voter_id'])) {
     							<button type="button" class="btn btn-lvl-current rounded-pill spacing-8 fs-8">COMMITTEE MEMBERS</button>
   							</div>
 							<div class="add-committee-button ms-sm-auto">
-								<a href="admin-creation.php">
+								<a href="admin-creation">
 									<button type="button" class="align-items-center committee-add rounded-2 fs-7">
 										<i class="bi bi-plus-circle me-1 me-sm-3"></i>
 										<span class="button-text">Add Committee Member</span>
@@ -413,7 +413,7 @@ if (isset($_SESSION['voter_id'])) {
 
 		<?php include_once __DIR__ . '/includes/components/footer.php'; ?>
 		<script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-		<script src="scripts/script.js"></script>
+		<script type="module" src="scripts/script.js"></script>
 		<script src="scripts/feather.js"></script>
 		<script src="scripts/manage-committee.js"></script>
 

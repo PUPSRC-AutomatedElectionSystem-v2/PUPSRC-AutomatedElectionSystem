@@ -784,7 +784,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="scripts/script.js"></script>
+        <script type="module" src="scripts/script.js"></script>
         <script src="scripts/result-generation.js"></script>
         <script src="scripts/feather.js"></script>
         <script src="scripts/loader.js"></script>
@@ -795,6 +795,6 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
 <?php
 } else {
-    header("Location: landing-page.php");
+    header("Location: landing-page");
 }
 ?>

@@ -127,10 +127,9 @@ class Login extends IpAddress {
                 $_SESSION['electionOpen'] = false;
                 $this->storeLoginActivity();	
                 $this->redirectTo('../voting-closed');
-            }	
-        }	
-        else {	
-            $this->redirectWithMessage('Something went wrong.');	
+            }
+        } else {
+            $this->redirectWithMessage($this->info_message, 'Something went wrong.');
         }	
         $stmt->close();	
     }

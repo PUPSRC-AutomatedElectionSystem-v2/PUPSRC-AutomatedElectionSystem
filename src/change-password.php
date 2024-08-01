@@ -64,7 +64,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         <script src="scripts/edit-profile.js" defer></script>
         <script src="scripts/verify-password.js" defer></script>
         <script src="scripts/reset-password.js" defer></script>
-        <script src="scripts/script.js" defer></script>
+        <script type="module" src="scripts/script.js" defer></script>
     </head>
 
     <body>

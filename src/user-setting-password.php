@@ -36,9 +36,8 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
         <link rel="stylesheet" href="styles/user-setting-password.css" />
         <link rel="stylesheet" href="<?php echo '../src/styles/orgs/' . $org_acronym . '.css'; ?>">
         <!-- Icons -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
         <style>
             .nav-link:hover,
@@ -84,9 +83,9 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
                                         </div>
                                         <div>
                                             <div class="mb-0" style="font-size: 18px; font-weight:600">
-                                                <a href="../src/user-setting-information.php" class="custom-link"> Information </a>
+                                                <a href="../src/user-setting-information" class="custom-link"> Information </a>
                                             </div>
-                                            <div class="mb-0 des">See your account information like your email address and certificate of registration.</div>
+                                            <div class="mb-0 des">See your account information like your email address, student number and full name.</div>
                                         </div>
                                     </div>
                                     <div class="main-color d-flex align-items-center pb-4">
@@ -95,7 +94,7 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
                                         </div>
                                         <div>
                                             <div class="mb-0" style="font-size: 18px; font-weight:600">
-                                                <a href="../src/user-setting-password.php" class="custom-link"> Change Password </a>
+                                                <a href="../src/user-setting-password" class="custom-link"> Change Password </a>
                                             </div>
                                             <div class="mb-0 des">Ensure your account's security by updating your password whenever you need.</div>
                                         </div>
@@ -104,7 +103,7 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
                                         <i class="fas fa-exchange-alt me-4" style="font-size: 1.1rem;"></i>
                                         <div>
                                             <div class="mb-0" style="font-size: 18px;">
-                                                <b><a href="../src/user-setting-transfer.php" class="custom-link">Transfer Org</a></b>
+                                                <b><a href="../src/user-setting-transfer" class="custom-link">Transfer Org</a></b>
                                             </div>
                                             <div class="mb-0 des">Move your account to a different organization upon transfer.</div>
                                         </div>
@@ -123,28 +122,30 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
                                             <i data-feather="lock" class="fas fa-exchange-alt me-4" style="font-size: 1rem;"></i>Change Password
                                         </b>
                                     </h5>
-                                    <div id="section-1" style="align-items: center; justify-content: center;">
+                                    <form>
+                                    <div style="align-items: center; justify-content: center;">
                                         <div class="pb-3">
                                             <div class="des" style="justify-self: auto;">To proceed with changing your password, please enter your current password.</div>
                                         </div>
                                         <div class="row mt-5 mb-3 reset-pass">
                                             <div class="col-md-8 mb-0 mt-0 position-relative">
                                                 <div class="input-group" id="reset-password">
-                                                    <input type="password" class="form-control reset-password-password" onkeypress="return avoidSpace(event)" id="password_confirmation" name="password_confirmation" placeholder="Enter your current password" required>
-                                                    <label for="password_confirmation" class="new-password main-color translate-middle-y" id="scoSignUP">CURRENT PASSWORD</label>
+                                                    <input type="password" class="form-control reset-password-password" id="password_current" name="password_confirmation" placeholder="Enter your current password"  onkeypress="return avoidSpace(event)" required>
+                                                    <label for="password_confirmation" class="new-password main-color translate-middle-y">CURRENT PASSWORD</label>
                                                     <button class="btn btn-secondary reset-password-password" type="button" id="reset-password-toggle-2">
                                                         <i class="fas fa-eye-slash"></i>
                                                     </button>
                                                 </div>
+                                                <div id="error" class="ps-3 text-danger"></div>
                                             </div>
-                                            <div id="password-mismatch-error" class="text-danger" style="display: none;">Incorrect password. Please try again.</div>
                                         </div>
                                         <div class="col-md-12 reset-pass">
-                                            <button class="login-sign-in-button main-bg-color mt-5 mb-4" type="button" name="new-password-submit" id="new-password-submit" disabled>Confirm</button>
-                                        </div>
+                                            <button class="btn main-bg-color mt-5 mb-4 text-white px-4" type="submit" name="new-password-submit"  id="new-password-submit" disabled>Confirm</button>
+                                       </div>
                                         <br>
                                         <br>
                                         <br>
+                                    </form>
                                     </div>
                                 </div>
                             </div>
@@ -152,106 +153,15 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
                     </div>
                 </div>
             </div>
-            <script>
-                // JavaScript to enable/disable submit button based on password input
-                document.getElementById('password_confirmation').addEventListener('input', function() {
-                    var passwordInput = this.value.trim();
-                    var submitButton = document.getElementById('new-password-submit');
-
-                    if (passwordInput.length > 0) {
-                        submitButton.removeAttribute('disabled');
-                    } else {
-                        submitButton.setAttribute('disabled', 'disabled');
-                    }
-                });
-
-                document.addEventListener('DOMContentLoaded', (event) => {
-                    const passwordInput = document.getElementById('password_confirmation');
-                    const toggleButton = document.getElementById('reset-password-toggle-2');
-
-                    // Show the toggle button when the password input is focused
-                    passwordInput.addEventListener('focus', () => {
-                        toggleButton.style.display = 'block';
-                    });
-
-                    // Hide the toggle button when the password input loses focus
-                    passwordInput.addEventListener('blur', () => {
-                        toggleButton.style.display = 'none';
-                    });
-
-                    // Prevent the toggle button from hiding if it is clicked
-                    toggleButton.addEventListener('mousedown', (event) => {
-                        event.preventDefault();
-                    });
-
-                    // Toggle the password visibility
-                    toggleButton.addEventListener('click', () => {
-                        if (passwordInput.type === 'password') {
-                            passwordInput.type = 'text';
-                            toggleButton.innerHTML = '<i class="fas fa-eye"></i>';
-                        } else {
-                            passwordInput.type = 'password';
-                            toggleButton.innerHTML = '<i class="fas fa-eye-slash"></i>';
-                        }
-                    });
-                });
-
-                // AJAX verify password
-$(document).ready(function() {
-    $('#new-password-submit').click(function(e) {
-        e.preventDefault();
-
-        var currentPassword = $('#password_confirmation').val();
-
-        $.ajax({
-            type: 'POST',
-            url: 'includes/verify-password.php',
-            data: {
-                password: currentPassword
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    // Password verification successful
-                    window.location.href = 'setting-password-reset.php';
-                } else {
-                    // Show error message
-                    $('#password-mismatch-error').text(response.message).show();
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('AJAX Error: ' + status + ', ' + error);
-            }
-        });
-    });
-
-    // Toggle the password visibility
-    $('#reset-password-toggle-2').click(function() {
-        var passwordInput = $('#password_confirmation');
-        var toggleButton = $('#reset-password-toggle-2');
-
-        if (passwordInput.attr('type') === 'password') {
-            passwordInput.attr('type', 'text');
-            toggleButton.html('<i class="fas fa-eye"></i>');
-        } else {
-            passwordInput.attr('type', 'password');
-            toggleButton.html('<i class="fas fa-eye-slash"></i>');
-        }
-    });
-});
-            </script>
+        
         </main>
         <div class="footer">
             <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
         </div>
 
-        <script src="../src/scripts/feather.js"></script>
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBogGz5D6306zI1M1rEM0bzW2UN4u5d1a2KX9KRALhWV4aKN" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cu5eC5sE/PZz57f5mlP34fIuFj0m9koW2j4X0eY9Fzj5sy9F2YfGOFlUNcr4fnfM" crossorigin="anonymous"></script>
+        <script src="scripts/feather.js"></script>
         <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="scripts/change-password.js"></script>
+        <script src="scripts/user-setting-password.js"></script>
         <script src="scripts/loader.js"></script>
     </body>
 
@@ -259,6 +169,6 @@ $(document).ready(function() {
 
 <?php
 } else {
-    header("Location: landing-page.php");
+    header("Location: landing-page");
 }
 ?>

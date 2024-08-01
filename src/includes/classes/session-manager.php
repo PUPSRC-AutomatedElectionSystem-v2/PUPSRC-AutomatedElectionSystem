@@ -35,7 +35,7 @@ class SessionManager {
                 exit();
             }
             else {
-                header("Location: end-point");
+                header("Location: landing-page");
                 exit();
             }
         }

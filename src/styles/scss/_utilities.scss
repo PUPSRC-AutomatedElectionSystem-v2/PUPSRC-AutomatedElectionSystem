@@ -167,6 +167,27 @@ div:has(.ql-editor[contenteditable]) {
                 font-weight: inherit;
             }
         }
+
+        a {
+            text-decoration: underline !important;
+        }
+
+        a:link {
+            color: blue;
+        }
+
+        a:visited {
+            color: purple;
+        }
+
+        a:hover {
+            color: var(--main-color);
+            filter: saturate(0.8);
+        }
+
+        a:active {
+            color: orange;
+        }
     }
 }
 

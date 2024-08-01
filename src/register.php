@@ -68,7 +68,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
     include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/outside-header.php');
     ?>
 
-    <div class="register-all-container pt-3 pb-5" style="padding-top: 0.8rem">
+    <div class="register-all-container pt-3" style="padding-top: 0.8rem">
         <div class="row mt-5 pl-5 pb-4 container-fluid">
             <div class="col-md-6 slide-in main-reg-container">
                 <form id="register-form" action="includes/registration-inc.php" method="POST"
@@ -214,7 +214,11 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                         <option value="jpia">JPIA</option>
                                         <option value="piie">PIIE</option>
                                     </select>
+
+                                    <div class="form-text mt-2" style="font-size: 11px;"><span
+                                            class="main-blue fw-semibold">Note:</span> Disabled options indicate that registration is currently unavailable.</div>
                                 </div>
+                                
                             </div>
                         </div>
 
@@ -302,7 +306,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
 
         <div class="col-md-6 d-flex align-items-center slide-in">
             <div class="register-img-container">
-                <img src="images/resc/voting.webp" alt="ivote-register" class="register-img" style="margin-left: 50px">
+                <img src="images/resc/voting.webp" alt="ivote-register" class="register-img" style="margin-left: 50px; margin-bottom: 8rem">
             </div>
         </div>
     </div>

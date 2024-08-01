@@ -5,33 +5,33 @@
     padding: 0;
     box-sizing: border-box;
 
-    @media (prefers-color-scheme: dark) {
-        color: #f5f5f5;
-        font-weight: bold;
+    // @media (prefers-color-scheme: dark) {
+    //     color: #f5f5f5;
+    //     font-weight: bold;
 
-    }
+    // }
 
-
-}
-
-@media (prefers-color-scheme: dark) {
-    .main-color {
-        color: color-mix(in srgb, var(--main-color), var(--white) 25%) !important;
-
-        *::before,
-        *::after {
-            color: color-mix(in srgb, var(--main-color), var(--white) 25%) !important;
-        }
-    }
-
-    .text-danger,
-    .text-success,
-    .form-feedback,
-    .feedback-alert {
-        filter: brightness(120%);
-    }
 
 }
+
+// @media (prefers-color-scheme: dark) {
+//     .main-color {
+//         color: color-mix(in srgb, var(--main-color), var(--white) 25%) !important;
+
+//         *::before,
+//         *::after {
+//             color: color-mix(in srgb, var(--main-color), var(--white) 25%) !important;
+//         }
+//     }
+
+//     .text-danger,
+//     .text-success,
+//     .form-feedback,
+//     .feedback-alert {
+//         filter: brightness(120%);
+//     }
+
+// }
 
 nav {
 
@@ -71,15 +71,15 @@ table.table> :not(caption)>*>* {
 }
 
 :root {
-    color-scheme: light dark;
+    // color-scheme: light dark;
 }
 
 ::-moz-selection {
 
     /* Code for Firefox */
-    @media (prefers-color-scheme: dark) {
-        filter: brightness(120%);
-    }
+    // @media (prefers-color-scheme: dark) {
+    //     filter: brightness(120%);
+    // }
 
     color: light-dark(var(--white), var(--white));
     font-weight: bolder;
@@ -87,9 +87,9 @@ table.table> :not(caption)>*>* {
 }
 
 ::selection {
-    @media (prefers-color-scheme: dark) {
-        filter: brightness(120%);
-    }
+    // @media (prefers-color-scheme: dark) {
+    //     filter: brightness(120%);
+    // }
 
     color: light-dark(var(--white), #f5f5f5);
     font-weight: bolder;
@@ -110,11 +110,11 @@ body {
         @extend %general-responsive-base-font-size;
     }
 
-    @media (prefers-color-scheme: dark) {
-        img {
-            filter: brightness(.8) contrast(1.2);
-        }
-    }
+    // @media (prefers-color-scheme: dark) {
+    //     img {
+    //         filter: brightness(.8) contrast(1.2);
+    //     }
+    // }
 }
 
 
@@ -144,9 +144,9 @@ textarea,
 div.ql-editor[contenteditable] {
     resize: none;
 
-    @media (prefers-color-scheme: dark) {
-        color: var(--main-black);
-    }
+    // @media (prefers-color-scheme: dark) {
+    //     color: var(--main-black);
+    // }
 
     &::-webkit-scrollbar {
         display: none;
@@ -154,41 +154,47 @@ div.ql-editor[contenteditable] {
 }
 
 div:has(.ql-editor[contenteditable]) {
-    @media (prefers-color-scheme: dark) {
-        color: var(--main-black);
-        font-weight: normal;
+    // @media (prefers-color-scheme: dark) {
+    //     color: var(--main-black);
+    //     font-weight: normal;
 
-        *,
-        ::before,
-        ::after {
-            color: inherit;
+    //     ::before,
+    //     ::after {
+    //         color: inherit;
+    //         font-weight: normal;
 
-            &:not(strong, em) {
-                font-weight: inherit;
-            }
-        }
+    //     }
 
-        a {
-            text-decoration: underline !important;
-        }
+    //     * {
+    //         color: inherit;
+    //     }
 
-        a:link {
-            color: blue;
-        }
+    //     *:not(strong, em) {
 
-        a:visited {
-            color: purple;
-        }
+    //         font-weight: normal;
+    //     }
 
-        a:hover {
-            color: var(--main-color);
-            filter: saturate(0.8);
-        }
+    //     a {
+    //         text-decoration: underline !important;
+    //     }
 
-        a:active {
-            color: orange;
-        }
-    }
+    //     a:link {
+    //         color: blue;
+    //     }
+
+    //     a:visited {
+    //         color: purple;
+    //     }
+
+    //     a:hover {
+    //         color: var(--main-color);
+    //         filter: saturate(0.8);
+    //     }
+
+    //     a:active {
+    //         color: orange;
+    //     }
+    // }
 }
 
 
@@ -356,8 +362,12 @@ section .toast-container-unstacked {
 
     }
 
+    @media only screen and (max-width: 576px) {
+        max-width: 45%;
+    }
+
+
     @media only screen and (min-width: 768px) and (max-width: 1199px) {
-        // quick fix to put footer to bottom
 
         max-height: 25dvh;
     }
@@ -402,9 +412,9 @@ section .toast-container-unstacked {
                 ::-moz-selection {
 
                     /* Code for Firefox */
-                    @media (prefers-color-scheme: dark) {
-                        filter: brightness(120%);
-                    }
+                    // @media (prefers-color-scheme: dark) {
+                    //     filter: brightness(120%);
+                    // }
 
                     color: light-dark(var(--white), #f5f5f5);
                     font-weight: bolder;
@@ -412,9 +422,9 @@ section .toast-container-unstacked {
                 }
 
                 ::selection {
-                    @media (prefers-color-scheme: dark) {
-                        filter: brightness(120%);
-                    }
+                    // @media (prefers-color-scheme: dark) {
+                    //     filter: brightness(120%);
+                    // }
 
                     color: light-dark(var(--white), #f5f5f5);
                     font-weight: bolder;
@@ -431,9 +441,9 @@ section .toast-container-unstacked {
                 ::-moz-selection {
 
                     /* Code for Firefox */
-                    @media (prefers-color-scheme: dark) {
-                        filter: brightness(120%);
-                    }
+                    // @media (prefers-color-scheme: dark) {
+                    //     filter: brightness(120%);
+                    // }
 
                     color: light-dark(var(--white), #f5f5f5);
                     font-weight: bolder;
@@ -441,9 +451,9 @@ section .toast-container-unstacked {
                 }
 
                 ::selection {
-                    @media (prefers-color-scheme: dark) {
-                        filter: brightness(120%);
-                    }
+                    // @media (prefers-color-scheme: dark) {
+                    //     filter: brightness(120%);
+                    // }
 
                     color: light-dark(var(--white), #f5f5f5);
                     font-weight: bolder;
@@ -460,6 +470,11 @@ section .toast-container-unstacked {
                 text-align: left;
                 width: 85%;
                 padding-left: clamp(2rem, 1rem + 1dvw, 4rem);
+
+                @media only screen and (max-width: 576px) {
+                    padding-left: clamp(0.75rem, 0.3rem + 0.75dvw, 4rem);
+                }
+
                 @extend %general-responsive-base-font-size;
 
             }
@@ -548,11 +563,11 @@ section .toast-container-unstacked {
         @extend %general-responsive-base-font-size;
 
         &:hover {
-            @media (prefers-color-scheme: dark) {
+            // @media (prefers-color-scheme: dark) {
 
-                filter: brightness(80%);
+            //     filter: brightness(80%);
 
-            }
+            // }
         }
 
         .filter-option {
@@ -607,14 +622,14 @@ section .toast-container-unstacked {
         filter: drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.25));
         padding: clamp(1rem, 0.25rem + 0.5vw, 3rem) clamp(1.25rem, 0.5rem + 0.5vw, 3.5rem);
 
-        @media (prefers-color-scheme: dark) {
-            background-color: #606368;
-        }
+        // @media (prefers-color-scheme: dark) {
+        //     background-color: #606368;
+        // }
 
         .inner.show {
-            @media (prefers-color-scheme: dark) {
-                background-color: #606368;
-            }
+            // @media (prefers-color-scheme: dark) {
+            //     background-color: #606368;
+            // }
         }
 
         ul.dropdown-menu li {
@@ -627,15 +642,15 @@ section .toast-container-unstacked {
             }
 
             a {
-                @media (prefers-color-scheme: dark) {
-                    color: var(--white);
+                // @media (prefers-color-scheme: dark) {
+                //     color: var(--white);
 
-                    &:hover {
-                        border-radius: 8px;
-                        background-color: color-mix(in srgb, var(--main-color) 50%, white 25%);
-                    }
+                //     &:hover {
+                //         border-radius: 8px;
+                //         background-color: color-mix(in srgb, var(--main-color) 50%, white 25%);
+                //     }
 
-                }
+                // }
             }
 
             %hide-default-blank-option {

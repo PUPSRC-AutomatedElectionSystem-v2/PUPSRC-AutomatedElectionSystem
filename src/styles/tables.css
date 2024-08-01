@@ -54,9 +54,6 @@ table.table tr td {
 table.table tr th:first-child {
     width: 60px;
 }
-table.table tr th:last-child {
-    width: 100px;
-}
 table.table-striped tbody tr:nth-of-type(odd) {
     background-color: #fcfcfc;
 }
@@ -303,4 +300,12 @@ table.table {
 }
 /* -- End of: Changing Status */
 
+.search-input {
+    font-family: 'Montserrat', 'FontAwesome';
+    
+}
 
+.search-input::placeholder {
+    text-transform: none !important;
+    padding-left: 7px
+}

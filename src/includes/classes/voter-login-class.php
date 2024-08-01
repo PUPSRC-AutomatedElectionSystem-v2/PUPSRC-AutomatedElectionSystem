@@ -34,7 +34,7 @@ class Login extends IpAddress {
         }
 
         // Verifies user in the voter table
-        $sql = "SELECT voter_id, email, password, role, account_status, voter_status, vote_status FROM voter WHERE BINARY email = ?";
+        $sql = "SELECT voter_id, email, password, role, session_token, account_status, voter_status, vote_status FROM voter WHERE BINARY email = ?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bind_param('s', $email);
         $stmt->execute();
@@ -45,6 +45,13 @@ class Login extends IpAddress {
             $this->handleUserNotFound();
         } else {
             $row = $result->fetch_assoc();
+
+            // checks if session token is not null, indicating a user is logged in
+            if ($row['session_token'] !== NULL) {
+                $this->redirectWithMessage($this->error_message, 'This account is already logged in from another device.');
+            }
+
+            // proceeds to password verification
             $this->handlePasswordVerification($row, $password);
         }
 
@@ -191,7 +198,7 @@ class Login extends IpAddress {
             $this->isLoginAttemptMax();        
         } 
         else {
-            $this->redirectWithMessage($this->error_message, 'Email and password do not match.<br/><strong>' . $remaining_attempt . ' remaining attempts.</strong>');
+            $this->redirectWithMessage($this->error_message, "Email and password do not match.<br/><strong> {$remaining_attempt} remaining attempts.</strong>");
         }
     }
 
@@ -201,9 +208,9 @@ class Login extends IpAddress {
         $remaining_attempt = self::LOGIN_ATTEMPT_COUNT - $this->getFailedAttemptsCount();
         
         if ($remaining_attempt <= 0) {
-            $this->isLoginAttemptMax();        
-        } 
-        $this->redirectWithMessage($this->error_message, 'Email and password do not match.<br/><strong>' . $remaining_attempt . ' remaining attempts.</strong>');
+            $this->isLoginAttemptMax();
+        }
+        $this->redirectWithMessage($this->error_message, "Email and password do not match.<br/><strong> {$remaining_attempt} remaining attempts.</strong>");
     }
 
     // Counts user failed login attempts
@@ -236,7 +243,21 @@ class Login extends IpAddress {
 
 
     private function redirectTo($location) {
-        header("Location: " . $location);
+        $this->createSessionToken();
+        header("Location: {$location}");
         exit();
+    }
+
+
+    private function createSessionToken()
+    {
+        $session_token = bin2hex(random_bytes(32));
+        $_SESSION['session_token'] = $session_token;
+
+        $sql = "UPDATE voter SET session_token = ? WHERE voter_id = ?";
+        $stmt = $this->connection->prepare($sql);
+        $stmt->bind_param("si", $session_token, $_SESSION['voter_id']);
+        $stmt->execute();
+        $stmt->close();
     }
 }

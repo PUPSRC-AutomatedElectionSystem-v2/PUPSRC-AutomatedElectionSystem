@@ -283,7 +283,7 @@ body dialog.modal-native {
                 }
             }
 
-            .answer-container:has(:focus-within):has(.ql-editor[contenteditable="true"]) {
+            .answer-container:focus-within:has(.ql-editor[contenteditable="true"]) {
                 .ql-toolbar {
                     display: inline-block;
                 }

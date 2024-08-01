@@ -261,115 +261,332 @@ function downloadExcel() {
     .catch((error) => console.error("Error fetching data:", error));
 }
 
-//pagination
+
+  // Feedback and pagination
 document.addEventListener("DOMContentLoaded", function () {
+
   const sortButtons = document.querySelectorAll(".dropdown-item");
   sortButtons.forEach((button) => {
-    button.addEventListener("click", function () {
-      const sort = this.getAttribute("data-sort");
-      const order = this.getAttribute("data-order");
-      fetchFeedbackData(sort, order);
-    });
+      button.addEventListener("click", function (event) {
+          event.preventDefault();
+          const sort = this.getAttribute("data-sort");
+          const order = this.getAttribute("data-order");
+          fetchFeedbackData(sort, order);
+      });
   });
 
   function fetchFeedbackData(sort, order, page = 1) {
-    const data = new FormData();
-    data.append("sort", sort);
-    data.append("order", order);
-    data.append("page", page);
+      const data = new FormData();
+      data.append("sort", sort);
+      data.append("order", order);
+      data.append("page", page);
 
-    fetch("includes/fetch-feedback.php", {
-      method: "POST",
-      body: data,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        updateTable(data.feedback_data);
-        updatePagination(data.total_pages, data.current_page, sort, order);
+      fetch("includes/fetch-feedback.php", {
+          method: "POST",
+          body: data,
       })
-      .catch((error) => console.error("Error:", error));
+          .then((response) => response.json())
+          .then((data) => {
+              updateFeedbackTable(data.feedback_data);
+              updateFeedbackPagination(data.total_pages, data.current_page, sort, order);
+          })
+          .catch((error) => console.error("Error:", error));
   }
 
-  function updateTable(feedback_data) {
-    const tableBody = document.querySelector("table tbody");
+  function updateFeedbackTable(feedback_data) {
+    const tableBody = document.querySelector(".feedback-table tbody");
+    if (!tableBody) {
+        console.error("Feedback table body not found.");
+        return;
+    }
     tableBody.innerHTML = "";
 
     feedback_data.forEach((row) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-                <td class="col-md-7 text-center">${row.feedback}</td>
-                <td class="col-md-2 text-center">${new Date(
-                  row.timestamp
-                ).toLocaleDateString()}</td>
-            `;
-      tableBody.appendChild(tr);
+        const truncatedFeedback = truncateText(row.feedback, 50); // Adjust the number to your desired truncation length
+
+        // Format the date with specific options
+        const dateOptions = {
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        };
+
+        const formattedDate = new Date(row.timestamp).toLocaleString("en-US", dateOptions);
+
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td class="col-md-7 text-center">${truncatedFeedback}
+                <p class="view-more" data-bs-toggle="modal" data-bs-target="#successEmailModal" data-feedback='${JSON.stringify(row)}'>View More</p>
+            </td>
+            <td class="col-md-2 text-center">${formattedDate}</td>
+        `;
+        tableBody.appendChild(tr);
     });
-  }
 
-  function updatePagination(total_pages, current_page, sort, order) {
-    const pagination = document.querySelector(".pagination");
-    pagination.innerHTML = "";
-
-    if (current_page > 1) {
-      const prev = document.createElement("li");
-      prev.className = "page-item";
-      prev.innerHTML = `<a href="#" class="page-link" data-page="${
-        current_page - 1
-      }">Previous</a>`;
-      pagination.appendChild(prev);
+    function truncateText(text, maxLength) {
+        if (text.length > maxLength) {
+            return text.substring(0, maxLength) + '...';
+        }
+        return text;
     }
 
-    for (let i = 1; i <= total_pages; i++) {
-      const page = document.createElement("li");
-      page.className = `page-item ${i === current_page ? "active" : ""}`;
-      page.innerHTML = `<a href="#" class="page-link" data-page="${i}">${i}</a>`;
-      pagination.appendChild(page);
-    }
+       // Add event listeners for view-more elements
+       document.querySelectorAll(".view-more").forEach((element) => {
+        element.addEventListener("click", function () {
+            const feedbackData = JSON.parse(this.getAttribute("data-feedback"));
+            const dateOptions = {
+                year: "numeric",
+                month: "long",
+                day: "numeric"
+            };
+            const timeOptions = {
+                hour: "numeric",
+                minute: "numeric",
+                hour12: true
+            };
+            
+            const formattedTime = new Date(feedbackData.timestamp).toLocaleString("en-US", timeOptions);
+            const formattedDate = new Date(feedbackData.timestamp).toLocaleString("en-US", dateOptions);
+            document.getElementById("modal-feedback").textContent = feedbackData.feedback;
+            document.getElementById("modal-date").textContent = `${formattedDate} | ${formattedTime}`;
+        });
+    });
+}
 
-    if (current_page < total_pages) {
-      const next = document.createElement("li");
-      next.className = "page-item";
-      next.innerHTML = `<a href="#" class="page-link" data-page="${
-        current_page + 1
-      }">Next</a>`;
-      pagination.appendChild(next);
-    }
+  function updateFeedbackPagination(total_pages, current_page, sort, order) {
+      const pagination = document.querySelector(".feedback-pagination");
+      if (!pagination) {
+          console.error("Feedback pagination not found.");
+          return;
+      }
+      pagination.innerHTML = "";
 
-    const pageLinks = document.querySelectorAll(".page-link");
-    pageLinks.forEach((link) => {
-      link.addEventListener("click", function (event) {
-        event.preventDefault();
-        const page = this.getAttribute("data-page");
-        fetchFeedbackData(sort, order, page);
+      if (current_page > 1) {
+          const prev = document.createElement("li");
+          prev.className = "page-item";
+          prev.innerHTML = `<a href="#" class="page-link" data-page="${current_page - 1}"> <i class="fas fa-chevron-left" id="btn-previous"></i> </a>`;
+          pagination.appendChild(prev);
+      }
+
+      for (let i = 1; i <= total_pages; i++) {
+          const page = document.createElement("li");
+          page.className = `page-item ${i === current_page ? "active" : ""}`;
+          page.innerHTML = `<a href="#" class="page-link" data-page="${i}">${i}</a>`;
+          pagination.appendChild(page);
+      }
+
+      if (current_page < total_pages) {
+          const next = document.createElement("li");
+          next.className = "page-item";
+          next.innerHTML = `<a href="#" class="page-link" data-page="${current_page + 1}"> <i class="fas fa-chevron-right" id="btn-next"></i> </a>`;
+          pagination.appendChild(next);
+      }
+
+      const pageLinks = document.querySelectorAll(".feedback-pagination .page-link");
+      pageLinks.forEach((link) => {
+          link.addEventListener("click", function (event) {
+              event.preventDefault();
+              const page = this.getAttribute("data-page");
+              fetchFeedbackData(sort, order, page);
+          });
       });
-    });
   }
 
   // Initial load
-  fetchFeedbackData("timestamp", "desc");
+  fetchFeedbackData("timestamp", "DESC");
+
+// Positions and pagination
+const searchInput = document.getElementById("searchPosition");
+if (!searchInput) {
+    console.error("Search input not found.");
+} else {
+    searchInput.addEventListener("input", function () {
+        const searchQuery = this.value;
+        fetchPositionData(searchQuery);
+    });
+}
+
+// Function to fetch position data and update the table
+function fetchPositionData(searchQuery, page = 1) {
+    const data = new FormData();
+    data.append("searchQuery", searchQuery);
+    data.append("page", page);
+
+    fetch("includes/fetch-positions.php", {
+        method: "POST",
+        body: data,
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        if (data.error) {
+            console.error(data.error);
+        } else {
+            updatePositionTable(data.position_data);
+            updatePositionPagination(data.total_pages, data.current_page, searchQuery);
+        }
+    })
+    .catch((error) => console.error("Error:", error));
+}
+
+// Function to update the positions table
+function updatePositionTable(position_data) {
+    const tableBody = document.querySelector(".positions-table tbody");
+    if (!tableBody) {
+        console.error("Positions table body not found.");
+        return;
+    }
+    tableBody.innerHTML = "";
+
+    position_data.forEach((row) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td class="col-md-3 text-center">${row.title}
+                <p class="view-more" data-bs-toggle="modal" data-bs-target="#positionModal" data-position-id="${row.id}">View Details</p>
+            </td>
+            <td class="col-md-3 text-center">${row.total_count}</td>
+        `;
+        tableBody.appendChild(tr);
+
+        // Add event listener for view-more element in this specific row
+        const viewMoreElement = tr.querySelector(".view-more");
+        if (viewMoreElement) {
+            viewMoreElement.addEventListener("click", function () {
+                const positionId = this.getAttribute("data-position-id");
+                fetchPositionDetails(positionId);
+            });
+        }
+    });
+}
+
+// Function to fetch position details and candidates for the modal
+async function fetchPositionDetails(positionId) {
+    try {
+        const response = await fetch(`includes/fetch-positions.php?positionId=${positionId}`);
+        const data = await response.json();
+
+        if (data.error) {
+            console.error(data.error);
+            return;
+        }
+
+        // Update modal content with fetched data
+document.getElementById("modal-position-title").textContent = data.title + ' Candidates';
+
+// Parse Delta JSON
+var deltaJson;
+try {
+    deltaJson = JSON.parse(data.description);
+    console.log("Parsed Delta JSON:", deltaJson);
+} catch (e) {
+    console.error("Failed to parse JSON:", e);
+    deltaJson = null;
+}
+
+console.log("Delta JSON:", deltaJson);
+
+// Ensure Quill is available before creating an instance
+if (typeof Quill !== 'undefined') {
+    console.log("Quill is defined. Creating a new Quill instance.");
+
+    // Create a container for the Quill editor
+    var quillContainer = document.createElement('div');
+    quillContainer.style.display = 'none'; // Hide the container
+    document.body.appendChild(quillContainer);
+
+    // Initialize Quill editor
+    var quillEditor = new Quill(quillContainer, {
+        theme: 'snow', // You can specify other options here if needed
+        modules: {
+            toolbar: false // This removes the toolbar
+        }
+    });
+
+    if (deltaJson && deltaJson.ops) {
+        quillEditor.setContents(deltaJson);
+        var htmlContent = quillEditor.root.innerHTML;
+        console.log("Converted HTML content:", htmlContent);
+        document.getElementById('description').innerHTML = htmlContent;
+    } else {
+        console.error("Invalid Delta JSON format for Quill.");
+    }
+
+    // Remove the temporary Quill container
+    document.body.removeChild(quillContainer);
+} else {
+    console.error('Quill is not defined');
+}
+
+const candidatesContainer = document.getElementById("modal-candidates");
+candidatesContainer.innerHTML = "";
+
+        data.candidates.forEach(candidate => {
+            const candidateDiv = document.createElement("div");
+            candidateDiv.className = "candidate";
+            candidateDiv.innerHTML = `
+                <div class="candidate-container">
+                  <img src="user_data/${data.org_name}/candidate_imgs/${candidate.photo_url}" alt="${candidate.last_name}" class="candidate-photo main-color">
+                  <p class="candidate-name">
+                    ${candidate.first_name} <br>
+                    <span class="last-name">${candidate.last_name}</span>
+                  </p>
+                </div>
+            `;
+            candidatesContainer.appendChild(candidateDiv);
+        });
+
+    } catch (error) {
+        console.error("Error fetching position details:", error);
+    }
+}
+document.getElementById('searchPosition').addEventListener('input', function() {
+  if (this.value.length > 0) {
+      this.style.backgroundImage = 'none';
+  } else {
+      this.style.background = 'url("data:image/svg+xml,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\' fill=\'currentColor\' class=\'bi bi-search\' viewBox=\'0 0 16 16\'> <path d=\'M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001a1.007 1.007 0 0 0-.198.195l3.85 3.85a1 1 0 0 0 1.415-1.415l-3.85-3.85a1.007 1.007 0 0 0-.195-.198zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z\'/> </svg>") no-repeat';
+      this.style.backgroundSize = '16px 16px';
+      this.style.backgroundPosition = '10px center';
+  }
 });
+// Function to update the pagination
+function updatePositionPagination(total_pages, current_page, searchQuery) {
+    const pagination = document.querySelector(".positions-pagination");
+    if (!pagination) {
+        console.error("Positions pagination not found.");
+        return;
+    }
+    pagination.innerHTML = "";
 
-$(document).ready(function () {
-  $(".view-more").click(function () {
-    var feedbackData = $(this).data("feedback");
-    var timestamp = new Date(feedbackData.timestamp); // Convert timestamp to Date object
+    if (current_page > 1) {
+        const prev = document.createElement("li");
+        prev.className = "page-item";
+        prev.innerHTML = `<a href="#" class="page-link" data-page="${current_page - 1}"> <i class="fas fa-chevron-left" id="btn-previous"></i> </a>`;
+        pagination.appendChild(prev);
+    }
 
-    // Format time and date separately
-    var formattedTime = timestamp.toLocaleString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
+    for (let i = 1; i <= total_pages; i++) {
+        const page = document.createElement("li");
+        page.className = `page-item ${i === current_page ? "active" : ""}`;
+        page.innerHTML = `<a href="#" class="page-link" data-page="${i}">${i}</a>`;
+        pagination.appendChild(page);
+    }
+
+    if (current_page < total_pages) {
+        const next = document.createElement("li");
+        next.className = "page-item";
+        next.innerHTML = `<a href="#" class="page-link" data-page="${current_page + 1}"> <i class="fas fa-chevron-right" id="btn-next"></i> </a>`;
+        pagination.appendChild(next);
+    }
+
+    const pageLinks = document.querySelectorAll(".positions-pagination .page-link");
+    pageLinks.forEach((link) => {
+        link.addEventListener("click", function (event) {
+            event.preventDefault();
+            const page = this.getAttribute("data-page");
+            fetchPositionData(searchQuery, page);
+        });
     });
-    var formattedDate = timestamp.toLocaleString("en-US", {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    });
+}
 
-    // Set text in modal elements
-    $("#modal-feedback").text(feedbackData.feedback);
-    $("#modal-date").text(formattedTime + " | " + formattedDate);
-    $("#modal-date").addClass("text-end"); // Center align the text
-    $("#successEmailModal").modal("show");
-  });
+// Initial load of positions data
+fetchPositionData("");
 });

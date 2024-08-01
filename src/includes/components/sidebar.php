@@ -10,7 +10,7 @@
 
 <nav class="sidebar open">
 	<div class="d-flex align-items-center">
-		<img src="images/logos/<?php echo $org_name ?>.webp" alt="" class="org-logo">
+		<img src="images/logos/<?php echo $org_name ?>.webp" loading="lazy" alt="" class="org-logo">
 	</div>
 	<div class="org-sub-name text-center">
 		<div class="d-inline-block align-middle main-color">
@@ -120,8 +120,7 @@
 						<li class="item">
 							<a href="manage-committee.php" class="<?php echo (basename($_SERVER['PHP_SELF']) == 'manage-committee.php' ||
 								basename($_SERVER['PHP_SELF']) == 'account-details.php')
-								? 'active-sub fw-bold' : ''; ?>">Admin
-								Accounts</a>
+								? 'active-sub fw-bold' : ''; ?>">Admin Accounts</a>
 						</li>
 						<li class="item">
 							<a href="admin-creation.php"
@@ -129,16 +128,20 @@
 								Add Admin
 							</a>
 						</li>
-						<li class="item">
-							<a href="add-voters.php"
-								class="<?php echo basename($_SERVER['PHP_SELF']) == 'add-voters.php' ? 'active-sub fw-bold' : ''; ?>">
-								Add Voters
-							</a>
-						</li>
+						<?php if ($org_name !== 'sco'): ?>
+							<li class="item">
+								<a href="add-voters.php"
+									class="<?php echo basename($_SERVER['PHP_SELF']) == 'add-voters.php' ? 'active-sub fw-bold' : ''; ?>">
+									Add Voters
+								</a>
+							</li>
+						<?php endif; ?>
 					</ul>
 				<?php elseif ($_SESSION['role'] === 'admin'): ?>
-					<a href="manage-voters.php"
-						class="submenu-item <?php echo basename($_SERVER['PHP_SELF']) == 'manage-voters.php' ? 'active' : ''; ?>">
+					<a href="manage-voters.php" class="submenu-item <?php echo (basename($_SERVER['PHP_SELF']) == 'manage-voters.php' ||
+						basename($_SERVER['PHP_SELF']) == 'validate-voter.php' ||
+						basename($_SERVER['PHP_SELF']) == 'voter-details.php')
+						? 'active' : ''; ?>">
 						<div class="submenu-content">
 							<i data-feather="users" class="white mb-xl-1"></i>
 							<span style="padding-left: 0.7rem;">Manage Voters</span>
@@ -146,6 +149,7 @@
 					</a>
 				<?php endif; ?>
 			</li>
+
 
 
 
@@ -177,21 +181,28 @@
 		</div>
 
 		<div class="pe-none">
-			<img src="images/resc/ivote-logo.webp" class="me-xl-3" style="height:35px">
+			<img src="images/resc/ivote-logo.webp" loading="lazy" class="me-xl-3" style="height:35px">
 		</div>
 
 		<div class="header-right">
 			<div class="dropdown user-profile">
 
 				<button class="btn" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-					<img src="images/logos/<?php echo $org_name ?>.webp" class="profile-icon me-xl-3"><i
+					<img src="images/logos/<?php echo $org_name ?>.webp" loading="lazy" class="profile-icon me-xl-3"><i
 						class="fas fa-chevron-down main-color fs-6"></i>
 				</button>
 				<ul class="dropdown-menu dropdown-menu-end main-color p-3" aria-labelledby="dropdownMenuButton">
-					<li class="px-xl-2 py-xl-1"><a class="dropdown-item" href="profile.php"><i data-feather="user" class="fs-12 main-color mb-xl-1"></i><span style="padding-left: .8rem">Profile</a></li>
-					<li class="px-xl-2"><a class="dropdown-item" href="recycle-bin.php"><i data-feather="trash-2" class="fs-11 main-color mb-xl-1"></i><span style="padding-left: .8rem">Recycle Bin</a></li>
-					<li class="px-xl-2 py-xl-1"><a class="dropdown-item" href="activity-log.php"><i data-feather="clock" class="fs-11 main-color mb-xl-1"></i><span style="padding-left: .8rem">Activity Log</a></li>
-					<li class="px-xl-2 py-xl-1"><a class="dropdown-item" href="includes/voter-logout.php"><i data-feather="log-out" class="fs-11 main-color mb-xl-1"></i><span style="padding-left: .8rem"></span>Log Out</a></li>
+					<li class="px-xl-2 py-xl-1"><a class="dropdown-item" href="profile.php"><i data-feather="user"
+								class="fs-12 main-color mb-xl-1"></i><span style="padding-left: .8rem">Profile</a></li>
+					<li class="px-xl-2"><a class="dropdown-item" href="recycle-bin.php"><i data-feather="trash-2"
+								class="fs-11 main-color mb-xl-1"></i><span style="padding-left: .8rem">Recycle Bin</a>
+					</li>
+					<li class="px-xl-2 py-xl-1"><a class="dropdown-item" href="activity-log.php"><i data-feather="clock"
+								class="fs-11 main-color mb-xl-1"></i><span style="padding-left: .8rem">Activity Log</a>
+					</li>
+					<li class="px-xl-2 py-xl-1"><a class="dropdown-item" href="includes/voter-logout.php"><i
+								data-feather="log-out" class="fs-11 main-color mb-xl-1"></i><span
+								style="padding-left: .8rem"></span>Log Out</a></li>
 				</ul>
 			</div>
 		</div>

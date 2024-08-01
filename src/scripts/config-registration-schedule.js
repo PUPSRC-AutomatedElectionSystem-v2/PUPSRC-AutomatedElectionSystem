@@ -1,4 +1,16 @@
-import { initializeConfigurationJS as ConfigJS, EventListenerUtils as EventUtils } from './configuration.js';
+import {
+    initializeConfigurationJS as ConfigJS,
+    EventListenerUtils as EventUtils,
+    IsScheduleDone,
+    NotificationManager,
+    ElectionSchedule,
+    registrationNotifHandler,
+    electionNotifHandler,
+    checkNotificationCookie,
+    setNotificationCookie,
+    createToast,
+
+} from './configuration.js';
 import InputValidator from './input-validator.js';
 
 /**
@@ -30,7 +42,6 @@ ConfigPage.removeEventListeners = function () {
 ConfigPage.removeEventListeners();
 ConfigPage = null;
 ConfigPage = {};
-
 
 /**
  * A Map that stores event listeners associated with elements.
@@ -250,13 +261,41 @@ ConfigPage.isoDateConverter = function (date) {
     return `${year}-${month}-${day}`;
 }
 
+
+ConfigPage.registrationNotifHandlerStart = function (notifId) {
+    let pushId = registrationNotifHandler(notifId, ConfigPage.toastContainer, true);
+};
+
+ConfigPage.registrationNotifHandlerEnd = function (notifId) {
+    let pushId = registrationNotifHandler(notifId, ConfigPage.toastContainer, false);
+
+};
+
 ConfigPage.setFetchedSchedule = function (data, isUTC = false) {
     ConfigPage.datePickerStart.setAttribute('min', ConfigPage.TODAY);
     ConfigPage.datePickerEnd.setAttribute('min', ConfigPage.TODAY);
 
     let scheduleSettings = document.querySelector(`.schedule.card-box`);
 
-    if (data[0]) {
+    const schedule = new IsScheduleDone(data[0].registrationEnd);
+    const isDone = schedule.check();
+
+    if (data[0] && isDone) {
+
+        if (!this.registrationStartNotif) {
+            this.registrationStartNotif = new NotificationManager(data[0].registrationStart, ConfigPage.registrationNotifHandlerStart);
+            this.registrationStartNotif.push();
+        } else {
+            this.registrationStartNotif.update(data[0].registrationStart);
+        }
+
+        if (!this.registrationEndNotif) {
+            this.registrationEndNotif = new NotificationManager(data[0].registrationEnd, ConfigPage.registrationNotifHandlerEnd);
+            this.registrationEndNotif.push();
+        } else {
+
+            this.registrationEndNotif.update(data[0].registrationEnd);
+        }
 
         const { startDateTime, endDateTime, startDate, startTime, endDate, endTime } = ConfigPage.processDateTime(data, isUTC);
 
@@ -301,6 +340,8 @@ ConfigPage.setFetchedSchedule = function (data, isUTC = false) {
 
     }
 }
+
+
 
 ConfigPage.processDateTime = function (data, isUTC = false) {
     let startDateTime;
@@ -449,7 +490,7 @@ ConfigPage.postData = function (post_data) {
 ConfigPage.handleResponseStatus = function (statusCode, data) {
     if (statusCode >= 400) {
         // if (statusCode == 401) {
-        ConfigPage.createToast(ConfigPage.errorDictionary[data.message] || data.message, 'danger');
+        createToast(ConfigPage.errorDictionary[data.message] || data.message, 'danger', ConfigPage.toastContainer);
     }
 }
 
@@ -489,6 +530,10 @@ Object.defineProperty(ConfigPage, 'CSRF_TOKEN', {
 
 console.log(ConfigPage.CSRF_TOKEN);
 ConfigPage.fetchData({ csrf: ConfigPage.CSRF_TOKEN });
+
+ConfigPage.toastContainer = document.querySelector('.toast-container-unstacked');
+let electionWatcher = new ElectionSchedule({ csrf: ConfigPage.CSRF_TOKEN }, ConfigPage.toastContainer);
+electionWatcher.fetch();
 
 ConfigPage.startDateValidation = {
     clear_invalid: false,
@@ -767,50 +812,6 @@ ConfigPage.showDiscardModal = async function () {
 ConfigPage.addEventListenerAndStore(ConfigPage.submitBtn, 'click', ConfigPage.handleSetSchedule);
 ConfigPage.addEventListenerAndStore(ConfigPage.cancelBtn, 'click', ConfigPage.handleDiscardSchedule);
 
-
-
-
-
-ConfigPage.toastContainer = document.querySelector('.toast-container-unstacked');
-
-ConfigPage.createToast = function (message, type) {
-    const toast = document.createElement('div');
-    toast.classList.add('toast');
-
-    const toastBody = document.createElement('div');
-    toastBody.classList.add('toast-body', `text-bg-${type}`);
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('toast-content');
-    messageDiv.textContent = message;
-    toastBody.prepend(messageDiv);
-
-
-    const closeContainer = document.createElement('div');
-    const closeButton = document.createElement('button');
-    closeButton.classList.add('btn-close');
-    closeButton.setAttribute('type', 'button');
-    closeButton.setAttribute('data-bs-dismiss', 'toast');
-    closeButton.setAttribute('aria-label', 'Close');
-
-    closeContainer.appendChild(closeButton);
-    toastBody.appendChild(closeContainer);
-    toast.appendChild(toastBody);
-
-    ConfigPage.toastContainer.appendChild(toast);
-
-    toast.addEventListener('hidden.bs.toast', () => {
-        toast.remove();
-    });
-
-    let toastElList = [].slice.call(
-        document.querySelectorAll('.toast'))
-    let toastList = toastElList.map(function (toastEl) {
-        return new bootstrap.Toast(toastEl)
-    })
-
-    toastList.forEach(toast => toast.hide())
-    new bootstrap.Toast(toast).show();
-}
 
 ConfigPage.setToViewOnlyState = function () {
 

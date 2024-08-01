@@ -148,7 +148,7 @@ if (isset($_SESSION['voter_id'])) {
                 <div class="container mb-5 ps-5 breadcrumbs-cont">
                     <div class="row justify-content-center">
                         <div class="col-md-11">
-                            <div class="breadcrumbs d-flex">
+                            <div class="breadcrumbs d-flex flex-wrap justify-content-center justify-content-md-start">
                                 <button type="button" class="btn-white d-flex align-items-center spacing-8 fs-8">
                                     <i data-feather="users" class="white im-cust feather-2xl"></i> <span class = "hide-text">CANDIDATES</span>
                                 </button>
@@ -445,7 +445,7 @@ if (isset($_SESSION['voter_id'])) {
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
-            <script src="scripts/script.js"></script>
+            <script type="module" src="scripts/script.js"></script>
             <script src="scripts/feather.js"></script>
             <script src="scripts/edit-candidate-form-validation.js"></script>
 

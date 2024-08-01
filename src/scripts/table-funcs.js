@@ -41,14 +41,14 @@ function loadPage(
           displayNoSearchResults("verifiedTable", "verified-pagination");
         }
 
-      // For complete empty state after deletion
+        // For complete empty state after deletion
       } else if (voters.length === 0) {
         displayEmptyState(
           tableId,
           tableId === "pendingTable" ? "pending" : "verified"
         );
-      
-      // Continues if there are datas still
+
+        // Continues if there are datas still
       } else {
         voters.forEach((voter) => {
           const date = new Date(voter.acc_created);
@@ -62,7 +62,7 @@ function loadPage(
 
           // Pending Table
           if (tableId === "pendingTable") {
-            $("#pagination").closest('div').show();
+            $("#pagination").closest("div").show();
             const isChecked = selectedPendingIds.includes(voter.voter_id)
               ? "checked"
               : "";
@@ -75,17 +75,18 @@ function loadPage(
                       voter.voter_id
                     }" ${isChecked}>
                   </td>
-                  <td class="col-md-5 text-center text-truncate">
+                  <td class="col-md-3 text-center text-truncate">
                     <a href="validate-voter.php?voter_id=${voter.voter_id}">${
               voter.email
             }</a>
                   </td>
-                  <td class="col-md-6 text-center">${formattedDate}</td>
+                  <td class="col-md-3 text-center">${voter.student_id}</td>
+                  <td class="col-md-3 text-center">${formattedDate}</td>
                 </tr>`;
-          
-          // Verified Table
+
+            // Verified Table
           } else if (tableId === "verifiedTable") {
-            $("#verified-pagination").closest('div').show();
+            $("#verified-pagination").closest("div").show();
             const isChecked = selectedVerifiedIds.includes(voter.voter_id)
               ? "checked"
               : "";
@@ -112,12 +113,7 @@ function loadPage(
               voter.email
             }</a>
                   </td>
-                  <td class="col-md-3 text-center">
-                    <span class="status-background active-status">${
-                      voter.account_status.charAt(0).toUpperCase() +
-                      voter.account_status.slice(1)
-                    }</span>
-                  </td>
+                  <td class="col-md-3 text-center">${voter.student_id}</td>
                   <td class="col-md-3 text-center">${formattedUpdatedDate}</td>
                 </tr>`;
           }
@@ -136,7 +132,15 @@ function loadPage(
         });
       }
 
-      generatePagination( paginationId, totalPages, page, tableId, ajaxUrl, searchTerm, sort);
+      generatePagination(
+        paginationId,
+        totalPages,
+        page,
+        tableId,
+        ajaxUrl,
+        searchTerm,
+        sort
+      );
     },
     error: function (error) {
       console.error(
@@ -147,8 +151,6 @@ function loadPage(
   });
 }
 // -- FUNCTION: Loading of the table (shows the data)
-
-
 
 // ++ FUNCTION: Rechecking of Checkboxes
 function recheckCheckboxes(tableId) {
@@ -169,8 +171,6 @@ function recheckCheckboxes(tableId) {
   }
 }
 // -- FUNCTION: Rechecking of Checkboxes
-
-
 
 // ++ FUNCTION: To generate the pagination
 function generatePagination(
@@ -253,39 +253,85 @@ function generatePagination(
 
 // -- FUNCTION: To generate the pagination
 
-
-
 // ++ RENDERING/SORTING OF THE PAGES
 $(document).ready(function () {
   const currentPage = 1;
   let currentSortPending = "newest";
   let currentSortVerified = "newest";
 
-// FUNCTION: Load data
-function loadData(tableId, paginationId, url, currentPage, searchTerm, currentSort) {
-  loadPage(tableId, paginationId, url, currentPage, searchTerm, currentSort);
-}
+  // FUNCTION: Load data
+  function loadData(
+    tableId,
+    paginationId,
+    url,
+    currentPage,
+    searchTerm,
+    currentSort
+  ) {
+    loadPage(tableId, paginationId, url, currentPage, searchTerm, currentSort);
+  }
 
-// FUNCTION: Handle search events
-function handleSearch(inputId, tableId, paginationId, fetchUrl, currentPage, currentSort) {
-  $(inputId).on("input", function () {
-    const searchTerm = $(this).val();
-    if (searchTerm != "") {
-      loadData(tableId, paginationId, fetchUrl, currentPage, searchTerm, currentSort);
-    } else {
-      loadData(tableId, paginationId, fetchUrl, currentPage, "", currentSort);
-    }
-  });
-}
+  // FUNCTION: Handle search events
+  function handleSearch(
+    inputId,
+    tableId,
+    paginationId,
+    fetchUrl,
+    currentPage,
+    currentSort
+  ) {
+    $(inputId).on("input", function () {
+      const searchTerm = $(this).val();
+      if (searchTerm != "") {
+        loadData(
+          tableId,
+          paginationId,
+          fetchUrl,
+          currentPage,
+          searchTerm,
+          currentSort
+        );
+      } else {
+        loadData(tableId, paginationId, fetchUrl, currentPage, "", currentSort);
+      }
+    });
+  }
 
-// Load initial tables
-loadData("pendingTable", "pagination", "submission_handlers/fetch-pending.php", currentPage, "", currentSortPending);
-loadData("verifiedTable", "verified-pagination", "submission_handlers/fetch-verified.php", currentPage, "", currentSortVerified);
+  // Load initial tables
+  loadData(
+    "pendingTable",
+    "pagination",
+    "submission_handlers/fetch-pending.php",
+    currentPage,
+    "",
+    currentSortPending
+  );
+  loadData(
+    "verifiedTable",
+    "verified-pagination",
+    "submission_handlers/fetch-verified.php",
+    currentPage,
+    "",
+    currentSortVerified
+  );
 
-// Handle searches
-handleSearch("#searchPending", "pendingTable", "pagination", "submission_handlers/search-pending.php", currentPage, currentSortPending);
-handleSearch("#searchVerified", "verifiedTable", "verified-pagination", "submission_handlers/search-verified.php", currentPage, currentSortVerified);
-
+  // Handle searches
+  handleSearch(
+    "#searchPending",
+    "pendingTable",
+    "pagination",
+    "submission_handlers/search-pending.php",
+    currentPage,
+    currentSortPending
+  );
+  handleSearch(
+    "#searchVerified",
+    "verifiedTable",
+    "verified-pagination",
+    "submission_handlers/search-verified.php",
+    currentPage,
+    currentSortVerified
+  );
 
   // Sort By
   $(".sort-by .dropdown-item").click(function () {
@@ -317,63 +363,88 @@ handleSearch("#searchVerified", "verifiedTable", "verified-pagination", "submiss
     loadPage(tableId, paginationId, ajaxUrl, currentPage, "", sort);
   });
 
-// -- RENDERING/SORTING OF THE PAGES
+  // -- RENDERING/SORTING OF THE PAGES
 
-
-
-// ++ DELETE TOGGLE
+  // ++ DELETE TOGGLE
   $(document).ready(function () {
-  
     function toggleDeleteState(tableType) {
-      if (tableType === 'pending') {
+      if (tableType === "pending") {
         checkPendingCheckboxes();
       } else {
         checkVerifiedCheckboxes();
       }
-  
-      var checkBoxDeleteClass = (tableType === 'pending') ? ".checkbox-delete-pending" : ".checkbox-delete-verified";
-      var checkBoxAllClass = (tableType === 'pending') ? ".checkbox-all-pending" : ".checkbox-all-verified";
-      var tableId = (tableType === 'pending') ? "#pendingTable" : "#verifiedTable";
-      var cancelBtnClass = (tableType === 'pending') ? ".cancel-pending" : ".cancel-verified";
-      var finalDeleteBtnClass = (tableType === 'pending') ? ".final-delete-btn-pending" : ".final-delete-btn-verified";
-  
+
+      var checkBoxDeleteClass =
+        tableType === "pending"
+          ? ".checkbox-delete-pending"
+          : ".checkbox-delete-verified";
+      var checkBoxAllClass =
+        tableType === "pending"
+          ? ".checkbox-all-pending"
+          : ".checkbox-all-verified";
+      var tableId =
+        tableType === "pending" ? "#pendingTable" : "#verifiedTable";
+      var cancelBtnClass =
+        tableType === "pending" ? ".cancel-pending" : ".cancel-verified";
+      var finalDeleteBtnClass =
+        tableType === "pending"
+          ? ".final-delete-btn-pending"
+          : ".final-delete-btn-verified";
+
       // Toggle visibility and classes for table headers
       $(`${checkBoxDeleteClass}, ${checkBoxAllClass}`).removeClass("d-none");
-      $(`${tableId} th.checkbox-${tableType}`).removeClass("d-none").addClass("tl-left");
+      $(`${tableId} th.checkbox-${tableType}`)
+        .removeClass("d-none")
+        .addClass("tl-left");
       $(`${tableId} th.del-center`).removeClass("tl-left");
       $(`${finalDeleteBtnClass}`).toggleClass("d-none");
       $(`${cancelBtnClass}`).toggleClass("d-none");
-  
+
       // Disable the delete button and enable the cancel button
-      $(`.${tableType}-delete-btn`).prop("disabled", true).addClass("light-gray");
+      $(`.${tableType}-delete-btn`)
+        .prop("disabled", true)
+        .addClass("light-gray");
       $(`${cancelBtnClass}`).prop("disabled", false);
     }
-  
+
     function cancelDelete(tableType) {
-      var checkBoxDeleteClass = (tableType === 'pending') ? ".checkbox-delete-pending" : ".checkbox-delete-verified";
-      var checkBoxAllClass = (tableType === 'pending') ? ".checkbox-all-pending" : ".checkbox-all-verified";
-      var tableId = (tableType === 'pending') ? "#pendingTable" : "#verifiedTable";
-      var cancelBtnClass = (tableType === 'pending') ? ".cancel-pending" : ".cancel-verified";
-      var finalDeleteBtnClass = (tableType === 'pending') ? ".final-delete-btn-pending" : ".final-delete-btn-verified";
-  
+      var checkBoxDeleteClass =
+        tableType === "pending"
+          ? ".checkbox-delete-pending"
+          : ".checkbox-delete-verified";
+      var checkBoxAllClass =
+        tableType === "pending"
+          ? ".checkbox-all-pending"
+          : ".checkbox-all-verified";
+      var tableId =
+        tableType === "pending" ? "#pendingTable" : "#verifiedTable";
+      var cancelBtnClass =
+        tableType === "pending" ? ".cancel-pending" : ".cancel-verified";
+      var finalDeleteBtnClass =
+        tableType === "pending"
+          ? ".final-delete-btn-pending"
+          : ".final-delete-btn-verified";
+
       // Toggle visibility and classes for table headers back
       $(`${checkBoxDeleteClass}, ${checkBoxAllClass}`).addClass("d-none");
       $(`${tableId} th.checkbox-${tableType}`).addClass("d-none");
       $(`${tableId} th.del-center`).addClass("tl-left");
       $(`${finalDeleteBtnClass}`).toggleClass("d-none");
       $(`${cancelBtnClass}`).toggleClass("d-none");
-  
+
       // Disable the cancel button and enable the delete button
       $(`${cancelBtnClass}`).prop("disabled", true);
-      $(`.${tableType}-delete-btn`).prop("disabled", false).removeClass("light-gray");
-  
+      $(`.${tableType}-delete-btn`)
+        .prop("disabled", false)
+        .removeClass("light-gray");
+
       // Uncheck all checkboxes
       $(`${tableId} .${tableType}Checkbox`).prop("checked", false);
       // Uncheck the "Select All" checkbox
       $(`#selectAll${capitalizeFirstLetter(tableType)}`).prop("checked", false);
-  
+
       // Clear selected IDs and reload appropriate table
-      if (tableType === 'pending') {
+      if (tableType === "pending") {
         selectedPendingIds = [];
         loadPage(
           "verifiedTable",
@@ -393,42 +464,40 @@ handleSearch("#searchVerified", "verifiedTable", "verified-pagination", "submiss
         checkVerifiedCheckboxes();
       }
     }
-  
+
     function capitalizeFirstLetter(string) {
       return string.charAt(0).toUpperCase() + string.slice(1);
     }
-  
+
     // On Click Events Toggles
     $(".pending-delete-btn").click(function () {
       deletePendingState = true;
-      toggleDeleteState('pending');
+      toggleDeleteState("pending");
     });
-  
+
     $(".cancel-pending").click(function () {
       deletePendingState = false;
-      cancelDelete('pending');
+      cancelDelete("pending");
     });
-  
+
     $(".verified-delete-btn").click(function () {
       deleteVerifiedState = true;
-      toggleDeleteState('verified');
+      toggleDeleteState("verified");
     });
-  
+
     $(".cancel-verified").click(function () {
       deleteVerifiedState = false;
-      cancelDelete('verified');
+      cancelDelete("verified");
     });
-  
+
     // Initially disable cancel buttons
     $(".cancel-pending").prop("disabled", true);
     $(".cancel-verified").prop("disabled", true);
   });
-  
-// -- DELETE TOGGLE
 
+  // -- DELETE TOGGLE
 
-
-// ++ SELECTING CHECKBOXES
+  // ++ SELECTING CHECKBOXES
   $("#selectAllPending").click(function () {
     $(".pendingCheckbox").prop("checked", this.checked);
     checkPendingCheckboxes();
@@ -446,11 +515,9 @@ handleSearch("#searchVerified", "verifiedTable", "verified-pagination", "submiss
   $("#verifiedTable").on("change", ".verifiedCheckbox", function () {
     checkVerifiedCheckboxes();
   });
-// -- END OF SELECTING CHECKBOXES
+  // -- END OF SELECTING CHECKBOXES
 
-
-
-// ++ CHECKBOX EMPTY OR NOT CHECKING
+  // ++ CHECKBOX EMPTY OR NOT CHECKING
   function checkPendingCheckboxes() {
     const isAnyChecked = $(".pendingCheckbox:checked").length > 0;
     const areAnyAvailable = $(".pendingCheckbox").length > 0;
@@ -488,20 +555,21 @@ handleSearch("#searchVerified", "verifiedTable", "verified-pagination", "submiss
   }
   // -- CHECKBOX EMPTY OR NOT CHECKING
 
-
-
   // ++ DELETION/MOVING TO TRASHBIN
   $("#deleteSelectedPending, #deleteSelectedVerified").click(function () {
-    const tableId = $(this).attr("id") === "deleteSelectedPending" ? "pendingTable" : "verifiedTable";
+    const tableId =
+      $(this).attr("id") === "deleteSelectedPending"
+        ? "pendingTable"
+        : "verifiedTable";
     const selectedIds = getSelectedIds(tableId);
-  
+
     if (selectedIds.length > 0) {
       showModalAndConfirmDeletion(tableId, selectedIds);
     } else {
       alert("Please select at least one record to delete.");
     }
   });
-  
+
   function getSelectedIds(tableId) {
     const selectedIds = [];
     $(`#${tableId} input[type=checkbox]:checked`).each(function () {
@@ -509,7 +577,7 @@ handleSearch("#searchVerified", "verifiedTable", "verified-pagination", "submiss
     });
     return selectedIds;
   }
-  
+
   function showModalAndConfirmDeletion(tableId, selectedIds) {
     $("#rejectModal").modal("show");
     $("#confirm-move")
@@ -519,7 +587,7 @@ handleSearch("#searchVerified", "verifiedTable", "verified-pagination", "submiss
         performDeletion(tableId, selectedIds);
       });
   }
-  
+
   function performDeletion(tableId, selectedIds) {
     $.ajax({
       url: "submission_handlers/move-trashbin-accs.php",
@@ -539,18 +607,18 @@ handleSearch("#searchVerified", "verifiedTable", "verified-pagination", "submiss
       },
     });
   }
-  
+
   function handleSuccessfulDeletion(tableId) {
     $("#rejectModal").modal("hide");
     $("#trashbinMoveDone").modal("show");
-  
+
     if (tableId === "pendingTable") {
       updatePendingTableState();
     } else {
       updateVerifiedTableState();
     }
   }
-  
+
   function updatePendingTableState() {
     deletePendingState = false;
     $(".cancel-pending").addClass("d-none");
@@ -560,7 +628,7 @@ handleSearch("#searchVerified", "verifiedTable", "verified-pagination", "submiss
     $("#selectAllPending").closest("th").addClass("d-none");
     $(".pending-delete-btn").prop("disabled", false).removeClass("light-gray");
   }
-  
+
   function updateVerifiedTableState() {
     deleteVerifiedState = false;
     $(".cancel-verified").addClass("d-none");
@@ -570,21 +638,50 @@ handleSearch("#searchVerified", "verifiedTable", "verified-pagination", "submiss
     $("#selectAllVerified").closest("th").addClass("d-none");
     $(".verified-delete-btn").prop("disabled", false).removeClass("light-gray");
   }
-  
+
   function reloadPage(tableId) {
-    const ajaxUrl = tableId === "pendingTable" ? "submission_handlers/fetch-pending.php" : "submission_handlers/fetch-verified.php";
-    const paginationId = tableId === "pendingTable" ? "pagination" : "verified-pagination";
-  
+    const ajaxUrl =
+      tableId === "pendingTable"
+        ? "submission_handlers/fetch-pending.php"
+        : "submission_handlers/fetch-verified.php";
+    const paginationId =
+      tableId === "pendingTable" ? "pagination" : "verified-pagination";
+
     loadPage(tableId, paginationId, ajaxUrl, currentPage);
-  
+
     if (voters.length === 0) {
-      displayEmptyState(tableId, tableId === "pendingTable" ? "pending" : "verified");
+      displayEmptyState(
+        tableId,
+        tableId === "pendingTable" ? "pending" : "verified"
+      );
     }
-  }  
+  }
 });
 // -- DELETION/MOVING TO TRRASHBIN
 
+// ++ DOWNLOAD EXCEL FROM VERIFIED TABLE
+function downloadExcel() {
+  fetch(`includes/voters-xls.php`)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.error) {
+        console.error("Error:", data.error);
+        return;
+      }
 
+      // Create a new workbook and a worksheet
+      const wb = XLSX.utils.book_new();
+      const ws = XLSX.utils.json_to_sheet(data);
+
+      // Append the worksheet to the workbook
+      XLSX.utils.book_append_sheet(wb, ws, "Voters Masterlist");
+
+      // Generate Excel file and trigger download
+      XLSX.writeFile(wb, `verified_voters_masterlist.xlsx`);
+    })
+    .catch((error) => console.error("Error fetching data:", error));
+}
+// -- DOWNLOAD EXCEL FROM VERIFIED TABLE
 
 // ++ MISC FUNCTIONS
 
@@ -594,7 +691,7 @@ function closeModal(modal_name) {
 
 function displayNoSearchResults(tableId, paginationName) {
   console.log(paginationName);
-  $(`#${paginationName}`).closest('div').hide(); // Assuming pagination is wrapped in a div
+  $(`#${paginationName}`).closest("div").hide(); // Assuming pagination is wrapped in a div
   $(`#${tableId} tbody`).html(`
     <td colspan="3" class="pt-5">
       <div class="pt-4 col-md-12 no-registration text-center">
@@ -651,5 +748,56 @@ function displayEmptyState(tableId, type) {
   }
   tbody.append(emptyStateHTML);
 }
+
+// ++ Search Validation
+function sanitizeInput(value) {
+  value = value.replace(/[^a-zA-Z\s]/g, "");
+  value = value.replace(/\s{2,}/g, " ");
+
+  return value;
+}
+
+function handleInput(event) {
+  const input = event.target;
+  let value = input.value;
+
+  const sanitizedValue = sanitizeInput(value);
+
+  if (sanitizedValue !== value) {
+    input.value = sanitizedValue;
+  }
+}
+
+/**
+ * Utilized observer because of the changing
+ * DOM during tables' empty states.
+ */
+
+function attachEventListeners() {
+  const inputs = document.querySelectorAll(".search-input");
+  inputs.forEach((input) => input.addEventListener("input", handleInput));
+}
+
+// Consistent container
+const searchContainer = document.getElementById("all-tables-container");
+
+if (searchContainer) {
+  // Observe changes to the container that contains the search inputs
+  const observer = new MutationObserver((mutationsList) => {
+    for (const mutation of mutationsList) {
+      if (mutation.type === "childList") {
+        attachEventListeners(); // Attach event listeners to new elements
+      }
+    }
+  });
+
+  // Start observing the target search container node for configured mutations
+  observer.observe(searchContainer, { childList: true, subtree: true });
+
+  attachEventListeners();
+} else {
+  console.error("Search container element not found.");
+}
+// -- Search Validation
 
 // -- MISC FUNCTIONS

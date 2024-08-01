@@ -1,4 +1,15 @@
-import { initializeConfigurationJS as ConfigJS } from './configuration.js';
+import {
+    initializeConfigurationJS as ConfigJS,
+    IsScheduleDone,
+    NotificationManager,
+    ElectionSchedule,
+    RegistrationSchedule,
+    registrationNotifHandler,
+    electionNotifHandler,
+    checkNotificationCookie,
+    setNotificationCookie,
+    createToast,
+} from './configuration.js';
 import InputValidator from './input-validator.js';
 
 
@@ -182,9 +193,9 @@ ConfigPage.eventListeners = new Map();
  * @param {function} handler - The function to be executed when the event is triggered.
  */
 ConfigPage.addEventListenerAndStore = function (element, event, handler) {
-    element.addEventListener(event, handler);
     const key = `${element}-${event}`;
     ConfigPage.eventListeners.set(key, handler);
+    element.addEventListener(event, handler);
 }
 
 /**
@@ -436,7 +447,7 @@ ConfigPage.TableHandler = class {
             if (ConfigPage.DELETE_BUTTON && ConfigPage.DELETE_LABEL) {
                 this.handleDeleteLabel(false, SELECTED_COUNT);
                 ConfigPage.delEventListener(ConfigPage.DELETE_BUTTON, 'click');
-                ConfigPage.addEventListenerAndStore(ConfigPage.DELETE_BUTTON, 'click', this.handleDeleteBtn.bind(this));
+                ConfigPage.addEventListenerAndStore(ConfigPage.DELETE_BUTTON, 'click', ConfigPage.handleDeleteBtn);
             }
             ConfigPage.DELETE_BUTTON.disabled = false;
         } else {
@@ -493,7 +504,7 @@ ConfigPage.TableHandler = class {
                             const { data, success, error } = result;
 
                             if (success) {
-                                ConfigPage.handleResponseStatus(200, data, 'FAQ updated successfuly.');
+                                ConfigPage.handleResponseStatus(200, data, 'FAQ updated successfully.');
                                 // let processedData = ConfigPage.processData(data);
                                 // console.log(processedData)
                                 // this.updateData(processedData);
@@ -572,49 +583,6 @@ ConfigPage.TableHandler = class {
         });
 
         return data;
-    }
-
-    static async handleDeleteBtn() {
-        ConfigPage.DELETE_BUTTON.disabled = true;
-
-        if (await
-            ConfigPage.showConfirmModal(ConfigPage.ConfirmDeleteModal, ConfigPage.ConfirmModalInstance, 'confirmDeleteInput', 'Confirm Delete', true)
-            == 'true') {
-            const selectedData = document.querySelectorAll(`table tbody tr.selected`);
-            const deleteData = this.extractData(selectedData);
-
-            ConfigPage.postData(deleteData, 'DELETE')
-                .then(function (result) {
-                    try {
-                        const { data, success, error } = result;
-
-                        if (success) {
-                            console.log(data)
-                            let processedData = ConfigPage.processData(data);
-                            console.log(processedData)
-                            this.deleteEntry(processedData)
-                                .then(() => {
-                                    // ConfigPage.handleSucessResponse();
-
-                                    ConfigPage.handleResponseStatus(200, data, 'FAQ deleted successfuly.');
-                                })
-                                .catch((error) => {
-                                    console.error("Error inserting data:", error);
-                                });
-
-                        } else if (error.data) {
-                            // error.data.forEach(item => {
-
-
-                            // });
-                        }
-                    }
-                    catch (e) {
-                        console.error('POST request failed:', e);
-                    }
-                }.bind(this))
-        }
-
     }
 
     static deleteEntry(DATA, isdraw = false) {
@@ -811,17 +779,61 @@ ConfigPage.handleModalDispose = function () {
     ConfigPage.modalInstance.instance.dispose();
 }
 
+ConfigPage.handleDeleteBtn = async function () {
+    ConfigPage.DELETE_BUTTON.disabled = true;
+
+    if (await
+        ConfigPage.showConfirmModal(ConfigPage.ConfirmDeleteModal, ConfigPage.ConfirmModalInstance, 'confirmDeleteInput', 'Confirm Delete', true)
+        == 'true') {
+        const selectedData = document.querySelectorAll(`table tbody tr.selected`);
+        const deleteData = ConfigPage.TableHandler.extractData(selectedData);
+
+        ConfigPage.postData(deleteData, 'DELETE')
+            .then(function (result) {
+                try {
+                    const { data, success, error } = result;
+
+                    if (success) {
+                        console.log(data)
+                        let processedData = ConfigPage.processData(data);
+                        console.log(processedData)
+                        ConfigPage.TableHandler.deleteEntry(processedData)
+                            .then(() => {
+                                // ConfigPage.handleSucessResponse();
+
+                                ConfigPage.handleResponseStatus(200, data, 'FAQ deleted successfully.');
+                            })
+                            .catch((error) => {
+                                console.error("Error inserting data:", error);
+                            });
+
+                    } else if (error.data) {
+                        // error.data.forEach(item => {
+
+
+                        // });
+                    }
+                }
+                catch (e) {
+                    console.error('POST request failed:', e);
+                }
+            })
+    }
+
+}
+
 ConfigPage.showConfirmModal = async function (modal, instanceRef, inputId = null, inputVal = null, isDisabled = false) {
     // https://stackoverflow.com/questions/65454144/javascript-await-bootstrap-modal-close-by-user
     instanceRef.instance = new bootstrap.Modal(modal);
     instanceRef.instance.show();
+    console.log('showConfirmModal');
 
     if (isDisabled) {
         ConfigPage.handleConfirmInput(modal, inputId, inputVal);
     }
 
-    modal.removeEventListener('hidden.bs.modal', ConfigPage.handleConfirmModalDispose)
-    modal.addEventListener('hidden.bs.modal', ConfigPage.handleConfirmModalDispose)
+    modal.removeEventListener('hidden.bs.modal', ConfigPage.handleConfirmModalDispose);
+    modal.addEventListener('hidden.bs.modal', ConfigPage.handleConfirmModalDispose);
 
     return new Promise(resolve => {
 
@@ -870,47 +882,22 @@ ConfigPage.handleConfirmInput = function (modal, inputId, inputVal) {
 
 ConfigPage.toastContainer = document.querySelector('.toast-container');
 
+ConfigPage.electionWatcher = new ElectionSchedule({ csrf: ConfigPage.CSRF_TOKEN }, ConfigPage.toastContainer);
+ConfigPage.registrationWatcher = new RegistrationSchedule({ csrf: ConfigPage.CSRF_TOKEN }, ConfigPage.toastContainer);
+
+ConfigPage.electionWatcher.fetch();
+ConfigPage.registrationWatcher.fetch();
+
 ConfigPage.handleResponseStatus = function (statusCode, data, message = '') {
     if (statusCode >= 400) {
         // if (statusCode == 401) {
-        ConfigPage.createToast(ConfigPage.errorDictionary[data.message] || data.message, 'danger');
+        createToast(ConfigPage.errorDictionary[data.message] || data.message, 'danger', ConfigPage.toastContainer);
     }
     else if (statusCode == 200) {
-        ConfigPage.createToast(message, 'success');
+        createToast(message, 'success', ConfigPage.toastContainer);
     }
 }
 
-ConfigPage.createToast = function (message, type) {
-    const toast = document.createElement('div');
-    toast.classList.add('toast');
-
-    const toastBody = document.createElement('div');
-    toastBody.classList.add('toast-body', `text-bg-${type}`);
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('toast-content');
-    messageDiv.textContent = message;
-    toastBody.prepend(messageDiv);
-
-
-    const closeContainer = document.createElement('div');
-    const closeButton = document.createElement('button');
-    closeButton.classList.add('btn-close');
-    closeButton.setAttribute('type', 'button');
-    closeButton.setAttribute('data-bs-dismiss', 'toast');
-    closeButton.setAttribute('aria-label', 'Close');
-
-    closeContainer.appendChild(closeButton);
-    toastBody.appendChild(closeContainer);
-    toast.appendChild(toastBody);
-
-    ConfigPage.toastContainer.appendChild(toast);
-
-    toast.addEventListener('hidden.bs.toast', () => {
-        toast.remove();
-    });
-
-    new bootstrap.Toast(toast).show();
-}
 
 ConfigPage.FindLastSequence = function (table_id = 'config-table') {
     try {
@@ -1106,11 +1093,36 @@ ConfigPage.handleDescValidate = function (delta, old, source) {
 
 }
 
+ConfigPage.EditorModalELement;
+ConfigPage.EditorModal_Instance;
+
 ConfigPage.EditorModal = class {
-    static modalElement = document.querySelector('.modal:has(.modal-header.editor)');
+    static modalElement = ConfigPage.EditorModalELement = document.querySelector('.modal:has(.modal-header.editor)');
     static data;
     static mode;
     static modalInstance;
+    static formatButtons = [
+        { className: 'ql-bold', icon: 'bold' },
+        { className: 'ql-italic', icon: 'italic' },
+        { className: 'ql-underline', icon: 'underline' },
+        {
+            className: 'ql-list', value: 'ordered', svg: `<svg viewBox="0 0 18 18">
+                <line class="ql-stroke" x1="7" x2="15" y1="4" y2="4"></line>
+                <line class="ql-stroke" x1="7" x2="15" y1="9" y2="9"></line>
+                <line class="ql-stroke" x1="7" x2="15" y1="14" y2="14"></line><line class="ql-stroke ql-thin" x1="2.5" x2="4.5" y1="5.5" y2="5.5"></line>
+                <path class="ql-fill" d="M3.5,6A0.5,0.5,0,0,1,3,5.5V3.085l-0.276.138A0.5,0.5,0,0,1,2.053,3c-0.124-.247-0.023-0.324.224-0.447l1-.5A0.5,0.5,0,0,1,4,2.5v3A0.5,0.5,0,0,1,3.5,6Z"></path>
+                <path class="ql-stroke ql-thin" d="M4.5,10.5h-2c0-.234,1.85-1.076,1.85-2.234A0.959,0.959,0,0,0,2.5,8.156"></path><path class="ql-stroke ql-thin" d="M2.5,14.846a0.959,0.959,0,0,0,1.85-.109A0.7,0.7,0,0,0,3.75,14a0.688,0.688,0,0,0,.6-0.736,0.959,0.959,0,0,0-1.85-.109"></path>
+            </svg>` },
+        {
+            className: 'ql-list', value: 'bullet', svg: `<svg viewBox="0 0 18 18"><line class="ql-stroke" x1="6" x2="15" y1="4" y2="4"></line><line class="ql-stroke" x1="6" x2="15" y1="9" y2="9"></line><line class="ql-stroke" x1="6" x2="15" y1="14" y2="14"></line><line class="ql-stroke" x1="3" x2="3" y1="4" y2="4"></line><line class="ql-stroke" x1="3" x2="3" y1="9" y2="9"></line><line class="ql-stroke" x1="3" x2="3" y1="14" y2="14"></line></svg>`
+        },
+        { className: 'ql-link', icon: 'link-2' },
+        {
+            className: 'ql-clean', svg: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" id="format-clear">
+                                          <path fill="none" d="M0 0h24v24H0V0z" fill="currentColor"></path>
+                                          <path d="M20 8V5H6.39l3 3h1.83l-.55 1.28 2.09 2.1L14.21 8zM3.41 4.86L2 6.27l6.97 6.97L6.5 19h3l1.57-3.66L16.73 21l1.41-1.41z" fill="currentColor"></path>
+                                        </svg>` }
+    ];
 
     static show(data, isEdit, isAdd = false) {
         this.isEdit = isEdit;
@@ -1127,27 +1139,48 @@ ConfigPage.EditorModal = class {
 
         if (this.modalElement) {
 
-            this.modalInstance = new bootstrap.Modal(this.modalElement);
+            this.modalInstance = ConfigPage.EditorModal_Instance = new bootstrap.Modal(this.modalElement);
             this.modalInstance.show();
 
             ConfigPage.delEventListener(this.modalElement, 'close');
             ConfigPage.addEventListenerAndStore(this.modalElement, 'close', ConfigPage.TableHandler.deselectAll());
 
             this.modalElement.removeEventListener('hidden.bs.modal', event => {
-                this.modalInstance.dispose();
+                ConfigPage.EditorModal_Instance.dispose();
                 ConfigPage.TableHandler.deselectAll();
             }).bind(this)
             this.modalElement.addEventListener('hidden.bs.modal', event => {
-                this.modalInstance.dispose();
+                ConfigPage.EditorModal_Instance.dispose();
                 ConfigPage.TableHandler.deselectAll();
             }).bind(this)
         }
+    }
+
+    static createFormatBtn(toolbar) {
+        this.formatButtons.forEach(button => {
+            let btn = document.createElement('button');
+            btn.type = 'button'
+            btn.className = button.className;
+            if (button.value) {
+                btn.value = button?.value;
+            }
+            btn.setAttribute('tabindex', 0);
+            if (button.icon) {
+                let icon = document.createElement('i');
+                icon.setAttribute('data-feather', button.icon);
+                btn.appendChild(icon);
+            } else if (button.svg) {
+                btn.innerHTML = button.svg;
+            }
+            toolbar.appendChild(btn);
+        });
     }
 
     static #updateContent(data) {
         this.data = data;
 
         this.#setEditField();
+        feather.replace();
         let modalActionDiv = this.#initBtn();
         let modalBody = this.modalElement.querySelector('.modal-body');
         modalBody.append(modalActionDiv);
@@ -1231,6 +1264,10 @@ ConfigPage.EditorModal = class {
         let answerLabelContainer = document.createElement('div');
         answerLabelContainer.classList.add('label-container', 'form-content');
 
+        let formatToolbar = document.createElement('div');
+        formatToolbar.id = `format-toolbar`;
+        formatToolbar.className = 'ql-toolbar ql-snow';
+        this.createFormatBtn(formatToolbar);
 
         let answerTextArea = document.createElement('div');
         answerTextArea.maxLength = 500;
@@ -1275,6 +1312,7 @@ ConfigPage.EditorModal = class {
 
 
         answerLabelContainer.prepend(answerTextAreaLabel);
+        answerLabelContainer.append(formatToolbar);
         answerContainer.prepend(answerLabelContainer);
         answerContainer.append(answerTextArea);
         modalBody.insertBefore(answerAlert, modalBody.firstChild);
@@ -1286,7 +1324,7 @@ ConfigPage.EditorModal = class {
 
         ConfigPage.quill = new Quill('#faq-answer', {
             modules: {
-                toolbar: false
+                toolbar: '#format-toolbar'
             },
             placeholder: 'Type FAQ answer here.',
         });
@@ -1486,7 +1524,7 @@ ConfigPage.EditorModal = class {
                                 .then(() => {
                                     // ConfigPage.handleSucessResponse();
 
-                                    ConfigPage.handleResponseStatus(200, data, 'FAQ added successfuly.');
+                                    ConfigPage.handleResponseStatus(200, data, 'FAQ added successfully.');
                                 })
                                 .catch((error) => {
                                     console.error("Error inserting data:", error);
@@ -1500,7 +1538,7 @@ ConfigPage.EditorModal = class {
                                 .then(() => {
                                     // ConfigPage.handleSucessResponse();
 
-                                    ConfigPage.handleResponseStatus(200, data, 'FAQ updated successfuly.');
+                                    ConfigPage.handleResponseStatus(200, data, 'FAQ updated successfully.');
                                 })
                                 .catch((error) => {
                                     console.error("Error inserting data:", error);

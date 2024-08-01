@@ -1,8 +1,18 @@
-import { initializeConfigurationJS as ConfigJS } from './configuration.js';
+import {
+    initializeConfigurationJS as ConfigJS,
+    IsScheduleDone,
+    NotificationManager,
+    ElectionSchedule,
+    RegistrationSchedule,
+    registrationNotifHandler,
+    electionNotifHandler,
+    checkNotificationCookie,
+    setNotificationCookie,
+    createToast,
+} from './configuration.js';
 import ViewportDimensions from './viewport.js';
 import InputValidator from './input-validator.js';
 import setTextEditableWidth from './configuration-set-text-editable-width.js';
-
 
 /**
  * The ConfigPage object holds variables classes and function of the current page.
@@ -808,7 +818,17 @@ ConfigPage = {
     postData: function (post_data) {
         let url = 'src/includes/classes/config-candidate-pos-controller.php';
         let method = 'PUT';
+        post_data.csrf_token = `${ConfigPage.CSRF_TOKEN}`;
+        console.log('Type of post_data:', typeof post_data);
+        if (Array.isArray(post_data)) {
+            post_data.push({ csrf_token: `${ConfigPage.CSRF_TOKEN}` });
+        } else if (typeof post_data === 'object') {
+            post_data = { ...post_data, csrf_token: `${ConfigPage.CSRF_TOKEN}` };
+        }
+
+
         let json_data = JSON.stringify(post_data);
+        console.log("json_data after stringify:", json_data);
 
         if ('update_sequence' in post_data) {
             method = 'UPDATE';
@@ -817,7 +837,6 @@ ConfigPage = {
 
             method = 'DELETE';
         }
-
 
         return fetch(url, {
             method: method,
@@ -846,8 +865,10 @@ ConfigPage = {
             });
     },
 
-    fetchData: function () {
+    fetchData: function (requestData) {
         var url = 'src/includes/classes/config-candidate-pos-controller.php';
+        const queryParams = new URLSearchParams(requestData);
+        url = `${url}?${queryParams.toString()}`;
 
         fetch(url)
             .then(function (response) {
@@ -900,6 +921,14 @@ ConfigPage = {
     descriptionLimit: 1000,
 
 }
+
+Object.defineProperty(ConfigPage, 'CSRF_TOKEN', {
+    value: setCSRFToken(),
+    writable: false,
+    enumerable: false,
+    configurable: false
+});
+
 
 ConfigPage.handleDescValidate = function (delta, old, source) {
     if (source == 'user' || source == 'save-btn') {
@@ -1059,7 +1088,7 @@ ConfigPage.showConfirmModal = async function (modal, instanceRef, inputId = null
         $(modal).find('button').on('click', (event) => {
             const buttonValue = event.currentTarget.value;
             if (event.target && event.target.textContent.trim() === 'Go to Candidates') {
-                console.log('got to candidates');
+                console.log('go to candidates');
                 window.location.href = 'src/manage-candidate.php';
             }
 
@@ -1087,8 +1116,8 @@ ConfigPage.handleConfirmModalDispose = function () {
 ConfigPage.handleConfirmInput = function (modal, inputId, inputVal) {
     let inputElement = modal.querySelector(`#${inputId}`);
 
-    ConfigPage.delEventListener(inputElement, 'blur');
-    ConfigPage.addEventListenerAndStore(inputElement, 'blur', function () {
+    ConfigPage.delEventListener(inputElement, 'input');
+    ConfigPage.addEventListenerAndStore(inputElement, 'input', function () {
         if (inputElement.value == inputVal) {
             $(modal).find('.prompt-action .btn.primary').prop('disabled', false)
                 .val('true');
@@ -1632,52 +1661,28 @@ ConfigPage.positionInput;
 ConfigPage.saveFunc = () => ConfigPage.onSavePosition(ConfigPage.positionInput, ConfigPage.quill);
 ConfigPage.typingTimeout;
 
-ConfigPage.fetchData();
+ConfigPage.fetchData({ csrf: ConfigPage.CSRF_TOKEN });
 ConfigPage.startTableListener();
 
 ConfigPage.toastContainer = document.querySelector('.toast-container');
 
+ConfigPage.electionWatcher = new ElectionSchedule({ csrf: ConfigPage.CSRF_TOKEN }, ConfigPage.toastContainer);
+ConfigPage.registrationWatcher = new RegistrationSchedule({ csrf: ConfigPage.CSRF_TOKEN }, ConfigPage.toastContainer);
+
+ConfigPage.electionWatcher.fetch();
+ConfigPage.registrationWatcher.fetch();
+
 ConfigPage.handleResponseStatus = function (statusCode, data, message = '') {
     if (statusCode >= 400) {
         // if (statusCode == 401) {
-        ConfigPage.createToast(ConfigPage.errorDictionary[data.message] || data.message, 'danger');
+        createToast(ConfigPage.errorDictionary[data.message] || data.message, 'danger', ConfigPage.toastContainer);
     }
     else if (statusCode == 200) {
-        ConfigPage.createToast(message, 'success');
+        createToast(message, 'success', ConfigPage.toastContainer);
     }
 }
 
-ConfigPage.createToast = function (message, type) {
-    const toast = document.createElement('div');
-    toast.classList.add('toast');
 
-    const toastBody = document.createElement('div');
-    toastBody.classList.add('toast-body', `text-bg-${type}`);
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('toast-content');
-    messageDiv.textContent = message;
-    toastBody.prepend(messageDiv);
-
-
-    const closeContainer = document.createElement('div');
-    const closeButton = document.createElement('button');
-    closeButton.classList.add('btn-close');
-    closeButton.setAttribute('type', 'button');
-    closeButton.setAttribute('data-bs-dismiss', 'toast');
-    closeButton.setAttribute('aria-label', 'Close');
-
-    closeContainer.appendChild(closeButton);
-    toastBody.appendChild(closeContainer);
-    toast.appendChild(toastBody);
-
-    ConfigPage.toastContainer.appendChild(toast);
-
-    toast.addEventListener('hidden.bs.toast', () => {
-        toast.remove();
-    });
-
-    new bootstrap.Toast(toast).show();
-}
 
 ConfigPage.NativeModal = class {
     static modalElement = document.getElementsByClassName('modal-native');

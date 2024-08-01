@@ -3,19 +3,16 @@ include_once str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/file-utils.php');
 require_once FileUtils::normalizeFilePath(__DIR__ . '/../error-reporting.php');
 include_once FileUtils::normalizeFilePath(__DIR__ . '/../default-time-zone.php');
 include_once FileUtils::normalizeFilePath(__DIR__ . '/../components/email-template.php');
-include_once FileUtils::normalizeFilePath(__DIR__ . '/../organization-list.php');
 
 class EmailSender
 {
     use EmailTemplate;
     private $mail;
-    private $org_name;
     const MAX_RECEPIENT = 98;
 
     public function __construct($mail)
     {
         $this->mail = $mail;
-        $this->org_name = $_SESSION['organization'] ?? '';
     }
 
     public function sendApprovalEmail($recipientEmail)
@@ -79,10 +76,10 @@ class EmailSender
         return $this->sendEmail($recipientEmail, $subject, $mailBody);
     }
 
-    public function sendPasswordResetEmail($recipientEmail, $token)
+    public function sendPasswordResetEmail($recipientEmail, $token, $org_name)
     {
         $subject = 'iVOTE Password Reset Request';
-        $resetPasswordLink = "http://localhost/PUPSRC-AutomatedElectionSystem/src/reset-password.php?token=$token&orgName=$this->org_name";
+        $resetPasswordLink = "http://localhost/PUPSRC-AutomatedElectionSystem/src/reset-password.php?token=$token&orgName=$org_name";
         $mailBody = <<<EOT
         <!DOCTYPE html>
         <html lang="en">
@@ -143,16 +140,49 @@ class EmailSender
         return $this->sendEmail($recipientEmail, $subject, $mailBody);
     }
 
+
+    public function sendAccountSetupLink($recipientEmail, $verificationToken, $org_name) 
+    {
+        $subject = 'iVOTE Account Setup';
+        $setupLink = "http://localhost/PUPSRC-AutomatedElectionSystem/src/create-password.php?token=$verificationToken&orgName=$org_name";
+        $mailBody = <<<EOT
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>$subject</title>
+        </head>
+        <body">
+            <p>Dear Iskolar,</p>
+            <p>We have received a request to setup your account. To complete the process, 
+            please follow the instructions below:</p>
+            <ul style="padding-left: 20px;">
+                <li>Click on the following link to setup your account: <a href="$setupLink">Account Setup</a></li>
+                <li>If you are unable to click the link above, please copy and paste it into your browser's address bar.</li>
+                <li>Once the link opens, you will be prompted to enter a new password for your account. Please choose a strong and secure password to ensure the safety of your account.</li>
+            </ul>
+            <p>If you did not initiate this, please disregard this email.</p>
+            <p>Thank you for your attention to this matter.</p>
+            <p>Best regards,<br>iVOTE Team</p>
+        </body>
+        </html>
+        EOT;
+
+        return $this->sendEmail($recipientEmail, $subject, $mailBody);
+    }
+    
+
     public function sendElectionCloseEmail($bccs)
     {
-        global $org_acronyms;
+        global $org_acronym;
         global $org_personality;
-        global $org_social_media;
-        global $org_full_names;
+        global $facebook;
+        global $org_full_name;
 
-        $org_full_name = ucwords($org_full_names[$this->org_name]);
-        $socialMediaLink = $org_social_media[$this->org_name]['facebook'];
-        $org_acronym = strtoupper($org_acronyms[$this->org_name]);
+        $org_full_name = ucwords($org_full_name);
+        $org_acronym = strtoupper($org_acronym);
+
 
         $mainHeading = <<<HTML
             <span>$org_acronym</span> election is now closed.
@@ -161,12 +191,51 @@ class EmailSender
         $title = "$org_acronym election is now closed.";
 
         $messageTemplate = <<<HTML
-        <p>Heads up {$org_personality[$this->org_name]},</p>
+        <p>Heads up $org_personality,</p>
         <p>The election period for <b>$org_full_name</b> is now closed.</p>
-        <p>Updates for new officers will be posted on <a href="$socialMediaLink">$org_acronym</a> facebook page.</p>
+        <p>Updates for new officers will be posted on <a href="$facebook">$org_acronym</a> facebook page.</p>
     HTML;
 
         $subject = $org_acronym . " election is now closed.";
+
+        $mailBody = self::getEmailContent($messageTemplate, $title, $mainHeading);
+
+        return $this->prepMassEmailByBcc($subject, $mailBody, $bccs);
+    }
+
+
+    public function sendElectionStartEmail($bccs, $start_date, $end_date)
+    {
+        global $org_acronym;
+        global $org_personality;
+        global $org_full_name;
+
+        $org_full_name = ucwords($org_full_name);
+        $org_acronym = strtoupper($org_acronym);
+        $timestamp = strtotime($start_date);
+        $start_formatted = date("F j, g:i A", $timestamp);
+        $end_formatted = date("F j, Y , g:i A", strtotime($end_date));
+
+
+
+        $mainHeading = <<<HTML
+            <span>$org_personality</span> Get Ready to Vote!
+        HTML;
+
+        $title = $org_acronym . " election starts today";
+
+        $messageTemplate = <<<HTML
+        <p>Heads up $org_personality,</p>
+        <p>It&#39;s that time of year again! <b>$org_full_name</b> elections are just around the corner, and we need YOU to cast your vote.</p>
+        <p style="margin-bottom: calc(1rem + 1vh + 1vw);">
+            Voting Periods is on <b>$start_formatted</b> to  <b>$end_formatted</b>.
+        </p>
+        <a href="https://ivote-pupsrc.com" style="padding: 0.75rem 1.5rem;  padding: clamp(0.01rem, 0.005rem + 0.5vw + 0.75vh, 2rem) clamp(1.5rem, 0.75rem + 0.5vw + 0.75vh, 3rem); text-decoration: none; background-color: #4870c4; color: whitesmoke; font-weight: bolder;">
+            Cast your vote today
+        </a>
+        HTML;
+
+        $subject = $org_acronym . " election starts today";
 
         $mailBody = self::getEmailContent($messageTemplate, $title, $mainHeading);
 
@@ -194,7 +263,7 @@ class EmailSender
         $serializedEmails = [];
 
         try {
-            $this->mail->setFrom('chuvarwokahsgahnaquindhenpjheb@gmail.com', 'Test');
+            $this->mail->setFrom('ivotepupsrc@gmail.com', 'iVOTE');
             $this->mail->isHTML(true);
             $this->mail->Subject = $subject;
             $this->mail->Body = $body;
@@ -217,7 +286,8 @@ class EmailSender
             // print_r($serializedEmails);
             return $serializedEmails;
         } catch (Exception $e) {
-            return false;
+            // return $e;
+            echo $e;
         }
     }
 

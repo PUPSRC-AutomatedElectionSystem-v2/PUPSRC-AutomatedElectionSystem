@@ -39,7 +39,7 @@ main.main {
         .subtitle {
             visibility: hidden;
             margin-bottom: clamp(1rem, 0.5rem + 1dvw, 5rem);
-            border-bottom: 1px solid light-dark(var(--main-color), var(--main-color));
+            border-bottom: 1px solid light-dark(var(--main-color), color-mix(in srgb, var(--main-color), white 50%));
         }
 
         .all-day {
@@ -72,7 +72,10 @@ main.main {
             }
 
             input {
-                background: transparent;
+                // @media (prefers-color-scheme: light) {
+                //     background: transparent;
+                // }
+
                 border: none;
                 @extend %general-responsive-base-font-size;
 
@@ -81,7 +84,11 @@ main.main {
                 &:focus-visible::placeholder {
                     // font-size: clamp(0.85rem, 0.5rem + 0.5vw, 1.5vw);
                     font-size: inherit;
-                    background: unset;
+
+                    // @media (prefers-color-scheme: light) {
+                    //     background: unset;
+                    // }
+
                     color: light-dark(var(--main-black), var(--main-black));
                 }
 
@@ -140,7 +147,7 @@ main.main {
             width: 100%;
             justify-content: space-between;
             padding: clamp(1rem, 0.5rem + 1vw + 1dvh, 3rem) 0;
-            border-top: clamp(1px, 0.1vw, 3px) solid light-dark(var(--main-color), var(--main-color));
+            border-top: clamp(1px, 0.1vw, 3px) solid light-dark(var(--main-color), color-mix(in srgb, var(--main-color), white 50%));
 
             .shedule-date {
                 .data {
@@ -240,8 +247,12 @@ main.main {
         display: flex;
         flex-direction: row;
         border-radius: clamp(0.438rem, 0.2rem + 0.3vw, 1rem);
-        background-color: #f5f5f5;
+        background-color: light-dark(#f8f8f8, #f5f5f5);
         gap: 1px;
+
+        input {
+            background-color: light-dark(#f8f8f8, #f5f5f5);
+        }
 
         svg.feather {
             // transform: translateY(-100%) translateX(50%);
@@ -251,6 +262,11 @@ main.main {
             align-self: center;
             height: clamp(0.9rem, 0.5rem + 0.5vw, 3rem);
             width: clamp(0.9rem, 0.5rem + 0.5vw, 3rem);
+
+            // @media (prefers-color-scheme: dark) {
+            //     // color: var(--main-black);
+            //     stroke: var(--main-black);
+            // }
         }
 
         svg.feather-clock {}

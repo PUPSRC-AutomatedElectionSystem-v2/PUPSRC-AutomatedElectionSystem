@@ -35,7 +35,7 @@ class SessionManager {
                 exit();
             }
             else {
-                header("Location: end-point.php");
+                header("Location: landing-page.php");
                 exit();
             }
         }

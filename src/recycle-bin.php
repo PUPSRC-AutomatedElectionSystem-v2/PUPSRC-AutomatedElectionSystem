@@ -389,7 +389,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
 
         <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="scripts/script.js"></script>
+        <script type="module" src="scripts/script.js"></script>
         <script src="scripts/feather.js"></script>
         <script src="scripts/manage-voters.js"></script>
         <script src="scripts/recycle-bin.js"></script>

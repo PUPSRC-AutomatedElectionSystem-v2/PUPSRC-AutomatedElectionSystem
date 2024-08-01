@@ -71,7 +71,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
 		<script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-		<script src="scripts/script.js" defer></script>
+		<script type="module" src="scripts/script.js" defer></script>
 		<script src="scripts/feather.js" defer></script>
 		<script src="scripts/table-funcs.js" defer></script>
 		<script src="scripts/loader.js" defer></script>

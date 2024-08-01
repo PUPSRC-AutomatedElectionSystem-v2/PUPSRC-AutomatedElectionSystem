@@ -44,7 +44,7 @@ if(isset($_SESSION['voter_id']) && isset($_SESSION['role'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <!-- Custom JavaScript -->
-    <script type="text/javascript" src="scripts/script.js" defer></script>
+    <script type="module" src="scripts/script.js" defer></script>
     <script type="text/javascript" src="scripts/feather.js" defer></script>
     <script type="text/javascript" src="scripts/activity-log.js" defer></script>
     <script type="text/javascript" src="scripts/loader.js" defer></script>

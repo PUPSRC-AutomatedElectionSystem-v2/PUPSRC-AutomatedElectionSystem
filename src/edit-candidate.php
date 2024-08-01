@@ -445,7 +445,7 @@ if (isset($_SESSION['voter_id'])) {
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
             <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
-            <script src="scripts/script.js"></script>
+            <script type="module" src="scripts/script.js"></script>
             <script src="scripts/feather.js"></script>
             <script src="scripts/edit-candidate-form-validation.js"></script>
 

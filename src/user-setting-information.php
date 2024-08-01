@@ -55,7 +55,7 @@ if (isset($_SESSION['voter_id']) && isset($_SESSION['role']) && $_SESSION['role'
     <link rel="stylesheet" href="styles/loader.css" />
     <link rel="stylesheet" href="styles/user-setting-information.css" />
     <link rel="stylesheet" href="styles/profile.css" />
-    <link rel="stylesheet" href="<?php echo '../src/styles/orgs/' . $org_acronym . '.css'; ?>">
+    <link rel="stylesheet" href="<?php echo 'styles/orgs/' . $org_acronym . '.css'; ?>">
     <!-- Icons -->
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     

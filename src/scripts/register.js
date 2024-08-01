@@ -510,14 +510,22 @@ $(document).ready(function () {
     checkFormValidity();
   });
 
-  $("form").on("submit", function () {
+  $("form").on("submit", function (event) {
     isDirty = false;
-    setTimeout(function () {
-      $("#sign-up").attr("disabled", true);
-      $("#sign-up").html(
-        `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Please wait...`
-      );
-    }, 50);
+    const captchaToken = grecaptcha.getResponse();
+
+    if (captchaToken.length === 0) {
+      event.preventDefault();
+      checkFormValidity();
+      grecaptcha.reset();
+    } else {
+      setTimeout(function () {
+        $("#sign-up").attr("disabled", true);
+        $("#sign-up").html(
+          `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Please wait...`
+        );
+      }, 50);
+    }
   });
 
   // Show success modal if registration is successful

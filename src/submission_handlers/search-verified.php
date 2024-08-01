@@ -32,6 +32,7 @@ $voters = [];
 while ($row = $to_verify->fetch_assoc()) {
     $voters[] = [
         'voter_id' => $row['voter_id'],
+        'student_id' => $row['student_id'],
         'email' => $row['first_name'] . ' ' . $row['last_name'],
         'account_status' => $row['account_status'],
         'status_updated' => $row['status_updated']

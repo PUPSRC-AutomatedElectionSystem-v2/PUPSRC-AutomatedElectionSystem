@@ -75,12 +75,13 @@ function loadPage(
                       voter.voter_id
                     }" ${isChecked}>
                   </td>
-                  <td class="col-md-5 text-center text-truncate">
+                  <td class="col-md-3 text-center text-truncate">
                     <a href="validate-voter.php?voter_id=${voter.voter_id}">${
               voter.email
             }</a>
                   </td>
-                  <td class="col-md-6 text-center">${formattedDate}</td>
+                  <td class="col-md-3 text-center">${voter.student_id}</td>
+                  <td class="col-md-3 text-center">${formattedDate}</td>
                 </tr>`;
 
             // Verified Table
@@ -112,12 +113,7 @@ function loadPage(
               voter.email
             }</a>
                   </td>
-                  <td class="col-md-3 text-center">
-                    <span class="status-background active-status">${
-                      voter.account_status.charAt(0).toUpperCase() +
-                      voter.account_status.slice(1)
-                    }</span>
-                  </td>
+                  <td class="col-md-3 text-center">${voter.student_id}</td>
                   <td class="col-md-3 text-center">${formattedUpdatedDate}</td>
                 </tr>`;
           }

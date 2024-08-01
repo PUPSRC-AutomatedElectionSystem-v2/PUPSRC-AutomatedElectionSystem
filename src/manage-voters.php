@@ -153,10 +153,16 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 																	<input type="checkbox" id="selectAllPending">
 																</th>
 																<th
-																	class="col-md-6 tl-left text-center del-center fs-7 fw-bold spacing-5">
+																	class="col-md-3 tl-left text-center del-center fs-7 fw-bold spacing-5">
 																	<i data-feather="user" class="feather-xs im-cust"></i>Full
 																	Name
 																</th>
+
+																<th class="col-md-3 text-center fs-7 fw-bold spacing-5">
+																		<i data-feather="star"
+																			class="feather-xs im-cust"></i>Student ID
+																	</th>
+
 																<th
 																	class="col-md-6 tl-right text-center fs-7 fw-bold spacing-5">
 																	<i data-feather="calendar"
@@ -337,8 +343,8 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 																	</th>
 
 																	<th class="col-md-3 text-center fs-7 fw-bold spacing-5">
-																		<i data-feather="check-circle"
-																			class="feather-xs im-cust"></i>Status
+																		<i data-feather="star"
+																			class="feather-xs im-cust"></i>Student ID
 																	</th>
 																	<th
 																		class="col-md-3 tl-right text-center fs-7 fw-bold spacing-5">

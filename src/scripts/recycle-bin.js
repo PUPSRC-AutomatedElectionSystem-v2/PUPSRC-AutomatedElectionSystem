@@ -182,9 +182,7 @@ $(document).ready(function() {
                     $.each(selectedIds, function(index, id) {
                         $('.select-checkbox[value="' + id + '"]').closest('tr').remove();
                     });
-
-                    deleteModeActive = false;
-                    restoreModeActive = false;
+                    handleCancelActions();
                     hideDeleteElements();
                     updatePaginationAndDisplay();
                 },
@@ -220,8 +218,7 @@ $(document).ready(function() {
                         $('.select-checkbox[value="' + id + '"]').closest('tr').remove();
                     });
 
-                    deleteModeActive = false;
-                    restoreModeActive = false;
+                    handleCancelActions();
 
                     hideRestoreElements();
                     updatePaginationAndDisplay();

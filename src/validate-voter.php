@@ -36,7 +36,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 			<title>Validate Account</title>
 
 			<!-- Icons -->
-			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
 			<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
@@ -47,6 +47,8 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 			<link rel="stylesheet" href="styles/core.css" />
 			<link rel="stylesheet" href="styles/manage-voters.css" />
 			<link rel="stylesheet" href="styles/validate-voter.css" />
+			<link rel="preload" href="images/resc/ivote-icon.webp" as="image">
+			<link rel="preload" href="styles/loader.css" as="style" />
 			<link rel="stylesheet" href="styles/loader.css" />
 			<link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
 		</head>

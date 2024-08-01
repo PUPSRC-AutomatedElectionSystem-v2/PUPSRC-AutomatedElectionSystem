@@ -33,11 +33,12 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 		<link rel="stylesheet" href="styles/core.css" />
 		<link rel="stylesheet" href="styles/tables.css" />
 		<link rel="stylesheet" href="styles/manage-voters.css" />
+		<link rel="preload" href="images/resc/ivote-icon.webp" as="image">
+		<link rel="preload" href="styles/loader.css" as="style" />
 		<link rel="stylesheet" href="styles/loader.css" />
 		<link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
-		<script src="scripts/loader.js"></script>
 
 	</head>
 
@@ -500,6 +501,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 				<script type="module" src="scripts/script.js"></script>
 				<script src="scripts/feather.js"></script>
 				<script src="scripts/table-funcs.js"></script>
+				<script src="scripts/loader.js" defer></script>
 	</body>
 
 

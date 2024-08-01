@@ -158,14 +158,20 @@ div:has(.ql-editor[contenteditable]) {
         color: var(--main-black);
         font-weight: normal;
 
-        *,
         ::before,
         ::after {
             color: inherit;
+            font-weight: normal;
 
-            &:not(strong, em) {
-                font-weight: inherit;
-            }
+        }
+
+        * {
+            color: inherit;
+        }
+
+        *:not(strong, em) {
+
+            font-weight: normal;
         }
 
         a {

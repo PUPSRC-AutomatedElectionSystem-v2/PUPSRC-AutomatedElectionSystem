@@ -7,6 +7,7 @@ include_once 'modals.php';
 })::generateCSRFToken(time() + (60 * 30));
 ?>
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/quill@2.0.0/dist/quill.snow.css" />
 <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.5.0/css/rowReorder.bootstrap5.css">
 <link rel="stylesheet" href="src/styles/config-faq.css?v=2">
 

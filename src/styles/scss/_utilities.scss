@@ -158,14 +158,20 @@ div:has(.ql-editor[contenteditable]) {
         color: var(--main-black);
         font-weight: normal;
 
-        *,
         ::before,
         ::after {
             color: inherit;
+            font-weight: normal;
 
-            &:not(strong, em) {
-                font-weight: inherit;
-            }
+        }
+
+        * {
+            color: inherit;
+        }
+
+        *:not(strong, em) {
+
+            font-weight: normal;
         }
 
         a {
@@ -356,8 +362,12 @@ section .toast-container-unstacked {
 
     }
 
+    @media only screen and (max-width: 576px) {
+        max-width: 45%;
+    }
+
+
     @media only screen and (min-width: 768px) and (max-width: 1199px) {
-        // quick fix to put footer to bottom
 
         max-height: 25dvh;
     }
@@ -460,6 +470,11 @@ section .toast-container-unstacked {
                 text-align: left;
                 width: 85%;
                 padding-left: clamp(2rem, 1rem + 1dvw, 4rem);
+
+                @media only screen and (max-width: 576px) {
+                    padding-left: clamp(0.75rem, 0.3rem + 0.75dvw, 4rem);
+                }
+
                 @extend %general-responsive-base-font-size;
 
             }

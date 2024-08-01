@@ -1,13 +1,27 @@
 @media (max-width: 768px) {
-
     .main {
         padding: 2.2rem 1.1rem 2rem 1.1rem!important;
-      }
-      
-    .information {
-        padding: 1rem !important;
     }
     
+    .information .pt-5 {
+        padding-top: 0 !important;
+    }
+
+    .information .padding-top-place {
+        padding-top: 1rem !important;
+    }
+
+    .validate-header {
+        padding: 1rem 2rem !important
+    }
+    
+    .description {
+        padding-top: 0 !important;
+    }
+    .description p {
+        margin-bottom: 0 !important;
+    }
+
     .title {
         padding: 1rem 0 0 0 !important;
     }
@@ -17,7 +31,7 @@
     }
 
     .buttons-cont {
-        padding: 1rem 0 !important;
+        padding: 4rem 0 !important;
 
     }
     .buttons .px-5 {
@@ -50,4 +64,48 @@
         padding-left: 1.5rem!important;
         padding-right: 1.5rem!important;
     }
+}
+
+@media (max-width: 540px) {
+
+    .validate-header p {
+        margin-bottom: 0;
+    }
+
+    .validate-header {
+        padding: 1rem 3rem !important
+    }
+
+    .text-center-cont {
+        text-align: left !important;
+    }
+
+    .information {
+        padding: 0rem 2rem !important;
+    }
+
+    .line-cont {
+        display: none !important;
+    }
+
+    .del-btn {
+        padding: 2rem 2rem 1.5rem 0rem !important;
+    }
+
+}
+
+.information {
+    padding: 0rem 5rem;
+}
+
+.validate-header {
+    padding: 3rem 2rem;
+}
+
+.description {
+    padding-top: 1.5rem;
+}
+
+.text-center-cont {
+    text-align: center;
 }

@@ -139,11 +139,9 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
 																		<!-- Search -->
 																		<div class="search-container">
-																			<i data-feather="search" class="feather-xs im-cust-2"
-																				style="color: black"></i>
 																			<input class="search-input fs-7 spacing-6 fw-medium"
-																				type="text" placeholder=" Search..."
-																				id="searchPending">
+																			type="text" placeholder="&#xf002;  Search..."
+																				id="searchPending" maxlength="100">
 																		</div>
 																	</div>
 																</div>

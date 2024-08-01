@@ -68,170 +68,168 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
 
 			<div class="container">
-				<div class="row justify-content-center" id="all-tables-container">
-					<!-- FOR VERIFICATION TABLE -->
-					<div class="col-md-10 card-box">
-						<div class="container-fluid">
-							<div class="card-box">
-								<div class="row">
-									<div class="content">
-										<div class="table-wrapper">
+				<?php if ($org_name !== 'sco'): ?>
+					<div class="row justify-content-center mb-md-5">
+						<!-- FOR VERIFICATION TABLE -->
+						<div class="col-md-10 card-box">
+							<div class="container-fluid">
+								<div class="card-box">
+									<div class="row">
+										<div class="content">
+											<div class="table-wrapper">
 
-											<!-- For empty state: see first if the table has value -->
-											<?php if ($to_verify_tbl->num_rows > 0) { ?>
+												<!-- For empty state: see first if the table has value -->
+												<?php if ($to_verify_tbl->num_rows > 0) { ?>
 
-												<div class="table-title">
-													<div class="row pending-accs-table">
-														<!-- HEADER -->
-														<div class="col-sm-6  header-text">
-															<p class="fs-3 main-color fw-bold ls-10 spacing-6">Pending
-																Registrations</p>
-														</div>
+													<div class="table-title">
+														<div class="row pending-accs-table">
+															<!-- HEADER -->
+															<div class="col-sm-6  header-text">
+																<p class="fs-3 main-color fw-bold ls-10 spacing-6">Pending
+																	Registrations</p>
+															</div>
 
 
 
-														<div class="col-sm-6">
-															<div class="row">
-																<div class="col-md-12 filters-sort">
-																	<!-- Delete -->
-																	<div class="d-inline-block">
-																		<button
-																			class="delete-btn pending-delete-btn fs-7 spacing-6 fw-medium"
-																			type="button" id="dropdownMenuButton"
-																			data-bs-toggle="dropdown" aria-haspopup="true"
-																			aria-expanded="false">
-																			<i class="fa-solid fa-trash-can fa-sm"></i>
-																			Delete
-																		</button>
-																		<span class="light-gray-accent fw-bold ps-3">|</span>
-																	</div>
+															<div class="col-sm-6">
+																<div class="row">
+																	<div class="col-md-12 filters-sort">
+																		<!-- Delete -->
+																		<div class="d-inline-block">
+																			<button
+																				class="delete-btn pending-delete-btn fs-7 spacing-6 fw-medium"
+																				type="button" id="dropdownMenuButton"
+																				data-bs-toggle="dropdown" aria-haspopup="true"
+																				aria-expanded="false">
+																				<i class="fa-solid fa-trash-can fa-sm"></i>
+																				Delete
+																			</button>
+																			<span class="light-gray-accent fw-bold ps-3">|</span>
+																		</div>
 
-																	<!-- Sort By -->
-																	<div class="d-inline-block ps-3">
-																		<form class="d-inline-block">
-																			<div class="dropdown sort-by">
-																				<button
-																					class="sortby-tbn fs-7 spacing-6 fw-medium"
-																					type="button" id="dropdownMenuButtonPending"
-																					data-bs-toggle="dropdown"
-																					aria-haspopup="true" aria-expanded="false">
-																					<i
-																						class="fa-solid fa-arrow-down-wide-short fa-sm"></i>
-																					Sort by
-																				</button>
-																				<div class="dropdown-menu dropdown-menu-end"
-																					aria-labelledby="dropdownMenuButtonPending"
-																					style="padding: 0.5rem">
-																					<li class="dropdown-item ps-3 fs-7 fw-medium"
-																						data-sort="newest">Newest to Oldest</li>
-																					<li class="dropdown-item ps-3 fs-7 fw-medium"
-																						data-sort="oldest">Oldest to Newest</li>
-																					<li class="dropdown-item ps-3 fs-7 fw-medium"
-																						data-sort="asc">A to Z (Ascending)</li>
-																					<li class="dropdown-item ps-3 fs-7 fw-medium"
-																						data-sort="desc">Z to A (Descending)
-																					</li>
+																		<!-- Sort By -->
+																		<div class="d-inline-block ps-3">
+																			<form class="d-inline-block">
+																				<div class="dropdown sort-by">
+																					<button
+																						class="sortby-tbn fs-7 spacing-6 fw-medium"
+																						type="button" id="dropdownMenuButtonPending"
+																						data-bs-toggle="dropdown"
+																						aria-haspopup="true" aria-expanded="false">
+																						<i
+																							class="fa-solid fa-arrow-down-wide-short fa-sm"></i>
+																						Sort by
+																					</button>
+																					<div class="dropdown-menu dropdown-menu-end"
+																						aria-labelledby="dropdownMenuButtonPending"
+																						style="padding: 0.5rem">
+																						<li class="dropdown-item ps-3 fs-7 fw-medium"
+																							data-sort="newest">Newest to Oldest</li>
+																						<li class="dropdown-item ps-3 fs-7 fw-medium"
+																							data-sort="oldest">Oldest to Newest</li>
+																						<li class="dropdown-item ps-3 fs-7 fw-medium"
+																							data-sort="asc">A to Z (Ascending)</li>
+																						<li class="dropdown-item ps-3 fs-7 fw-medium"
+																							data-sort="desc">Z to A (Descending)
+																						</li>
+																					</div>
 																				</div>
-																			</div>
-																		</form>
-																	</div>
+																			</form>
+																		</div>
 
-																	<!-- Search -->
-																	<div class="search-container">
-																		<input class="search-input fs-7 spacing-6 fw-medium"
-																			type="text" placeholder="&#xf002;  Search..."
-																			id="searchPending" maxlength="100">
+																		<!-- Search -->
+																		<div class="search-container">
+																			<i data-feather="search" class="feather-xs im-cust-2"
+																				style="color: black"></i>
+																			<input class="search-input fs-7 spacing-6 fw-medium"
+																				type="text" placeholder=" Search..."
+																				id="searchPending">
+																		</div>
 																	</div>
 																</div>
 															</div>
 														</div>
-													</div>
-													<table class="table" id="pendingTable">
-														<thead class="tl-header pending-accs-table">
-															<tr>
-																<th
-																	class="col-md-3 text-center tl-left d-none checkbox-all-pending">
-																	<input type="checkbox" id="selectAllPending">
-																</th>
-																<th
-																	class="col-md-3 tl-left text-center del-center fs-7 fw-bold spacing-5">
-																	<i data-feather="user" class="feather-xs im-cust"></i>Full
-																	Name
-																</th>
-
-																<th class="col-md-3 text-center fs-7 fw-bold spacing-5">
-																		<i data-feather="star"
-																			class="feather-xs im-cust"></i>Student ID
+														<table class="table" id="pendingTable">
+															<thead class="tl-header pending-accs-table">
+																<tr>
+																	<th
+																		class="col-md-3 text-center tl-left d-none checkbox-all-pending">
+																		<input type="checkbox" id="selectAllPending">
 																	</th>
+																	<th
+																		class="col-md-6 tl-left text-center del-center fs-7 fw-bold spacing-5">
+																		<i data-feather="mail" class="feather-xs im-cust"></i>Email
+																		Address
+																	</th>
+																	<th
+																		class="col-md-6 tl-right text-center fs-7 fw-bold spacing-5">
+																		<i data-feather="calendar"
+																			class="feather-xs im-cust"></i>Date Registered
+																	</th>
+																</tr>
+															</thead>
+															<tbody>
+																<?php while ($row = $to_verify_tbl->fetch_assoc()) { ?>
+																	<!-- Generated in table-funcs.js -->
 
-																<th
-																	class="col-md-6 tl-right text-center fs-7 fw-bold spacing-5">
-																	<i data-feather="calendar"
-																		class="feather-xs im-cust"></i>Date Registered
-																</th>
-															</tr>
-														</thead>
-														<tbody>
-															<?php while ($row = $to_verify_tbl->fetch_assoc()) { ?>
-																<!-- Generated in table-funcs.js -->
+																<?php } ?>
+															</tbody>
+														</table>
+														<div class="clearfix col-xs-12">
 
-															<?php } ?>
-														</tbody>
-													</table>
-													<div class="clearfix col-xs-12">
+															<ul class="pagination" id="pagination">
+																<!-- For Verification pagination will be generated here -->
+															</ul>
 
-														<ul class="pagination" id="pagination">
-															<!-- For Verification pagination will be generated here -->
-														</ul>
+															<div class="d-flex justify-content-start pt-2 buttons-toggle-delete">
+																<button id="deleteSelectedPending"
+																	class="btn btn-danger px-sm-4 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6 final-delete-btn-pending d-none rounded-3"
+																	disabled>
+																	<span class="delete-text">Delete Selected</span>
+																	<span class="delete-xs">Delete</span>
+																</button>
 
-														<div class="d-flex justify-content-start pt-2 buttons-toggle-delete">
-															<button id="deleteSelectedPending"
-																class="btn btn-danger px-sm-4 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6 final-delete-btn-pending d-none rounded-3"
-																disabled>
-																<span class="delete-text">Delete Selected</span>
-																<span class="delete-xs">Delete</span>
-															</button>
-
-															<button
-																class="btn btn-light btn-cancel px-sm-4 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6 rounded-3 cancel-pending d-none">Cancel</button>
-														</div>
-													</div>
-
-													<!-- If empty, show empty state -->
-												<?php } else { ?>
-
-													<div class="table-title">
-														<div class="row">
-															<!-- HEADER -->
-															<div class="col-sm-12">
-																<p class="fs-3 main-color fw-bold ls-10 spacing-6">Pending
-																	Registrations</p>
+																<button
+																	class="btn btn-light btn-cancel px-sm-4 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6 rounded-3 cancel-pending d-none">Cancel</button>
 															</div>
 														</div>
-														<div class="col-md-12 no-registration text-center">
-															<img src="images/resc/folder-empty.png" class="illus">
-															<p class="fw-bold spacing-6 black">No registrations yet</p>
-															<p class="spacing-3 pt-1 black">You’ll find account registrations
-																right
-																here!
-															</p>
-														</div>
-													<?php } ?>
+
+														<!-- If empty, show empty state -->
+													<?php } else { ?>
+
+														<div class="table-title">
+															<div class="row">
+																<!-- HEADER -->
+																<div class="col-sm-12">
+																	<p class="fs-3 main-color fw-bold ls-10 spacing-6">Pending
+																		Registrations</p>
+																</div>
+															</div>
+															<div class="col-md-12 no-registration text-center">
+																<img src="images/resc/folder-empty.png" class="illus">
+																<p class="fw-bold spacing-6 black">No registrations yet</p>
+																<p class="spacing-3 pt-1 black">You’ll find account registrations
+																	right
+																	here!
+																</p>
+															</div>
+														<?php } ?>
+
+													</div>
 
 												</div>
 
 											</div>
-
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-					</div>
+					<?php endif; ?>
 
 					<!-- VERIFIED TABLE -->
 					<div class="row justify-content-center verified-container">
-						<div class="col-md-10 card-box  mt-md-5">
+						<div class="col-md-10 card-box">
 							<div class="container-fluid">
 								<div class="card-box">
 									<div class="row">

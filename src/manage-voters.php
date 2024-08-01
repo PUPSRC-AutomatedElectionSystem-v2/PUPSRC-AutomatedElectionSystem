@@ -37,7 +37,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 		<link rel="preload" href="styles/loader.css" as="style" />
 		<link rel="stylesheet" href="styles/loader.css" />
 		<link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 
 	</head>
@@ -151,20 +151,21 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 															<thead class="tl-header pending-accs-table">
 																<tr>
 																	<th
-																		class="col-md-3 text-center tl-left d-none checkbox-all-pending">
+																		class="col-md-3 tl-left d-none checkbox-all-pending text-center">
 																		<input type="checkbox" id="selectAllPending">
 																	</th>
 																	<th
-																		class="col-md-3 tl-left text-center del-center fs-7 fw-bold spacing-5">
-																		<i data-feather="mail" class="feather-xs im-cust"></i>Email
-																		Address
+																		class="col-md-3 del-center tl-left text-center fs-7 fw-bold spacing-5">
+																		<i data-feather="user"
+																			class="feather-xs im-cust"></i>Full Name
 																	</th>
+
 																	<th class="col-md-3 text-center fs-7 fw-bold spacing-5">
 																		<i data-feather="star"
 																			class="feather-xs im-cust"></i>Student ID
 																	</th>
 																	<th
-																		class="col-md-6 tl-right text-center fs-7 fw-bold spacing-5">
+																		class="col-md-3 tl-right text-center fs-7 fw-bold spacing-5">
 																		<i data-feather="calendar"
 																			class="feather-xs im-cust"></i>Date Registered
 																	</th>

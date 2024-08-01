@@ -13,13 +13,13 @@ if(isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['rol
   $connection = DatabaseConnection::connect();
   // Assume $connection is your database connection
 
-  $stmt_electionOpen = $connection->prepare("SELECT close FROM election_schedule WHERE schedule_id = 0");
-  $stmt_electionOpen->execute();	
-  $result_electionOpen = $stmt_electionOpen->get_result();	
+  $stmt_election_open = $connection->prepare("SELECT close FROM election_schedule WHERE schedule_id = 0");
+  $stmt_election_open->execute();	
+  $result_election_open = $stmt_election_open->get_result();	
 
-  if($result_electionOpen) {	
-      $row_election = $result_electionOpen->fetch_assoc();	
-      $today = new DateTime();		
+  if($result_election_open) {	
+      $row_election = $result_election_open->fetch_assoc();	
+      $today = new DateTime();	
       $close = new DateTime($row_election['close']);	
       if( $today > $close) {
 

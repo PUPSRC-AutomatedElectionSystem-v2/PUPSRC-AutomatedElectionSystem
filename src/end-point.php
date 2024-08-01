@@ -6,15 +6,25 @@ include_once FileUtils::normalizeFilePath('includes/error-reporting.php');
 
 if(isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['role'] == 'student_voter'))  {
 
-  if((isset($_SESSION['vote_status'])) && ($_SESSION['vote_status'] == 'voted' || $_SESSION['vote_status'] == 'abstained')){
+   // ------ SESSION EXCHANGE
+   include FileUtils::normalizeFilePath('includes/session-exchange.php');
+   // ------ END OF SESSION EXCHANGE
 
-    // ------ SESSION EXCHANGE
-    include FileUtils::normalizeFilePath('includes/session-exchange.php');
-    // ------ END OF SESSION EXCHANGE
+ $connection = DatabaseConnection::connect();
+ // Assume $connection is your database connection
 
-  $connection = DatabaseConnection::connect();
-  // Assume $connection is your database connection
+   // Query for election period, cannot use the $_SESSION['electionOpen']
+  // upon reloding the page, it is checked
+  $stmt_election_open = $connection->prepare("SELECT start, close FROM election_schedule WHERE schedule_id = 0");
+  $stmt_election_open->execute();	
+  $result_election_open = $stmt_election_open->get_result();	
 
+  if($result_election_open) {	
+      $row_election = $result_election_open->fetch_assoc();	
+      $today = new DateTime();	
+      $start = new Datetime($row_election['start']);	
+      $close = new DateTime($row_election['close']);	
+      if(($today >= $start && $today <= $close) && $_SESSION['vote_status'] != NULL) {
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +44,7 @@ if(isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['rol
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
   <!-- Bootstrap 5 code -->
   <link type="text/css" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../src/styles/feedback-suggestions.css">
+  <link rel="stylesheet" href="styles/feedback-suggestions.css">
   <link rel="stylesheet" href="styles/loader.css" />
   <link rel="stylesheet" href="<?php echo '../src/styles/orgs/' . $org_acronym . '.css'; ?>">
   <!-- Icons -->
@@ -60,7 +70,7 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/topnav
     <div class="row justify-content-md-center align-items-center">
         <div class="col-lg-6 col-sm-12">
             <div class="end-point text-center">
-                <?php echo '<img src="../src/images/resc/end-point/'. $org_acronym .'-endpoint.png" alt="Endpoint Image" class="img-fluid">';?>
+                <?php echo '<img src="images/resc/end-point/'. $org_acronym .'-endpoint.png" alt="Endpoint Image" class="img-fluid">';?>
             </div> 
         </div>
         <div class="col-lg-6 col-sm-12">
@@ -130,14 +140,16 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/topnav
 </script>
 
   <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../src/scripts/feedback-suggestions.js"></script>
+  <script src="scripts/feedback-suggestions.js"></script>
   <script src="scripts/loader.js"></script>
 
   <?php
-  } else{
-    header("Location: ballot-forms.php");
-  }
-} else {
+      }  
+      else {
+        header("Location: voting-closed.php");
+      }
+    }
+ } else {
   header("Location: landing-page.php");
 }
 ?>

@@ -161,7 +161,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
                     <!-- Table Contents -->
                      <div class="table-responsive">
-                    <table class="table">
+                    <table class="table" id="accountTable">
                         <thead class="tl-header">
                             <tr>
                                 <th class="col-md-3 tl-left text-center fs-7 fw-bold spacing-5"><input type="checkbox" id="selectAllCheckbox"> </th>
@@ -256,7 +256,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
         <!-- Bootstrap Modal Structure -->
         <div class="modal fade" id="voterDetailsModal" tabindex="-1" aria-labelledby="voterDetailsModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl modal-dialog-centered" style="max-width: 1000px;">
+            <div class="modal-dialog modal-lg modal-dialog-centered" >
                 <div class="modal-content px-0 px-sm-5 py-4">
                     <div class="modal-header">
 
@@ -264,16 +264,16 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                     </div>
                     <div class="modal-body">
                         <div class="row">
-                            <div class="col-md-7 px-0 pe-sm-5">
-                                <iframe id="pdfViewer" width="100%" height="300"></iframe>
-                            </div>
-                            <div class="col-md-5">
+                  
+                            <div class="col-md-12">
                                 <p class="fs-4 main-color fw-bold ls-10 spacing-6 text-center" style="border-bottom: 1px solid #ccc;">Account Details</p>
+                                <p class="text-center main-color"><strong>Full Name</strong></p>
+                                <p class="text-center" id="modal-name"></p>
                                 <p class="text-center main-color"><strong>Email Address</strong></p>
                                 <p class="text-center" id="modal-email"></p>
                                 <p class="text-center main-color"><strong> Date Registered</strong></p>
                                 <p class="mb-5 text-center"> <span id="modal-acc-created"></span> </p>
-                                <p class="text-left red"><i> <span id="modal-status-updated"></span> </i></p>
+                                <small class="text-left red"><i> <span id="modal-status-updated"></span> </i></small>
                             </div>
 
                         </div>
@@ -354,7 +354,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                 <div class="modal-content p-3">
                     <div class="modal-header p-1">
 
-                        <button type="button" class="btn-close" id="refreshPageBtn" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body justify-content-center d-flex flex-direct align-items-center">
                         <img src="images/resc/check-animation.gif" class="img-icons img-fluid">
@@ -370,7 +370,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                 <div class="modal-content p-3">
                     <div class="modal-header p-1">
 
-                        <button type="button" class="btn-close" id="refreshPageBtn2" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close"  data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body justify-content-center d-flex flex-direct align-items-center">
                         <img src="images/resc/check-animation.gif" class="img-icons img-fluid">
@@ -394,66 +394,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         <script src="scripts/manage-voters.js"></script>
         <script src="scripts/recycle-bin.js"></script>
 <script>
-    
-// Function to handle delete button click
-$('#confirmDeleteButton').on('click', function () {
-var selectedIds = [];
-$('.select-checkbox:checked').each(function () {
-selectedIds.push($(this).val());
-});
-if (selectedIds.length > 0) {
-// Send AJAX request to delete selected items
-$.ajax({
-type: 'POST',
-url: 'submission_handlers/delete-selected-voter.php', // Replace 'delete_selected.php' with your server endpoint
-data: { ids: selectedIds },
-dataType: 'json',
-success: function (response) {
-// Handle success response
-console.log('Selected items deleted successfully');
-$('#deleteSuccessModal').modal('show');
-$.each(selectedIds, function(index, id) {
-                    $('.select-checkbox[value="' + id + '"]').closest('tr').remove();
-                });
 
-},
-error: function () {
-// Handle error response
-console.error('An error occurred while deleting selected items');
-}
-});
-}
-});
-
-// Function to handle restore button click
-$('#confirmRestoreBtn').on('click', function () {
-var selectedIds = [];
-$('.select-checkbox:checked').each(function () {
-selectedIds.push($(this).val());
-});
-if (selectedIds.length > 0) {
-// Send AJAX request to restore selected items
-$.ajax({
-type: 'POST',
-url: 'submission_handlers/restore-selected-voter.php', // Replace 'restore_selected.php' with your server endpoint
-data: { ids: selectedIds },
-dataType: 'json',
-success: function (response) {
-// Handle success response
-console.log('Selected items restored successfully');
-$('#restoreSuccessModal').modal('show');
-$.each(selectedIds, function(index, id) {
-                    $('.select-checkbox[value="' + id + '"]').closest('tr').remove();
-                });
-
-},
-error: function () {
-// Handle error response
-console.error('An error occurred while restoring selected items');
-}
-});
-}
-});
 
 
                 </script>

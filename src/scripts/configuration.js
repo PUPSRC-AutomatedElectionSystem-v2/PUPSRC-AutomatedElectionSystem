@@ -1,28 +1,3 @@
-(function () {
-    const secondaryNav = document.querySelector('.secondary-nav-container ul.nav');
-    console.log(secondaryNav);
-
-    function scrollToActiveLink() {
-        const activeLink = secondaryNav.querySelector('.nav-link.active');
-        console.log(activeLink);
-        if (!activeLink) return;
-
-        const linkRect = activeLink.getBoundingClientRect();
-        const containerRect = secondaryNav.getBoundingClientRect();
-
-        if (linkRect.left < containerRect.left || linkRect.right > containerRect.right) {
-            secondaryNav.scrollTo({
-                left: linkRect.left - containerRect.left,
-                behavior: 'smooth'
-            });
-            console.log('IIFE');
-        }
-    }
-
-    scrollToActiveLink();
-
-})();
-
 export function initializeConfigurationJS(ConfigPage = null) {
 
     let tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
@@ -36,6 +11,32 @@ export function initializeConfigurationJS(ConfigPage = null) {
     // } catch (error) {
     //     console.warn(error);
     // }
+
+    try {
+        const secondaryNav = document.querySelector('.secondary-nav-container ul.nav');
+
+        function scrollToActiveLink() {
+            const activeLink = secondaryNav.querySelector('.nav-link.active');
+            console.log(activeLink);
+            if (!activeLink) return;
+
+            const linkRect = activeLink.getBoundingClientRect();
+            const containerRect = secondaryNav.getBoundingClientRect();
+
+            if (linkRect.left < containerRect.left || linkRect.right > containerRect.right) {
+                secondaryNav.scrollTo({
+                    left: linkRect.left - containerRect.left,
+                    behavior: 'smooth'
+                });
+            }
+        }
+
+        if (secondaryNav) {
+            scrollToActiveLink();
+        }
+    } catch (error) {
+
+    }
 }
 
 export function shortFnv1a(input) {

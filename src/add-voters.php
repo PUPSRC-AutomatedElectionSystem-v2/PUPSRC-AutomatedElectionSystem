@@ -104,8 +104,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                                             <p><i data-feather="info" class="link-blue mb-xl-1 im-cust feather-sm pe-none"
                                                     style="margin-right: 0.5rem;"></i><span class="fs-7 fw-medium">Uncertain
                                                     about what to upload? See the
-                                                    <a class="link-blue text-underline fw-semibold" href="#"
-                                                        target="_blank">required format</a>
+                                                    <a class="link-blue text-underline fw-semibold" href="#" id="formatLink">required format</a>
                                                     and ensure your file includes these columns and data.</span></p>
                                         </section>
 
@@ -263,10 +262,34 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
             </div>
         </div>
 
+        <div class="modal" id="formatModal" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="d-flex justify-content-end p-3">
+                    <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray" id="formatModalClose" data-bs-dismiss="modal"></i>
+                </div>
+                <div class="text-center px-3 pb-3">
+                    <div class="col-md-12">
+                        <img src="images\resc\voters-format\Sample-Voters.png" class="img-fluid" alt="Required Format">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 pb-3 pt-4">
+                            <p class="fw-bold spacing-4">Required Format</p>
+                            <p class="fw-medium spacing-5 pt-2">This is the required format for importing voters. Please ensure your file matches this structure.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
         <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="scripts/script.js"></script>
+        <script type="module" src="scripts/script.js"></script>
         <script src="scripts/feather.js"></script>
         <script src="scripts/import-voter.js"></script>
+        <script src="scripts/format-link.js"></script>
 
     </body>
 

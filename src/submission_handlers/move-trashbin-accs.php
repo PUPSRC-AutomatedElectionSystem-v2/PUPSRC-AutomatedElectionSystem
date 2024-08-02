@@ -4,6 +4,7 @@ require_once FileUtils::normalizeFilePath('../includes/classes/db-connector.php'
 require_once FileUtils::normalizeFilePath('../includes/session-handler.php');
 require_once FileUtils::normalizeFilePath('../includes/classes/session-manager.php');
 require_once FileUtils::normalizeFilePath('../includes/classes/query-handler.php');
+require_once FileUtils::normalizeFilePath('../includes/classes/logger.php');
 
 if (isset($_POST['ids']) && is_array($_POST['ids'])) {
     $voterManager = new VoterManager();
@@ -15,6 +16,9 @@ if (isset($_POST['ids']) && is_array($_POST['ids'])) {
     // Update query to mark the voters as invalid
     $inactive_query = "UPDATE voter SET account_status = 'invalid' WHERE voter_id IN ($idsString)";
     $stmt = $voterManager->prepare($inactive_query);
+
+    $logger = new Logger($_SESSION['role'], DELETE_VOTER);
+    $logger->logActivity();
     
     if ($stmt->execute()) {
         echo json_encode(['success' => true]);

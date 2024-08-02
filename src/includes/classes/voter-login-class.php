@@ -45,6 +45,8 @@ class Login extends IpAddress {
             $this->handleUserNotFound();
         } else {
             $row = $result->fetch_assoc();
+            
+            // proceeds to password verification
             $this->handlePasswordVerification($row, $password);
         }
 
@@ -91,6 +93,7 @@ class Login extends IpAddress {
 
         switch ($row['account_status']) {
             case 'for_verification':
+            case 'pending_setup':
                 $this->redirectWithMessage($this->info_message, 'This account is under verification.');
                 break;
             case 'invalid':
@@ -112,7 +115,7 @@ class Login extends IpAddress {
         $stmt->execute();	
         $result = $stmt->get_result();	
 
-        if($result) {	
+        if($result && $result->num_rows > 0) {	
             $row = $result->fetch_assoc();	
             $today = new DateTime();	
             $start = new Datetime($row['start']);	
@@ -126,10 +129,9 @@ class Login extends IpAddress {
                 $_SESSION['electionOpen'] = false;
                 $this->storeLoginActivity();	
                 $this->redirectTo('../voting-closed.php');
-            }	
-        }	
-        else {	
-            $this->redirectWithMessage('Something went wrong.');	
+            }
+        } else {
+            $this->redirectWithMessage($this->info_message, 'Something went wrong.');
         }	
         $stmt->close();	
     }
@@ -191,7 +193,7 @@ class Login extends IpAddress {
             $this->isLoginAttemptMax();        
         } 
         else {
-            $this->redirectWithMessage($this->error_message, 'Email and password do not match.<br/><strong>' . $remaining_attempt . ' remaining attempts.</strong>');
+            $this->redirectWithMessage($this->error_message, "Email and password do not match.<br/><strong> {$remaining_attempt} remaining attempts.</strong>");
         }
     }
 
@@ -201,9 +203,9 @@ class Login extends IpAddress {
         $remaining_attempt = self::LOGIN_ATTEMPT_COUNT - $this->getFailedAttemptsCount();
         
         if ($remaining_attempt <= 0) {
-            $this->isLoginAttemptMax();        
-        } 
-        $this->redirectWithMessage($this->error_message, 'Email and password do not match.<br/><strong>' . $remaining_attempt . ' remaining attempts.</strong>');
+            $this->isLoginAttemptMax();
+        }
+        $this->redirectWithMessage($this->error_message, "Email and password do not match.<br/><strong> {$remaining_attempt} remaining attempts.</strong>");
     }
 
     // Counts user failed login attempts
@@ -235,8 +237,9 @@ class Login extends IpAddress {
     }
 
 
-    private function redirectTo($location) {
-        header("Location: " . $location);
+    private function redirectTo($location)
+    {
+        header("Location: {$location}");
         exit();
     }
 }

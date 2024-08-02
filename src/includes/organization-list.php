@@ -14,9 +14,9 @@ $org_full_names = array(
 
 $org_acronyms = array(
     "sco" => ("sco"),
-    "elite" => ("elite"),
     "acap" => ("acap"),
     "aeces" => ("aeces"),
+    "elite" => ("elite"),
     "give" => ("give"),
     "jehra" => ("jehra"),
     "jmap" => ("jmap"),

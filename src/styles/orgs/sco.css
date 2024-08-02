@@ -4,7 +4,7 @@
 
 :root {
   --main-color: #4769b2;
-  --sub-color-accent: rgb(71, 105, 178, 0.5);
+  --sub-color-accent: rgb(71, 105, 178, 0.9);
   --hover-color-accent: rgb(71, 105, 178, 0.2);
 }
 
@@ -56,7 +56,34 @@
 }
 
 .btn-org-color {
+  --bs-btn-color: #fff !important;
   --bs-btn-bg: var(--main-color) !important;
+  --bs-btn-hover-color: #dddddd !important;
+  --bs-btn-hover-bg: var(--sub-color-accent) !important;
+  --bs-btn-active-color: #fff !important;
+  --bs-btn-active-bg: var(--main-color) !important;
+  --bs-btn-focus-color: #fff  !important;
+  --bs-btn-focus-bg: var(--main-color) !important;
+}
+
+.btn-org-color:hover {
+  color: var(--bs-btn-hover-color) !important;
+  background-color: var(--bs-btn-hover-bg) !important;
+}
+
+.btn-org-color:active {
+  color: var(--bs-btn-active-color) !important;
+  background-color: var(--bs-btn-active-bg) !important;
+}
+
+.btn-org-color:focus {
+  color: var(--bs-btn-focus-color) !important;
+  background-color: var(--bs-btn-focus-bg) !important;
+}
+
+.btn-org-color:disabled {
+  color: var(--bs-btn-hover-color) !important;
+  background-color: var(--bs-btn-hover-bg) !important;
 }
 
 /*==========================

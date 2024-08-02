@@ -22,10 +22,20 @@ $warning_message_json = json_encode($warning_message);
 
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="2024 BSIT 3-1" content="PUPSRC iVOTE">
+
+  <!-- Preloader Stylesheet and Image -->
+  <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
+  <link rel="preload" href="styles/loader.css" as="style" />
+  <link rel="stylesheet" href="styles/loader.css" />
 
   <!-- Fontawesome Link for Icons -->
-  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
 
   <!-- Bootstrap 5 -->
   <link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
@@ -34,10 +44,6 @@ $warning_message_json = json_encode($warning_message);
   <link rel="stylesheet" href="styles/dist/landing.css">
   <link rel="stylesheet" href="styles/dist/all-footer.css">
   <link rel="stylesheet" href="styles/dist/landing-animation.css">
-
-  <!-- Preloader Stylesheet and Image -->
-  <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
-  <link rel="stylesheet" href="styles/loader.css" />
 
   <!-- Favicon -->
   <link rel="icon" href="images/resc/ivote-favicon.png" type="image/x-icon">
@@ -50,10 +56,15 @@ $warning_message_json = json_encode($warning_message);
     rel="stylesheet">
 
   <!-- Bootstrap JavaScript -->
-  <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>
+
+  <!-- CDN jQuery -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js" defer></script>
+
   <!-- Custom JavaScript -->
   <script src="scripts/landing-page.js" defer></script>
+  <script src="scripts/landing-animation.js" defer></script>
+  <script src="scripts/feather.js" defer></script>
   <script src="scripts/loader.js" defer></script>
 </head>
 
@@ -101,7 +112,7 @@ $warning_message_json = json_encode($warning_message);
 
       <div class="row fade-in">
         <div class="col text-center text-white justify-content-center slide-in">
-          <img src="images/resc/iVOTE4.webp" class="img-fluid ivote-main-logo" alt="iVote Logo">
+          <img src="images/resc/iVOTE4.webp" class="img-fluid ivote-main-logo" loading="lazy" alt="iVote Logo">
           <h5 id="index-PUPSRC" class="text-truncate mt-3">Polytechnic University of the Philippines - Santa Rosa Campus
           </h5>
           <h1 id="index-AES">AUTOMATED ELECTION SYSTEM</h1>
@@ -131,99 +142,36 @@ $warning_message_json = json_encode($warning_message);
         <p class="landing-organization-subtitle">- Select your Organization - </p>
 
         <div class="container-fluid">
-          <div class="row justify-content-center text-center">
-            <div class="col-md-3 mb-4">
-              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['sco']); ?>"
-                class="landing-page-org-card" id="SCO-landing-logo">
-                <img src="images/logos/sco.webp" alt="SCO Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-capitalize"><?php echo htmlspecialchars($org_full_names['sco']); ?></h5>
-              </button>
-            </div>
+            <?php 
+              $counter = 0;
+              foreach ($org_acronyms as $key => $acronym) {
+                  if ($counter == 0) {
+                      echo '<div class="row justify-content-center text-center">';
+                  } elseif ($counter == 1 || $counter == 4 || $counter == 7) {
+                      echo '</div><div class="row justify-content-center text-center">';
+                  }
+                  ?>
+                  <div class="col-md-3 mb-4" id="index-<?php echo strtoupper($key); ?>">
+                      <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($key); ?>"
+                              class="landing-page-org-card" id="<?php echo strtoupper($key); ?>-landing-logo">
+                          <img src="images/logos/<?php echo strtolower($key); ?>.webp" alt="<?php echo $acronym; ?> Logo" class="landing-page-logo-size" loading="lazy">
+                          <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($acronym); ?></h5>
+                      </button>
+                  </div>
+                  <?php
+                  $counter++;
+              }
+            ?>
           </div>
         </div>
 
-        <div class="container-fluid">
-          <div class="row justify-content-center text-center">
-            <div class="col-md-3 mb-4" id="index-ACAP">
-              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['acap']); ?>"
-                class="landing-page-org-card" id="ACAP-landing-logo">
-                <img src="images/logos/acap.webp" alt="ACAP Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['acap']); ?></h5>
-              </button>
-            </div>
-
-            <div class="col-md-3 mb-4" id="index-AECES">
-              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['aeces']); ?>"
-                class="landing-page-org-card" id="AECES-landing-logo">
-                <img src="images/logos/aeces.webp" alt="AECES Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['aeces']); ?></h5>
-              </button>
-            </div>
-
-            <div class="col-md-3 mb-4" id="index-AECES">
-              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['elite']); ?>"
-                class="landing-page-org-card" id="ELITE-landing-logo">
-                <img src="images/logos/elite.webp" alt="ELITE Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['elite']); ?></h5>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="container-fluid">
-          <div class="row justify-content-center text-center">
-            <div class="col-md-3 mb-4" id="index-ACAP">
-              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['give']); ?>"
-                class="landing-page-org-card" id="GIVE-landing-logo">
-                <img src="images/logos/give.webp" alt="GIVE Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['give']); ?></h5>
-              </button>
-            </div>
-            <div class="col-md-3 mb-4" id="index-JEHRA">
-              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['jehra']); ?>"
-                class="landing-page-org-card" id="JEHRA-landing-logo">
-                <img src="images/logos/jehra.webp" alt="JEHRA Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['jehra']); ?></h5>
-              </button>
-            </div>
-
-            <div class="col-md-3 mb-4" id="index-JMAP">
-              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['jmap']); ?>"
-                class="landing-page-org-card" id="JMAP-landing-logo">
-                <img src="images/logos/jmap.webp" alt="JMAP Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['jmap']); ?></h5>
-              </button>
-            </div>
-
-          </div>
-        </div>
-
-        <div class="container-fluid">
-          <div class="row justify-content-center text-center">
-            <div class="col-md-3 mb-4" id="index-JPIA">
-              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['jpia']); ?>"
-                class="landing-page-org-card" id="JPIA-landing-logo">
-                <img src="images/logos/jpia.webp" alt="JPIA Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['jpia']); ?></h5>
-              </button>
-            </div>
-            <div class="col-md-3 mb-4" id="index-PIIE">
-              <button type="submit" name="submit_btn" value="<?php echo htmlspecialchars($org_acronyms['piie']); ?>"
-                class="landing-page-org-card" id="PIIE-landing-logo">
-                <img src="images/logos/piie.webp" alt="PIIE Logo" class="landing-page-logo-size">
-                <h5 class="fw-bold pt-2 text-uppercase"><?php echo htmlspecialchars($org_acronyms['piie']); ?></h5>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
       </div>
     </form>
   </section>
 
   <!-- Footer -->
   <?php include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/all-footer.php'); ?>
-  <script src="scripts/landing-animation.js"></script>
+
 </body>
 
 </html>

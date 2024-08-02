@@ -4,6 +4,7 @@
     --border-gray: #d9d9d9;
     --dark-gray: #969696;
     --box-shadow-size: 0 0 0 clamp(0.25rem, 0.25rem + 0.1vw, 1rem);
+    // --main-color: light-dark();
 
 }
 
@@ -54,10 +55,6 @@ body {
 
         &:focus {
             border: clamp(1.5px, 1px + 0.1vw, 5px) solid light-dark(var(--main-color), var(--main-color));
-        }
-
-        &:focus {
-            border: clamp(1.5px, 1px + 0.1vw, 5px) solid light-dark(var(--main-color), var(--main-color));
             outline-color: light-dark(var(--main-color), var(--main-color));
         }
 
@@ -71,10 +68,10 @@ body {
             border: clamp(1px, 1px + 0.01vw, 5px) solid light-dark(transparent, transparent);
         }
 
-        // &:not([class*="btn-outline-"]) {
-        //     border: none;
-        // }
-
+        &:hover {
+            filter: brightness(120%);
+            text-shadow: 0.031px 0.031px ligt-dark(var(--white), var(--border-gray));
+        }
 
         &.btn-sm {
             padding: clamp(0.4rem, 0.25rem + 0.1vw, 0.5rem) clamp(2rem, 0.75rem + 0.5vw, 3rem);
@@ -100,7 +97,7 @@ body {
                 }
 
                 &:hover {
-                    filter: brightness(120%);
+
                     background-color: var(--main-color);
                     border: clamp(1px, 1px + 0.01vw, 5px) solid light-dark(var(--main-color), var(--main-color));
 
@@ -118,9 +115,9 @@ body {
             }
 
             &.btn-outline-primary {
-                color: var(--main-color);
-                border: clamp(1px, 1px + 0.01vw, 5px) solid light-dark(var(--main-color), var(--main-color));
-                // outline: clamp(1px, 1px + 0.01vw, 5px) solid light-dark(var(--main-color), var(--main-color));
+                color: light-dark(var(--main-color), color-mix(in srgb, var(--main-color), white 50%));
+                border: clamp(1px, 1px + 0.01vw, 5px) solid light-dark(var(--main-color), color-mix(in srgb, var(--main-color), white 50%));
+
 
                 &:disabled {
                     opacity: 0.7;
@@ -229,11 +226,15 @@ body {
                     color: var(--white);
                     background-color: var(--main-color);
 
+                    // @media (prefers-color-scheme: dark) {
+                    //     filter: saturate(85%);
+                    // }
+
                     button.modal-close {
                         border: none;
                         border-radius: 50%;
                         color: var(--main-color);
-                        background-color: var(--white);
+                        background-color: light-dark(var(--white), #f5f5f5);
 
                         svg {
                             height: calc(1rem + 0.5vw);
@@ -247,6 +248,7 @@ body {
                             }
 
                             line {
+                                color: var(--main-color);
                                 stroke-width: clamp(2px, 1px + 0.25dvw, 5px);
                             }
                         }
@@ -370,7 +372,7 @@ body {
 
             input {
                 background-color: light-dark(#EDEDED, #EDEDED);
-                color: light-dark(#B6B6B6, #B6B6B6);
+                color: light-dark(var(--main-black), #B6B6B6);
 
                 &:focus-visible {
                     border: clamp(1px, 1px + 0.1vw, 5px) solid light-dark(var(--main-color), var(--main-color));
@@ -427,12 +429,65 @@ body {
     }
 
     .ql-toolbar {
+        height: fit-content;
+        background-color: light-dark(transparent, #ccc);
         margin-bottom: 0;
+
+        &.ql-snow {
+            button {
+
+                svg {
+
+                    path.ql-stroke,
+                    path.ql-fill,
+                    line.ql-stroke,
+                    rect.ql-fill {
+                        stroke: light-dark(var(--main-black), #f5f5f5);
+                    }
+
+                    line.ql-stroke {
+                        min-width: 0.278vw;
+                        min-height: 0.278vw;
+                    }
+                }
+
+                &:hover {
+                    stroke-width: 2.1;
+                    color: light-dark(var(--main-black), var(--main-color));
+
+                    svg {
+
+                        path.ql-stroke,
+                        path.ql-fill,
+                        line.ql-stroke,
+                        rect.ql-fill {
+                            stroke: light-dark(var(--main-color), var(--main-color));
+                        }
+
+                        path.ql-fill,
+                        rect.ql-fill {
+                            stroke-width: 0.75;
+                        }
+                    }
+
+
+                }
+
+                svg {
+                    height: clamp(1rem, 0.5rem + 0.5vw + 1vh, 1.75rem);
+                    // width: clamp(1rem, 0.5rem + 0.5vw + 1vh, 1.75rem);
+                }
+            }
+        }
     }
 
     .ql-editor {
         transform: translateY(-1%);
         margin-top: 0;
+
+        &.form-control {
+            border-radius: 0;
+        }
     }
 }
 
@@ -577,4 +632,66 @@ section.modals-container {
         font-weight: 700;
         border-radius: calc(0.25rem + 0.1vw);
     }
+}
+
+button.add-new {
+    width: 100%;
+    // display: flex;
+    // flex-grow: 1;
+    // align-items: center;
+    // justify-content: center;
+    border: calc(1px + 0.06dvw) solid rgba(217, 217, 217, 1);
+    background-color: light-dark(var(--white), #ccc);
+    font-size: calc(0.75rem + 0.6575vw);
+    font-weight: bold;
+    color: light-dark(rgba(134, 134, 134, 1), rgb(99, 99, 99));
+    @extend %table-row-height;
+
+    &:hover {
+        background-color: light-dark(rgb(236, 236, 236, 1), rgb(181, 180, 180));
+        font-weight: bolder;
+        color: var(--main-black);
+    }
+
+    // &:focus-visible {
+    //     box-shadow: var(--box-shadow-size), color-mix(in srgb, var(--dark-gray) 25%, transparent);
+    // }
+}
+
+.dt-rowReorder-float {
+    color: var(--main-color);
+    vertical-align: middle;
+    cursor: -webkit-grabbing;
+    cursor: grabbing;
+    font-weight: bold;
+
+    .fa,
+    .fas {
+        color: var(--main-color);
+    }
+}
+
+tr.dt-rowReorder-moving {
+    font-weight: bold;
+    outline: calc(0.5px + 0.06dvw) dotted #0075FF;
+
+    // @media (prefers-color-scheme: dark) {
+    //     background-color: var(--main-black);
+    // }
+
+}
+
+div.dt-rowReorder-float-parent {
+    outline: calc(1px + 0.1dvw) solid var(--main-color);
+    border-radius: none;
+
+    table.dt-rowReorder-float {
+        // @media (prefers-color-scheme: dark) {
+        //     background: color-mix(in srgb, var(--main-black), white);
+        //     color: var(--main-black);
+        // }
+
+    }
+
+
 }

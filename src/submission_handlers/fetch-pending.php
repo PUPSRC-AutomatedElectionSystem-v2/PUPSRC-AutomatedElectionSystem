@@ -22,11 +22,11 @@ $orderDir = "";
 
 switch ($sortOrder) {
     case 'asc':
-        $orderBy = "email"; // Sorting alphabetically by email
+        $orderBy = "first_name"; // Sorting alphabetically by first name
         $orderDir = 'ASC';
         break;
     case 'desc':
-        $orderBy = "email"; // Sorting alphabetically by email
+        $orderBy = "first_name"; // Sorting alphabetically by first name
         $orderDir = 'DESC';
         break;
     case 'newest':
@@ -43,7 +43,7 @@ switch ($sortOrder) {
         break;
 }
 
-$query = "SELECT voter_id, email, acc_created FROM voter WHERE account_status = ? AND role = ? ORDER BY $orderBy $orderDir LIMIT ? OFFSET ?";
+$query = "SELECT * FROM voter WHERE account_status = ? AND role = ? ORDER BY $orderBy $orderDir LIMIT ? OFFSET ?";
 error_log("SQL Query: " . $query); 
 $stmt = $conn->prepare($query);
 $account_status = 'for_verification';
@@ -56,7 +56,8 @@ $voters = [];
 while ($row = $result->fetch_assoc()) {
     $voters[] = [
         'voter_id' => $row['voter_id'],
-        'email' => $row['email'],
+        'student_id' => $row['student_id'],
+        'email' =>$row['first_name'] . ' ' . $row['last_name'],
         'acc_created' => $row['acc_created']
     ];
 }

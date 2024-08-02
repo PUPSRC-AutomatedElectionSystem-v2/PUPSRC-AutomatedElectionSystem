@@ -1,4 +1,5 @@
 $(document).ready(function () {
+
   // Toggle password visibility
   $("#reset-password-toggle-1").click(function () {
     togglePasswordVisibility("#password", $(this));
@@ -10,12 +11,10 @@ $(document).ready(function () {
 
   function togglePasswordVisibility(inputSelector, toggleElement) {
     var passwordInput = $(inputSelector);
-    var eyeIcon = toggleElement.find("i");
-
     var type = passwordInput.attr("type") === "password" ? "text" : "password";
     passwordInput.attr("type", type);
-
-    eyeIcon.toggleClass("fa-eye-slash fa-eye");
+    toggleElement.find("i").toggleClass("fa-eye-slash fa-eye"); // Toggle eye icon classes
+    checkInputs(); // Check password requirements after toggling visibility
   }
 
   // Function to prevent spaces from input fields
@@ -28,6 +27,8 @@ $(document).ready(function () {
   // Disallow whitespaces from input fields
   $("#password, #password_confirmation").on("input", function (event) {
     preventSpaces(event);
+    checkInputs(); // Check password requirements on input change
+    updateCheckIconVisibility(); // Update check icon visibility
   });
 
   // Truncate password if exceeds 20 characters
@@ -66,24 +67,48 @@ $(document).ready(function () {
     ) {
       submitButton.prop("disabled", true);
       errorText.hide();
+      updateCheckIconVisibility(); // Update check icon visibility
+      $(".password-requirements").removeClass("show"); // Hide password requirements
     } else if (passwordValue === passwordConfirmationValue) {
       submitButton.prop("disabled", false);
       errorText.hide();
+      updateCheckIconVisibility(); // Update check icon visibility
+      $(".password-requirements").removeClass("show"); // Hide password requirements
     } else {
       submitButton.prop("disabled", true);
       errorText.show();
+      updateCheckIconVisibility(); // Update check icon visibility
+      $(".password-requirements").addClass("show"); // Show password requirements
+    }
+  }
+
+  // Update check icon visibility based on password requirements
+  function updateCheckIconVisibility() {
+    var passwordValue = $("#password").val().trim();
+    var passwordConfirmationValue = $("#password_confirmation").val().trim();
+    var checkIcons = $("#reset-password-toggle-1 .fa-check-circle, #reset-password-toggle-2 .fa-check-circle");
+
+    if (
+      passwordConfirmationValue === "" ||
+      passwordValue.length < 8 || passwordValue.length > 20 ||
+      !/[A-Z]/.test(passwordValue) ||
+      !/[a-z]/.test(passwordValue) ||
+      !/\d/.test(passwordValue) ||
+      !/[\W_]/.test(passwordValue)
+    ) {
+      checkIcons.hide(); // Hide check icon if requirements not met
+    } else if (passwordValue === passwordConfirmationValue) {
+      checkIcons.show(); // Show check icon if requirements are met
+    } else {
+      checkIcons.hide(); // Hide check icon if passwords do not match
     }
   }
 
   // Initial check
   checkInputs();
+  updateCheckIconVisibility();
 
-  // Check inputs on input change
-  $("#password, #password_confirmation").on("input", function () {
-    checkInputs();
-  });
-
-  // Show password requirements
+  // Show password requirements on password input
   $("#password").on("input", function () {
     var value = $(this).val().trim();
     var passwordRequirements = $(".password-requirements");

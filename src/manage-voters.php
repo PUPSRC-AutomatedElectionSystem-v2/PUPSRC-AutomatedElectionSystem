@@ -33,10 +33,12 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 		<link rel="stylesheet" href="styles/core.css" />
 		<link rel="stylesheet" href="styles/tables.css" />
 		<link rel="stylesheet" href="styles/manage-voters.css" />
+		<link rel="preload" href="images/resc/ivote-icon.webp" as="image">
+		<link rel="preload" href="styles/loader.css" as="style" />
 		<link rel="stylesheet" href="styles/loader.css" />
 		<link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-		<script src="scripts/loader.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
 
 	</head>
 
@@ -66,198 +68,44 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
 
 			<div class="container">
-				<div class="row justify-content-center">
-					<!-- FOR VERIFICATION TABLE -->
-					<div class="col-md-10 card-box">
-						<div class="container-fluid">
-							<div class="card-box">
-								<div class="row">
-									<div class="content">
-										<div class="table-wrapper">
-
-											<!-- For empty state: see first if the table has value -->
-											<?php if ($to_verify_tbl->num_rows > 0) { ?>
-
-												<div class="table-title">
-													<div class="row pending-accs-table">
-														<!-- HEADER -->
-														<div class="col-sm-6  header-text">
-															<p class="fs-3 main-color fw-bold ls-10 spacing-6">Pending
-																Registrations</p>
-														</div>
-
-
-
-														<div class="col-sm-6">
-															<div class="row">
-																<div class="col-md-12 filters-sort">
-																	<!-- Delete -->
-																	<div class="d-inline-block">
-																		<button
-																			class="delete-btn pending-delete-btn fs-7 spacing-6 fw-medium"
-																			type="button" id="dropdownMenuButton"
-																			data-bs-toggle="dropdown" aria-haspopup="true"
-																			aria-expanded="false">
-																			<i class="fa-solid fa-trash-can fa-sm"></i>
-																			Delete
-																		</button>
-																		<span class="light-gray-accent fw-bold ps-3">|</span>
-																	</div>
-
-																	<!-- Sort By -->
-																	<div class="d-inline-block ps-3">
-																		<form class="d-inline-block">
-																			<div class="dropdown sort-by">
-																				<button
-																					class="sortby-tbn fs-7 spacing-6 fw-medium"
-																					type="button" id="dropdownMenuButtonPending"
-																					data-bs-toggle="dropdown"
-																					aria-haspopup="true" aria-expanded="false">
-																					<i
-																						class="fa-solid fa-arrow-down-wide-short fa-sm"></i>
-																					Sort by
-																				</button>
-																				<div class="dropdown-menu dropdown-menu-end"
-																					aria-labelledby="dropdownMenuButtonPending"
-																					style="padding: 0.5rem">
-																					<li class="dropdown-item ps-3 fs-7 fw-medium"
-																						data-sort="newest">Newest to Oldest</li>
-																					<li class="dropdown-item ps-3 fs-7 fw-medium"
-																						data-sort="oldest">Oldest to Newest</li>
-																					<li class="dropdown-item ps-3 fs-7 fw-medium"
-																						data-sort="asc">A to Z (Ascending)</li>
-																					<li class="dropdown-item ps-3 fs-7 fw-medium"
-																						data-sort="desc">Z to A (Descending)
-																					</li>
-																				</div>
-																			</div>
-																		</form>
-																	</div>
-
-																	<!-- Search -->
-																	<div class="search-container">
-																		<i data-feather="search" class="feather-xs im-cust-2"
-																			style="color: black"></i>
-																		<input class="search-input fs-7 spacing-6 fw-medium"
-																			type="text" placeholder=" Search..."
-																			id="searchPending">
-																	</div>
-																</div>
-															</div>
-														</div>
-													</div>
-													<table class="table" id="pendingTable">
-														<thead class="tl-header pending-accs-table">
-															<tr>
-																<th
-																	class="col-md-3 text-center tl-left d-none checkbox-all-pending">
-																	<input type="checkbox" id="selectAllPending">
-																</th>
-																<th
-																	class="col-md-6 tl-left text-center del-center fs-7 fw-bold spacing-5">
-																	<i data-feather="mail" class="feather-xs im-cust"></i>Email
-																	Address
-																</th>
-																<th
-																	class="col-md-6 tl-right text-center fs-7 fw-bold spacing-5">
-																	<i data-feather="calendar"
-																		class="feather-xs im-cust"></i>Date Registered
-																</th>
-															</tr>
-														</thead>
-														<tbody>
-															<?php while ($row = $to_verify_tbl->fetch_assoc()) { ?>
-																<!-- Generated in table-funcs.js -->
-
-															<?php } ?>
-														</tbody>
-													</table>
-													<div class="clearfix col-xs-12">
-
-														<ul class="pagination" id="pagination">
-															<!-- For Verification pagination will be generated here -->
-														</ul>
-
-														<div class="d-flex justify-content-start pt-2 buttons-toggle-delete">
-															<button id="deleteSelectedPending"
-																class="btn btn-danger px-sm-4 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6 final-delete-btn-pending d-none rounded-3"
-																disabled>
-																<span class="delete-text">Delete Selected</span>
-																<span class="delete-xs">Delete</span>
-															</button>
-
-															<button
-																class="btn btn-light btn-cancel px-sm-4 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6 rounded-3 cancel-pending d-none">Cancel</button>
-														</div>
-													</div>
-
-													<!-- If empty, show empty state -->
-												<?php } else { ?>
-
-													<div class="table-title">
-														<div class="row">
-															<!-- HEADER -->
-															<div class="col-sm-12">
-																<p class="fs-3 main-color fw-bold ls-10 spacing-6">Pending
-																	Registrations</p>
-															</div>
-														</div>
-														<div class="col-md-12 no-registration text-center">
-															<img src="images/resc/folder-empty.png" class="illus">
-															<p class="fw-bold spacing-6 black">No registrations yet</p>
-															<p class="spacing-3 pt-1 black">You’ll find account registrations
-																right
-																here!
-															</p>
-														</div>
-													<?php } ?>
-
-												</div>
-
-											</div>
-
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<!-- VERIFIED TABLE -->
-					<div class="row justify-content-center verified-container">
-						<div class="col-md-10 card-box  mt-md-5">
+				<?php if ($org_name !== 'sco'): ?>
+					<div class="row justify-content-center mb-md-5">
+						<!-- FOR VERIFICATION TABLE -->
+						<div class="col-md-10 card-box">
 							<div class="container-fluid">
 								<div class="card-box">
 									<div class="row">
 										<div class="content">
 											<div class="table-wrapper">
-												<?php if ($verified_tbl->num_rows > 0) { ?>
+
+												<!-- For empty state: see first if the table has value -->
+												<?php if ($to_verify_tbl->num_rows > 0) { ?>
+
 													<div class="table-title">
-														<div class="row verified-accs-table">
-															<!-- Table Header -->
-															<div class="col-sm-6">
-																<p class="fs-3 main-color fw-bold ls-10 spacing-6">Voters'
-																	Accounts</p>
+														<div class="row pending-accs-table">
+															<!-- HEADER -->
+															<div class="col-sm-6  header-text">
+																<p class="fs-3 main-color fw-bold ls-10 spacing-6">Pending
+																	Registrations</p>
 															</div>
+
+
+
 															<div class="col-sm-6">
 																<div class="row">
-
-
 																	<div class="col-md-12 filters-sort">
 																		<!-- Delete -->
 																		<div class="d-inline-block">
 																			<button
-																				class="delete-btn verified-delete-btn fs-7 spacing-6 fw-medium"
+																				class="delete-btn pending-delete-btn fs-7 spacing-6 fw-medium"
 																				type="button" id="dropdownMenuButton"
 																				data-bs-toggle="dropdown" aria-haspopup="true"
 																				aria-expanded="false">
 																				<i class="fa-solid fa-trash-can fa-sm"></i>
 																				Delete
 																			</button>
-																			<span
-																				class="light-gray-accent fw-bold ps-3">|</span>
+																			<span class="light-gray-accent fw-bold ps-3">|</span>
 																		</div>
-																		<!-- Filters -->
 
 																		<!-- Sort By -->
 																		<div class="d-inline-block ps-3">
@@ -265,27 +113,22 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 																				<div class="dropdown sort-by">
 																					<button
 																						class="sortby-tbn fs-7 spacing-6 fw-medium"
-																						type="button"
-																						id="dropdownMenuButtonVerified"
+																						type="button" id="dropdownMenuButtonPending"
 																						data-bs-toggle="dropdown"
-																						aria-haspopup="true"
-																						aria-expanded="false">
+																						aria-haspopup="true" aria-expanded="false">
 																						<i
 																							class="fa-solid fa-arrow-down-wide-short fa-sm"></i>
 																						Sort by
 																					</button>
 																					<div class="dropdown-menu dropdown-menu-end"
-																						aria-labelledby="dropdownMenuButtonVerified"
+																						aria-labelledby="dropdownMenuButtonPending"
 																						style="padding: 0.5rem">
 																						<li class="dropdown-item ps-3 fs-7 fw-medium"
-																							data-sort="newest">Newest to Oldest
-																						</li>
+																							data-sort="newest">Newest to Oldest</li>
 																						<li class="dropdown-item ps-3 fs-7 fw-medium"
-																							data-sort="oldest">Oldest to Newest
-																						</li>
+																							data-sort="oldest">Oldest to Newest</li>
 																						<li class="dropdown-item ps-3 fs-7 fw-medium"
-																							data-sort="asc">A to Z (Ascending)
-																						</li>
+																							data-sort="asc">A to Z (Ascending)</li>
 																						<li class="dropdown-item ps-3 fs-7 fw-medium"
 																							data-sort="desc">Z to A (Descending)
 																						</li>
@@ -296,12 +139,190 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
 																		<!-- Search -->
 																		<div class="search-container">
-																			<i data-feather="search"
-																				class="feather-xs im-cust-2"
-																				style="color: black"></i>
 																			<input class="search-input fs-7 spacing-6 fw-medium"
-																				type="text" placeholder=" Search..."
-																				id="searchVerified">
+																			type="text" placeholder="&#xf002;  Search..."
+																				id="searchPending" maxlength="100">
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+														<table class="table" id="pendingTable">
+															<thead class="tl-header pending-accs-table">
+																<tr>
+																	<th
+																		class="col-md-3 tl-left d-none checkbox-all-pending text-center">
+																		<input type="checkbox" id="selectAllPending">
+																	</th>
+																	<th
+																		class="col-md-3 del-center tl-left text-center fs-7 fw-bold spacing-5">
+																		<i data-feather="user"
+																			class="feather-xs im-cust"></i>Full Name
+																	</th>
+
+																	<th class="col-md-3 text-center fs-7 fw-bold spacing-5">
+																		<i data-feather="star"
+																			class="feather-xs im-cust"></i>Student ID
+																	</th>
+																	<th
+																		class="col-md-3 tl-right text-center fs-7 fw-bold spacing-5">
+																		<i data-feather="calendar"
+																			class="feather-xs im-cust"></i>Date Registered
+																	</th>
+																</tr>
+															</thead>
+															<tbody>
+																<?php while ($row = $to_verify_tbl->fetch_assoc()) { ?>
+																	<!-- Generated in table-funcs.js -->
+
+																<?php } ?>
+															</tbody>
+														</table>
+														<div class="clearfix col-xs-12">
+
+															<ul class="pagination" id="pagination">
+																<!-- For Verification pagination will be generated here -->
+															</ul>
+
+															<div class="d-flex justify-content-start pt-2 buttons-toggle-delete">
+																<button id="deleteSelectedPending"
+																	class="btn btn-danger px-sm-4 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6 final-delete-btn-pending d-none rounded-3"
+																	disabled>
+																	<span class="delete-text">Delete Selected</span>
+																	<span class="delete-xs">Delete</span>
+																</button>
+
+																<button
+																	class="btn btn-light btn-cancel px-sm-4 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6 rounded-3 cancel-pending d-none">Cancel</button>
+															</div>
+														</div>
+
+														<!-- If empty, show empty state -->
+													<?php } else { ?>
+
+														<div class="table-title">
+															<div class="row">
+																<!-- HEADER -->
+																<div class="col-sm-12">
+																	<p class="fs-3 main-color fw-bold ls-10 spacing-6">Pending
+																		Registrations</p>
+																</div>
+															</div>
+															<div class="col-md-12 no-registration text-center">
+																<img src="images/resc/folder-empty.png" class="illus">
+																<p class="fw-bold spacing-6 black">No registrations yet</p>
+																<p class="spacing-3 pt-1 black">You’ll find account registrations
+																	right
+																	here!
+																</p>
+															</div>
+														<?php } ?>
+
+													</div>
+
+												</div>
+
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					<?php endif; ?>
+
+					<!-- VERIFIED TABLE -->
+					<div class="row justify-content-center verified-container">
+						<div class="col-md-10 card-box">
+							<div class="container-fluid">
+								<div class="card-box">
+									<div class="row">
+										<div class="content">
+											<div class="table-wrapper">
+												<?php if ($verified_tbl->num_rows > 0) { ?>
+													<div class="table-title">
+														<div class="row verified-accs-table">
+															<!-- Table Header -->
+															<div class="col-sm-5">
+																<p class="fs-3 main-color fw-bold ls-10 spacing-6">Voters'
+																	Accounts</p>
+															</div>
+															<div class="col-sm-7">
+																<div class="row">
+
+
+																	<div class="col-md-12 filters-sort">
+																		<div class="funcs">
+																			<!-- Delete -->
+																			<div class="d-inline-block">
+																				<button
+																					class="pe-3 delete-btn verified-delete-btn fs-7 spacing-6 fw-medium"
+																					type="button" id="dropdownMenuButton"
+																					data-bs-toggle="dropdown"
+																					aria-haspopup="true" aria-expanded="false">
+																					<i class="fa-solid fa-trash-can fa-sm"></i>
+																					<span class="toggle-visibility"> Delete
+																					</span>
+																				</button>
+
+																				<button
+																					class="sortby-tbn fs-7 spacing-6 fw-medium"
+																					type="button" onclick="downloadExcel()">
+																					<i class="fa-solid fa-download fa-sm"></i>
+																					<span
+																						class="toggle-visibility">Export</span>
+																				</button>
+
+
+																				<span
+																					class="light-gray-accent fw-bold ps-3 hide-vertical">|</span>
+																			</div>
+																			<!-- Filters -->
+
+																			<!-- Sort By -->
+																			<div class="d-inline-block padding-sortby">
+																				<form class="d-inline-block">
+																					<div class="dropdown sort-by">
+																						<button
+																							class="sortby-tbn fs-7 spacing-6 fw-medium"
+																							type="button"
+																							id="dropdownMenuButtonVerified"
+																							data-bs-toggle="dropdown"
+																							aria-haspopup="true"
+																							aria-expanded="false">
+																							<i
+																								class="fa-solid fa-arrow-down-wide-short fa-sm"></i>
+																							Sort by
+																						</button>
+																						<div class="dropdown-menu dropdown-menu-end"
+																							aria-labelledby="dropdownMenuButtonVerified"
+																							style="padding: 0.5rem">
+																							<li class="dropdown-item ps-3 fs-7 fw-medium"
+																								data-sort="newest">Newest to
+																								Oldest
+																							</li>
+																							<li class="dropdown-item ps-3 fs-7 fw-medium"
+																								data-sort="oldest">Oldest to
+																								Newest
+																							</li>
+																							<li class="dropdown-item ps-3 fs-7 fw-medium"
+																								data-sort="asc">A to Z
+																								(Ascending)
+																							</li>
+																							<li class="dropdown-item ps-3 fs-7 fw-medium"
+																								data-sort="desc">Z to A
+																								(Descending)
+																							</li>
+																						</div>
+																					</div>
+																				</form>
+																			</div>
+																		</div>
+
+																		<!-- Search -->
+																		<div class="search-container">
+																			<input class="search-input fs-7 spacing-6 fw-medium"
+																			type="text" placeholder="&#xf002;  Search..."
+																				id="searchVerified" maxlength="100">
 																		</div>
 																	</div>
 
@@ -319,14 +340,13 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 																	</th>
 																	<th
 																		class="col-md-3 del-center tl-left text-center fs-7 fw-bold spacing-5">
-																		<i data-feather="mail"
-																			class="feather-xs im-cust"></i>Email
-																		Address
+																		<i data-feather="user"
+																			class="feather-xs im-cust"></i>Full Name
 																	</th>
 
 																	<th class="col-md-3 text-center fs-7 fw-bold spacing-5">
-																		<i data-feather="check-circle"
-																			class="feather-xs im-cust"></i>Status
+																		<i data-feather="star"
+																			class="feather-xs im-cust"></i>Student ID
 																	</th>
 																	<th
 																		class="col-md-3 tl-right text-center fs-7 fw-bold spacing-5">
@@ -461,8 +481,8 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 									<div class="row">
 										<div class="col-md-12 pb-3">
 											<p class="fw-bold fs-3 success-color spacing-4">Deleted successfully</p>
-											<p class="fw-medium spacing-5 fs-7">The deleted account has been moved to <span
-													class="fw-bold">Recycle Bin</span>.
+											<p class="fw-medium spacing-5 fs-7">The deleted account(s) has been moved to
+												<span class="fw-bold">Recycle Bin</span>.
 											</p>
 										</div>
 									</div>
@@ -479,9 +499,10 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 				</div>
 
 				<script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-				<script src="scripts/script.js"></script>
+				<script type="module" src="scripts/script.js"></script>
 				<script src="scripts/feather.js"></script>
 				<script src="scripts/table-funcs.js"></script>
+				<script src="scripts/loader.js" defer></script>
 	</body>
 
 

@@ -3,7 +3,6 @@ include_once str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/includes/classes/
 require_once FileUtils::normalizeFilePath('includes/session-handler.php');
 require_once FileUtils::normalizeFilePath('includes/classes/session-manager.php');
 require_once FileUtils::normalizeFilePath('includes/classes/csrf-token.php');
-// require_once FileUtils::normalizeFilePath('includes/classes/db-connector.php');
 include_once FileUtils::normalizeFilePath('includes/session-exchange.php');
 include_once FileUtils::normalizeFilePath('includes/default-time-zone.php');
 include_once FileUtils::normalizeFilePath('includes/error-reporting.php');
@@ -29,38 +28,6 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
     unset($_SESSION['maxLimit']);
 }
 
-// $connection = DatabaseConnection::connect();
-
-// $sql = "";
-// $user_data = array();
-// $head_admin = 'head_admin';
-// $admin = 'admin';
-
-// // Checks if organization is not set to sco
-// if($_SESSION['organization'] !== 'sco') {
-//     $sql = "SELECT email, account_status FROM voter";
-//     $stmt = $connection->prepare($sql);
-// }
-// else {
-//     $sql = "SELECT email, account_status FROM voter WHERE role = ? OR role = ?";
-//     $stmt = $connection->prepare($sql);
-//     $stmt->bind_param("ss", $head_admin, $admin);
-// }
-
-// $stmt->execute();
-// $result = $stmt->get_result();
-
-// if($result->num_rows > 0) {
-//     while($row = $result->fetch_assoc()) {
-//         $email = $row['email'];
-//         $account_status = $row['account_status'];
-//         // Store email and status as key value pairs
-//         $user_data[$email] = $account_status;
-//     }
-// }
-
-// $connection->close();
-
 ?>
 
 <!DOCTYPE html>
@@ -69,6 +36,14 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="2024 BSIT 3-1" content="PUPSRC iVOTE">
+
+    <!-- Preloader Stylesheet and Image -->
+    <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
+    <link rel="preload" href="styles/loader.css" as="style" />
+    <link rel="stylesheet" href="styles/loader.css" />
 
     <!-- Fontawesome Link for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
@@ -87,17 +62,16 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
     <link rel="stylesheet" href="styles/dist/landing.css">
     <link rel="stylesheet" href="styles/orgs/<?php echo $org_name; ?>.css">
 
-    <!-- Preloader Stylesheet and Image -->
-    <link rel="preload" href="images/resc/ivote-icon.webp" as="image">
-    <link rel="stylesheet" href="styles/loader.css" />
-
     <!-- Favicon -->
     <link rel="icon" href="images/resc/ivote-favicon.png" type="image/x-icon">
     <title>Login</title>
 
     <!-- Bootstrap JavaScript -->
     <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- CDN jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
     <!-- Custom JavaScript -->
     <script src="scripts/voter-login.js" defer></script>
     <script src="scripts/loader.js" defer></script>
@@ -106,21 +80,16 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
 <body class="login-body" id="<?php echo strtoupper($org_name); ?>-body">
 
     <!-- Preloader -->
-    <?php include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/loader.html'); ?>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg fixed-top" id="login-navbar">
-        <div class="container-fluid d-flex justify-content-center align-items-center">
-            <a href="landing-page.php"><img src="images/resc/iVOTE-Landing2.webp" id="ivote-logo-landing-header" alt="ivote-logo"></a>
-        </div>
-    </nav>
-
+    <?php 
+    include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/loader.html');
+    include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/alt-header.php'); 
+    ?>
 
     <div class="container-fluid">
-        <div class="row">
+        <div class="row parent-row">
             <div class="col-md-6 login-left-section">
                 <div class="organization-names">
-                    <img src="images/logos/<?php echo $org_name; ?>.webp" class="login-logo pb-3" alt="<?php echo strtoupper($org_name) . ' '; ?>Logo">
+                    <img src="images/logos/<?php echo $org_name; ?>.webp" class="login-logo pb-3" loading="lazy" alt="<?php echo strtoupper($org_name) . ' '; ?>Logo">
                     <div class="org-full-name px-5"><?php echo strtoupper($org_full_name); ?></div>
                     <div class="login-AES px-4">AUTOMATED ELECTION SYSTEM</div>
 
@@ -134,7 +103,7 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
                 </div>
             </div>
 
-            <div class="col-md-6 login-right-section">
+            <div class="col-md-6 col-xs-12 login-right-section">
 
                 <div>
                     <form id="loginForm" action="includes/voter-login-inc.php" method="post" class="login-form needs-validation" novalidate>
@@ -165,7 +134,7 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
                         <?php endif; ?>
 
                         <div class="col-md-12 mt-0 mb-3">
-                            <input type="email" class="form-control shadow-sm email" id="Email" name="email" placeholder="Email Address" required autocomplete="email">
+                            <input type="email" class="form-control shadow-sm email" id="Email" name="email" placeholder="Email Address" required autocomplete="off">
                             
                             <div class="fw-medium text-start invalid-feedback" id="email-login-error">
                                 <!-- Display error messages here  -->
@@ -174,7 +143,7 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
 
                         <div class="col-md-12 mb-2">
                             <div class="input-group">
-                                <input type="password" class="form-control shadow-sm border border-end-0 password" name="password" placeholder="Password" id="Password" autocomplete="current-password" required>
+                                <input type="password" class="form-control shadow-sm border border-end-0 password" name="password" placeholder="Password" id="Password" autocomplete="off" required>
                                 <button class="btn shadow-sm border border-start-0 show-toggle" type="button" id="password-toggle">Show</button>
                             </div>
                             
@@ -183,13 +152,18 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
                             </div>  
                         </div>
 
-                        <div role="button" class="text-align-start" data-bs-toggle="modal" data-bs-target="#forgot-password-modal" id="forgot-password">Forgot Password</div>
+                        <div role="button" class="text-align-start fw-medium" data-bs-toggle="modal" data-bs-target="#forgot-password-modal" id="forgot-password">Forgot Password?</div>
 
                         <div class="d-grid gap-2 mt-5 mb-4">
                             <!-- <button class="btn btn-primary" name="sign_in" type="submit">Sign In</button> -->
-                            <button class="btn login-sign-in-button <?php echo strtoupper($org_name); ?>-login-button" id="loginSubmitBtn" name="sign-in" type="submit">Sign In</button>
+                            <button class="btn login-sign-in-button py-2 <?php echo strtoupper($org_name); ?>-login-button" id="loginSubmitBtn" name="sign-in" type="submit">Sign In</button>
                         </div>
-                        <p class="sign-up-redirect">Don't have an account? <a href="register.php" id="<?php echo strtolower($org_name); ?>SignUP" class="sign-up">Sign Up</a></p>
+                        <p class="sign-up-redirect fw-medium">Don't have an account? <a href="register.php" id="<?php echo strtolower($org_name); ?>SignUP" class="sign-up">Sign Up</a></p>
+                        
+                        <?php if($_SESSION['organization'] !== 'sco') : ?>
+                            <p class="acc-list-link lh-sm fw-medium pt-3">If you're an eligible member of <?php echo htmlspecialchars(strtoupper($org_acronym)); ?>, <br/>you can set up your account <a href="member-masterlist.php" class="fw-bold main-color">here.</a></p>
+                        <?php endif; ?>
+
                     </form>
                 </div>
             </div>
@@ -237,10 +211,10 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
                     <form class="needs-validation" id="forgot-password-form" name="forgot-password-form" novalidate enctype="multipart/form-data">
                         <div class="col-12 col-md-12">
                             <div class="d-flex align-items-start mb-0 pb-0 forgot-pass-email-title">
-                                <p for="email" class="form-label text-start ps-1 pb-3 forgot-password-subtitle">Don't sweat it, enter your registered email address below to recover your account.</p>
+                                <div for="email" class="form-label text-center pb-3 forgot-password-subtitle">Don't sweat it, enter your registered email address below to recover your account.</div>
                                 <!-- <p>Email Address</p> -->
                             </div>
-                            <input type="email" class="form-control shadow-sm email" id="email" name="email" placeholder="Email Address" autocomplete="email">
+                            <input type="email" class="form-control shadow-sm email" id="email" name="email" placeholder="Email Address" autocomplete="off">
                             <div class="valid-feedback text-start fw-medium" id="email-valid">
                             </div>
                             <div class="invalid-feedback text-start fw-medium" id="email-error">
@@ -259,7 +233,7 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
                                     <button type="button" id="cancelReset" class="btn border border-0 cancel-button w-100" data-bs-dismiss="modal">Cancel</button>
                                 </div>
                                 <div class="col-7" id="sendBtnContainer">
-                                    <button class="btn send-link-button w-100" id="<?php echo strtoupper($org_name); ?>-login-button" type="submit" name="send-email-btn">Send Link</button>
+                                    <button class="btn fw-semibold send-link-button w-100" id="<?php echo strtoupper($org_name); ?>-login-button" type="submit" name="send-email-btn">Send Link</button>
                                     <script>
                                         const ORG_NAME = "<?php echo strtoupper($org_name) . '-login-button'; ?>";
                                     </script>

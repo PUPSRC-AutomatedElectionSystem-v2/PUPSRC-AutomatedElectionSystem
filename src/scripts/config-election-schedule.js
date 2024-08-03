@@ -426,6 +426,11 @@ ConfigPage.toggleEditState = function () {
         let saveBtn = document.getElementById(`submit-schedule`)
         saveBtn.textContent = "Save Changes";
     } else {
+
+        if (schedSettingsState == 'set') {
+            return;
+        }
+
         schedSettings.setAttribute('data-state', 'view');
         ConfigPage.datePickerStart.setAttribute('readOnly', true);
         ConfigPage.timePickerStart.setAttribute('readOnly', true);

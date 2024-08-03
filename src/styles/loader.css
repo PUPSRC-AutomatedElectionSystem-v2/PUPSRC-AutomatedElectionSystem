@@ -6,7 +6,7 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    z-index: 9999;
+    z-index: 999;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,8 +14,8 @@
   }
   
   .loader {
-    width: 95px;
-    height: 95px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     position: relative;
     background: url('../images/resc/ivote-icon.webp') center center no-repeat;

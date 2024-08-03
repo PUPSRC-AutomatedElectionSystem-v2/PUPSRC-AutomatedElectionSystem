@@ -177,4 +177,3 @@ WHERE role = 'student_voter'
         ];
     }
 }
-?>

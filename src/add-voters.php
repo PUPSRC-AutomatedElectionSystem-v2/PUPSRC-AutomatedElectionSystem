@@ -260,17 +260,17 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-body p-0">
-                <div class="d-flex justify-content-end p-3">
+                <div class="d-flex justify-content-end px-3">
                     <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray" id="formatModalClose" data-bs-dismiss="modal"></i>
                 </div>
-                <div class="text-center px-3 pb-3">
+                <div class="text-center px-3 pt-4">
                     <div class="col-md-12">
                         <img src="images\resc\voters-format\Sample.png" class="img-fluid" alt="Required Format">
                     </div>
                     <div class="row">
-                        <div class="col-md-12 pb-3 pt-4">
-                            <p class="fw-bold spacing-4">Required Format</p>
-                            <p class="fw-medium spacing-5 pt-2">This is the required format for importing voters. Please ensure your file matches this structure.</p>
+                        <div class="col-md-12 pb-3">
+                            <p class="fw-bold spacing-4 text-danger">Required Format</p>
+                            <p class="fw-medium spacing-5">This is the required format for importing voters. Please ensure your file matches this structure.</p>
                         </div>
                     </div>
                 </div>

@@ -277,7 +277,6 @@ function actualImport($filePath, $conn, $type = 'csv') {
 function insertData($data, $conn) {
     $role = 'student_voter';
     $accountStatus = 'pending_setup';
-    $voterStatus = 'active';
     $voteStatus = NULL;
     
     $password = generatePassword();
@@ -286,12 +285,12 @@ function insertData($data, $conn) {
     $middleName = empty($data[3]) ? NULL : $data[3];
     $suffix = empty($data[4]) ? NULL : $data[4];
 
-    $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, email, password, role, account_status, voter_status, vote_status) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, email, password, role, account_status,  vote_status) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     try {
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssssssssss", $data[0], $data[1], $data[2], $middleName, $suffix, $data[5], $hashedPassword, $role, $accountStatus, $voterStatus, $voteStatus);
+        $stmt->bind_param("ssssssssss", $data[0], $data[1], $data[2], $middleName, $suffix, $data[5], $hashedPassword, $role, $accountStatus, $voteStatus);
         $result = $stmt->execute();
         $stmt->close();
         

@@ -69,25 +69,20 @@ $(document).ready(function() {
             url: 'submission_handlers/import.php',
             type: 'POST',
             data: formData,
-            dataType: 'json',
             processData: false,
             contentType: false,
             success: function(response) {
                 console.log("Import response:", response);
-                if (response.status === 'success') {
-                    $('#importDoneModal').modal('show');
-                } else if (response.status === 'error') {
-                    if (response.errorType === 'duplicates') {
-                        console.log("Duplicates:", response.duplicates);
-                        console.log("Invalid IDs:", response.invalidIds);
-                        showDuplicatesModal(response);
-                    } else if (response.errorType === 'invalid_content') {
-                        showInvalidContentModal(response.message);
+                try {
+                    var result = JSON.parse(response);
+                    if (result.status === 'success') {
+                        $('#importDoneModal').modal('show');
                     } else {
-                        showInvalidContentModal('An unexpected error occurred during the import process.');
+                        showInvalidContentModal(result.message, result.duplicates, result.invalidIds);
                     }
-                } else {
-                    showInvalidContentModal('An unexpected response was received from the server.');
+                } catch (e) {
+                    console.error("Error parsing response:", e);
+                    showInvalidContentModal('An unexpected error occurred during the import process.');
                 }
             },
             error: function(jqXHR, textStatus, errorThrown) {
@@ -117,45 +112,37 @@ $(document).ready(function() {
         $('#onlyPDFAllowedModal').modal('show');
     }
 
-    function showDuplicatesModal(response) {
-        console.log("showDuplicatesModal called with:", response);
-        let title = 'Import Failed';
-        let content = `<p class="fw-medium spacing-5 pt-2">${response.message}</p>`;
-
-        if (response.duplicates && response.duplicates.length > 0) {
-            content += '<h5>Duplicates:</h5><ul>';
-            response.duplicates.forEach(duplicate => {
-                content += `<li>${duplicate}</li>`;
+    function showInvalidContentModal(message, duplicates, invalidIds) {
+        $('#invalidContentTitle').text('Import Failed');
+        let content = `<p>${message}</p>`;
+        
+        if (duplicates && duplicates.length > 0) {
+            content += '<h5>Duplicate Emails:</h5><ul>';
+            duplicates.forEach(email => {
+                content += `<li>${email}</li>`;
             });
             content += '</ul>';
         }
-
-        if (response.invalidIds && response.invalidIds.length > 0) {
-            content += '<h5>Invalid Column:</h5><ul>';
-            response.invalidIds.forEach(id => {
+        
+        if (invalidIds && invalidIds.length > 0) {
+            content += '<h5>Invalid Student IDs:</h5><ul>';
+            invalidIds.forEach(id => {
                 content += `<li>${id}</li>`;
             });
             content += '</ul>';
         }
-
-        $('#duplicatesTitle').text(title);
-        $('#duplicatesList').html(content);
-        $('#duplicatesModal').modal('show');
-    }
-
-    function showInvalidContentModal(message) {
-        $('#invalidContentTitle').text('Import Failed');
-        $('#invalidContentSubtitle').html(message);
+        
+        $('#invalidContentSubtitle').html(content);
         $('#invalidContentModal').modal('show');
     }
 
     // Close button for modals
-    $('#importDoneClose, #onlyPDFClose, #invalidContentClose, #duplicatesClose').on('click', function() {
+    $('#importDoneClose, #onlyPDFClose, #invalidContentClose').on('click', function() {
         $(this).closest('.modal').modal('hide');
     });
 
     // Ensure all modals are initialized
-    $('#importDoneModal, #onlyPDFAllowedModal, #invalidContentModal, #duplicatesModal').modal({
+    $('#importDoneModal, #onlyPDFAllowedModal, #invalidContentModal').modal({
         backdrop: 'static',
         keyboard: false,
         show: false

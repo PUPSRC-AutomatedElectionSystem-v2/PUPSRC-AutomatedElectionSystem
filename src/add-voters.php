@@ -271,7 +271,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                 </div>
                 <div class="text-center px-3 pb-3">
                     <div class="col-md-12">
-                        <img src="images\resc\voters-format\Sample-Voters.png" class="img-fluid" alt="Required Format">
+                        <img src="images\resc\voters-format\Sample.png" class="img-fluid" alt="Required Format">
                     </div>
                     <div class="row">
                         <div class="col-md-12 pb-3 pt-4">

@@ -25,10 +25,10 @@ class SessionManager {
     }
 
     private static function handleStudentVoter($account_status, $voter_status, $vote_status) {
-        if($account_status == 'verified' && ($voter_status == 'pending' || $voter_status == 'active') && $vote_status == NULL) {
+        if($account_status == 'verified' && $voter_status != 'inactive' && $vote_status == NULL) {
             header("Location: ballot-forms.php");
             exit();
-        } else if ($account_status == 'verified' && ($voter_status == 'pending' || $voter_status == 'active') && $vote_status != NULL) {
+        } else if ($account_status == 'verified' && $voter_status != 'inactive' && $vote_status != NULL) {
             header("Location: end-point.php");
             exit();
         }

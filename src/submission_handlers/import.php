@@ -192,14 +192,10 @@ function validateData($data, $conn) {
     }
     $checkStmt->close();
 
-    // Extract the part of the email before @example.com
-    $emailParts = explode('@', $data[5]);
-    $emailPrefix = $emailParts[0];
-
-    // Check if email prefix already exists
-    $checkSql = "SELECT * FROM voter WHERE SUBSTRING(email, 1, LOCATE('@', email) - 1) = ?";
+    // Check if email already exists
+    $checkSql = "SELECT * FROM voter WHERE email = ?";
     $checkStmt = $conn->prepare($checkSql);
-    $checkStmt->bind_param("s", $emailPrefix);
+    $checkStmt->bind_param("s", $data[5]);
     $checkStmt->execute();
     $result = $checkStmt->get_result();
     
@@ -214,7 +210,7 @@ function validateData($data, $conn) {
 
 function checkForDuplicates($filePath, $type = 'csv') {
     $studentIds = [];
-    $emailPrefixes = [];
+    $emails = [];
     $duplicates = [];
 
     if ($type === 'csv') {
@@ -222,14 +218,13 @@ function checkForDuplicates($filePath, $type = 'csv') {
         fgetcsv($file); // Skip header
         while (($data = fgetcsv($file)) !== FALSE) {
             $studentId = $data[0];
-            $emailParts = explode('@', $data[5]);
-            $emailPrefix = $emailParts[0];
+            $email = $data[5];
             
-            if (in_array($studentId, $studentIds) || in_array($emailPrefix, $emailPrefixes)) {
+            if (in_array($studentId, $studentIds) || in_array($email, $emails)) {
                 $duplicates[] = $studentId;
             } else {
                 $studentIds[] = $studentId;
-                $emailPrefixes[] = $emailPrefix;
+                $emails[] = $email;
             }
         }
         fclose($file);
@@ -240,14 +235,13 @@ function checkForDuplicates($filePath, $type = 'csv') {
         array_shift($rows); // Remove header row
         foreach ($rows as $row) {
             $studentId = $row[0];
-            $emailParts = explode('@', $row[5]);
-            $emailPrefix = $emailParts[0];
+            $email = $row[5];
             
-            if (in_array($studentId, $studentIds) || in_array($emailPrefix, $emailPrefixes)) {
+            if (in_array($studentId, $studentIds) || in_array($email, $emails)) {
                 $duplicates[] = $studentId;
             } else {
                 $studentIds[] = $studentId;
-                $emailPrefixes[] = $emailPrefix;
+                $emails[] = $email;
             }
         }
     }

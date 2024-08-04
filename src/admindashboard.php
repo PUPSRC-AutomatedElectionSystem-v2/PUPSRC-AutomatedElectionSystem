@@ -230,7 +230,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                   
                  
                         <div class="col-md-12 metrics-header justify-content-center align-items-center d-flex d-sm-flex d-md-block mt-3 ">
-                       <small class="text-center ps-4 fw-700"> Total count of voters </small>
+                       <small class="text-center ps-4 fw-700">Total Votes</small>
                         </div>
                         <div class="col-md-12 metrics-content justify-content-center  align-items-center  main-color d-flex d-sm-flex d-md-block mb-3 ">
                         <span class="text-center ps-4 fw-700 fs-20"> <?php echo $votedVotersCount; ?> out of <?php echo $totalVotersCount; ?>
@@ -243,7 +243,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                
                      
                         <div class="col-md-12 metrics-header justify-content-center  align-items-center  d-flex d-sm-flex d-md-block ">
-                        <small class="text-center ps-4 fw-700"> Abstained</small>
+                        <small class="text-center ps-4 fw-700">Total Abstained</small>
                         </div>
                         <div class="col-md-12 metrics-content justify-content-center  align-items-center  main-color d-flex d-sm-flex d-md-block">
                         <span class="text-center ps-4 fw-700">   <?php echo $abstainedVotersCount; ?> students</span>

@@ -6,15 +6,25 @@ include_once FileUtils::normalizeFilePath('includes/error-reporting.php');
 
 if(isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['role'] == 'student_voter'))  {
 
-  if((isset($_SESSION['vote_status'])) && ($_SESSION['vote_status'] == 'voted' || $_SESSION['vote_status'] == 'abstained')){
+   // ------ SESSION EXCHANGE
+   include FileUtils::normalizeFilePath('includes/session-exchange.php');
+   // ------ END OF SESSION EXCHANGE
 
-    // ------ SESSION EXCHANGE
-    include FileUtils::normalizeFilePath('includes/session-exchange.php');
-    // ------ END OF SESSION EXCHANGE
+ $connection = DatabaseConnection::connect();
+ // Assume $connection is your database connection
 
-  $connection = DatabaseConnection::connect();
-  // Assume $connection is your database connection
+   // Query for election period, cannot use the $_SESSION['electionOpen']
+  // upon reloding the page, it is checked
+  $stmt_election_open = $connection->prepare("SELECT start, close FROM election_schedule WHERE schedule_id = 0");
+  $stmt_election_open->execute();	
+  $result_election_open = $stmt_election_open->get_result();	
 
+  if($result_election_open) {	
+      $row_election = $result_election_open->fetch_assoc();	
+      $today = new DateTime();	
+      $start = new Datetime($row_election['start']);	
+      $close = new DateTime($row_election['close']);	
+      if(($today >= $start && $today <= $close) && $_SESSION['vote_status'] != NULL) {
 ?>
 
 <!DOCTYPE html>
@@ -34,12 +44,11 @@ if(isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['rol
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
   <!-- Bootstrap 5 code -->
   <link type="text/css" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../src/styles/feedback-suggestions.css">
+  <link rel="stylesheet" href="styles/feedback-suggestions.css">
   <link rel="stylesheet" href="styles/loader.css" />
-  <link rel="stylesheet" href="<?php echo '../src/styles/orgs/' . $org_acronym . '.css'; ?>">
-  <!-- Icons -->
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+  <link rel="stylesheet" href="<?php echo 'styles/orgs/' . $org_acronym . '.css'; ?>">
+  
+  <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <style> .nav-link:hover, .nav-link:focus {color: var(--<?php echo "main-color"; ?>); }
@@ -60,7 +69,7 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/topnav
     <div class="row justify-content-md-center align-items-center">
         <div class="col-lg-6 col-sm-12">
             <div class="end-point text-center">
-                <?php echo '<img src="../src/images/resc/end-point/'. $org_acronym .'-endpoint.png" alt="Endpoint Image" class="img-fluid">';?>
+                <?php echo '<img src="images/resc/end-point/'. $org_acronym .'-endpoint.png" alt="Endpoint Image" class="img-fluid">';?>
             </div> 
         </div>
         <div class="col-lg-6 col-sm-12">
@@ -69,30 +78,11 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/topnav
                     Your ballot is securely cast!
                 </div>
                 <div class="header-sub text-center pb-2">
-                    Stay tuned for the upcoming announcement of the newly appointed committee members on 
-                    <?php echo strtoupper($org_acronym); ?>'s
-                      <?php if ($org_acronym == 'acap'){
-                        echo '<a href="https://www.facebook.com/ACAPpage">';
-                      } else if ($org_acronym == 'aeces'){
-                        echo '<a href="https://www.facebook.com/OfficialAECES">';
-                      } else if ($org_acronym == 'elite'){
-                        echo '<a href="https://www.facebook.com/ELITE.PUPSRC">';
-                      } else if ($org_acronym == 'give'){
-                        echo '<a href="https://www.facebook.com/educgive">';
-                      } else if ($org_acronym == 'jehra'){
-                        echo '<a href="https://www.facebook.com/PUPSRCJEHRA">';
-                      } else if ($org_acronym == 'jpia'){
-                        echo '<a href="https://www.facebook.com/JPIA.PUPSRC">';
-                      } else if ($org_acronym == 'piie'){
-                        echo '<a href="https://www.facebook.com/piiepup">';
-                      } else if ($org_acronym == 'jmap'){
-                        echo '<a href="https://www.facebook.com/JMAPPUPSRCOfficial">';
-                      }else if ($org_acronym == 'sco'){
-                        echo '<a href="https://www.facebook.com/thepupsrcstudentcouncil">';
-                      }
-                      ?>
-                      Facebook</a> page. We sincerely appreciate your participation,&nbsp;<?php echo $org_personality ?>!
-                </div>
+                  Stay tuned for the upcoming announcement of the newly appointed committee members on 
+                  <?php echo strtoupper($org_acronym); ?>'s
+                  <a href="<?php echo $facebook; ?>" target="_blank">Facebook</a> page. 
+                  We sincerely appreciate your participation, <?php echo $org_personality; ?>!
+              </div>
             </div>
         </div> 
     </div>
@@ -130,14 +120,16 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/topnav
 </script>
 
   <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="../src/scripts/feedback-suggestions.js"></script>
+  <script src="scripts/feedback-suggestions.js"></script>
   <script src="scripts/loader.js"></script>
 
   <?php
-  } else{
-    header("Location: ballot-forms");
-  }
-} else {
+      }  
+      else {
+        header("Location: voting-closed");
+      }
+    }
+ } else {
   header("Location: landing-page");
 }
 ?>

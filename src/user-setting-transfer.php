@@ -4,7 +4,6 @@ require_once FileUtils::normalizeFilePath('includes/classes/db-connector.php');
 require_once FileUtils::normalizeFilePath('includes/classes/csrf-token.php');
 require_once FileUtils::normalizeFilePath('includes/session-handler.php');
 include_once FileUtils::normalizeFilePath('includes/error-reporting.php');
-require_once FileUtils::normalizeFilePath('includes/classes/manage-ip-address.php');
 
 
 if(isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['role'] == 'student_voter') ) {
@@ -22,6 +21,11 @@ $current_org = $org_acronym;
 
 $voter_id = $_SESSION['voter_id'];
 
+$stmt = $connection->prepare("SELECT * FROM voter WHERE voter_id = ?");
+$stmt->bind_param('s', $voter_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$row = $result->fetch_assoc();
 
 ?>
 
@@ -49,9 +53,7 @@ $voter_id = $_SESSION['voter_id'];
   <link rel="stylesheet" href="styles/loader.css">
   <link rel="stylesheet" href="<?php echo 'styles/orgs/' . $org_acronym . '.css'; ?>">
 
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
-	<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
   <style> .nav-link:hover, .nav-link:focus {color: var(--main-color);}
   .navbar-nav .nav-item.dropdown.show .nav-link.main-color {color: var(--main-color);}
@@ -86,7 +88,7 @@ $voter_id = $_SESSION['voter_id'];
                     <div class="side-nav mb-0">
                       <a href="user-setting-information" class="custom-link"> Information </a>
                     </div>
-                    <div class="mb-0 des">See your account information like your email address and certificate of registration.</div>
+                    <div class="mb-0 des">See your account information like your email address, student number and full name.</div>
                   </div>
                 </div>
                 <div class="d-flex align-items-center pb-4">
@@ -131,11 +133,11 @@ $voter_id = $_SESSION['voter_id'];
                     <li><b>Select Your New Student Organization:</b>
                       <div class="des"> The system will prompt you to select the student organization you wish to transfer to.</div>
                     </li>
-                    <li><b>Upload Your Updated Certificate of Registration:</b>
-                      <div class="des"> You will need to upload your updated Certificate of Registration.</div>
+                    <li><b>Personal Information Display: </b>
+                      <div class="des">Review your information details and the selected organization you wish to transfer to.</div>
                     </li>
-                    <li><b>Verification:</b>
-                      <div class="des"> Your uploaded Certificate of Registration will be validated by the election committee of your selected student organization.</div>
+                    <li><b>Account Status:</b>
+                      <div class="des">Be informed that your account status will become <i>INVALID</i> in your current organization once you submit your transfer request.</div>
                     </li>
                     <li><b>Confirmation Email:</b>
                       <div class="des"> Wait for an email from the student organization confirming your transfer request.</div>
@@ -155,10 +157,10 @@ $voter_id = $_SESSION['voter_id'];
 
 
 <div id="section-2" style="display: none;">
-  <form method="post" id="changeOrgForm" enctype="multipart/form-data">
+  <form method="post" id="changeOrgForm">
   <!-- CSRF Token hidden field -->
   <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-    <div class="row py-4">
+    <div class="row">
       <div class="col-lg-7" style="padding-top: 3%; padding-bottom:1%">
         <label for="organization" class="fs-7 spacing-3">Organization
           <span class="asterisk fw-medium"> *</span>
@@ -176,23 +178,23 @@ $voter_id = $_SESSION['voter_id'];
          <input type="hidden" name="voter_id" value="<?php echo $voter_id ?>">
         <input type="hidden" id="org" name="org" readonly value="">
         <div class="form-group pt-4">
-          <label for="cor" class="fs-7 spacing-3">Certificate of Registration
-            <span class="asterisk fw-medium"> *</span>
-          </label>
-          <input class="form-control form-control-sm pl-2" style="background-color:#EDEDED" type="file" name="cor" id="cor" accept=".pdf" max="25MB" onchange="displayFileName(this)">
-          <small class="form-text text-muted">Only PDF files up to 25MB are allowed.</small>
-            <div id="fileError" class="text-danger"></div>
+          <label class="spacing-3">Personal Information</label>
+          <div class="form-text">Student Number:  <?php echo $row['student_id']; ?></div>
+          <div class="form-text">Full Name: <?php echo $row['first_name'] . ' ' . $row['middle_name'] . ' ' . $row['last_name']; ?>  </div>
+          <div class="form-text">Email Address:  <?php echo $row['email']; ?></div>
         </div>
-        <input type="hidden" id="corFileName">
+        <div class="pt-4">
+        <span><i>*Transferring from <?php echo strtoupper($current_org); ?> to <span id="selected-org">...</span> organization*</i></span>
+        </div>
       </div>
       <div class="col-lg-1"></div>
-      <div class="col-lg-4" style="padding-top: 2%; padding-bottom:2%">
+      <div class="col-lg-4" style="padding-top: 5%;">
         <h5 class="main-color pt-lg-0 pt-sm-3"><b>Note:</b></h5>
         <div class="des">The credentials linked to your account, such as your email address and password, will remain unchanged during the transfer process.</div>
       </div>
     </div>
-    <div class="row pt-2">
-      <div class="text-center mt-3" style="padding-bottom: 4%;">
+    <div class="row">
+      <div class="text-center mt-3" style="padding-bottom: 3%;">
       <button type="submit" class="button-submit main-bg-color" id="transferBtn" disabled>Submit</button>
       </div>
     </div>
@@ -215,32 +217,6 @@ $voter_id = $_SESSION['voter_id'];
                 </div>
             </div>
         </div>
-
-   <!-- Only PDF Files Are Allowed Modal -->
-    <div class="modal" id="onlyPDFAllowedModal" data-bs-keyboard="false" data-bs-backdrop="static">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-                    <div class="d-sm-flex text-end justify-content-end">
-                        <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray" data-bs-dismiss="modal" aria-label="Close" >
-                        </i>
-                    </div>
-                    <div class="text-center">
-                        <div class="col-md-12">
-                            <img src="images/resc/warning.png" class="warning-icon" alt="Warning Icon">
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12 pb-3 pt-4">
-                                <p class="fw-bold danger spacing-4" id="dangerTitle">Only PDF files are allowed</p>
-                                <p class="fw-medium spacing-5 pt-2" id="dangerSubtitle">Please also ensure the file is no larger than 25 mb. Let's try that again!
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
         <!-- Confirm Password Modal -->
         <div class="modal fade adjust-modal" id="confirmPassModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -311,16 +287,10 @@ $voter_id = $_SESSION['voter_id'];
   </main>
 </body>
 
+  <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
 
-
-
-<?php include_once __DIR__ . '/includes/components/footer.php'; ?>
-
-
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="scripts/transfer-org.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="scripts/loader.js"></script>
 
 

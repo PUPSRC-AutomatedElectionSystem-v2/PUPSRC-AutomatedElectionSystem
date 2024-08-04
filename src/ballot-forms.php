@@ -3,11 +3,10 @@ include_once str_replace('/', DIRECTORY_SEPARATOR, 'includes/classes/file-utils.
 require_once FileUtils::normalizeFilePath('includes/classes/db-connector.php');
 require_once FileUtils::normalizeFilePath('includes/classes/csrf-token.php');
 require_once FileUtils::normalizeFilePath('includes/session-handler.php');
-include_once FileUtils::normalizeFilePath('includes/default-time-zone.php');
 include_once FileUtils::normalizeFilePath('includes/error-reporting.php');
 
 
-if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['role'] == 'student_voter')) {
+if (isset($_SESSION['voter_id']) && isset($_SESSION['role']) && $_SESSION['role'] == 'student_voter') {
 
    if(($_SESSION['vote_status'] == NULL)) {
 
@@ -39,12 +38,12 @@ if (isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['ro
 
   // Query for election period, cannot use the $_SESSION['electionOpen']
   // upon reloding the page, it is checked
-  $stmt_electionOpen = $connection->prepare("SELECT  start, close FROM election_schedule WHERE schedule_id = 0");
-  $stmt_electionOpen->execute();	
-  $result_electionOpen = $stmt_electionOpen->get_result();	
+  $stmt_election_open = $connection->prepare("SELECT start, close FROM election_schedule WHERE schedule_id = 0");
+  $stmt_election_open->execute();	
+  $result_election_open = $stmt_election_open->get_result();	
 
-  if($result_electionOpen) {	
-      $row_election = $result_electionOpen->fetch_assoc();	
+  if($result_election_open) {	
+      $row_election = $result_election_open->fetch_assoc();	
       $today = new DateTime();	
       $start = new Datetime($row_election['start']);	
       $close = new DateTime($row_election['close']);	
@@ -213,31 +212,13 @@ if ($total_guidelines > 0) {
         <img src="../src/images/resc/check-animation.gif" width="300px">
         <h4 class="pb-4"><b>Vote Submitted!</b></h4>
         <button class="button-check main-bg-color text-white py-2 px-4" id="giveFeedbackbtn">
-          <a class="custom-link" href="../src/feedback-suggestions"><b>Give Feedback</b></a>
+          <a class="custom-link" href="feedback-suggestions"><b>Give Feedback</b></a>
         </button>
       </div>
     </div>
   </div>
 </div>
 
-  <!-- Leave Page Modal 
-  <div class="modal fade" id="leavePageModal" tabindex="-1" role="dialog" aria-labelledby="leavePageModallLabel" aria-hidden="false"
-  data-backdrop="static" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Unsaved Changes</h5>
-        </div>
-        <div class="modal-body">
-          You have unsaved changes. Are you sure you want to leave this page?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-success text-white" id="stayButton" data-bs-dismiss="modal" aria-label="Close">Stay</button>
-          <button type="button" class="btn btn-danger text-white" id="leaveButton">Leave</button>
-        </div>
-      </div>
-    </div>
-  </div>-->
 
   <!-- Reset Form Modal -->
   <div class="modal fade" id="resetFormModal" tabindex="-1" role="dialog" aria-labelledby="resetFormModallLabel" aria-hidden="false"
@@ -264,8 +245,6 @@ if ($total_guidelines > 0) {
     </div>
 </div>
 
-
-
 <div class="row">
     <div class="col-lg-3 col-0 pb-sm-4 pb-1 d-none d-md-block">
         <div class="reminder sticky">
@@ -283,183 +262,183 @@ if ($total_guidelines > 0) {
     </div>
 
     
-     <!--------------------- Voting Section ------------------------->
+        <!--------------------- Voting Section ------------------------->
 
-        <div class="col-lg-9 col-12">
-          <form id="voteForm" method="post">
-            <?php if ($result_positions->num_rows == 0 || $result_candidates->num_rows == 0): ?>
-                <div class="reminder">
-                    <div class="main-color py-4 px-4">
-                        <b>No entered positions and candidates</b>
+            <div class="col-lg-9 col-12">
+              <form id="voteForm" method="post">
+                <?php if ($result_positions->num_rows == 0 || $result_candidates->num_rows == 0): ?>
+                    <div class="reminder">
+                        <div class="main-color py-4 px-4">
+                            <b>No entered positions and candidates</b>
+                        </div>
                     </div>
-                </div>
-            <?php else: ?>
-                <?php $modal_counter = 0; ?>
-                <?php while ($row = $result_positions->fetch_assoc()): ?>
-                    <?php
-                    $modal_id = 'duties-modal-' . $modal_counter;
-                    $modal_counter++;
-                    ?>
-                    <?php
-                    // Fetch candidates matching the position_id
-                    $result_candidates->data_seek(0);
-                    $candidate_count = 0;
-                    $hasCandidates = false;
-                    ?>
-                    <?php while ($row_candidates = $result_candidates->fetch_assoc()): ?>
-                        <?php if ($row_candidates['position_id'] == $row['position_id']): ?>
-                            <?php
-                            $hasCandidates = true;
-                            $candidate_count++;
-                            ?>
-                          <div class="reminder mb-4" data-position-title="<?php echo htmlspecialchars($row['title']); ?>">
-                            <div class="pt-lg-1 pt-0">
-                              <div class="text-position main-color pt-md-3 pt-lg-4 pt-sm-2 pt-4 pe-3 pe-sm-1 pe-lg-3 ps-3 ps-md-3 ps-lg-5 ps-sm-3 d-flex align-items-center justify-content-between">
-                                <b><?php echo strtoupper($row['title']) ?></b>
-                                <?php if ($row['max_votes'] > 1): ?>
-                                <!-- Display on large screens -->
-                                    <div class="ps-3 ps-lg-5 ps-sm-3 me-5 d-none d-lg-block" style="font-size: 12px;">
-                                        <i data-feather="info" style="width: 12px; height: 12px"></i>&nbsp;
-                                        Select up to&nbsp;<b><?php echo $row['max_votes'] ?></b>&nbsp;candidates
-                                    </div>
-                                <?php endif; ?>
-                              </div>
-                           </div>
-                            <div class="hover-color ps-3 ps-lg-5 ps-sm-3 pb-4" style="font-size: 12px;">
-                                <a href="#<?php echo $modal_id ?>" data-toggle="modal">Duties and Responsibilities</a>
-                                <!-- Display below on medium and small screens -->
-                                <?php if ($row['max_votes'] > 1): ?>
-                                    <div class="main-color d-block d-md-none d-lg-none pt-3">
-                                        <i data-feather="info" style="width: 12px; height: 12px"></i>&nbsp;
-                                        Select up to&nbsp;<b><?php echo $row['max_votes'] ?></b>&nbsp;candidates
-                                    </div>
-                                <?php endif; ?>
-                            </div>
-                              
-                            <!-- Modal for Duties and Responsibilities -->
-                            <div class="modal fade adjust-modal" id="<?php echo $modal_id ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content" style="background-color: transparent; border: none;">
-                                        <div class="modal-header main-bg-color text-white d-flex justify-content-between align-items-center">
-                                            <h4 class="modal-title mb-0"><b><?php echo strtoupper($row['title']) ?></b></h4>
-                                            <button type="button" class="btn-close me-2" data-dismiss="modal" aria-label="Close"></button>
+                <?php else: ?>
+                    <?php $modal_counter = 0; ?>
+                    <?php while ($row = $result_positions->fetch_assoc()): ?>
+                        <?php
+                        $modal_id = 'duties-modal-' . $modal_counter;
+                        $modal_counter++;
+                        ?>
+                        <?php
+                        // Fetch candidates matching the position_id
+                        $result_candidates->data_seek(0);
+                        $candidate_count = 0;
+                        $hasCandidates = false;
+                        ?>
+                        <?php while ($row_candidates = $result_candidates->fetch_assoc()): ?>
+                            <?php if ($row_candidates['position_id'] == $row['position_id']): ?>
+                                <?php
+                                $hasCandidates = true;
+                                $candidate_count++;
+                                ?>
+                              <div class="reminder mb-4" data-position-title="<?php echo htmlspecialchars($row['title']); ?>">
+                                <div class="pt-lg-1 pt-0">
+                                  <div class="text-position main-color pt-md-3 pt-lg-4 pt-sm-2 pt-4 pe-3 pe-sm-1 pe-lg-3 ps-3 ps-md-3 ps-lg-5 ps-sm-3 d-flex align-items-center justify-content-between">
+                                    <b><?php echo strtoupper($row['title']) ?></b>
+                                    <?php if ($row['max_votes'] > 1): ?>
+                                    <!-- Display on large screens -->
+                                        <div class="ps-3 ps-lg-5 ps-sm-3 me-5 d-none d-lg-block" style="font-size: 12px;">
+                                            <i data-feather="info" style="width: 12px; height: 12px"></i>&nbsp;
+                                            Select up to&nbsp;<b><?php echo $row['max_votes'] ?></b>&nbsp;candidates
                                         </div>
-                                        <div class="modal-body p-0" style="background-color: white;border: none; border-radius: 0 0 10px 10px;">
-                                            <div class="main-color px-3 pt-4 pb-3"><b>DUTIES AND RESPONSIBILITIES</b></div>
-                                            <div class="px-3" id="description-output-<?php echo $modal_id ?>">
-                                                <?php
-                                                if (!empty($row['description'])) {
-                                                    ?>
-                                                    <script>
-                                                        // Retrieve Delta format JSON from PHP variable
-                                                        var deltaJson = <?php echo $row['description']; ?>;
-                                                        // Initialize Quill editor without any DOM element (for conversion only)
-                                                        var quill = new Quill(document.createElement('div'));
-                                                        // Set Delta content to Quill editor
-                                                        quill.setContents(deltaJson.ops);
-                                                        // Get HTML content from Quill editor
-                                                        var htmlContent = quill.root.innerHTML;
-                                                        document.getElementById('description-output-<?php echo $modal_id ?>').innerHTML = htmlContent;
-                                                    </script>
+                                    <?php endif; ?>
+                                  </div>
+                              </div>
+                                <div class="hover-color ps-3 ps-lg-5 ps-sm-3 pb-4" style="font-size: 12px;">
+                                    <a href="#<?php echo $modal_id ?>" data-toggle="modal">Duties and Responsibilities</a>
+                                    <!-- Display below on medium and small screens -->
+                                    <?php if ($row['max_votes'] > 1): ?>
+                                        <div class="main-color d-block d-md-none d-lg-none pt-3">
+                                            <i data-feather="info" style="width: 12px; height: 12px"></i>&nbsp;
+                                            Select up to&nbsp;<b><?php echo $row['max_votes'] ?></b>&nbsp;candidates
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                                  
+                                <!-- Modal for Duties and Responsibilities -->
+                                <div class="modal fade adjust-modal" id="<?php echo $modal_id ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content" style="background-color: transparent; border: none;">
+                                            <div class="modal-header main-bg-color text-white d-flex justify-content-between align-items-center">
+                                                <h4 class="modal-title mb-0"><b><?php echo strtoupper($row['title']) ?></b></h4>
+                                                <button type="button" class="btn-close me-2" data-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body p-0" style="background-color: white;border: none; border-radius: 0 0 10px 10px;">
+                                                <div class="main-color px-3 pt-4 pb-3"><b>DUTIES AND RESPONSIBILITIES</b></div>
+                                                <div class="px-3" id="description-output-<?php echo $modal_id ?>">
                                                     <?php
-                                                } else {
-                                                    // Default message when description is empty
-                                                    echo "<p>No description available.</p>";
-                                                }
-                                                ?>
+                                                    if (!empty($row['description'])) {
+                                                        ?>
+                                                        <script>
+                                                            // Retrieve Delta format JSON from PHP variable
+                                                            var deltaJson = <?php echo $row['description']; ?>;
+                                                            // Initialize Quill editor without any DOM element (for conversion only)
+                                                            var quill = new Quill(document.createElement('div'));
+                                                            // Set Delta content to Quill editor
+                                                            quill.setContents(deltaJson.ops);
+                                                            // Get HTML content from Quill editor
+                                                            var htmlContent = quill.root.innerHTML;
+                                                            document.getElementById('description-output-<?php echo $modal_id ?>').innerHTML = htmlContent;
+                                                        </script>
+                                                        <?php
+                                                    } else {
+                                                        // Default message when description is empty
+                                                        echo "<p>No description available.</p>";
+                                                    }
+                                                    ?>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                                <!-- Fetch candidates matching the position_id -->
-                                <?php
-                                // Reset candidates result set pointer
-                                $result_candidates->data_seek(0);
-                                $candidate_loop_count = 0;
-                                ?>
-                                <div class="row px-2">
-                                    <?php while ($row_candidates = $result_candidates->fetch_assoc()): ?>
-                                        <?php if ($row_candidates['position_id'] == $row['position_id']): ?>
-                                            <?php
-                                            $full_name = $row_candidates['last_name'] . ", " . $row_candidates['first_name'];
-                                            ?>
-                                            <div class="col-lg-6 col-md-12 col-sm-12">
-                                                <div class="px-lg-5 px-3 px-sm-3 px-md-3">
-                                                    <div class="candidate-info pb-4">
-                                                        <label for="<?php echo $row_candidates['candidate_id'] ?>">
-                                                            <img src="user_data/<?php echo $org_acronym ?>/candidate_imgs/<?php echo $row_candidates['photo_url'] ?>" alt="Candidate Image" width="100px" height="100px">
-                                                        </label>
-                                                        <div>
-                                                            <input type="hidden" name="position_id[<?php echo $row['position_id'] ?>][]" value="<?php echo $row['position_id'] ?>">
-                                                            <input type="hidden" name="candidate_id[<?php echo $row_candidates['candidate_id'] ?>][][]" value="<?php echo $row_candidates['candidate_id'] ?>">
-                                                            <div style="display: flex; align-items: center;" class="ps-3">
-                                                                <input type="checkbox" id="<?php echo $row_candidates['candidate_id'] ?>" name="position[<?php echo $row['position_id'] ?>][]" value="<?php echo $row_candidates['candidate_id'] ?>" class="adjust-checkbox"
-                                                                    data-img-src="user_data/<?php echo $org_acronym ?>/candidate_imgs/<?php echo $row_candidates['photo_url'] ?>" data-max-votes="<?php echo $row['max_votes'] ?>">
-                                                                <label for="<?php echo $row_candidates['candidate_id'] ?>" class="candidate-label">
-                                                                    <div class="ps-4">
-                                                                        <div class="font-weight2 full-name" style="font-size:14px;"><?php echo $full_name ?></div>
-                                                                        <div class="font-weight3 undisplay main-color" style="font-size:12px"><?php echo $row_candidates['program'] ?> <?php echo $row_candidates['year_level'] ?>-<?php echo $row_candidates['section'] ?></div>
-                                                                    </div>
-                                                                </label>
+                                    <!-- Fetch candidates matching the position_id -->
+                                    <?php
+                                    // Reset candidates result set pointer
+                                    $result_candidates->data_seek(0);
+                                    $candidate_loop_count = 0;
+                                    ?>
+                                    <div class="row px-2">
+                                        <?php while ($row_candidates = $result_candidates->fetch_assoc()): ?>
+                                            <?php if ($row_candidates['position_id'] == $row['position_id']): ?>
+                                                <?php
+                                                $full_name = $row_candidates['last_name'] . ", " . $row_candidates['first_name'];
+                                                ?>
+                                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                                    <div class="px-lg-5 px-3 px-sm-3 px-md-3">
+                                                        <div class="candidate-info pb-4">
+                                                            <label for="<?php echo $row_candidates['candidate_id'] ?>">
+                                                                <img src="user_data/<?php echo $org_acronym ?>/candidate_imgs/<?php echo $row_candidates['photo_url'] ?>" alt="Candidate Image" width="100px" height="100px">
+                                                            </label>
+                                                            <div>
+                                                                <input type="hidden" name="position_id[<?php echo $row['position_id'] ?>][]" value="<?php echo $row['position_id'] ?>">
+                                                                <input type="hidden" name="candidate_id[<?php echo $row_candidates['candidate_id'] ?>][][]" value="<?php echo $row_candidates['candidate_id'] ?>">
+                                                                <div style="display: flex; align-items: center;" class="ps-3">
+                                                                    <input type="checkbox" id="<?php echo $row_candidates['candidate_id'] ?>" name="position[<?php echo $row['position_id'] ?>][]" value="<?php echo $row_candidates['candidate_id'] ?>" class="adjust-checkbox"
+                                                                        data-img-src="user_data/<?php echo $org_acronym ?>/candidate_imgs/<?php echo $row_candidates['photo_url'] ?>" data-max-votes="<?php echo $row['max_votes'] ?>">
+                                                                    <label for="<?php echo $row_candidates['candidate_id'] ?>" class="candidate-label">
+                                                                        <div class="ps-4">
+                                                                            <div class="font-weight2 full-name" style="font-size:14px;"><?php echo $full_name ?></div>
+                                                                            <div class="font-weight3 undisplay main-color" style="font-size:12px"><?php echo $row_candidates['program'] ?> <?php echo $row_candidates['year_level'] ?>-<?php echo $row_candidates['section'] ?></div>
+                                                                        </div>
+                                                                    </label>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <?php $candidate_loop_count++; ?>
-                                            <?php if ($candidate_loop_count % 2 == 0): ?>
-                                          </div><!-- Close current row -->
-                                            <div class="row px-2"><!-- Start new row -->
+                                                <?php $candidate_loop_count++; ?>
+                                                <?php if ($candidate_loop_count % 2 == 0): ?>
+                                              </div><!-- Close current row -->
+                                                <div class="row px-2"><!-- Start new row -->
+                                                <?php endif; ?>
                                             <?php endif; ?>
-                                        <?php endif; ?>
-                                    <?php endwhile; ?>
-                                </div><!-- Close row -->
-                                <div class="row justify-content-center">
-                                    <div class="col-lg-12 col-md-12 col-sm-12">
-                                        <hr>
+                                        <?php endwhile; ?>
+                                    </div><!-- Close row -->
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-12 col-md-12 col-sm-12">
+                                            <hr>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="row justify-content-center">
-                                    <div class="col-lg-12 col-md-12 col-sm-12 text-center pt-2 pb-4">
-                                    <div class="text-muted">
-                                        <input type="radio" class="abstain-checkbox" id="abstain_<?php echo $row['position_id'] ?>" name="position[<?php echo $row['position_id'] ?>][]" data-position-id="<?php echo $row['position_id'] ?>" value="" style="vertical-align: middle;">
-                                        <label for="abstain_<?php echo $row['position_id'] ?>" style="vertical-align: middle; font-size:15px"><b>&nbsp;&nbsp;ABSTAIN</b></label><br>
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-12 col-md-12 col-sm-12 text-center pt-2 pb-4">
+                                        <div class="text-muted">
+                                            <input type="radio" class="abstain-checkbox" id="abstain_<?php echo $row['position_id'] ?>" name="position[<?php echo $row['position_id'] ?>][]" data-position-id="<?php echo $row['position_id'] ?>" value="" style="vertical-align: middle;">
+                                            <label for="abstain_<?php echo $row['position_id'] ?>" style="vertical-align: middle; font-size:15px"><b>&nbsp;&nbsp;ABSTAIN</b></label><br>
+                                        </div>
+                                      </div>
                                     </div>
-                                  </div>
-                                </div>
-                            </div><!-- Close reminder -->
-                        <?php endif; ?>
+                                </div><!-- Close reminder -->
+                            <?php endif; ?>
+                        <?php endwhile; ?>
                     <?php endwhile; ?>
-                <?php endwhile; ?>
-            <?php endif; ?>
-            <!-- Voter ID Input -->
-            <input type="hidden" name="voter_id" value="<?php echo $voter_id ?>">
-            <!-- CSRF Token hidden field -->
-            <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
-            <!-- Submit and Reset Buttons -->
-            <?php if ($result_positions->num_rows > 0 && $result_candidates->num_rows > 0): ?>
-                <div class="text-center pb-4 mt-3">
-                    <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center">
-                        <button type="submit" class="button-submit main-bg-color mb-2 mb-sm-0 mr-sm-2 order-sm-2" id="submitVoteBtn" onclick="validateForm()">
-                            Submit Vote
-                        </button>
-                        <div class="px-2">
-                        <button type="button" class="button-reset order-sm-1" onclick="showResetConfirmation()">
-                            <u>Reset Form</u>
-                        </button>
+                <?php endif; ?>
+                <!-- Voter ID Input -->
+                <input type="hidden" name="voter_id" value="<?php echo $voter_id ?>">
+                <!-- CSRF Token hidden field -->
+                <input type="hidden" name="csrf_token" value="<?php echo $csrf_token; ?>">
+                <!-- Submit and Reset Buttons -->
+                <?php if ($result_positions->num_rows > 0 && $result_candidates->num_rows > 0): ?>
+                    <div class="text-center pb-4 mt-3">
+                        <div class="d-flex flex-column flex-sm-row justify-content-center align-items-center">
+                            <button type="submit" class="button-submit main-bg-color mb-2 mb-sm-0 mr-sm-2 order-sm-2" id="submitVoteBtn" onclick="validateForm()">
+                                Submit Vote
+                            </button>
+                            <div class="px-2">
+                            <button type="button" class="button-reset order-sm-1" onclick="showResetConfirmation()">
+                                <u>Reset Form</u>
+                            </button>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endif; ?>
-      </form>
-   </div>
+                <?php endif; ?>
+          </form>
+      </div>
+    </div>
 
-</div>
-
-</main>
-</body>
+  </main>
+ </body>
+</html>
 
 <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
 
@@ -473,7 +452,6 @@ if ($total_guidelines > 0) {
 </script>
 
   <script src="scripts/feather.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src ="scripts/ballot-forms.js"></script>
   <script src="scripts/loader.js"></script>
@@ -481,14 +459,24 @@ if ($total_guidelines > 0) {
 
 </html>
 <?php
-      } else {
-        header("Location: voting-closed");
-      }
-    } 
-  } else {
-    header("Location: end-point");
+      // Close the statement queries and connection
+      $stmt_positions->close();
+      $stmt_candidates->close();
+      $stmt_guidelines->close();
+      $stmt_election_open->close();
+      $connection->close();
+      
+    } else {
+      header("Location: voting-closed");
+      exit(); // Ensure no further code is executed after redirection
   }
 } else {
-  header("Location: landing-page");
+  header("Location: end-point");
+  exit(); // Ensure no further code is executed after redirection
+}
+} 
+} else {
+header("Location: landing-page");
+exit(); // Ensure no further code is executed after redirection
 }
 ?>

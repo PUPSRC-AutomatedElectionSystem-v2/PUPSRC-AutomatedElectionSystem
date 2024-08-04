@@ -17,7 +17,6 @@ export function initializeConfigurationJS(ConfigPage = null) {
 
         function scrollToActiveLink() {
             const activeLink = secondaryNav.querySelector('.nav-link.active');
-            console.log(activeLink);
             if (!activeLink) return;
 
             const linkRect = activeLink.getBoundingClientRect();
@@ -147,13 +146,10 @@ export function setNotificationPermCookie() {
 }
 
 export function setNotificationCookie(cookieName, expirationDate) {
-    console.log(cookieName);
-    console.log(expirationDate);
     document.cookie = `${cookieName}=true; expires=${expirationDate.toUTCString()}; path=/`;
 }
 
 export function checkNotificationCookie(cookieName) {
-    console.log(cookieName);
     const cookies = document.cookie.split(';');
     for (const cookie of cookies) {
         const [name, value] = cookie.trim().split('=');
@@ -183,13 +179,9 @@ export class NotificationManager {
 
             const TODAY = new Date();
             TODAY.setHours(0, 0, 0, 0);
-            // console.log(tomorrowAtMidnight);
-            // console.log(NOW);
-            // console.log(TODAY);
 
 
             if ((this.dateTime >= TODAY && this.dateTime < tomorrowAtMidnight) || this.dateTime == tomorrowAtMidnight) {
-                console.log("Notification callback not executed!");
                 setTimeout(() => {
                     this.push();
                 }, 600);
@@ -265,7 +257,6 @@ export function registrationNotifHandler(notifId, toastContainer, isStart) {
 
 export function electionNotifHandler(notifId, toastContainer, isStart) {
     let message = isStart ? "Election period has started." : "Election period has ended.";
-    console.log(toastContainer);
 
     const expirationDate = new Date(notifId);
     expirationDate.setYear(expirationDate.getFullYear() + 1);
@@ -297,7 +288,6 @@ export class ElectionSchedule {
     constructor(csrfToken, toastContainer) {
         this.csrfToken = csrfToken;
         this.toastContainer = toastContainer;
-        console.log(this.toastContainer);
     };
 
     fetch() {
@@ -313,12 +303,11 @@ export class ElectionSchedule {
                 return response.json();
             })
             .then(function (data) {
-                console.log('GET request successful:', data);
                 this.setFetchedElectionSchedule(data);
 
             }.bind(this))
             .catch(function (error) {
-                console.error('GET request error:', error);
+                // console.error('GET request error:', error);
             });
     };
 
@@ -334,8 +323,15 @@ export class ElectionSchedule {
     };
 
     setFetchedElectionSchedule(data) {
-        const schedule = new IsScheduleDone(data[0].electionEnd);
-        const isDone = schedule.check();
+        let schedule;
+        let isDone;
+
+        try {
+            schedule = new IsScheduleDone(data[0].electionEnd);
+            isDone = schedule.check();
+        } catch (error) {
+
+        }
 
         if (data[0] && isDone) {
 
@@ -378,12 +374,11 @@ export class RegistrationSchedule {
                 return response.json();
             })
             .then(function (data) {
-                console.log('GET request successful:', data);
                 this.setFetchedRegistrationSchedule(data);
 
             }.bind(this))
             .catch(function (error) {
-                console.error('GET request error:', error);
+                // console.error('GET request error:', error);
             });
     };
 
@@ -398,8 +393,15 @@ export class RegistrationSchedule {
     };
 
     setFetchedRegistrationSchedule(data) {
-        const schedule = new IsScheduleDone(data[0].registrationEnd);
-        const isDone = schedule.check();
+        let schedule;
+        let isDone;
+
+        try {
+            schedule = new IsScheduleDone(data[0].registrationEnd);
+            isDone = schedule.check();
+        } catch (error) {
+
+        }
 
         if (data[0] && isDone) {
 

@@ -160,7 +160,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
     </div>
 
     <?php if (empty($positions)) { ?>
-        <div class="card">
+        <div class="card shadow-sm">
             <div class="card-body text-center py-5">
                 <img src="images/resc/Dashboard/candidate-empty-state.jpg" style="height:220px; width:auto;">
                 <h5 class="fs-6 gray">No candidates found.</h5>
@@ -169,7 +169,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
             </div>
         </div>
     <?php } else { ?>
-        <div class="card">
+        <div class="card shadow-sm">
             <div class="icon-container pt-2 pe-2 text-end">
                 <a id="fullscreen-button">
                     <i data-feather="maximize" class="main-color"></i>

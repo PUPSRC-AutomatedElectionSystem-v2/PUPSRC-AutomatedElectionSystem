@@ -70,38 +70,38 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             }
         }
 
-        if (empty($emailError)) {
-            $password = bin2hex(random_bytes(8));
-            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+       if (empty($emailError)) {
+    $password = bin2hex(random_bytes(8));
+    $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-            $sql = "INSERT INTO voter (last_name, first_name, middle_name, suffix, email, password, role, account_status)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, 'verified')";
+    $sql = "INSERT INTO voter (last_name, first_name, middle_name, suffix, email, password, role, account_status)
+            VALUES (?, ?, NULLIF(?, ''), NULLIF(?, ''), ?, ?, ?, 'verified')";
 
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("sssssss", $lastName, $firstName, $middleName, $suffix, $email, $hashedPassword, $role);
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("sssssss", $lastName, $firstName, $middleName, $suffix, $email, $hashedPassword, $role);
 
-            if ($stmt->execute()) {
-                $stmt->close();
+    if ($stmt->execute()) {
+        $stmt->close();
 
-                // Set session variable to indicate account creation
-                $_SESSION['account_created'] = true;
+        // Set session variable to indicate account creation
+        $_SESSION['account_created'] = true;
 
-                // Send email with password
-                $emailSender = new EmailSender($mail);
-                $emailSender->sendPasswordEmail($email, $password);
+        // Send email with password
+        $emailSender = new EmailSender($mail);
+        $emailSender->sendPasswordEmail($email, $password);
 
-                // Redirect to admin-creation.php
-                header("Location: admin-creation.php");
-                exit;
-            } else {
-                // Set session variable for email error
-                $_SESSION['email_error'] = $emailError;
+        // Redirect to admin-creation.php
+        header("Location: admin-creation.php");
+        exit;
+    } else {
+        // Set session variable for email error
+        $_SESSION['email_error'] = $emailError;
 
-                // Redirect to admin-creation.php
-                header("Location: admin-creation.php");
-                exit;
-            }
-        }
+        // Redirect to admin-creation.php
+        header("Location: admin-creation.php");
+        exit;
+    }
+}
     }
 }
 ?>

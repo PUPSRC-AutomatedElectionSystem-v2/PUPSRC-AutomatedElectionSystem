@@ -211,7 +211,7 @@ $row = $result->fetch_assoc();
                         </div>
                         <p class="fw-bold fs-4 information-title spacing-4 mt-3">Transfer organization?</p>
                         <p class="info-sub">Are you sure you want to proceed with the transfer? <br>This action cannot be reversed.</p>
-                        <button type="button" class="btn btn-gray" id="cancelModalButton"><a href="user-setting-transfer.php" class="custom-link"><b>Cancel</b></a></button>
+                        <a href="user-setting-transfer.php" id="cancelModalButton" class="btn btn-gray custom-link"> <b>Cancel</b></a>
                         <button type="button" class="btn button-proceed" id="proceedBtn">Yes, proceed</button>
                     </div>
                 </div>
@@ -288,7 +288,7 @@ $row = $result->fetch_assoc();
 </body>
 
   <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
-
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src="scripts/transfer-org.js"></script>
   <script src="scripts/loader.js"></script>

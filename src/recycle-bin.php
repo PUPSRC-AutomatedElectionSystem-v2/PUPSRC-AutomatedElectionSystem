@@ -166,7 +166,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                             <tr>
                                 <th class="col-md-3 tl-left text-center fs-7 fw-bold spacing-5"><input type="checkbox" id="selectAllCheckbox"> </th>
                                 <th class="col-md-3 text-center fs-7 fw-bold spacing-5">
-                                    <i data-feather="user" class="feather-xs im-cust"></i>Full Name
+                                    <i data-feather="mail" class="feather-xs im-cust"></i>Email Address
                                 </th>
 
 

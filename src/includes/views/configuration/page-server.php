@@ -1,8 +1,10 @@
 <?php
 include_once str_replace('/', DIRECTORY_SEPARATOR, '../../classes/file-utils.php');
+require_once FileUtils::normalizeFilePath('../../error-reporting.php');
 require_once FileUtils::normalizeFilePath('../../classes/page-router.php');
 require_once FileUtils::normalizeFilePath('../../classes/page-secondary-nav.php');
-require_once FileUtils::normalizeFilePath('../../error-reporting.php');
+include_once FileUtils::normalizeFilePath('../../classes/config-controller.php');
+require_once FileUtils::normalizeFilePath('../../classes/date-time-utils.php');
 header('Content-Type: text/html');
 
 $page_request = $_SERVER['REQUEST_URI'];
@@ -17,6 +19,8 @@ $requested_page_relative;
 
 if ($requested_page_index !== false) {
 
+    $phpDateTimeNow = new DateTimeUtils();
+
     $requested_page = substr($page_request, $requested_page_index + strlen($this_page_name));
     $requested_page_name = basename($requested_page);
     $requested_basepage_index = strpos($requested_page, $requested_page_name);
@@ -26,21 +30,22 @@ if ($requested_page_index !== false) {
     $requested_page_relative = FileUtils::normalizeFilePath(__DIR__ . '/' .  basename($requested_page));
 
     global $configuration_pages;
+    global $configuration_pages;
     $configuration_pages = [
-        'ballot-form',
-        'vote-schedule',
-        'election-year',
+        'reg-schedule',
+        'positions',
         'vote-guidelines',
-        'positions'
+        'vote-schedule',
+        'faq',
     ];
 
     global $link_name;
     $link_name = [
-        'Ballot Form',
-        'Schedule',
-        'Election Year',
+        'Registration Period',
+        'Candidate Positions',
         'Voting Guidelines',
-        'Candidate Positions'
+        'Election Period',
+        'FAQs',
     ];
 
     require_once($requested_page_relative . '.php');

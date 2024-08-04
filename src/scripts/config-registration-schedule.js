@@ -271,7 +271,7 @@ ConfigPage.fetchData = function (requestData) {
 
         })
         .catch(function (error) {
-            // console.error('GET request error:', error);
+            console.error('GET request error:', error);
         });
 };
 
@@ -299,8 +299,15 @@ ConfigPage.setFetchedSchedule = function (data, isUTC = false) {
 
     let scheduleSettings = document.querySelector(`.schedule.card-box`);
 
-    const schedule = new IsScheduleDone(data[0].registrationEnd);
-    const isDone = schedule.check();
+    let schedule;
+    let isDone;
+
+    try {
+        schedule = new IsScheduleDone(data[0].registrationEnd);
+        isDone = schedule.check();
+    } catch (error) {
+
+    }
 
     if (data[0] && isDone) {
 

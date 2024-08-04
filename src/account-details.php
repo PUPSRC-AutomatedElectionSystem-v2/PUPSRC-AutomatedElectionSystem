@@ -42,7 +42,7 @@ if (isset($_SESSION['voter_id'])) {
         <link rel="stylesheet" href="styles/loader.css" />
         <link rel="stylesheet" href="styles/account-details.css" />
         <link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="scripts/loader.js" defer></script>
 
     </head>
@@ -293,7 +293,6 @@ if (isset($_SESSION['voter_id'])) {
         <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script type="module" src="scripts/script.js"></script>
         <script src="scripts/feather.js"></script>
-        <script src="scripts/loader.js"></script>
         <script src="scripts/account-details.js"></script>
 
 

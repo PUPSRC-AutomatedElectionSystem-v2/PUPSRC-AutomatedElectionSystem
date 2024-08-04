@@ -83,7 +83,6 @@ ConfigPage.delEventListener = function (element, event) {
 
 ConfigPage.allDayContainerClick = function (event) {
     if (event.target === ConfigPage.allDayContainer) {
-        console.log('allday');
         ConfigPage.toggleAllDayBtn.click();
         event.stopPropagation();
     }
@@ -101,7 +100,23 @@ ConfigPage.handleToggleAllDay = function (event) {
     let endDateContainer = document.querySelector('#datetime-end .date-group');
 
     if (isToggled) {
-        // startTimeContainer.style.visibility = 'hidden';
+
+        ConfigPage.timePickerStart.classList.remove('is-invalid');
+        ConfigPage.timePickerEnd.classList.remove('is-invalid');
+
+        ConfigPage.toggleEndDateTime();
+        let datetimeStartFeedback = document.getElementById('datetime-start').nextElementSibling;
+        let datetimeEndFeedback = document.getElementById('datetime-end').nextElementSibling;
+        if (datetimeStartFeedback.textContent.toLowerCase().includes('start time is required.')) {
+            datetimeStartFeedback.innerHTML = "&nbsp;";
+        }
+
+        if (datetimeEndFeedback.textContent.toLowerCase().includes('end time is required.')) {
+            datetimeEndFeedback.innerHTML = "&nbsp;";
+        }
+
+        ConfigPage.timePickerStart.setAttribute('data-value', ConfigPage.timePickerStart.value);
+
         startTimeContainer.style.display = 'none';
         ConfigPage.timePickerStart.value = '00:00';
         ConfigPage.timePickerStart.min = '00:00';
@@ -109,7 +124,8 @@ ConfigPage.handleToggleAllDay = function (event) {
         startDateContainer.classList.remove('col-6');
         startDateContainer.classList.add('col-12');
 
-        // endTimeContainer.style.visibility = 'hidden';
+        ConfigPage.timePickerEnd.setAttribute('data-value', ConfigPage.timePickerEnd.value);
+
         endTimeContainer.style.display = 'none';
         ConfigPage.timePickerEnd.value = '23:59';
         ConfigPage.timePickerEnd.min = '23:59';
@@ -117,8 +133,7 @@ ConfigPage.handleToggleAllDay = function (event) {
         endDateContainer.classList.remove('col-6');
         endDateContainer.classList.add('col-12');
     } else {
-        // startTimeContainer.style.visibility = 'visible';
-        // endTimeContainer.style.visibility = 'visible';
+
         startTimeContainer.style.display = '';
         endTimeContainer.style.display = '';
 
@@ -128,6 +143,10 @@ ConfigPage.handleToggleAllDay = function (event) {
         endDateContainer.classList.remove('col-12');
         endDateContainer.classList.add('col-6');
         ConfigPage.resetDatetime(false);
+    }
+
+    if (ConfigPage.isScheduleChanged) {
+        ConfigPage.submitBtn.disabled = false;
     }
 };
 
@@ -226,7 +245,7 @@ for (const dateTimePicker of ConfigPage.datetimePickers) {
             // Use external library when this fails.
         }
     });
-    // dateTimePicker.addEventListener('click', );
+
 }
 
 ConfigPage.fetchData = function (requestData) {
@@ -242,14 +261,14 @@ ConfigPage.fetchData = function (requestData) {
             return response.json();
         })
         .then(function (data) {
-            console.log('GET request successful:', data);
+
             ConfigPage.setErrorDictionary(data.error_codes);
-            console.log(data);
+
             ConfigPage.setFetchedSchedule(data);
 
         })
         .catch(function (error) {
-            console.error('GET request error:', error);
+            // console.error('GET request error:', error);
         });
 };
 
@@ -276,8 +295,14 @@ ConfigPage.setFetchedSchedule = function (data, isUTC = false) {
 
     let scheduleSettings = document.querySelector(`.schedule.card-box`);
 
-    const schedule = new IsScheduleDone(data[0].electionEnd);
-    const isDone = schedule.check();
+    let schedule;
+    let isDone;
+    try {
+        schedule = new IsScheduleDone(data[0].electionEnd);
+        isDone = schedule.check();
+    } catch (error) {
+
+    }
 
     if (data[0] && isDone) {
 
@@ -298,16 +323,13 @@ ConfigPage.setFetchedSchedule = function (data, isUTC = false) {
 
         const { startDateTime, endDateTime, startDate, startTime, endDate, endTime } = ConfigPage.processDateTime(data, isUTC);
 
-
-        console.log(startDateTime[1]);
-        console.log(endDateTime[1]);
         if ((startDateTime[1] == '00:00' || startDateTime[1] == '00:00:00') && (endDateTime[1] === '23:59' || endDateTime[1] === '23:59:00')) {
             ConfigPage.toggleAllDayBtn.checked = true;
         } else {
             ConfigPage.toggleAllDayBtn.checked = false;
         }
 
-        console.log(ConfigPage.toggleAllDayBtn.value);
+        ConfigPage.toggleAllDayBtn.setAttribute('data-value', ConfigPage.toggleAllDayBtn.checked);
 
         ConfigPage.datePickerStart.value = startDate;
         ConfigPage.timePickerStart.value = startTime;
@@ -356,11 +378,6 @@ ConfigPage.processDateTime = function (data, isUTC = false) {
     let startTime = startDateTime[1]; // "12:12:00"
     let endDate = endDateTime[0]; // "2024-06-30"
     let endTime = endDateTime[1]; // "12:09:00"
-
-    console.log(startDate)
-    console.log(startTime)
-    console.log(endDate)
-    console.log(endTime)
 
     try {
         startTime = startTime.substring(0, 5); // "12:12"
@@ -446,7 +463,7 @@ ConfigPage.postData = function (post_data) {
     let url = 'src/includes/classes/config-election-sched-controller.php';
     let method = 'PUT';
     post_data.csrf_token = `${ConfigPage.CSRF_TOKEN}`;
-    console.log(post_data);
+
     let json_data = JSON.stringify(post_data);
 
     return fetch(url, {
@@ -476,14 +493,13 @@ ConfigPage.postData = function (post_data) {
                 ConfigPage.setFetchedSchedule(iterableArray, true);
 
             } catch (error) {
-                console.error(error);
+                // console.error(error);
             }
 
             return { data, success: true };
         })
         .catch(function (error) {
-            console.error('PUT request error:', error.data);
-            console.error('Status:', error.response.status);
+
             ConfigPage.handleResponseStatus(error.response.status, error.data);
             return { data: error.data, success: false };
         });
@@ -512,7 +528,7 @@ ConfigPage.handleSucessResponse = function () {
     try {
         ConfigPage.showModal(document.getElementById('success-modal'));
     } catch (error) {
-        console.error(error);
+        // console.error(error);
     }
 }
 
@@ -530,7 +546,6 @@ Object.defineProperty(ConfigPage, 'CSRF_TOKEN', {
     configurable: false
 });
 
-console.log(ConfigPage.CSRF_TOKEN);
 ConfigPage.fetchData({ csrf: ConfigPage.CSRF_TOKEN });
 
 ConfigPage.toastContainer = document.querySelector('.toast-container-unstacked');
@@ -594,7 +609,7 @@ ConfigPage.startTimeValidation = {
         required: true,
     },
     errorFeedback: {
-        required: 'ERR_MISSING_END_TIME',
+        required: 'ERR_MISSING_START_TIME',
     }
 }
 
@@ -641,9 +656,7 @@ ConfigPage.getDatetimeInput = function (dateGroup) {
 
 
 ConfigPage.inputFeedbackHandler = function (event, feedbackId) {
-    console.log(event);
-    console.log(feedbackId);
-    console.log(ConfigPage.errorDictionary[feedbackId]);
+
     try {
         const inputElement = event;
         // const parentElement = inputElement.parentNode;
@@ -651,7 +664,6 @@ ConfigPage.inputFeedbackHandler = function (event, feedbackId) {
 
         const feedbackField = parentElement.nextElementSibling;
 
-        console.log(feedbackField);
         feedbackField.textContent = ConfigPage.errorDictionary[feedbackId];
     } catch (error) {
 
@@ -660,14 +672,12 @@ ConfigPage.inputFeedbackHandler = function (event, feedbackId) {
 
 ConfigPage.setErrorDictionary = function (definitions) {
     ConfigPage.errorDictionary = definitions;
-    console.log(ConfigPage.errorDictionary);
 }
 
 ConfigPage.handleValidation = function (inputElement, validatorObj, isInput = true) {
     let parentElement = inputElement.closest('.datetime');
 
     let feedbackField = parentElement.nextElementSibling;
-    console.log(feedbackField);
 
     if (validatorObj.validate(inputElement, ConfigPage.inputFeedbackHandler)) {
         if (isInput === true) {
@@ -688,7 +698,6 @@ ConfigPage.handleValidation = function (inputElement, validatorObj, isInput = tr
 ConfigPage.handleInput = function (event, validatorObj) {
     ConfigPage.isScheduleChanged = true;
     const inputElement = event.target;
-    // const parentElement = inputElement.parentNode;
 
     clearTimeout(ConfigPage.typingTimeout);
     ConfigPage.typingTimeout = setTimeout(() => {
@@ -696,7 +705,7 @@ ConfigPage.handleInput = function (event, validatorObj) {
 
             ConfigPage.handleValidation(inputElement, validatorObj);
         } catch (error) {
-            console.error('Validation error:', error);
+            // console.error('Validation error:', error);
         }
     }, 400);
 }
@@ -704,8 +713,6 @@ ConfigPage.handleInput = function (event, validatorObj) {
 
 
 ConfigPage.toggleEndDateTime = function () {
-    console.log(ConfigPage.dateGroupStart.querySelector('.is-invalid'));
-    console.log(ConfigPage.dateGroupStart.querySelector('.is-invalid')?.matches('.form-control'));
     const hasInvalidStart = ConfigPage.dateGroupStart.querySelector('.is-invalid')?.matches('.form-control');
 
     if (hasInvalidStart) {
@@ -722,9 +729,14 @@ ConfigPage.toggleEndDateTime = function () {
 
 ConfigPage.toggleSaveBtn = function () {
     const hasInvalidStart = ConfigPage.dateGroupStart.querySelector('.is-invalid')?.matches('.form-control');
+    let isAllDay = ConfigPage.toggleAllDayBtn.checked;
+
     const hasInvalidEnd = ConfigPage.dateGroupEnd.querySelector('.is-invalid')?.matches('.form-control');
 
     if (hasInvalidStart || hasInvalidEnd) {
+        if (!isAllDay) {
+            ConfigPage.timePickerEnd.value = '';
+        }
 
         ConfigPage.submitBtn.disabled = true;
 
@@ -741,11 +753,9 @@ ConfigPage.addEventListenerAndStore(ConfigPage.timePickerStart, 'input', (event)
 ConfigPage.addEventListenerAndStore(ConfigPage.timePickerEnd, 'input', (event) => ConfigPage.handleInput(event, ConfigPage.endTimeValidator));
 
 ConfigPage.submitBtn = document.querySelector('section.schedule .action-btn #submit-schedule');
+ConfigPage.submitBtn.disabled = true;
 ConfigPage.cancelBtn = document.querySelector('section.schedule .action-btn #cancel-schedule');
 ConfigPage.editBtn = document.querySelector('section.schedule .action-btn #edit-schedule');
-
-// ConfigPage.delEventListener(saveButton, 'click');
-// ConfigPage.addEventListenerAndStore(saveButton, 'click', ConfigPage.saveFunc);
 
 ConfigPage.handleSetSchedule = function () {
     ConfigPage.handleValidation(ConfigPage.datePickerStart, ConfigPage.startDateValidator, false);
@@ -766,15 +776,16 @@ ConfigPage.warningModal = new bootstrap.Modal(document.getElementById('warning-m
 ConfigPage.isScheduleChanged = false;
 
 ConfigPage.handleDiscardSchedule = async function () {
+    let schedSettings = document.querySelector(`.schedule.card-box`);
+
     if (ConfigPage.isScheduleChanged && ConfigPage.checkUnsaveSchedule) {
 
         if (await ConfigPage.showDiscardModal() == 'true') {
             ConfigPage.resetDatetime();
             ConfigPage.isScheduleChanged = false;
-            ConfigPage.handleValidation(ConfigPage.datePickerStart, ConfigPage.startDateValidator, false);
-            ConfigPage.handleValidation(ConfigPage.datePickerEnd, ConfigPage.endDateValidator, false);
-            ConfigPage.handleValidation(ConfigPage.timePickerStart, ConfigPage.startTimeValidator, false);
-            ConfigPage.handleValidation(ConfigPage.timePickerEnd, ConfigPage.endTimeValidator, false);
+
+            ConfigPage.toggleAllDayBtn.checked = (ConfigPage.toggleAllDayBtn.getAttribute('data-value') == 'true');
+            ConfigPage.handleToggleAllDay();
 
             ConfigPage.toggleEditState();
 
@@ -803,7 +814,6 @@ ConfigPage.showDiscardModal = async function () {
         $('.prompt-action button').off('click');
         $('.prompt-action button').on('click', (event) => {
             const buttonValue = event.currentTarget.value;
-            console.log('button value ', buttonValue);
             ConfigPage.warningModal.hide();
             resolve(buttonValue);
         });
@@ -813,13 +823,3 @@ ConfigPage.showDiscardModal = async function () {
 
 ConfigPage.addEventListenerAndStore(ConfigPage.submitBtn, 'click', ConfigPage.handleSetSchedule);
 ConfigPage.addEventListenerAndStore(ConfigPage.cancelBtn, 'click', ConfigPage.handleDiscardSchedule);
-
-
-ConfigPage.setToViewOnlyState = function () {
-
-}
-
-ConfigPage.setToEditState = function () {
-
-}
-

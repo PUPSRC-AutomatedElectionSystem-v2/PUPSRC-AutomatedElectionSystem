@@ -473,11 +473,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                                                         <h1 class="<?php if ($rating == $highest_rating) echo 'main-color'; ?>"><?php echo $percentage; ?>%</h1>
                                                         <h2 class="<?php if ($rating == $highest_rating) echo 'main-color'; ?>"><?php echo $rating; ?></h2>
                                                     </div>
-
                                                 </div>
-
-
-
                                             <?php } ?>
                                         </div>
                                     </div>
@@ -508,10 +504,10 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                                                                                     Sort by
                                                                                 </button>
                                                                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton" style="padding: 0.5rem">
-                                                                                    <li class="dropdown-item ps-3 fs-7 fw-medium" data-sort="timestamp" data-order="DESC">
+                                                                                    <li class="dropdown-item dropdown-item1 ps-3 fs-7 fw-medium" data-sort="timestamp" data-order="DESC">
                                                                                         <a href="#">Newest to Oldest</a>
                                                                                     </li>
-                                                                                    <li class="dropdown-item ps-3 fs-7 fw-medium" data-sort="timestamp" data-order="ASC">
+                                                                                    <li class="dropdown-item dropdown-item1 ps-3 fs-7 fw-medium" data-sort="timestamp" data-order="ASC">
                                                                                         <a href="#">Oldest to Newest</a>
                                                                                     </li>
                                                                                 </div>
@@ -549,15 +545,10 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
             </div>
         </div>
-
-
-
     <?php
     }
 
@@ -588,7 +579,6 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         <link href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
         <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
 
         <!--JS -->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
@@ -597,8 +587,6 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
             <?php
 
             // Output the CSS with the organization color variable for background-color
-
-
 
             ?>.btn-with-margin {
                 margin-top: 38px;
@@ -722,10 +710,10 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         displayEmptyState("No election schedule found. Please configure the election schedule.");
     }
 
-    // Close database connection
-    $conn->close();
-    ?>
-</div>
+        // Close database connection
+        $conn->close();
+        ?>
+    </div>
 
 
         <!-- Feedback Modal -->
@@ -773,8 +761,6 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
             </div>
         </div>
 
-
-
         <!-- JavaScript -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -782,7 +768,6 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <script type="module" src="scripts/script.js"></script>
         <script src="scripts/result-generation.js"></script>

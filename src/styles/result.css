@@ -33,6 +33,11 @@
     font-size: 15px;
     padding-top: 18px;
   }
+  @media (max-width: 400px) {
+    padding-left: 10px;
+    font-size: 10px;
+    padding-top: 18px;
+  }
   @media (max-width: 320px) {
     padding-left: 10px;
     font-size: 10px;
@@ -100,6 +105,7 @@
   font-weight:bolder;
   margin-top: -7px;
   margin-right: 200px;
+  display: block !important;
   @media (max-width: 1280px) {
     margin-left: -65px !important;
   }  
@@ -109,6 +115,7 @@
     font-size: 9px;
     font-weight:bolder;
     margin-right: 100px;
+    display: block !important;
   }
 
   @media (max-width: 480px) {
@@ -117,8 +124,21 @@
     font-size: 7px;
     font-weight:bolder;
     margin-right: 35px;
+    display: block !important;
+  }
+  @media (max-width: 320px) {
+    margin-top: -1px;
+    margin-bottom: 12px;
+    font-size: 7px;
+    font-weight:bolder;
+    margin-right: 1px !important;
+    display: block !important;
   }
 
+  .card-candidate h3::before, .card-runnerup h3::before {
+    content: "\A" !important; /* Adds a line break */
+    white-space: pre !important; /* Ensures the line break is respected */
+  }
 }
 .card-runnerup h2 , .card-candidate h2{
   font-size: 20px;
@@ -167,6 +187,11 @@
     font-size: 5px;
     margin-top: -10px;
     margin-right: 40px;
+  }
+  @media (max-width: 320px) {
+    font-size: 5px;
+    margin-top: -10px;
+    margin-right: 1px !important;
   }
 
 }
@@ -309,21 +334,22 @@
   }
   @media (max-width: 480px) {
     font-size: 6px;
-    width: 80px !important;
+    width: 60px !important;
     height: 22px !important;
     margin-top: 67px !important;
     margin-left: -257px !important;
   }
-  @media (max-width: 375px) {
+  
+  @media (max-width: 400px) {
     font-size: 6px;
-    width: 70px !important;
+    width: 60px !important;
     height: 20px !important;
     margin-top: 67px !important;
-    margin-left: -190px !important;
+    margin-left: -200px !important;
   }
   @media (max-width: 320px) {
     font-size: 6px;
-    width: 70px !important;
+    width: 50px !important;
     height: 20px !important;
     margin-top: 67px !important;
     margin-left: -180px !important;
@@ -384,9 +410,13 @@ footer {
   {
     margin-left: 150px !important;
   }
+  @media(max-width: 1280px) 
+  {
+    margin-left: -150px !important;
+  }
   @media(max-width: 1024px) 
   {
-    margin-left: -190px !important;
+    margin-left: -130px !important;
     font-size: 15px;
     
   }
@@ -395,7 +425,15 @@ footer {
     font-size: 10px;
     font-weight: bold;
     height: 25px !important;
-    margin-right: -200px !important;
+    margin-right: -180px !important;
+
+  }
+  @media (max-width: 550px) {
+    margin-top: 65px;
+    font-size: 8px;
+    font-weight: bold;
+    height: 25px !important;
+    margin-left: -200px !important;
 
   }
 
@@ -407,12 +445,20 @@ footer {
     margin-left: -250px !important;
 
   }
+  @media (max-width: 400px) {
+    margin-top: 65px;
+    font-size: 7px;
+    font-weight: bold;
+    height: 20px !important;
+    margin-left: -350px !important;
+
+  }
   @media (max-width: 320px) {
     margin-top: 65px;
     font-size: 7px;
     font-weight: bold;
     height: 20px !important;
-    margin-left: -250px !important;
+    margin-left: -350px !important;
 
   }
 }

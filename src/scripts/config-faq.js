@@ -46,27 +46,6 @@ ConfigPage = {};
 
 ConfigPage = {
 
-    fetchSchedule: function (requestData) {
-        let url = `src/includes/classes/config-election-sched-controller.php`;
-        const queryParams = new URLSearchParams(requestData);
-        url = `${url}?${queryParams.toString()}`;
-
-        fetch(url)
-            .then(function (response) {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then(function (data) {
-                // process shedule data
-
-            })
-            .catch(function (error) {
-                console.error('GET request error:', error);
-            });
-    },
-
     fetchData: function (requestData) {
         let url = `src/includes/classes/config-faq-controller.php`;
         const queryParams = new URLSearchParams(requestData);
@@ -97,7 +76,7 @@ ConfigPage = {
             })
             .catch(function (error) {
                 ConfigPage.table.draw(false);
-                console.error('GET request error:', error);
+                // console.error('GET request error:', error);
             });
     },
 
@@ -251,34 +230,17 @@ Object.defineProperty(ConfigPage, 'CSRF_TOKEN', {
 
 ConfigPage.vote_rule_validate = new InputValidator(ConfigPage.customValidation);
 
-try {
-    ConfigPage.fetchSchedule({ csrf: ConfigPage.CSRF_TOKEN });
-} catch (error) {
-    console.warn(error);
-}
-
-
 
 ConfigPage.processData = function (data) {
     const TABLE_DATA = [];
-    // console.log('data')
-    // console.log(data)
+
     try {
         for (const key in data) {
             const item = data[key];
-            // console.log('process for loop key')
-            // console.log(key)
-            // console.log('process for loop item')
-            // console.log(item)
-
 
 
             if (typeof item === 'object' && !Array.isArray(item)) {
-
-                console.log(item);
-                // let answer = (item.answer !== undefined && item.answer !== '') ? JSON.parse(item.answer) : '';
                 let answer = JSON.stringify(item.answer);
-
 
                 const tableItem = {
                     0: item.sequence,
@@ -293,7 +255,7 @@ ConfigPage.processData = function (data) {
             }
         }
     } catch (error) {
-        console.warn(error);
+        // console.warn(error);
     }
 
 
@@ -323,14 +285,14 @@ ConfigPage.postData = function (post_data, method) {
             return response.json();
         })
         .then(function (response) {
-            console.log('POST request successful:', response.data);
+
             let data = [];
             data = response.data;
 
             return { data, success: true };
         })
         .catch(function (error) {
-            console.error('POST request error:', error);
+            // console.error('POST request error:', error);
             return { error, success: false };
         });
 }
@@ -356,12 +318,11 @@ ConfigPage.removeErrorCodes = function (data) {
 try {
     ConfigPage.fetchData({ csrf: ConfigPage.CSRF_TOKEN });
 } catch (error) {
-    console.warn(error);
+    // console.warn(error);
 }
 
 ConfigPage.setErrorDictionary = function (definitions) {
     ConfigPage.errorDictionary = definitions;
-    console.log(ConfigPage.errorDictionary);
 }
 
 
@@ -494,7 +455,6 @@ ConfigPage.TableHandler = class {
                 return;
             }
 
-            console.log(data);
 
             ConfigPage.postData(data, 'PATCH')
                 .then(function (result) {
@@ -505,20 +465,16 @@ ConfigPage.TableHandler = class {
 
                             if (success) {
                                 ConfigPage.handleResponseStatus(200, data, 'FAQ updated successfully.');
-                                // let processedData = ConfigPage.processData(data);
-                                // console.log(processedData)
-                                // this.updateData(processedData);
+
                             } else if (error.data) {
                                 // error.data.forEach(item => {
-
-
                                 // });
                             }
                         } catch (e) {
-                            console.error('POST request failed:', e);
+                            // console.error('POST request failed:', e);
                         }
                     } else {
-                        console.error('POST request failed:', error);
+                        // console.error('POST request failed:', error);
                     }
                 })
 
@@ -600,7 +556,7 @@ ConfigPage.TableHandler = class {
                         ConfigPage.table.row(DATA_ROW).remove().draw(isdraw);
                     } else {
 
-                        console.error(`Input element with ID not found.`);
+                        // console.error(`Input element with ID not found.`);
                     }
 
                 }
@@ -653,12 +609,10 @@ ConfigPage.TableHandler = class {
                     let DATA_ROW = rowId.closest(`tr`);
 
                     if (DATA_ROW) {
-
-                        // ConfigPage.table.row(DATA_ROW).data(rowData).draw(false);
                         ConfigPage.table.row(DATA_ROW).data(item).draw(isdraw);
                     } else {
 
-                        console.error(`Input element with ID not found.`);
+                        // console.error(`Input element with ID not found.`);
                     }
                     resolve();
                 }
@@ -680,7 +634,7 @@ ConfigPage.TableHandler = class {
 try {
     ConfigPage.table.destroy();
 } catch (error) {
-    console.warn(error);
+    // console.warn(error);
 }
 
 ConfigPage.table = new DataTable('#config-table', {
@@ -794,9 +748,7 @@ ConfigPage.handleDeleteBtn = async function () {
                     const { data, success, error } = result;
 
                     if (success) {
-                        console.log(data)
                         let processedData = ConfigPage.processData(data);
-                        console.log(processedData)
                         ConfigPage.TableHandler.deleteEntry(processedData)
                             .then(() => {
                                 // ConfigPage.handleSucessResponse();
@@ -804,18 +756,16 @@ ConfigPage.handleDeleteBtn = async function () {
                                 ConfigPage.handleResponseStatus(200, data, 'FAQ deleted successfully.');
                             })
                             .catch((error) => {
-                                console.error("Error inserting data:", error);
+                                // console.error("Error inserting data:", error);
                             });
 
                     } else if (error.data) {
                         // error.data.forEach(item => {
-
-
                         // });
                     }
                 }
                 catch (e) {
-                    console.error('POST request failed:', e);
+                    // console.error('POST request failed:', e);
                 }
             })
     }
@@ -826,7 +776,6 @@ ConfigPage.showConfirmModal = async function (modal, instanceRef, inputId = null
     // https://stackoverflow.com/questions/65454144/javascript-await-bootstrap-modal-close-by-user
     instanceRef.instance = new bootstrap.Modal(modal);
     instanceRef.instance.show();
-    console.log('showConfirmModal');
 
     if (isDisabled) {
         ConfigPage.handleConfirmInput(modal, inputId, inputVal);
@@ -913,8 +862,6 @@ ConfigPage.FindLastSequence = function (table_id = 'config-table') {
         if (!LAST_ROW) {
             return 0;
             // throw new Error(`No last row found in table '${table_id}'.`);
-        } else {
-            console.log('last row ' + LAST_ROW.outerHTML);
         }
 
         const LAST_SEQUENCE_SPAN = LAST_ROW.querySelector('.dt-type-numeric > span.d-none:first-child');
@@ -933,8 +880,7 @@ ConfigPage.FindLastSequence = function (table_id = 'config-table') {
 
         return last_sequence;
     } catch (error) {
-        console.error(`Error finding last sequence for table '${table_id}':`, error);
-        // Optionally handle the error by returning a default sequence or rethrowing
+        // console.error(`Error finding last sequence for table '${table_id}':`, error);
         throw error; // Rethrow the error to propagate it to the caller
     }
 }
@@ -949,9 +895,6 @@ ConfigPage.description;
 ConfigPage.faqAnswer;
 
 ConfigPage.inputFeedbackHandler = function (event, feedbackId) {
-    console.log(event);
-    console.log(feedbackId);
-    console.log(ConfigPage.errorDictionary[feedbackId]);
     try {
         const inputElement = event;
 
@@ -969,7 +912,7 @@ ConfigPage.validateTextEditor = function (event) {
     ConfigPage.typingTimeout = setTimeout(() => {
         try {
             let inputElement = event.target;
-            console.log(!inputElement);
+
             if (!inputElement) {
                 inputElement = document.getElementById('faq-question');
             }
@@ -989,7 +932,7 @@ ConfigPage.validateTextEditor = function (event) {
                 primaryBtn.disabled = true;
             }
         } catch (error) {
-            console.error('Validation error:', error);
+            // console.error('Validation error:', error);
         }
     }, 300);
 }
@@ -1016,9 +959,6 @@ ConfigPage.handleDescValidate = function (delta, old, source) {
                 feedbackField = parentElement.nextElementSibling;
             }
 
-
-            // console.log(saveButton);
-            // console.log(descriptionInput);
             descriptionInput.classList.add('is-invalid', 'form-control');
             saveButton.disabled = true;
 
@@ -1029,12 +969,7 @@ ConfigPage.handleDescValidate = function (delta, old, source) {
                 return false;
             }
 
-            // console.log(ConfigPage.quill.getLength());
-            // console.log(ConfigPage.quill.getContents());
-
             let descriptionVal = ConfigPage.quill.getContents();
-            // console.log("length ", descriptionVal.ops.length);
-
 
             const originalVal = descriptionVal.slice();
             let modifiedVal = originalVal.slice();
@@ -1052,10 +987,6 @@ ConfigPage.handleDescValidate = function (delta, old, source) {
                 }
             }
 
-            console.log(originalVal);
-            console.log(modifiedVal);
-
-            console.log(modifiedVal.ops[0].insert);
 
             for (let i = 0; i < originalVal.ops.length; i++) {
 
@@ -1066,11 +997,6 @@ ConfigPage.handleDescValidate = function (delta, old, source) {
 
 
                 if (newText != originalText) {
-                    console.log("originalText");
-                    console.log(originalText);
-                    console.log("newText");
-                    console.log(newText);
-
                     modifiedVal.ops[i].insert = newText;
                 }
             }
@@ -1332,7 +1258,6 @@ ConfigPage.EditorModal = class {
 
         try {
             let answer = (this.data.answer !== undefined && this.data.answer !== '') ? JSON.parse(this.data.answer) : '';
-            console.log(answer);
 
             ConfigPage.quill.setContents(answer);
 
@@ -1340,7 +1265,7 @@ ConfigPage.EditorModal = class {
                 answerTextArea.querySelector('.ql-editor').setAttribute("contenteditable", false);
             }
         } catch (error) {
-            console.error('FAQ answer has been corrupted.');
+            // console.error('FAQ answer has been corrupted.');
         }
 
     }
@@ -1429,8 +1354,6 @@ ConfigPage.EditorModal = class {
 
     static #removeEditor() {
         let modalBody = this.modalElement.querySelector('.modal-body');
-        // let isExistTextEditor = modalBody.querySelector('textarea');
-        // let isExistAnswerTextArea = this.modalElement.querySelector("#faq-answer");;
         try {
             let formElements = modalBody.querySelectorAll(".form-content");
 
@@ -1438,16 +1361,10 @@ ConfigPage.EditorModal = class {
                 formElement.remove();
             });
         } catch (error) {
-            console.error("Element is already removed. ", error);
+            // console.error("Element is already removed. ", error);
         }
 
 
-        // if (isExistTextEditor) {
-        //     modalBody.removeChild(isExistTextEditor);
-        // }
-        // if (isExistAnswerTextArea) {
-        //     modalBody.removeChild(isExistAnswerTextArea);
-        // }
     }
 
     static #handlePrimaryBtn() {
@@ -1469,7 +1386,6 @@ ConfigPage.EditorModal = class {
             } else {
                 inputElement.classList.add('is-invalid');
                 primaryButton.disabled = true;
-                console.log('invalid q');
             }
 
             ConfigPage.handleDescValidate(null, null, 'save-btn');
@@ -1508,8 +1424,6 @@ ConfigPage.EditorModal = class {
                 method = 'POST';
             }
 
-            console.log(data);
-
             ConfigPage.postData(data, method).then(function (result) {
 
                 try {
@@ -1527,7 +1441,7 @@ ConfigPage.EditorModal = class {
                                     ConfigPage.handleResponseStatus(200, data, 'FAQ added successfully.');
                                 })
                                 .catch((error) => {
-                                    console.error("Error inserting data:", error);
+                                    // console.error("Error inserting data:", error);
                                 });
 
 
@@ -1541,7 +1455,7 @@ ConfigPage.EditorModal = class {
                                     ConfigPage.handleResponseStatus(200, data, 'FAQ updated successfully.');
                                 })
                                 .catch((error) => {
-                                    console.error("Error inserting data:", error);
+                                    // console.error("Error inserting data:", error);
                                 });
                         }
 
@@ -1552,7 +1466,7 @@ ConfigPage.EditorModal = class {
                     }
                 }
                 catch (e) {
-                    console.error('', e);
+
                 }
             }.bind(this));
         }

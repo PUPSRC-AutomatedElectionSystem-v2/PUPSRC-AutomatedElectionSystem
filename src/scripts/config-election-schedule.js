@@ -383,7 +383,7 @@ ConfigPage.processDateTime = function (data, isUTC = false) {
         startTime = startTime.substring(0, 5); // "12:12"
         endTime = endTime.substring(0, 5);   // "12:09"
     } catch (error) {
-        console.warn(error)
+        // console.warn(error)
     }
 
     return { startDateTime, endDateTime, startDate, startTime, endDate, endTime };
@@ -484,8 +484,6 @@ ConfigPage.postData = function (post_data) {
             // sucess
 
             ConfigPage.handleSucessResponse();
-
-            console.log(data.data);
 
             try {
                 const originalObject = data.data;

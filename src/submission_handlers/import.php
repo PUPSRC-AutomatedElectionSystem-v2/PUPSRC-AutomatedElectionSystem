@@ -21,7 +21,7 @@ if (!class_exists('PhpOffice\PhpSpreadsheet\IOFactory')) {
 use PhpOffice\PhpSpreadsheet\IOFactory;
 
 function validateHeaders($headers) {
-    $expected_headers = ['Student ID', 'Last Name', 'First Name', 'Middle Name', 'Suffix', 'Year Level', 'Section', 'Email'];
+    $expected_headers = ['Student ID', 'Last Name', 'First Name', 'Middle Name', 'Suffix', 'Email'];
     return $headers === $expected_headers;
 }
 
@@ -88,6 +88,7 @@ function importCSV($filePath, $conn) {
     
     $invalidIds = [];
     $databaseDuplicates = [];
+    $missingRequiredFields = [];
 
     while (($data = fgetcsv($file)) !== FALSE) {
         $result = validateData($data, $conn);
@@ -95,17 +96,20 @@ function importCSV($filePath, $conn) {
             $invalidIds[] = $data[0];
         } elseif ($result === 'duplicate') {
             $databaseDuplicates[] = $data[0];
+        } elseif ($result === 'missing_required_fields') {
+            $missingRequiredFields[] = $data[0];
         }
     }
 
     fclose($file);
     
-    if (!empty($invalidIds) || !empty($databaseDuplicates)) {
+    if (!empty($invalidIds) || !empty($databaseDuplicates) || !empty($missingRequiredFields)) {
         return [
             'status' => 'error', 
-            'message' => "Import failed due to invalid or duplicate entries.", 
+            'message' => "Import failed due to invalid or duplicate entries, or missing required fields.", 
             'invalidIds' => $invalidIds,
-            'databaseDuplicates' => $databaseDuplicates
+            'databaseDuplicates' => $databaseDuplicates,
+            'missingRequiredFields' => $missingRequiredFields
         ];
     }
     
@@ -136,6 +140,7 @@ function importExcel($filePath, $conn) {
     array_shift($rows); // Remove header row
     $invalidIds = [];
     $databaseDuplicates = [];
+    $missingRequiredFields = [];
 
     foreach ($rows as $row) {
         $result = validateData($row, $conn);
@@ -143,15 +148,18 @@ function importExcel($filePath, $conn) {
             $invalidIds[] = $row[0];
         } elseif ($result === 'duplicate') {
             $databaseDuplicates[] = $row[0];
+        } elseif ($result === 'missing_required_fields') {
+            $missingRequiredFields[] = $row[0];
         }
     }
 
-    if (!empty($invalidIds) || !empty($databaseDuplicates)) {
+    if (!empty($invalidIds) || !empty($databaseDuplicates) || !empty($missingRequiredFields)) {
         return [
             'status' => 'error', 
-            'message' => "Import failed due to invalid or duplicate entries.", 
+            'message' => "Import failed due to invalid or duplicate entries, or missing required fields.", 
             'invalidIds' => $invalidIds,
-            'databaseDuplicates' => $databaseDuplicates
+            'databaseDuplicates' => $databaseDuplicates,
+            'missingRequiredFields' => $missingRequiredFields
         ];
     }
     
@@ -166,10 +174,15 @@ function validateData($data, $conn) {
         return 'invalid_id';
     }
 
-    // Check if Student ID already exists
-    $checkSql = "SELECT * FROM voter WHERE student_id = ?";
+    // Check if required fields are not empty
+    if (empty($data[1]) || empty($data[2])) {
+        return 'missing_required_fields';
+    }
+
+    // Check if Student ID OR email already exists
+    $checkSql = "SELECT student_id, email FROM voter WHERE student_id = ? OR BINARY email = ?";
     $checkStmt = $conn->prepare($checkSql);
-    $checkStmt->bind_param("s", $data[0]);
+    $checkStmt->bind_param("ss", $data[0], $data[5]);
     $checkStmt->execute();
     $result = $checkStmt->get_result();
     
@@ -177,31 +190,14 @@ function validateData($data, $conn) {
         $checkStmt->close();
         return 'duplicate';
     }
+
     $checkStmt->close();
-
-    // Extract the part of the email before @example.com
-    $emailParts = explode('@', $data[7]);
-    $emailPrefix = $emailParts[0];
-
-    // Check if email prefix already exists
-    $checkSql = "SELECT * FROM voter WHERE SUBSTRING(email, 1, LOCATE('@', email) - 1) = ?";
-    $checkStmt = $conn->prepare($checkSql);
-    $checkStmt->bind_param("s", $emailPrefix);
-    $checkStmt->execute();
-    $result = $checkStmt->get_result();
-    
-    if ($result->num_rows > 0) {
-        $checkStmt->close();
-        return 'duplicate';
-    }
-    $checkStmt->close();
-
     return true;
 }
 
 function checkForDuplicates($filePath, $type = 'csv') {
     $studentIds = [];
-    $emailPrefixes = [];
+    $emails = [];
     $duplicates = [];
 
     if ($type === 'csv') {
@@ -209,14 +205,13 @@ function checkForDuplicates($filePath, $type = 'csv') {
         fgetcsv($file); // Skip header
         while (($data = fgetcsv($file)) !== FALSE) {
             $studentId = $data[0];
-            $emailParts = explode('@', $data[7]);
-            $emailPrefix = $emailParts[0];
+            $email = $data[5];
             
-            if (in_array($studentId, $studentIds) || in_array($emailPrefix, $emailPrefixes)) {
+            if (in_array($studentId, $studentIds) || in_array($email, $emails)) {
                 $duplicates[] = $studentId;
             } else {
                 $studentIds[] = $studentId;
-                $emailPrefixes[] = $emailPrefix;
+                $emails[] = $email;
             }
         }
         fclose($file);
@@ -227,14 +222,13 @@ function checkForDuplicates($filePath, $type = 'csv') {
         array_shift($rows); // Remove header row
         foreach ($rows as $row) {
             $studentId = $row[0];
-            $emailParts = explode('@', $row[7]);
-            $emailPrefix = $emailParts[0];
+            $email = $row[5];
             
-            if (in_array($studentId, $studentIds) || in_array($emailPrefix, $emailPrefixes)) {
+            if (in_array($studentId, $studentIds) || in_array($email, $emails)) {
                 $duplicates[] = $studentId;
             } else {
                 $studentIds[] = $studentId;
-                $emailPrefixes[] = $emailPrefix;
+                $emails[] = $email;
             }
         }
     }
@@ -269,21 +263,21 @@ function actualImport($filePath, $conn, $type = 'csv') {
 
 function insertData($data, $conn) {
     $role = 'student_voter';
-    $accountStatus = 'for_verification';
-    $voterStatus = 'active';
+    $accountStatus = 'pending_setup';
     $voteStatus = NULL;
     
     $password = generatePassword();
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
+    $middleName = empty($data[3]) ? NULL : $data[3];
     $suffix = empty($data[4]) ? NULL : $data[4];
 
-    $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, email, password, role, account_status, voter_status, vote_status) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, email, password, role, account_status,  vote_status) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     try {
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("sssssssssss", $data[0], $data[1], $data[2], $data[3], $suffix, $data[7], $hashedPassword, $role, $accountStatus, $voterStatus, $voteStatus);
+        $stmt->bind_param("ssssssssss", $data[0], $data[1], $data[2], $middleName, $suffix, $data[5], $hashedPassword, $role, $accountStatus, $voteStatus);
         $result = $stmt->execute();
         $stmt->close();
         

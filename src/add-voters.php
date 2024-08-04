@@ -104,8 +104,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                                             <p><i data-feather="info" class="link-blue mb-xl-1 im-cust feather-sm pe-none"
                                                     style="margin-right: 0.5rem;"></i><span class="fs-7 fw-medium">Uncertain
                                                     about what to upload? See the
-                                                    <a class="link-blue text-underline fw-semibold" href="#"
-                                                        target="_blank">required format</a>
+                                                    <a class="link-blue text-underline fw-semibold" href="#" id="formatLink">required format</a>
                                                     and ensure your file includes these columns and data.</span></p>
                                         </section>
 
@@ -213,7 +212,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                                     <p class="fw-medium spacing-5 pt-2" id="invalidSubtitle">The file content is invalid. Please ensure that: 
                                     <ul class="text-start">
                                     <li class="fw-medium spacing-5 pt-2">The file headers are correct and in the right order</li>
-                                    <li class="fw-medium spacing-5 pt-2">All required fields are filled</li>
+                                    <li class="fw-medium spacing-5 pt-2">All required fields are filled (Student ID, Last Name, First Name, Email)</li>
                                     <li class="fw-medium spacing-5 pt-2">Data formats are correct (e.g., Valid Email Addresses, Correct Student ID, Complete Name)</li>
                                     <li class="fw-medium spacing-5 pt-2">No Duplicates (You may check the Recycle Bin for such duplicates)</li>
                                 </ul>
@@ -230,43 +229,61 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
         </div>
 
         <!-- Imported Successfully Modal -->
-        <div class="modal" id="importDoneModal" data-bs-keyboard="false" data-bs-backdrop="static">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                    <div class="modal-body pb-5">
-                        <div class="d-flex justify-content-end">
-                            <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray" data-bs-dismiss="modal">
-                            </i>
-                        </div>
-                        <div class="text-center">
-                            <div class="col-md-12">
-                                <img src="images/resc/check-animation.gif" class="check-perc" alt="iVote Logo">
-                            </div>
+<div class="modal" id="importDoneModal" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body pb-5">
+                <div class="d-flex justify-content-end">
+                    <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray" data-bs-dismiss="modal"></i>
+                </div>
+                <div class="text-center">
+                    <div class="col-md-12">
+                        <img src="images/resc/check-animation.gif" class="check-perc" alt="iVote Logo">
+                    </div>
 
-                            <div class="row">
-                                <div class="col-md-12 pb-3">
-                                    <p class="fw-bold fs-3 success-color spacing-4">Successfully imported!</p>
-                                    <p class="fw-medium spacing-5 fs-7">Accounts have been successfully created. You can
-                                        view the newly added accounts in <span class="fw-bold">Voters’ Accounts.</span>.
-                                    </p>
-                                </div>
-                            </div>
-
-                            <div class="col-md-12 pt-1 d-flex justify-content-center">
-                                <button class="btn btn-success px-sm-5 py-sm-1-5 btn-sm fw-bold fs-6 spacing-6"
-                                    aria-label="Close"> <a href="manage-voters.php" style="color: white"> Go To Voters'
-                                        Accounts</a></button>
+                    <div class="row">
+                        <div class="col-md-12 pb-3">
+                            <p id="importDoneTitle" class="fw-bold fs-3 success-color spacing-4">Successfully imported!</p>
+                            <div id="importDoneSubtitle">
+                                <p class="fw-medium spacing-5 fs-7">Student masterlist have been imported successfully!
+                                </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+</div>
+
+        <div class="modal" id="formatModal" data-bs-keyboard="false" data-bs-backdrop="static">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-body p-0">
+                <div class="d-flex justify-content-end px-3">
+                    <i class="fa fa-solid fa-circle-xmark fa-xl close-mark light-gray" id="formatModalClose" data-bs-dismiss="modal"></i>
+                </div>
+                <div class="text-center px-3 pt-4">
+                    <div class="col-md-12">
+                        <img src="images\resc\voters-format\Sample.png" class="img-fluid" alt="Required Format">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 pb-3">
+                            <p class="fw-bold spacing-4 text-danger">Required Format</p>
+                            <p class="fw-medium spacing-5">This is the required format for importing voters. Please ensure your file matches this structure.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
         <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script type="module" src="scripts/script.js"></script>
         <script src="scripts/feather.js"></script>
         <script src="scripts/import-voter.js"></script>
+        <script src="scripts/format-link.js"></script>
 
     </body>
 

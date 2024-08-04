@@ -8,11 +8,10 @@ class SessionManager {
 
             $role = $_SESSION['role'] ?? NULL;
             $account_status = $_SESSION['account_status'] ?? NULL;
-            $voter_status = $_SESSION['voter_status'] ?? NULL;
             $vote_status = $_SESSION['vote_status'] ?? NULL;
 
             if($role == 'student_voter') {
-                self::handleStudentVoter($account_status, $voter_status, $vote_status);
+                self::handleStudentVoter($account_status, $vote_status);
             }
             elseif($role == 'admin' || $role == 'head_admin') {
                 self::handleAdminOrHeadAdmin($account_status);
@@ -24,12 +23,15 @@ class SessionManager {
         }
     }
 
-    private static function handleStudentVoter($account_status, $voter_status, $vote_status) {
-        if($account_status == 'verified' && $voter_status != 'inactive' && $vote_status == NULL) {
-            header("Location: ballot-forms.php");
+    private static function handleStudentVoter($account_status, $vote_status)
+    {
+        if($account_status != 'verified') {
+            header("Location: landing-page.php");
             exit();
-        } else if ($account_status == 'verified' && $voter_status != 'inactive' && $vote_status != NULL) {
-            header("Location: end-point.php");
+        }
+
+        if ($vote_status == NULL) {
+            header("Location: ballot-forms.php");
             exit();
         }
         else {
@@ -38,7 +40,6 @@ class SessionManager {
         }
     }
 
-    // This method doesn't check yet whether admin/head account is disabled
     private static function handleAdminOrHeadAdmin($account_status) {
         if($account_status == 'verified') {
             header("Location: admindashboard.php");

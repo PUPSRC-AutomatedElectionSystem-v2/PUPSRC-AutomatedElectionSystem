@@ -46,7 +46,7 @@ define('UPDATE_VOTING_SCHEDULE', 'update_voting_schedule');
 define('SET_REGISTRATION_SCHEDULE', 'set_registration_schedule');
 define('UPDATE_REGISTRATION_SCHEDULE', 'update_registration_schedule');
 define('IMPORT_MEMBER_LIST', 'import_member_list');
-define('EXPORT_MEMBER_LIST', 'import_member_list');
+define('EXPORT_MEMBER_LIST', 'export_member_list');
 define('ADD_FAQ', 'add_faq');
 define('UPDATE_FAQ', 'update_faq');
 define('DELETE_FAQ', 'delete_faq');

@@ -50,6 +50,10 @@ $result = $stmt->get_result();
 
 $voters = [];
 while ($row = $result->fetch_assoc()) {
+    $row['first_name'] = $row['first_name'] ?? '';
+    $row['middle_name'] = $row['middle_name'] ?? '';
+    $row['last_name'] = $row['last_name'] ?? '';
+    $row['suffix'] = $row['suffix'] ?? '';
     $voters[] = $row;
 }
 

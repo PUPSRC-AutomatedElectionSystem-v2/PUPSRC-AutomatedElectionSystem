@@ -72,13 +72,6 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
    
    
     }
-    .callout {
-        padding: .3em .5em;
-        border-radius: 4px;
-        margin: 1em 0;
-        border-left: 4px solid var(--main-color);
-    }
-    
     </style>
     
     <script>
@@ -107,7 +100,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
            
                     <h3 class="fw-700 ms-3">Hey there, <span class="main-color fw-700"> <?php echo isset($first_name) ? $first_name . "!" : "Admin!"; ?>
  </span> </h3>
-                    <small class="ms-3 fw-600 callout">Welcome to your dashboard! For the best experience, we recommend using desktop.</small>
+                    <small class="ms-3 fw-600">Welcome to your dashboard! For the best experience, we recommend using desktop.</small>
                     </div>
                     </div>  
                   

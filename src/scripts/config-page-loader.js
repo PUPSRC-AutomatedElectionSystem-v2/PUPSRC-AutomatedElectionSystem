@@ -35,9 +35,10 @@ function fetchAndReplaceContent(url) {
             // Add new scripts
             let scripts = newDocument.querySelectorAll('script');
             for (let script of scripts) {
-                console.log(script);
+                console.log(scripts);
                 if (script.src) {
-                    let srcWithoutPrefix = script.src.replace('src/', '');
+                    let srcWithoutPrefix = script.src.replace('src/configuration.php', '');
+                    console.log(srcWithoutPrefix);
 
                     let newScript = document.createElement('script');
                     newScript.src = srcWithoutPrefix;
@@ -58,7 +59,7 @@ function fetchAndReplaceContent(url) {
 
             // Add new styles
             newDocument.querySelectorAll('link[rel="stylesheet"]').forEach(link => {
-                let hrefWithoutPrefix = link.href.replace('src/', '');
+                let hrefWithoutPrefix = link.href.replace('src/configuration.php', '');
 
                 let newLink = document.createElement('link');
                 newLink.rel = 'stylesheet';

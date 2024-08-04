@@ -245,7 +245,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                         <div class="col-md-12 pb-3">
                             <p id="importDoneTitle" class="fw-bold fs-3 success-color spacing-4">Successfully imported!</p>
                             <div id="importDoneSubtitle">
-                                <p class="fw-medium spacing-5 fs-7">Accounts have been imported successfully!
+                                <p class="fw-medium spacing-5 fs-7">Student masterlist have been imported successfully!
                                 </p>
                             </div>
                         </div>

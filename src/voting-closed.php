@@ -13,13 +13,13 @@ if(isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['rol
   $connection = DatabaseConnection::connect();
   // Assume $connection is your database connection
 
-  $stmt_electionOpen = $connection->prepare("SELECT close FROM election_schedule WHERE schedule_id = 0");
-  $stmt_electionOpen->execute();	
-  $result_electionOpen = $stmt_electionOpen->get_result();	
+  $stmt_election_open = $connection->prepare("SELECT close FROM election_schedule WHERE schedule_id = 0");
+  $stmt_election_open->execute();	
+  $result_election_open = $stmt_election_open->get_result();	
 
-  if($result_electionOpen) {	
-      $row_election = $result_electionOpen->fetch_assoc();	
-      $today = new DateTime();		
+  if($result_election_open) {	
+      $row_election = $result_election_open->fetch_assoc();	
+      $today = new DateTime();	
       $close = new DateTime($row_election['close']);	
       if( $today > $close) {
 
@@ -42,10 +42,10 @@ if(isset($_SESSION['voter_id']) && (isset($_SESSION['role'])) && ($_SESSION['rol
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
   <!-- Bootstrap 5 code -->
   <link type="text/css" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="../src/styles/feedback-suggestions.css">
+  <link rel="stylesheet" href="styles/feedback-suggestions.css">
   <link rel="stylesheet" href="styles/loader.css" />
-  <link rel="stylesheet" href="<?php echo '../src/styles/orgs/' . $org_acronym . '.css'; ?>">
-  <!-- Icons -->
+  <link rel="stylesheet" href="<?php echo 'styles/orgs/' . $org_acronym . '.css'; ?>">
+
   <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
@@ -67,7 +67,7 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/topnav
     <div class="row justify-content-md-center align-items-center">
         <div class="col-lg-6 col-sm-12 order-sm-2">
             <div class="voting-closed text-center">
-                <?php echo '<img src="../src/images/resc/closed-election-year/'. $org_acronym .'-closed-elec.png" alt="Closed Election Image" class="img-fluid">';?>
+                <?php echo '<img src="images/resc/closed-election-year/'. $org_acronym .'-closed-elec.png" alt="Closed Election Image" class="img-fluid">';?>
             </div>
         </div>
         <div class="col-lg-6 col-sm-12 order-sm-1">
@@ -78,40 +78,8 @@ include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/topnav
                 <div class="header-sub text-center px-2 px-sm-2 pb-sm-4 pb-lg-2 pb-4">
                     Stay tuned for the continuation of the voting process on
                     <?php echo strtoupper($org_acronym); ?>'s
-                    <?php 
-                    switch ($org_acronym) {
-                        case 'acap':
-                            echo '<a href="https://www.facebook.com/ACAPpage">';
-                            break;
-                        case 'aeces':
-                            echo '<a href="https://www.facebook.com/OfficialAECES">';
-                            break;
-                        case 'elite':
-                            echo '<a href="https://www.facebook.com/ELITE.PUPSRC">';
-                            break;
-                        case 'give':
-                            echo '<a href="https://www.facebook.com/educgive">';
-                            break;
-                        case 'jehra':
-                            echo '<a href="https://www.facebook.com/PUPSRCJEHRA">';
-                            break;
-                        case 'jpia':
-                            echo '<a href="https://www.facebook.com/JPIA.PUPSRC">';
-                            break;
-                        case 'piie':
-                            echo '<a href="https://www.facebook.com/piiepup">';
-                            break;
-                        case 'jmap':
-                            echo '<a href="https://www.facebook.com/JMAPPUPSRCOfficial">';
-                            break;
-                        case 'sco':
-                            echo '<a href="https://www.facebook.com/thepupsrcstudentcouncil">';
-                            break;
-                        default:
-                            break;
-                    }
-                    ?>
-                    Facebook</a> page. We appreciate your patience, &nbsp;<?php echo $org_personality ?>! Your understanding is greatly valued.
+                    <a href="<?php echo $facebook; ?>" target="_blank">Facebook</a> page. 
+                    We appreciate your patience, <?php echo $org_personality; ?>! Your understanding is greatly valued.
                 </div>
             </div>
         </div>

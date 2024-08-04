@@ -4,7 +4,7 @@ require_once FileUtils::normalizeFilePath('includes/classes/db-connector.php');
 require_once FileUtils::normalizeFilePath('includes/classes/csrf-token.php');
 require_once FileUtils::normalizeFilePath('includes/session-handler.php');
 include_once FileUtils::normalizeFilePath('includes/error-reporting.php');
-require_once FileUtils::normalizeFilePath('includes/classes/manage-ip-address.php');
+
 
 if (isset($_SESSION['voter_id']) && isset($_SESSION['role']) && $_SESSION['role'] == 'student_voter') {
 
@@ -55,11 +55,12 @@ if (isset($_SESSION['voter_id']) && isset($_SESSION['role']) && $_SESSION['role'
     <link rel="stylesheet" href="styles/loader.css" />
     <link rel="stylesheet" href="styles/user-setting-information.css" />
     <link rel="stylesheet" href="styles/profile.css" />
-    <link rel="stylesheet" href="<?php echo '../src/styles/orgs/' . $org_acronym . '.css'; ?>">
+    <link rel="stylesheet" href="<?php echo 'styles/orgs/' . $org_acronym . '.css'; ?>">
     <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" />
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    
 
     <style>
         .nav-link:hover,
@@ -108,7 +109,7 @@ if (isset($_SESSION['voter_id']) && isset($_SESSION['role']) && $_SESSION['role'
                                         <div class="side-nav mb-0">
                                             <a href="user-setting-information.php" class="custom-link"> Information </a>
                                         </div>
-                                        <div class="mb-0 des">See your account information like your email address and certificate of registration.</div>
+                                        <div class="mb-0 des">See your account information like your email address, student number and full name.</div>
                                     </div>
                                 </div>
                                 <?php if ($_SESSION['organization'] != 'sco') { ?>
@@ -164,26 +165,18 @@ if (isset($_SESSION['voter_id']) && isset($_SESSION['role']) && $_SESSION['role'
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-12 col-sm-12 col-md-12">
-                                    <div class="pt-4"></div>
-                                    <iframe id="pdfViewer" src="<?php echo "user_data/$org_acronym/cor/" . $row['cor']; ?>" frameborder="0" style="width: 100%; height:100%"></iframe>
-                                    <div class="row">
-                                        <div class="filename">
-                                            <span>
-                                                <i data-feather="paperclip" class="white im-cust feather-2xs"></i> <?php echo $row['cor']; ?>
-                                            </span>
-                                            <span class="right-icons">
-                                                <a href="<?php echo "user_data/$org_acronym/cor/" . $row['cor']; ?>" download class="custom-link">
-                                                    <i class="fas fa-download fa-sm"></i> Download
-                                                </a>
-                                                <i class="fa-solid fa-expand fullscreen-icon" onclick="toggleFullScreen('pdfViewer')"></i>
-                                            </span>
+                                    <div class="d-flex justify-content-center align-items-center py-5">
+                                        <div class="text-center">
+                                            <div class="pb-3">
+                                            <h4 class="email-add">Student Number:</h4> 
+                                            <p class="user-email-1"> <?php echo $row['student_id']; ?> </p>
+                                            </div>
+                                            <h4 class="email-add">Full Name:</h4> 
+                                            <p class="user-email-1"><?php echo $row['first_name'] . ' ' . $row['middle_name'] . ' ' . $row['last_name']; ?> </p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row mb-1">
-                                    <div class="py-5"></div>
-                                </div>
-                            </div>
+                            <div class="row mb-2"><div style="padding-bottom: 50px;"></div></div>
                         </div>
                     </div>
                 </div>
@@ -292,9 +285,8 @@ if (isset($_SESSION['voter_id']) && isset($_SESSION['role']) && $_SESSION['role'
         <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
     </div>
 
-    <script src="../src/scripts/feather.js"></script>
+    <script src="scripts/feather.js"></script>
     <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="scripts/loader.js"></script>
     <script src="scripts/change-email.js"></script>
 </body>

@@ -97,7 +97,7 @@ class Login extends IpAddress {
                 $this->redirectWithMessage($this->info_message, 'This account is under verification.');
                 break;
             case 'invalid':
-                $this->redirectWithMessage($this->info_message, 'This account was rejected.');
+                $this->redirectWithMessage($this->info_message, 'This account was denied of access.');
                 break;
             case 'verified':
                 $this->handleVerifiedStudentVoter($row);
@@ -119,14 +119,11 @@ class Login extends IpAddress {
             $row = $result->fetch_assoc();	
             $today = new DateTime();	
             $start = new Datetime($row['start']);	
-            $close = new DateTime($row['close']);	
-            if($today >= $start && $today <= $close) {	
-                $_SESSION['electionOpen'] = true;
+            $close = new DateTime($row['close']);
+            if ($today >= $start && $today <= $close) {
                 $this->storeLoginActivity();                
                 $this->redirectTo('../ballot-forms.php');
-            }	
-            else {	
-                $_SESSION['electionOpen'] = false;
+            } else {
                 $this->storeLoginActivity();	
                 $this->redirectTo('../voting-closed.php');
             }

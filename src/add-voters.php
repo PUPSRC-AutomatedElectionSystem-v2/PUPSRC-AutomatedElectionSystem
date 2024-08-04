@@ -208,18 +208,14 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
                             <div class="row">
                                 <div class="col-md-12 pb-3 pt-4">
-                                    <p class="fw-bold danger spacing-4" id="invalidTitle">Invalid Content!</p>
-                                    <p class="fw-medium spacing-5 pt-2" id="invalidSubtitle">The file content is invalid. Please ensure that: 
+                                    <p class="fw-bold danger spacing-4" id="invalidTitle">Import Failed!</p>
+                                    <p class="fw-medium spacing-5 pt-2" id="invalidSubtitle">Import Failed. You should check your file and try again. 
                                     <ul class="text-start">
                                     <li class="fw-medium spacing-5 pt-2">The file headers are correct and in the right order</li>
                                     <li class="fw-medium spacing-5 pt-2">All required fields are filled (Student ID, Last Name, First Name, Email)</li>
                                     <li class="fw-medium spacing-5 pt-2">Data formats are correct (e.g., Valid Email Addresses, Correct Student ID, Complete Name)</li>
-                                    <li class="fw-medium spacing-5 pt-2">No Duplicates (You may check the Recycle Bin for such duplicates)</li>
-                                </ul>
-                                        <p class="fw-medium spacing-5 pt-2">
-                                        Please check your file and try again.
-                                        </p>
-                                    </p>
+                                    <li class="fw-medium spacing-5 pt-2">No Duplicates (You may check the Recycle Bin or consult SCO Admin)</li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>

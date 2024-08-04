@@ -1,8 +1,8 @@
 <?php
-include_once str_replace('/', DIRECTORY_SEPARATOR, 'includes/classes/file-utils.php');
-
+include_once str_replace('/', DIRECTORY_SEPARATOR, __DIR__ . '/includes/classes/file-utils.php');
 require_once FileUtils::normalizeFilePath('includes/classes/db-connector.php');
 require_once FileUtils::normalizeFilePath('includes/session-handler.php');
+require_once FileUtils::normalizeFilePath('includes/classes/session-manager.php');
 require_once FileUtils::normalizeFilePath('includes/classes/query-handler.php');
 require_once FileUtils::normalizeFilePath('includes/error-reporting.php');
 
@@ -42,7 +42,7 @@ if (isset($_SESSION['voter_id'])) {
         <link rel="stylesheet" href="styles/loader.css" />
         <link rel="stylesheet" href="styles/account-details.css" />
         <link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
         <script src="scripts/loader.js" defer></script>
 
     </head>
@@ -51,7 +51,7 @@ if (isset($_SESSION['voter_id'])) {
 
         <?php
         include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/loader.html');
-        include_once __DIR__ . '/includes/components/sidebar.php';
+        include_once FileUtils::normalizeFilePath(__DIR__ . '/includes/components/sidebar.php');
         ?>
 
         <div class="main">
@@ -139,14 +139,13 @@ if (isset($_SESSION['voter_id'])) {
                                                         </button>
                                                         <ul class="dropdown-menu" aria-labelledby="changeRole">
                                                             <li>
-                                                                <a class="dropdown-item role-background" href="#"
-                                                                    data-role="admin">Admin
-                                                                </a>
+                                                                <a class="list-group-item list-group-item-action role-background text-body-primary text-center" href="#" data-role="admin">Admin</a>
                                                             </li>
                                                             <li>
-                                                                <a class="dropdown-item role-background" href="#"
-                                                                    data-role="head_admin">Head Admin
-                                                                </a>
+                                                                <hr class="dropdown-divider">
+                                                            </li>
+                                                            <li>
+                                                                <a class="list-group-item list-group-item-action role-background text-body-primary text-center" href="#" data-role="head_admin">Head Admin</a>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -182,6 +181,8 @@ if (isset($_SESSION['voter_id'])) {
                 </div>
             </div>
         </div>
+
+        <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
 
         <!-- Change of Role Success Modal -->
         <div class="modal" id="changeSuccessModal" data-bs-keyboard="false" data-bs-backdrop="static">
@@ -289,11 +290,9 @@ if (isset($_SESSION['voter_id'])) {
             </div>
         </div>
 
-        <?php include_once __DIR__ . '/includes/components/footer.php'; ?>
         <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="scripts/script.js"></script>
+        <script type="module" src="scripts/script.js"></script>
         <script src="scripts/feather.js"></script>
-        <script src="scripts/loader.js"></script>
         <script src="scripts/account-details.js"></script>
 
 

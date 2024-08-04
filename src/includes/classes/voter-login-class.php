@@ -34,7 +34,7 @@ class Login extends IpAddress {
         }
 
         // Verifies user in the voter table
-        $sql = "SELECT voter_id, email, password, role, account_status, voter_status, vote_status FROM voter WHERE BINARY email = ?";
+        $sql = "SELECT voter_id, email, password, role, account_status, vote_status FROM voter WHERE BINARY email = ?";
         $stmt = $this->connection->prepare($sql);
         $stmt->bind_param('s', $email);
         $stmt->execute();
@@ -136,17 +136,12 @@ class Login extends IpAddress {
         $stmt->close();	
     }
 
-    // Check voter status of a verified account
-    private function handleVerifiedStudentVoter($row) {    
-        $_SESSION['voter_status'] = $row['voter_status'];
-        $_SESSION['vote_status'] = $row['vote_status'];
 
-        if ($row['voter_status'] === 'inactive') {
-            $this->redirectWithMessage($this->info_message, 'This account is inactive.');
-        } else {
-            $_SESSION['voter_id'] = $row['voter_id'];
-            $this->redirectBasedOnVoteStatus($row['vote_status']);
-        }
+    private function handleVerifiedStudentVoter($row)
+    {
+        $_SESSION['vote_status'] = $row['vote_status'];
+        $_SESSION['voter_id'] = $row['voter_id'];
+        $this->redirectBasedOnVoteStatus($row['vote_status']);
     }
 
     // Check voter's vote status (e.g., if the user has voted already or no)

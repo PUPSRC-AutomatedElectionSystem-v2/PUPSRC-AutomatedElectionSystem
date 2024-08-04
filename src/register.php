@@ -116,7 +116,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                                 class="asterisk fw-medium">*</span></label>
                                         <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
                                             name="student_number" id="student_number" placeholder="Ex: 2024-00XXX-SR-0"
-                                            autocomplete="email" required>
+                                            autocomplete="off" required>
                                     </div>
                                 </div>
                             </div>
@@ -164,7 +164,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                                         class="asterisk fw-medium">*</span></label>
                                                 <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
                                                     name="last_name" id="last_name" placeholder="Last Name"
-                                                    autocomplete="email" required>
+                                                    autocomplete="off" required>
                                             </div>
                                         </div>
 
@@ -174,7 +174,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                                 <label for="suffix" class="fs-8 spacing-3">Suffix</label>
                                                 <input type="text" class="form-control pt-2 bg-white fs-7 text-black"
                                                     name="suffix" id="suffix" placeholder="Suffix"
-                                                    autocomplete="email">
+                                                    autocomplete="off">
                                             </div>
                                         </div>
                                     </div>
@@ -190,7 +190,7 @@ $registration_success = isset($_SESSION['registration_success']) && $_SESSION['r
                                         <label for="email" class="fs-8 spacing-3">Email Address <span
                                                 class="asterisk fw-medium">*</span></label>
                                         <input type="text" class="form-control pt-2 bg-white fs-7 text-black" name="email"
-                                            id="email" placeholder="Ex: johndoe@gmail.com" autocomplete="email" required>
+                                            id="email" placeholder="Ex: johndoe@gmail.com" autocomplete="off" required>
                                     </div>
                                 </div>
                             </div>

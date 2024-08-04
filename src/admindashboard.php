@@ -21,7 +21,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
     // Fetch positions and year level counts using Application methods
     $positions = $app->getPositions();
     $firstPosition = $app->getFirstPosition();
-    $yearLevelCounts = $app->getYearLevelCounts();
+    // $yearLevelCounts = $app->getYearLevelCounts();
     $voterCounts = $app->getVoterCounts();
     $totalVotersCount = $voterCounts['totalVotersCount'];
     $votedVotersCount = $voterCounts['votedVotersCount'];
@@ -72,8 +72,13 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
    
    
     }
-
-  
+    .callout {
+        padding: .3em .5em;
+        border-radius: 4px;
+        margin: 1em 0;
+        border-left: 4px solid var(--main-color);
+    }
+    
     </style>
     
     <script>
@@ -94,15 +99,15 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
     <main class="main px-0">
 
-        <div class="container px-md-3 px-lg-5 px-sm-2 px-0 p-4 justify-content-center d-flex ">
+        <div class="container px-md-3 px-lg-5 px-sm-2 px-0 p-4 justify-content-center d-flex">
         <div class="col-md-12 my-3 p-0 mx-0">
-            <div class="card p-4 mb-5 mt-3">
+            <div class="card p-4 mb-5 mt-3 shadow-sm">
             <div class="card-body">
 
            
                     <h3 class="fw-700 ms-3">Hey there, <span class="main-color fw-700"> <?php echo isset($first_name) ? $first_name . "!" : "Admin!"; ?>
  </span> </h3>
-                    <small class="ms-3 fw-600">Welcome to your dashboard.</small>
+                    <small class="ms-3 fw-600 callout">Welcome to your dashboard! For the best experience, we recommend using desktop.</small>
                     </div>
                     </div>  
                   
@@ -177,7 +182,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
     <?php } ?>
 <?php } else { ?>
     </div>
-    <div class="card">
+    <div class="card shadow-sm">
         <div class="card-body text-center py-5">
             <img src="images/resc/Dashboard/admin-empty-state.jpeg" style="height:200px; width:auto;">
             <h5 class="fs-6 gray">Election period has not yet started.</h5>
@@ -211,7 +216,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                     </div>
                 <div class="row m-0 p-0 justify-content-between">
                <div class= "col-lg-7 m-0  ps-0 pe-lg-4 pe-md-0 pe-sm-0 pe-0">
-                <div class="card p-3 ">
+                <div class="card p-3 shadow-sm">
                     <div class="card-body pr-5">
                 <div class="row justify-content-center ">
                 <div class="col-md-12 col-lg-6 pe-lg-0 pe-xl-5">
@@ -252,7 +257,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                 
                  <div class="col-lg-5 justify-content-between d-flex flex-direct  pe-lg-0 px-md-0  px-0">
                   
-                 <div class="card p-3 mt-3 mt-md-3 mt-lg-0 p-0 p-md-3 py-lg-5 py-xl-3">
+                 <div class="card p-3 mt-3 mt-md-3 mt-lg-0 p-0 p-md-3 py-lg-5 py-xl-3 shadow-sm">
                      
                      <div class="card-body d-flex   align-items-center justify-content-between p-3">
             
@@ -275,7 +280,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
                 </div>     
             </div>
             </div>
-            <div class="card p-3 mt-3  mt-md-3 mt-lg-0">
+            <div class="card p-3 mt-3  mt-md-3 mt-lg-0 shadow-sm">
                 <div class="card-body d-flex align-items-center justify-content-between p-3 p-md-3 py-lg-5 py-xl-3">
 
             
@@ -306,7 +311,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
             <div class="row justify-content-start d-flex m-0 p-0">
     <div class="col-lg-4 ml-5 py-3 ps-0 pe-1 ">
         <div class="col-lg-11">
-            <a href="result-generation" class="card admin-card admin-link px-5 pt-4 pb-5">
+            <a href="result-generation" class="card admin-card admin-link px-5 pt-4 pb-5 shadow-sm">
                 <div class="card-body d-flex align-items-center justify-content-center p-2">
                     <div class="icon-container">
                         <img src="images/resc/Dashboard/Reports/<?php echo $org_name . '-reports.png'; ?>" alt="Reports Image" class="navigate-images">
@@ -324,7 +329,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
     <div class="col-lg-4 ml-5 py-3 ps-0 pe-1 d-lg-flex d-md-block justify-content-center ">
         <div class="col-lg-11">
-            <a href="manage-voters" class="card admin-card admin-link px-5 pt-4 pb-5">
+            <a href="manage-voters" class="card admin-card admin-link px-5 pt-4 pb-5 shadow-sm">
                 <div class="card-body d-flex align-items-center justify-content-center p-2">
                     <div class="icon-container">
                         <img src="images/resc/Dashboard/Manage Acc/<?php echo $org_name . '-manage-accs.png'; ?>" alt="Reports Image" class="navigate-images">
@@ -342,7 +347,7 @@ if (isset($_SESSION['voter_id']) && ($_SESSION['role'] == 'admin' || $_SESSION['
 
     <div class="col-lg-4 ml-5 py-3 ps-0 pe-0 d-lg-flex d-md-block justify-content-end ">
         <div class="col-lg-11">
-            <a href="configuration" class="card admin-card admin-link px-5 pt-4 pb-5">
+            <a href="configuration" class="card admin-card admin-link px-5 pt-4 pb-5 shadow-sm">
                 <div class="card-body d-flex align-items-center justify-content-center p-2">
                     <div class="icon-container">
                         <img src="images/resc/Dashboard/Configuration/<?php echo $org_name . '-config.png'; ?>" alt="Reports Image" class="navigate-images">

@@ -162,7 +162,8 @@
 						basename($_SERVER['PHP_SELF']) == 'vote-schedule' ||
 						basename($_SERVER['PHP_SELF']) == 'election-year' ||
 						basename($_SERVER['PHP_SELF']) == 'vote-guidelines' ||
-						basename($_SERVER['PHP_SELF']) == 'positions')
+						basename($_SERVER['PHP_SELF']) == 'positions' ||
+						basename($_SERVER['PHP_SELF']) == 'faq')
 					? 'active' : ''; ?>
 				">
 					<i data-feather="settings" class="white mb-xl-1"></i><span

@@ -134,7 +134,7 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
                         <?php endif; ?>
 
                         <div class="col-md-12 mt-0 mb-3">
-                            <input type="email" class="form-control shadow-sm email" id="Email" name="email" placeholder="Email Address" required autocomplete="email">
+                            <input type="email" class="form-control shadow-sm email" id="Email" name="email" placeholder="Email Address" required autocomplete="off">
                             
                             <div class="fw-medium text-start invalid-feedback" id="email-login-error">
                                 <!-- Display error messages here  -->
@@ -143,7 +143,7 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
 
                         <div class="col-md-12 mb-2">
                             <div class="input-group">
-                                <input type="password" class="form-control shadow-sm border border-end-0 password" name="password" placeholder="Password" id="Password" autocomplete="current-password" required>
+                                <input type="password" class="form-control shadow-sm border border-end-0 password" name="password" placeholder="Password" id="Password" autocomplete="off" required>
                                 <button class="btn shadow-sm border border-start-0 show-toggle" type="button" id="password-toggle">Show</button>
                             </div>
                             
@@ -214,7 +214,7 @@ if(isset($_SESSION['maxLimit']) && $_SESSION['maxLimit'] === true) {
                                 <div for="email" class="form-label text-center pb-3 forgot-password-subtitle">Don't sweat it, enter your registered email address below to recover your account.</div>
                                 <!-- <p>Email Address</p> -->
                             </div>
-                            <input type="email" class="form-control shadow-sm email" id="email" name="email" placeholder="Email Address" autocomplete="email">
+                            <input type="email" class="form-control shadow-sm email" id="email" name="email" placeholder="Email Address" autocomplete="off">
                             <div class="valid-feedback text-start fw-medium" id="email-valid">
                             </div>
                             <div class="invalid-feedback text-start fw-medium" id="email-error">

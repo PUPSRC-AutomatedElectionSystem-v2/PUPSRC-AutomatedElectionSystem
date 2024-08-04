@@ -220,7 +220,7 @@ $(document).ready(function() {
                     $.each(selectedIds, function(index, id) {
                         $('.select-checkbox[value="' + id + '"]').closest('tr').remove();
                     });
-
+                    $('#confirmDeleteInput').val('');
                     handleCancelActions();
                     hideRestoreElements();
                     updatePaginationAndDisplay();

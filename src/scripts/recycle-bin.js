@@ -185,6 +185,7 @@ $(document).ready(function() {
                     handleCancelActions();
                     hideDeleteElements();
                     updatePaginationAndDisplay();
+                    $('#confirmDeleteInput').val('');
                 },
                 error: function() {
                     console.error('An error occurred while deleting selected items');

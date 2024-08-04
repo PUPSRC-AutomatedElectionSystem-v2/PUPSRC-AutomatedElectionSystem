@@ -73,7 +73,7 @@ $(document).ready(function() {
   // Store the initial role
   var currentRole = $('#changeRole').text().trim().toLowerCase();
 
-  $('.dropdown-item').click(function(e) {
+  $('.list-group-item').click(function(e) {
     e.preventDefault();
     var newRole = $(this).data('role');
     var voterId = $('#voter_id').val();

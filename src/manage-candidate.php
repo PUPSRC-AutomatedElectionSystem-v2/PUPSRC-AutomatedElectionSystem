@@ -45,7 +45,7 @@ if (isset($_SESSION['voter_id'])) {
 		<link rel="stylesheet" href="styles/candidate-table.css" />
 		<link rel="stylesheet" href="styles/manage-committee.css" />
 		<link rel="stylesheet" href="../vendor/node_modules/bootstrap/dist/css/bootstrap.min.css" />
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 		<script src="scripts/loader.js" defer></script>
 	</head>
 

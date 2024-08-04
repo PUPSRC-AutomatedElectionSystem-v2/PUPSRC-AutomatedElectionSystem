@@ -452,6 +452,7 @@ if ($total_guidelines > 0) {
 </script>
 
   <script src="scripts/feather.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script src="../vendor/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <script src ="scripts/ballot-forms.js"></script>
   <script src="scripts/loader.js"></script>

@@ -62,28 +62,26 @@ class FormHandler {
     }
 
     private function insertVoterData($connection, $row) {
-        $student_number = $row['student_number'] ?? null; 
+        $student_id = $row['student_id'] ?? null; 
         $last_name = $row['last_name'] ?? null;
         $first_name = $row['first_name'] ?? null;
         $middle_name = $row['middle_name'] ?? null;
         $suffix = $row['suffix'] ?? null;
-        $year_level = $row['year_level'] ?? null;
-        $section = $row['section'] ?? null;
         $email = $row['email'] ?? null;
         $password = $row['password'] ?? null;
         $role = $row['role'] ?? null;
-        $voter_status = $row['voter_status'] ?? null;
         $vote_status = $row['vote_status'] ?? null;
+        $verification_token = $row['verification_token'] ?? null;
         $vote_status_updated = $row['vote_status_updated'] ?? null;
         $account_status = 'for_verification';
-
-        $sql = "INSERT INTO voter (student_number, last_name, first_name, middle_name, suffix, year_level, section, email, password, 
-                role, voter_status, vote_status, vote_status_updated, account_status) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, email, password, 
+                role, vote_status, verification_token, vote_status_updated, account_status) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = $connection->prepare($sql);
-        $stmt->bind_param("ssssssssssssss", $student_number, $last_name, $first_name, $middle_name, $suffix, $year_level, $section, $email, $password, 
-                          $role, $voter_status, $vote_status, $vote_status_updated, $account_status);
-
+        $stmt->bind_param("ssssssssssss", $student_id, $last_name, $first_name, $middle_name, $suffix, $email, $password, 
+                          $role, $vote_status, $verification_token, $vote_status_updated, $account_status);
+        
         $stmt->execute();
         $stmt->close();
     }

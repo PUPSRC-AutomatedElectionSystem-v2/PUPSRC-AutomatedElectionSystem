@@ -463,7 +463,7 @@ if ($total_guidelines > 0) {
       $stmt_positions->close();
       $stmt_candidates->close();
       $stmt_guidelines->close();
-      $stmt_electionOpen->close();
+      $stmt_election_open->close();
       $connection->close();
       
     } else {
@@ -474,10 +474,7 @@ if ($total_guidelines > 0) {
   header("Location: end-point.php");
   exit(); // Ensure no further code is executed after redirection
 }
-} else {
-header("Location: landing-page.php");
-exit(); // Ensure no further code is executed after redirection
-}
+} 
 } else {
 header("Location: landing-page.php");
 exit(); // Ensure no further code is executed after redirection

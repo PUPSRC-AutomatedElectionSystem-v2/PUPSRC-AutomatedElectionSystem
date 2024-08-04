@@ -179,7 +179,7 @@ $row = $result->fetch_assoc();
         <input type="hidden" id="org" name="org" readonly value="">
         <div class="form-group pt-4">
           <label class="spacing-3">Personal Information</label>
-          <div class="form-text">Student Number:  <?php echo $row['student_number']; ?></div>
+          <div class="form-text">Student Number:  <?php echo $row['student_id']; ?></div>
           <div class="form-text">Full Name: <?php echo $row['first_name'] . ' ' . $row['middle_name'] . ' ' . $row['last_name']; ?>  </div>
           <div class="form-text">Email Address:  <?php echo $row['email']; ?></div>
         </div>

@@ -76,7 +76,7 @@ ConfigPage = {
             })
             .catch(function (error) {
                 ConfigPage.table.draw(false);
-                console.error('GET request error:', error);
+                // console.error('GET request error:', error);
             });
     },
 
@@ -229,14 +229,9 @@ ConfigPage.vote_rule_validate = new InputValidator(ConfigPage.customValidation);
 
 ConfigPage.processData = function (data) {
     const TABLE_DATA = [];
-    // console.log('data')
-    // console.log(data)
+
     for (const key in data) {
         const item = data[key];
-        // console.log('process for loop key')
-        // console.log(key)
-        // console.log('process for loop item')
-        // console.log(item)
 
         if (typeof item === 'object' && !Array.isArray(item)) {
 
@@ -279,14 +274,14 @@ ConfigPage.postData = function (post_data, method) {
             return response.json();
         })
         .then(function (response) {
-            console.log('POST request successful:', response.data);
+
             let data = [];
             data = response.data;
 
             return { data, success: true };
         })
         .catch(function (error) {
-            console.error('POST request error:', error);
+            // console.error('POST request error:', error);
             return { error, success: false };
         });
 }
@@ -312,12 +307,11 @@ ConfigPage.removeErrorCodes = function (data) {
 try {
     ConfigPage.fetchVoteGuidelines({ csrf: ConfigPage.CSRF_TOKEN });
 } catch (error) {
-    console.warn(error);
+    // console.warn(error);
 }
 
 ConfigPage.setErrorDictionary = function (definitions) {
     ConfigPage.errorDictionary = definitions;
-    console.log(ConfigPage.errorDictionary);
 }
 
 
@@ -452,19 +446,16 @@ ConfigPage.TableHandler = class {
                             if (success) {
                                 ConfigPage.handleResponseStatus(200, data, 'Vote guideline updated successfully.');
                                 // let processedData = ConfigPage.processData(data);
-                                // console.log(processedData)
                                 // this.updateData(processedData);
                             } else if (error.data) {
                                 // error.data.forEach(item => {
-
-
                                 // });
                             }
                         } catch (e) {
-                            console.error('POST request failed:', e);
+                            // console.error('POST request failed:', e);
                         }
                     } else {
-                        console.error('POST request failed:', error);
+                        // console.error('POST request failed:', error);
                     }
                 })
 
@@ -545,7 +536,7 @@ ConfigPage.TableHandler = class {
                         ConfigPage.table.row(DATA_ROW).remove().draw(isdraw);
                     } else {
 
-                        console.error(`Input element with ID not found.`);
+                        // console.error(`Input element with ID not found.`);
                     }
 
                 }
@@ -603,7 +594,7 @@ ConfigPage.TableHandler = class {
                         ConfigPage.table.row(DATA_ROW).data(item).draw(isdraw);
                     } else {
 
-                        console.error(`Input element with ID not found.`);
+                        // console.error(`Input element with ID not found.`);
                     }
                     resolve();
                 }
@@ -625,7 +616,7 @@ ConfigPage.TableHandler = class {
 try {
     ConfigPage.table.destroy();
 } catch (error) {
-    console.warn(error);
+    // console.warn(error);
 }
 
 ConfigPage.table = new DataTable('#config-table', {
@@ -708,9 +699,9 @@ ConfigPage.handleDeleteBtn = async function () {
                     const { data, success, error } = result;
 
                     if (success) {
-                        console.log(data)
+
                         let processedData = ConfigPage.processData(data);
-                        console.log(processedData)
+
                         ConfigPage.TableHandler.deleteEntry(processedData)
                             .then(() => {
                                 // ConfigPage.handleSucessResponse();
@@ -718,18 +709,16 @@ ConfigPage.handleDeleteBtn = async function () {
                                 ConfigPage.handleResponseStatus(200, data, 'Vote guideline deleted successfully.');
                             })
                             .catch((error) => {
-                                console.error("Error inserting data:", error);
+                                // console.error("Error inserting data:", error);
                             });
 
                     } else if (error.data) {
                         // error.data.forEach(item => {
-
-
                         // });
                     }
                 }
                 catch (e) {
-                    console.error('POST request failed:', e);
+                    // console.error('POST request failed:', e);
                 }
             })
     }
@@ -852,8 +841,6 @@ ConfigPage.FindLastSequence = function (table_id = 'config-table') {
         if (!LAST_ROW) {
             return 0;
             // throw new Error(`No last row found in table '${table_id}'.`);
-        } else {
-            console.log('last row ' + LAST_ROW.outerHTML);
         }
 
         const LAST_SEQUENCE_SPAN = LAST_ROW.querySelector('.dt-type-numeric > span.d-none:first-child');
@@ -872,8 +859,7 @@ ConfigPage.FindLastSequence = function (table_id = 'config-table') {
 
         return last_sequence;
     } catch (error) {
-        console.error(`Error finding last sequence for table '${table_id}':`, error);
-        // Optionally handle the error by returning a default sequence or rethrowing
+        // console.error(`Error finding last sequence for table '${table_id}':`, error);
         throw error; // Rethrow the error to propagate it to the caller
     }
 }
@@ -902,7 +888,7 @@ ConfigPage.validateTextEditor = function (event) {
                 primaryBtn.disabled = true;
             }
         } catch (error) {
-            console.error('Validation error:', error);
+            // console.error('Validation error:', error);
         }
     }, 300);
 }
@@ -1149,7 +1135,7 @@ ConfigPage.EditorModal = class {
                                     ConfigPage.handleResponseStatus(200, data, 'Vote guideline added successfully.');
                                 })
                                 .catch((error) => {
-                                    console.error("Error inserting data:", error);
+                                    // console.error("Error inserting data:", error);
                                 });
 
 
@@ -1163,7 +1149,7 @@ ConfigPage.EditorModal = class {
                                     ConfigPage.handleResponseStatus(200, data, 'Vote guideline updated successfully.');
                                 })
                                 .catch((error) => {
-                                    console.error("Error inserting data:", error);
+                                    // console.error("Error inserting data:", error);
                                 });
                         }
 
@@ -1174,7 +1160,7 @@ ConfigPage.EditorModal = class {
                     }
                 }
                 catch (e) {
-                    console.error('', e);
+                    // console.error('', e);
                 }
             }.bind(this));
         }

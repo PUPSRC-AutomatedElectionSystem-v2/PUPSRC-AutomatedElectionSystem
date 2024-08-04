@@ -271,7 +271,7 @@ ConfigPage.fetchData = function (requestData) {
 
         })
         .catch(function (error) {
-            console.error('GET request error:', error);
+            // console.error('GET request error:', error);
         });
 };
 

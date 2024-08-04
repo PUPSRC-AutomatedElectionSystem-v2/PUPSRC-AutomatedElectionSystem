@@ -179,26 +179,19 @@ function validateData($data, $conn) {
         return 'missing_required_fields';
     }
 
-    // Check if Student ID OR email already exists in any of the relevant databases
-    $databases = ['db_acap', 'db_aeces', 'db_elite', 'db_give', 'db_jehra', 'db_jmap', 'db_jpia', 'db_piie', 'db_sco'];
+    // Check if Student ID OR email already exists in db_sco
+    $checkSql = "SELECT student_id, email FROM db_sco.voter WHERE student_id = ? OR BINARY email = ?";
+    $checkStmt = $conn->prepare($checkSql);
+    $checkStmt->bind_param("ss", $data[0], $data[5]);
+    $checkStmt->execute();
+    $result = $checkStmt->get_result();
     
-    foreach ($databases as $db) {
-        $conn->select_db($db);
-        
-        $checkSql = "SELECT student_id, email FROM voter WHERE student_id = ? OR BINARY email = ?";
-        $checkStmt = $conn->prepare($checkSql);
-        $checkStmt->bind_param("ss", $data[0], $data[5]);
-        $checkStmt->execute();
-        $result = $checkStmt->get_result();
-        
-        if ($result->num_rows > 0) {
-            $checkStmt->close();
-            return 'duplicate';
-        }
-
+    if ($result->num_rows > 0) {
         $checkStmt->close();
+        return 'duplicate';
     }
 
+    $checkStmt->close();
     return true;
 }
 
@@ -279,17 +272,39 @@ function insertData($data, $conn) {
     $middleName = empty($data[3]) ? NULL : $data[3];
     $suffix = empty($data[4]) ? NULL : $data[4];
 
-    $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, email, password, role, account_status,  vote_status) 
+    $sql = "INSERT INTO voter (student_id, last_name, first_name, middle_name, suffix, email, password, role, account_status, vote_status) 
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
+    $sql_sco = "INSERT INTO db_sco.voter (student_id, last_name, first_name, middle_name, suffix, email, password, role, account_status, vote_status) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
     try {
+        // Start transaction
+        $conn->begin_transaction();
+
+        // Insert into main database
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ssssssssss", $data[0], $data[1], $data[2], $middleName, $suffix, $data[5], $hashedPassword, $role, $accountStatus, $voteStatus);
-        $result = $stmt->execute();
+        $result1 = $stmt->execute();
         $stmt->close();
-        
-        return $result;
+
+        // Insert into db_sco database
+        $stmt_sco = $conn->prepare($sql_sco);
+        $stmt_sco->bind_param("ssssssssss", $data[0], $data[1], $data[2], $middleName, $suffix, $data[5], $hashedPassword, $role, $accountStatus, $voteStatus);
+        $result2 = $stmt_sco->execute();
+        $stmt_sco->close();
+
+        // If both insertions are successful, commit the transaction
+        if ($result1 && $result2) {
+            $conn->commit();
+            return true;
+        } else {
+            // If any insertion fails, rollback the transaction
+            $conn->rollback();
+            return false;
+        }
     } catch (Exception $e) {
+        $conn->rollback();
         return false;
     }
 }

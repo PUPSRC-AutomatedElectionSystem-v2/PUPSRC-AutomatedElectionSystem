@@ -251,10 +251,10 @@ ConfigPage = {
 
     onSavePosition: function (INPUT_ELEMENT, TEXT_EDITOR) {
         let data = ConfigPage.EditPositionModal.extractData(INPUT_ELEMENT, TEXT_EDITOR);
-        console.log(data);
+
         if (!ConfigPage.position_validate.validate(INPUT_ELEMENT)) {
             INPUT_ELEMENT.style.borderBottomColor = '0.5px solid red';
-            console.log(data);
+
             return;
         }
 
@@ -268,8 +268,7 @@ ConfigPage = {
             ConfigPage.postData(data.data)
                 .then(function (result) {
                     const { data, success, error } = result;
-                    console.log('ConfigPage.mode');
-                    console.log(ConfigPage.mode);
+
                     if (success) {
                         if (ConfigPage.mode === 'add') {
                             ConfigPage.insertPosition(data)
@@ -278,7 +277,7 @@ ConfigPage = {
                                     ConfigPage.handleResponseStatus(200, data, 'Position added successfully.');
                                 })
                                 .catch((error) => {
-                                    console.error("Error inserting data:", error);
+                                    // console.error("Error inserting data:", error);
                                 });
                         } else if (ConfigPage.mode === 'update') {
                             ConfigPage.updatePostion(data)
@@ -287,13 +286,13 @@ ConfigPage = {
                                     ConfigPage.handleResponseStatus(200, data, 'Position updated successfully.');
                                 })
                                 .catch((error) => {
-                                    console.error("Error inserting data:", error);
+                                    // console.error("Error inserting data:", error);
                                 });
                         }
 
                         ConfigPage.edit_position_modal.hide();
                     } else {
-                        console.error('POST request failed:', error);
+                        // console.error('POST request failed:', error);
                     }
                 })
 
@@ -320,15 +319,14 @@ ConfigPage = {
 
     handleTableRowClickShow: function (event) {
         if (event.target === event.currentTarget.querySelector('input')) {
-            console.log('click event on input');
+
             ConfigPage.mode = 'view';
             ConfigPage.showCandidatePositionDialog(event.currentTarget);
         }
     },
 
     handleTableRowDblClick: function (event) {
-        console.log('dbl click event ');
-        console.log(event);
+
         ConfigPage.mode = 'update';
         const INPUT_FOCUSED = event.currentTarget.querySelectorAll('input:focus-visible');
 
@@ -386,7 +384,7 @@ ConfigPage = {
                     }
                 }
             } catch (error) {
-                console.error('Validation error:', error);
+                // console.error('Validation error:', error);
             }
         }, 300);
     },
@@ -414,8 +412,7 @@ ConfigPage = {
     handleInput: function (event) {
         setTextEditableWidth(event.target);
         const inputElement = event.target;
-        console.log('getform');
-        console.log(event.target);
+
         clearTimeout(ConfigPage.typingTimeout);
         ConfigPage.typingTimeout = setTimeout(() => {
             try {
@@ -430,7 +427,7 @@ ConfigPage = {
                             if (success) {
                                 ConfigPage.updatePostion(data, false);
                             } else {
-                                console.error('POST request failed:', error);
+                                // console.error('POST request failed:', error);
                             }
                         })
 
@@ -438,7 +435,7 @@ ConfigPage = {
                     inputElement.style.outline = '0.5px solid red';
                 }
             } catch (error) {
-                console.error('Validation error:', error);
+                // console.error('Validation error:', error);
             }
         }, 400);
     },
@@ -499,9 +496,6 @@ ConfigPage = {
                 let position_description = $(diff[i].node).find('td.pos-description .text-truncate');
                 let position_description_value = position_description.html();
 
-                console.log('diff ' + JSON.stringify($(diff[i].node)));
-                console.log('data position_input_val ' + position_input_val);
-                console.log('data position_description_value ' + position_description_value);
                 const NEW_DATA_SEQ = {
                     'input_id': position_input_id,
                     'data_id': data_id,
@@ -515,7 +509,6 @@ ConfigPage = {
 
             }
 
-            console.log('data sequence' + JSON.stringify(data));
 
             ConfigPage.postData(data)
                 .then(function (result) {
@@ -527,7 +520,7 @@ ConfigPage = {
                         ConfigPage.handleResponseStatus(200, data, 'Position updated successfully.');
 
                     } else {
-                        console.error('POST request failed:', error);
+                        // console.error('POST request failed:', error);
                     }
                 })
 
@@ -575,12 +568,6 @@ ConfigPage = {
     },
 
     deletePosition: function (DATA) {
-        console.log('removing');
-        console.log(DATA);
-        console.log(DATA.data);
-        console.log(Array.isArray(DATA.data));
-
-
 
         return new Promise((resolve, reject) => {
             try {
@@ -599,7 +586,7 @@ ConfigPage = {
 
                         } else {
 
-                            console.error(`Input element with ID not found.`);
+                            // console.error(`Input element with ID not found.`);
                         }
                     });
                 } else {
@@ -628,7 +615,6 @@ ConfigPage = {
             try {
                 if (DATA && DATA.data && Array.isArray(DATA.data)) {
                     DATA.data.forEach(item => {
-                        console.log("each pos update " + JSON.stringify(item));
                         let { sequence, data_id, input_id, value, max_votes, description } = item;
                         if (draw) {
                             let rowData = {
@@ -645,11 +631,10 @@ ConfigPage = {
                             let INPUT_ELEMENT = document.getElementById(input_id);
                             let DATA_ROW = INPUT_ELEMENT.closest(`tr`);
                             if (DATA_ROW) {
-                                console.log(DATA_ROW);
                                 ConfigPage.table.row(DATA_ROW).data(rowData).draw(false);
                             } else {
 
-                                console.error(`Input element with ID not found.`);
+                                // console.error(`Input element with ID not found.`);
                             }
                         } else {
 
@@ -682,7 +667,6 @@ ConfigPage = {
             try {
                 if (DATA && DATA.data && Array.isArray(DATA.data)) {
                     DATA.data.forEach(item => {
-                        console.log("each pos update " + JSON.stringify(item));
                         let { sequence, data_id, input_id, value, max_votes, description } = item;
                         if (!draw) {
                             let rowData = {
@@ -776,7 +760,7 @@ ConfigPage = {
                     if (parent) {
                         all_rows.push(parent);
                     } else {
-                        console.warn('Parent <tr> not found for element:', element);
+                        // console.warn('Parent <tr> not found for element:', element);
                     }
                 });
             } else {
@@ -819,7 +803,7 @@ ConfigPage = {
         let url = 'src/includes/classes/config-candidate-pos-controller.php';
         let method = 'PUT';
         post_data.csrf_token = `${ConfigPage.CSRF_TOKEN}`;
-        console.log('Type of post_data:', typeof post_data);
+
         if (Array.isArray(post_data)) {
             post_data.push({ csrf_token: `${ConfigPage.CSRF_TOKEN}` });
         } else if (typeof post_data === 'object') {
@@ -828,7 +812,6 @@ ConfigPage = {
 
 
         let json_data = JSON.stringify(post_data);
-        console.log("json_data after stringify:", json_data);
 
         if ('update_sequence' in post_data) {
             method = 'UPDATE';
@@ -855,12 +838,10 @@ ConfigPage = {
                 return response.json();
             })
             .then(function (data) {
-                console.log('POST request successful:', data);
-
                 return { data, success: true };
             })
             .catch(function (error) {
-                console.error('POST request error:', error);
+                // console.error('POST request error:', error);
                 return { error, success: false };
             });
     },
@@ -881,10 +862,9 @@ ConfigPage = {
                 const TABLE_DATA = ConfigPage.processData(data);
 
                 ConfigPage.insertData(TABLE_DATA, ConfigPage.table);
-                console.log('GET request successful:', data);
             })
             .catch(function (error) {
-                console.error('GET request error:', error);
+                // console.error('GET request error:', error);
             });
     },
 
@@ -910,7 +890,6 @@ ConfigPage = {
     },
 
     insertData: function (TABLE_DATA, TABLE) {
-        console.log(TABLE);
         TABLE.clear();
         TABLE.rows.add(TABLE_DATA).draw(true);
 
@@ -939,12 +918,7 @@ ConfigPage.handleDescValidate = function (delta, old, source) {
             ConfigPage.quill.deleteText(ConfigPage.descriptionLimit, ConfigPage.quill.getLength());
         }
 
-        console.log(ConfigPage.quill.getLength());
-        console.log(ConfigPage.quill.getContents());
-
         let descriptionVal = ConfigPage.quill.getContents();
-        console.log("length ", descriptionVal.ops.length);
-
 
         const originalVal = descriptionVal.slice();
         let modifiedVal = originalVal.slice();
@@ -957,16 +931,11 @@ ConfigPage.handleDescValidate = function (delta, old, source) {
             const newText = originalText.replace(regex, '$1$1');
 
             if (newText != originalText) {
-                console.log("originalText");
-                console.log(originalText);
-                console.log("newText");
-                console.log(newText);
                 modifiedVal.ops[i].insert = newText;
             }
         }
 
         if (JSON.stringify(modifiedVal) !== JSON.stringify(originalVal)) {
-            console.log(modifiedVal);
             ConfigPage.quill.setContents(modifiedVal);
             return false;
         }
@@ -1017,14 +986,11 @@ ConfigPage.handleDeleteBtn = async function () {
                                 ConfigPage.handleResponseStatus(200, data, 'Position deleted successfully.');
                             })
                             .catch((error) => {
-                                console.error("Error inserting data:", error);
+                                // console.error("Error inserting data:", error);
                             });
 
                     } else if (error.data) {
                         error.data.forEach(item => {
-                            console.log('item');
-                            console.log(item);
-                            console.log(item.hasOwnProperty('affected_candidates'));
 
                             if (item.hasOwnProperty('affected_candidates')) {
                                 ConfigPage.isDeleteConflict = true;
@@ -1036,7 +1002,7 @@ ConfigPage.handleDeleteBtn = async function () {
                                         ConfigPage.handleResponseStatus(200, data, 'Position deleted successfully.');
                                     })
                                     .catch((error) => {
-                                        console.error("Error inserting data:", error);
+                                        // console.error("Error inserting data:", error);
                                     });
                             }
                         });
@@ -1044,7 +1010,7 @@ ConfigPage.handleDeleteBtn = async function () {
 
                 }
                 catch (e) {
-                    console.error('POST request failed:', e);
+                    // console.error('POST request failed:', e);
                 }
             }.bind(this))
     }
@@ -1073,8 +1039,6 @@ ConfigPage.showConfirmModal = async function (modal, instanceRef, inputId = null
         ConfigPage.handleConfirmInput(modal, inputId, inputVal);
     }
 
-    console.log(!ConfigPage.isDeleteConflict);
-
     if (!ConfigPage.isDeleteConflict) {
         $(modal).find('button.btn-secondary.secondary').text('Cancel');
     }
@@ -1088,7 +1052,6 @@ ConfigPage.showConfirmModal = async function (modal, instanceRef, inputId = null
         $(modal).find('button').on('click', (event) => {
             const buttonValue = event.currentTarget.value;
             if (event.target && event.target.textContent.trim() === 'Go to Candidates') {
-                console.log('go to candidates');
                 window.location.href = 'src/manage-candidate.php';
             }
 
@@ -1157,8 +1120,6 @@ ConfigPage.DTableUtil = class DTableUtil {
             if (!LAST_ROW) {
                 return 0;
                 // throw new Error(`No last row found in table '${table_id}'.`);
-            } else {
-                console.log('last row ' + LAST_ROW.outerHTML);
             }
 
             const LAST_SEQUENCE_SPAN = LAST_ROW.querySelector('.dt-type-numeric > span.d-none:first-child');
@@ -1177,8 +1138,7 @@ ConfigPage.DTableUtil = class DTableUtil {
 
             return last_sequence;
         } catch (error) {
-            console.error(`Error finding last sequence for table '${table_id}':`, error);
-            // Optionally handle the error by returning a default sequence or rethrowing
+            // console.error(`Error finding last sequence for table '${table_id}':`, error);
             throw error; // Rethrow the error to propagate it to the caller
         }
     }
@@ -1213,8 +1173,7 @@ ConfigPage.DTableUtil = class DTableUtil {
             return TABLE_ITEM;
 
         } catch (error) {
-            console.error(`Error generating row content for table '${table_id}':`, error);
-            // Optionally handle the error by returning a default value or rethrowing
+            // console.error(`Error generating row content for table '${table_id}':`, error);
             throw error;
         }
     }
@@ -1235,8 +1194,6 @@ ConfigPage.CandidatePosition = class CandidatePosition {
 
 
     static updateTextEditableListeners(inputElements) {
-        console.log('adding listener');
-        console.log(inputElements);
         inputElements.forEach(inputElement => {
             ConfigPage.delEventListener(inputElement);
             ConfigPage.addEventListenerAndStore(inputElement, 'input', ConfigPage.handleInput);
@@ -1244,8 +1201,6 @@ ConfigPage.CandidatePosition = class CandidatePosition {
     };
 
     static updateTableRowListeners(tableRows) {
-        console.log('adding click listener');
-        console.log(tableRows);
         tableRows.forEach(row => {
             ConfigPage.delEventListener(row, 'click');
             ConfigPage.delEventListener(row, 'dblclick');
@@ -1381,8 +1336,6 @@ ConfigPage.CandidatePosition = class CandidatePosition {
         maxVotesLabel.insertAdjacentElement('afterend', selectMaxVotes);
 
         $('#max-vote-picker').selectpicker();
-        console.log("value");
-        console.log(value);
         $('#max-vote-picker').selectpicker('val', value);
     }
 
@@ -1396,7 +1349,6 @@ ConfigPage.CandidatePosition = class CandidatePosition {
         let editButton = edit_position_modal.querySelector(`#edit-button`);
         let saveButton = edit_position_modal.querySelector(`#save-button`);
         let cancelButton = edit_position_modal.querySelector(`#cancel-button`);
-        console.log()
 
         if (isEdit || ConfigPage.mode == 'add') {
             positionInput.classList.remove('d-none');
@@ -1453,9 +1405,6 @@ ConfigPage.CandidatePosition = class CandidatePosition {
             positionNameInput.value = DATA[0].value ?? '';
         }
 
-
-
-        console.log("Text editor " + JSON.stringify(DATA[0].description));
         try {
             if (quill) {
                 let description = (DATA[0].description !== undefined && DATA[0].description !== '') ? JSON.parse(DATA[0].description) : '';
@@ -1703,8 +1652,7 @@ ConfigPage.NativeModal = class {
         }
     }
     static #updateContent(data) {
-        console.log('updateContent');
-        console.log(data);
+
         this.data = data;
         let candidatesList = this.modalElement[0].querySelector('.modal-body .affected.candidate-list');
 
@@ -1816,9 +1764,7 @@ ConfigPage.NativeModal = class {
             if (this.data) {
                 this.data.confirmed_delete = true;
                 let data = { delete_position: [this.data] }
-                // console.log(data);
                 ConfigPage.postData(data).then(function (result) {
-                    console.log(result);
                     try {
                         const { data, success, error } = result;
                         if (success) {
@@ -1827,7 +1773,7 @@ ConfigPage.NativeModal = class {
                         }
                     }
                     catch (e) {
-                        console.error('Error deleting', e);
+                        // console.error('Error deleting', e);
                     }
                 });
             }

@@ -188,6 +188,7 @@ $(document).ready(function() {
                     handleCancelActions();
                     hideDeleteElements();
                     updatePaginationAndDisplay();
+                    $('#confirmDeleteInput').val('');
                 },
                 error: function() {
                     console.error('An error occurred while deleting selected items');
@@ -220,7 +221,7 @@ $(document).ready(function() {
                     $.each(selectedIds, function(index, id) {
                         $('.select-checkbox[value="' + id + '"]').closest('tr').remove();
                     });
-                    $('#confirmDeleteInput').val('');
+                   
                     handleCancelActions();
                     hideRestoreElements();
                     updatePaginationAndDisplay();

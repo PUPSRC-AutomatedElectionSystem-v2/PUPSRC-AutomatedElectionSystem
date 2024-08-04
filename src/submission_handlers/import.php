@@ -179,10 +179,10 @@ function validateData($data, $conn) {
         return 'missing_required_fields';
     }
 
-    // Check if Student ID already exists
-    $checkSql = "SELECT * FROM voter WHERE student_id = ?";
+    // Check if Student ID OR email already exists
+    $checkSql = "SELECT student_id, email FROM voter WHERE student_id = ? OR BINARY email = ?";
     $checkStmt = $conn->prepare($checkSql);
-    $checkStmt->bind_param("s", $data[0]);
+    $checkStmt->bind_param("ss", $data[0], $data[5]);
     $checkStmt->execute();
     $result = $checkStmt->get_result();
     
@@ -190,21 +190,8 @@ function validateData($data, $conn) {
         $checkStmt->close();
         return 'duplicate';
     }
-    $checkStmt->close();
 
-    // Check if email already exists
-    $checkSql = "SELECT * FROM voter WHERE email = ?";
-    $checkStmt = $conn->prepare($checkSql);
-    $checkStmt->bind_param("s", $data[5]);
-    $checkStmt->execute();
-    $result = $checkStmt->get_result();
-    
-    if ($result->num_rows > 0) {
-        $checkStmt->close();
-        return 'duplicate';
-    }
     $checkStmt->close();
-
     return true;
 }
 

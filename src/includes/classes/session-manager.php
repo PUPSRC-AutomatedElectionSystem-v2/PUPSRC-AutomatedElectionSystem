@@ -40,7 +40,6 @@ class SessionManager {
         }
     }
 
-    // This method doesn't check yet whether admin/head account is disabled
     private static function handleAdminOrHeadAdmin($account_status) {
         if($account_status == 'verified') {
             header("Location: admindashboard.php");

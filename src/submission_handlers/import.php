@@ -179,19 +179,26 @@ function validateData($data, $conn) {
         return 'missing_required_fields';
     }
 
-    // Check if Student ID OR email already exists
-    $checkSql = "SELECT student_id, email FROM voter WHERE student_id = ? OR BINARY email = ?";
-    $checkStmt = $conn->prepare($checkSql);
-    $checkStmt->bind_param("ss", $data[0], $data[5]);
-    $checkStmt->execute();
-    $result = $checkStmt->get_result();
+    // Check if Student ID OR email already exists in any of the relevant databases
+    $databases = ['db_acap', 'db_aeces', 'db_elite', 'db_give', 'db_jehra', 'db_jmap', 'db_jpia', 'db_piie', 'db_sco'];
     
-    if ($result->num_rows > 0) {
+    foreach ($databases as $db) {
+        $conn->select_db($db);
+        
+        $checkSql = "SELECT student_id, email FROM voter WHERE student_id = ? OR BINARY email = ?";
+        $checkStmt = $conn->prepare($checkSql);
+        $checkStmt->bind_param("ss", $data[0], $data[5]);
+        $checkStmt->execute();
+        $result = $checkStmt->get_result();
+        
+        if ($result->num_rows > 0) {
+            $checkStmt->close();
+            return 'duplicate';
+        }
+
         $checkStmt->close();
-        return 'duplicate';
     }
 
-    $checkStmt->close();
     return true;
 }
 

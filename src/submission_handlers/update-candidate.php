@@ -15,7 +15,7 @@ if (isset($_SESSION['voter_id'])) {
         $first_name = ucwords(htmlspecialchars(trim($_POST['first_name'])));
         $middle_name = ucwords(htmlspecialchars(trim($_POST['middle_name'])));
         $suffix = htmlspecialchars(trim($_POST['suffix']));
-        $party_list = htmlspecialchars(trim($_POST['party_list']));
+        // $party_list = htmlspecialchars(trim($_POST['party_list']));
         $position_id = intval($_POST['position_id']);
         $section_year_program = explode('-', $_POST['section']);
         $program = htmlspecialchars(trim($section_year_program[0]));
@@ -39,7 +39,7 @@ if (isset($_SESSION['voter_id'])) {
         }
 
         // Update candidate
-        $sql = "UPDATE candidate SET last_name=?, first_name=?, middle_name=?, suffix=?, party_list=?, position_id=?, program=?, section=?, year_level=?";
+        $sql = "UPDATE candidate SET last_name=?, first_name=?, middle_name=?, suffix=?, position_id=?, program=?, section=?, year_level=?";
         if ($photo_url) {
             $sql .= ", photo_url=?";
         }
@@ -47,9 +47,9 @@ if (isset($_SESSION['voter_id'])) {
         
         $stmt = $conn->prepare($sql);
         if ($photo_url) {
-            $stmt->bind_param("ssssssssssi", $last_name, $first_name, $middle_name, $suffix, $party_list, $position_id, $program, $section, $year_level, $photo_url, $candidate_id);
+            $stmt->bind_param("sssssssssi", $last_name, $first_name, $middle_name, $suffix, $position_id, $program, $section, $year_level, $photo_url, $candidate_id);
         } else {
-            $stmt->bind_param("sssssssssi", $last_name, $first_name, $middle_name, $suffix, $party_list, $position_id, $program, $section, $year_level, $candidate_id);
+            $stmt->bind_param("ssssssssi", $last_name, $first_name, $middle_name, $suffix, $position_id, $program, $section, $year_level, $candidate_id);
         }
 
         $stmt->execute();
@@ -63,4 +63,3 @@ if (isset($_SESSION['voter_id'])) {
 } else {
     header("Location: ../landing-page.php");
 }
-?>

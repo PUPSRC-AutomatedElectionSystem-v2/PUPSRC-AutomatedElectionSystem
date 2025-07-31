@@ -1,21 +1,38 @@
-# Ignore these files and directories
-
-# Log system-generated errors
-src/includes/error-logs.txt
-
-# Store user data (e.g., images, COR files)
-src/user_data/
-
-# Store results of unit testing
-.phpunit.cache
+/.phpunit.cache
+/bootstrap/ssr
+/node_modules
+/public/build
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/resources/js/actions
+/resources/js/routes
+/resources/js/buildtime/wayfinder
+/vendor
+.DS_Store
+.env
+.env.backup
+.env.production
+.phpactor.json
 .phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+/auth.json
+/.fleet
+/.idea
+/.nova
+/.vscode
+/.zed
 
-# Generated Data by the  system
-src/includes/data/*
-!src/includes/data/
 
-# Testing Email Credentials
-test-close.php
-src/includes/error-reporting.php
-src/includes/mailer-test.php
-
+# Personal Files
+yani inquiry.txt
+*.DMP
+*.drawio.xml
+*.png
+*.jpg
+*.jpeg
+*.webp

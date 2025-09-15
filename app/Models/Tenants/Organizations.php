@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 class Organizations extends Model
 {
     /** @use HasFactory<\Database\Factories\Tenants\OrganizationsFactory> */
-    use HasFactory, HasUlids;
+    use CentralConnection, HasFactory, HasUlids;
 
     protected $fillable = [
         'id',
@@ -22,13 +23,13 @@ class Organizations extends Model
         'should_copy_from_other_org',
         'allow_cross_membership',
         'theme',
-        'order'
+        'order',
     ];
 
     protected $hidden = [
         'created_at',
         'updated_at',
-        'deleted_at'
+        'deleted_at',
     ];
 
     protected $casts = [

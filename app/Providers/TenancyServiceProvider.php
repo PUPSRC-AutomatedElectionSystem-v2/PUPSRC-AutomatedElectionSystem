@@ -24,17 +24,27 @@ class TenancyServiceProvider extends ServiceProvider
             // Tenant events
             Events\CreatingTenant::class => [],
             Events\TenantCreated::class => [
-                JobPipeline::make([
-                    Jobs\CreateDatabase::class,
-                    Jobs\MigrateDatabase::class,
-                    // Jobs\SeedDatabase::class,
+                // Run the JobPipeline after the surrounding DB transaction commits.
+                // This prevents Postgres errors when jobs execute "CREATE DATABASE" which
+                // cannot run inside a transaction block.
+                function (Events\TenantCreated $event) {
+                    \Illuminate\Support\Facades\DB::afterCommit(function () use ($event) {
+                        $listener = JobPipeline::make([
+                            Jobs\CreateDatabase::class,
+                            Jobs\MigrateDatabase::class,
+                            // Jobs\SeedDatabase::class,
 
-                    // Your own jobs to prepare the tenant.
-                    // Provision API keys, create S3 buckets, anything you want!
+                            // Your own jobs to prepare the tenant.
+                            // Provision API keys, create S3 buckets, anything you want!
 
-                ])->send(function (Events\TenantCreated $event) {
-                    return $event->tenant;
-                })->shouldBeQueued(false), // `false` by default, but you probably want to make this `true` for production.
+                        ])->send(function (Events\TenantCreated $event) {
+                            return $event->tenant;
+                        })->shouldBeQueued(false)->toListener();
+
+                        // Invoke the pipeline listener now that the central DB transaction has committed.
+                        $listener($event);
+                    });
+                },
             ],
             Events\SavingTenant::class => [],
             Events\TenantSaved::class => [],

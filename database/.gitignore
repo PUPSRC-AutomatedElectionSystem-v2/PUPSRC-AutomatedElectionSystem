@@ -1,1 +1,48 @@
+# ignore all files
+*
+# ignore file with no extension
+!*.*
+
 *.sqlite*
+aes*
+*.sqlite
+*.sqlite3
+*.db
+*.sql
+*.sqlite*
+
+# -----------------------------
+# Tips and optional rules
+# 1) Ignore files that start with a known prefix (recommended)
+#    - If your `APP_TENANT_PREFIX` is `aes` then `aes*` (already present) will ignore
+#      files like `aes1b25d9e9-2d03-....` created by tests.
+#    - You can programmatically append the prefix from .env using PowerShell (see below).
+#
+# 2) Optional: Ignore files with no extension in this `database/` root
+#    - This will ignore files with no extension placed directly under `database/`,
+#      but will keep directories (like `migrations/`, `factories/`, `seeders/`) and
+#      tracked PHP files unignored. Use with caution.
+#
+#    # To enable, uncomment the following block (remove the leading "# ")
+#    # Note: order matters; we first ignore everything then re-allow directories and
+#    # tracked file patterns you want to keep.
+#
+#    #*
+#    #!migrations/
+#    #!factories/
+#    #!seeders/
+#    #!*.php
+#    #!.gitignore
+#
+# PowerShell helper (run from repo root) to append the APP_TENANT_PREFIX pattern
+# to this file automatically (safe - it only appends if not already present):
+#
+# $envLine = Select-String -Path .env -Pattern '^APP_TENANT_PREFIX=' -SimpleMatch;
+# if ($envLine) {
+#   $prefix = ($envLine.Line -replace '^APP_TENANT_PREFIX=', '').Trim('"')
+#   $pattern = "$prefix*"
+#   if (-not (Select-String -Path database/.gitignore -Pattern "^$pattern$" -Quiet)) {
+#     Add-Content -Path database/.gitignore -Value $pattern; Write-Host "Appended $pattern to database/.gitignore"
+#   } else { Write-Host "$pattern already present in database/.gitignore" }
+# }
+# -----------------------------

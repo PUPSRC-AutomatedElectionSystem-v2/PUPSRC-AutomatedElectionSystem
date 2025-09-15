@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Fortify;
+namespace App\Actions\Fortify\SuperAdmin;
 
 use Illuminate\Validation\Rules\Password;
 

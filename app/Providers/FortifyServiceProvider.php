@@ -17,6 +17,7 @@ class FortifyServiceProvider extends ServiceProvider
     public function register(): void
     {
         //
+        $this->bindCreateNewUser();
     }
 
     /**
@@ -39,6 +40,19 @@ class FortifyServiceProvider extends ServiceProvider
 
         RateLimiter::for('two-factor', function (Request $request) {
             return Limit::perMinute(5)->by($request->session()->get('login.id'));
+        });
+    }
+
+    private function bindCreateNewUser(): void
+    {
+        $this->app->bind(\Laravel\Fortify\Contracts\CreatesNewUsers::class, function ($app) {
+            debugbar()->info(tenant());
+            if (function_exists('tenant') && tenant()) {
+                debugbar()->info('inside istenant');
+                return new \App\Actions\Fortify\Tenant\CreateNewUser();
+            }
+
+            return new \App\Actions\Fortify\SuperAdmin\CreateNewUser();
         });
     }
 }

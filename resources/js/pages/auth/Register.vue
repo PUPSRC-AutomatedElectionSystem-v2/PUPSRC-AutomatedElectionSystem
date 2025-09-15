@@ -21,10 +21,10 @@ import { LoaderCircle } from 'lucide-vue-next';
             class="flex flex-col gap-6">
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="name">Name</Label>
-                    <Input id="name" type="text" required autofocus :tabindex="1" autocomplete="name" name="name"
-                        placeholder="Full name" />
-                    <InputError :message="errors.name" />
+                    <Label for="username">Name</Label>
+                    <Input id="username" type="text" required autofocus :tabindex="1" autocomplete="username"
+                        name="username" placeholder="Username" />
+                    <InputError :message="errors.username" />
                 </div>
 
                 <div class="grid gap-2">

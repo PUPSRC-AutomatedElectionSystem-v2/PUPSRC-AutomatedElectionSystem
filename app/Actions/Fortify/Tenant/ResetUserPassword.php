@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Actions\Fortify;
+namespace App\Actions\Fortify\Tenant;
 
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
+use App\Models\Tenants\User as TenantUser;
+
 use Illuminate\Support\Facades\Validator;
 use Laravel\Fortify\Contracts\ResetsUserPasswords;
 
@@ -16,14 +16,14 @@ class ResetUserPassword implements ResetsUserPasswords
      *
      * @param  array<string, string>  $input
      */
-    public function reset(User $user, array $input): void
+    public function reset(TenantUser $user, array $input): void
     {
         Validator::make($input, [
             'password' => $this->passwordRules(),
         ])->validate();
 
         $user->forceFill([
-            'password' => Hash::make($input['password']),
+            'password' => $input['password'],
         ])->save();
     }
 }

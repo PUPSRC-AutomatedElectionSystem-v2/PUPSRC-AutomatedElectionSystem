@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c82fe8f2410c5b93337a8510b78d6d5e",
+    "content-hash": "c6e0b8c5d49607517f64bf243505a7b9",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3478,6 +3478,38 @@
                 "source": "https://github.com/marc-mabe/php-enum/tree/v4.7.2"
             },
             "time": "2025-09-14T11:18:39+00:00"
+        },
+        {
+            "name": "modules/organization-admin",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "app-modules/organization-admin",
+                "reference": "21d652e2035d901ee330b543f00adb57f4fb0792"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Modules\\OrganizationAdmin\\Providers\\OrganizationAdminServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\OrganizationAdmin\\": "src/",
+                    "Modules\\OrganizationAdmin\\Tests\\": "tests/",
+                    "Modules\\OrganizationAdmin\\Database\\Factories\\": "database/factories/",
+                    "Modules\\OrganizationAdmin\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "monolog/monolog",

@@ -43,6 +43,35 @@ return [
             'after_commit' => false,
         ],
 
+        'rabbitmq' => [
+            'driver' => 'rabbitmq',
+            'dsn' => env('RABBITMQ_DSN', null),
+            'hosts' => [
+                [
+                    'host' => env('RABBITMQ_HOST', '127.0.0.1'),
+                    'port' => env('RABBITMQ_PORT', 5672),
+                    'user' => env('RABBITMQ_USER', 'guest'),
+                    'password' => env('RABBITMQ_PASSWORD', 'guest'),
+                    'vhost' => env('RABBITMQ_VHOST', '/'),
+                ],
+            ],
+            'options' => [
+                'queue' => [
+                    'name' => env('RABBITMQ_QUEUE', 'default'),
+                    'declare' => (bool) env('RABBITMQ_DECLARE_QUEUE', true),
+                    'durable' => (bool) env('RABBITMQ_DURABLE_QUEUE', true),
+                ],
+            ],
+            'ssl_params' => [
+                'ssl_on' => (bool) env('RABBITMQ_SSL', false),
+                'cafile' => env('RABBITMQ_SSL_CAFILE', null),
+                'local_cert' => env('RABBITMQ_SSL_LOCALCERT', null),
+                'local_key' => env('RABBITMQ_SSL_LOCALKEY', null),
+                'verify_peer' => (bool) env('RABBITMQ_SSL_VERIFY_PEER', true),
+                'passphrase' => env('RABBITMQ_SSL_PASSPHRASE', null),
+            ],
+        ],
+
         'beanstalkd' => [
             'driver' => 'beanstalkd',
             'host' => env('BEANSTALKD_QUEUE_HOST', 'localhost'),

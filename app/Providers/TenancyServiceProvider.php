@@ -61,7 +61,9 @@ class TenancyServiceProvider extends ServiceProvider
 
             // Domain events
             Events\CreatingDomain::class => [],
-            Events\DomainCreated::class => [],
+            Events\DomainCreated::class => [
+                \App\Listeners\PrintHostsEntryForDomain::class,
+            ],
             Events\SavingDomain::class => [],
             Events\DomainSaved::class => [],
             Events\UpdatingDomain::class => [],

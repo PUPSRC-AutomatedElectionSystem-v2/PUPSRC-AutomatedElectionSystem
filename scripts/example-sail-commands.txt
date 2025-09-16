@@ -1,0 +1,36 @@
+composer update modules/organization-admin
+no
+
+
+https://github.com/microsoft/cascadia-code/releases?q=PL&expanded=true
+
+vendor/bin/sail up -d --build --force-recreate
+
+vendor/bin/sail composer update modules/organization-admin --no-scripts
+
+vendor/bin/sail composer install --no-scripts
+
+vendor/bin/sail exec -u root laravel.test php artisan package:discover --ansi
+
+vendor/bin/sail php artisan migrate:fresh
+
+# One-time broker setup
+vendor/bin/sail exec rabbitmq rabbitmqctl add_user app app || true
+vendor/bin/sail exec rabbitmq rabbitmqctl add_vhost / || true
+vendor/bin/sail exec rabbitmq rabbitmqctl set_permissions -p / app ".*" ".*" ".*"
+vendor/bin/sail exec rabbitmq rabbitmqctl list_permissions -p /
+
+vendor/bin/sail exec laravel.test tail -n 100 storage/logs/worker.log
+
+vendor/bin/sail logs rabbitmq --tail=100
+
+# If you ever change RABBITMQ_VHOST, be sure to grant the app user permissions on that vhost too
+vendor/bin/sail exec rabbitmq rabbitmqctl add_vhost myvhost
+vendor/bin/sail exec rabbitmq rabbitmqctl set_permissions -p myvhost app ".*" ".*" ".*"
+
+vendor/bin/sail exec rabbitmq rabbitmqctl list_users
+vendor/bin/sail exec rabbitmq rabbitmqctl list_permissions -p /
+
+vendor/bin/sail exec laravel.test php artisan queue:work --once
+
+vendor/bin/sail up -d

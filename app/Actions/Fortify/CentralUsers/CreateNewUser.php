@@ -18,8 +18,6 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
-        debugbar()->info(['create user payload' => $input]);
-
         Validator::make($input, [
             'username' => ['required', 'string', 'max:255'],
             'email' => [

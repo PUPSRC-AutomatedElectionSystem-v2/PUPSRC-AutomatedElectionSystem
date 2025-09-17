@@ -46,10 +46,7 @@ class FortifyServiceProvider extends ServiceProvider
     private function bindCreateNewUser(): void
     {
         $this->app->bind(\Laravel\Fortify\Contracts\CreatesNewUsers::class, function ($app) {
-            debugbar()->info(tenant());
             if (function_exists('tenant') && tenant()) {
-                debugbar()->info('inside istenant');
-
                 return new \App\Actions\Fortify\Tenant\CreateNewUser;
             }
 

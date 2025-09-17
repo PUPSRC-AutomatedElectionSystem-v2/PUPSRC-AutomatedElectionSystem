@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Actions\Fortify\Tenant;
+namespace App\Actions\Fortify;
 
 use App\Models\Tenants\User as TenantUser;
 use Illuminate\Support\Facades\Validator;

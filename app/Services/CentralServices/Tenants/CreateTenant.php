@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services\CentralServices\Tenants;
 
+use App\Exceptions\Validation\InvalidDomainException;
 use App\Models\CentralModels\OrganizationContacts;
 use App\Models\CentralModels\Organizations;
 use App\Models\CentralModels\Tenant;
-use App\Rules\ValidDomainRule;
+use App\Services\DomainResolver;
 use Illuminate\Support\Facades\DB;
 use Stancl\Tenancy\Database\Models\Domain;
 
@@ -32,7 +33,14 @@ class CreateTenant
         $tenantId = $tenantInput['id'] ?? null;
         $domainInput = $tenantInput['domain'];
 
-        $domain = self::resolveDomain($domainInput, $tenantInput['use_default_domain']);
+        // Validate domain format based on use_default_domain flag
+        $errorMessage = DomainResolver::validateDomainWithMessage($domainInput, $tenantInput['use_default_domain']);
+        if ($errorMessage) {
+            throw InvalidDomainException::forDomain($domainInput);
+        }
+
+        // Store the original domain input, not the resolved domain
+        $domain = $domainInput;
 
         // Create organization metadata in CENTRAL database via dedicated services
         [$tenant, $domainModel, $organization, $contacts] = DB::transaction(function () use ($tenantId, $domain, $orgInput, $contactsInput) {
@@ -69,27 +77,5 @@ class CreateTenant
             'organization' => $organization,
             'contacts' => $contacts,
         ];
-    }
-
-    private static function resolveDomain(string $domain, bool  $useDefaultDomain)
-    {
-        $centralDomains = config('tenancy.central_domains', []);
-        if (is_array($centralDomains) && isset($centralDomains[0]) && is_string($centralDomains[0]) && $centralDomains[0] !== '') {
-            $centralDomain = $centralDomains[0];
-        } else {
-            $centralDomain = config('session.domain', '');
-        }
-
-        $candidateDomain = $useDefaultDomain ? ($domain . '.' . $centralDomain) : $domain;
-
-        if (ValidDomainRule::isValid($candidateDomain)) {
-            return $candidateDomain;
-        } elseif (ValidDomainRule::isValid($domain)) {
-            return $domain;
-        } elseif (ValidDomainRule::isValid($centralDomain)) {
-            return $centralDomain;
-        } else {
-            throw new \InvalidArgumentException('Invalid domain format provided.');
-        }
     }
 }

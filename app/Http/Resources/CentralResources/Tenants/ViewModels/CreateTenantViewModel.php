@@ -13,6 +13,7 @@ class CreateTenantViewModel
                 'tenant' => [
                     'id' => null,
                     'domain' => '',
+                    'provided_domain' => parse_url(config('app.url'), PHP_URL_HOST) ?: 'localhost',
                 ],
                 'organization' => [
                     'short_name' => '',

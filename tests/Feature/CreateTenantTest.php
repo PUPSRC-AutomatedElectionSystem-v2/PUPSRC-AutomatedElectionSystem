@@ -22,6 +22,7 @@ class CreateTenantTest extends TestCase
         $payload = [
             'tenant' => [
                 'domain' => 'acme.localhost',
+                'use_default_domain' => false,
             ],
             'organization' => [
                 'short_name' => 'ACME',
@@ -34,8 +35,8 @@ class CreateTenantTest extends TestCase
         ];
 
         $res = $this->postJson(route('tenants.store'), $payload);
-        $res->assertStatus(200)
-            ->assertJsonPath('tenant.id', fn ($v) => ! empty($v))
-            ->assertJsonPath('domain.domain', 'acme.localhost');
+        $res->assertStatus(201)
+            ->assertJsonPath('data.tenant.id', fn ($v) => ! empty($v))
+            ->assertJsonPath('data.domain.domain', 'acme.localhost');
     }
 }

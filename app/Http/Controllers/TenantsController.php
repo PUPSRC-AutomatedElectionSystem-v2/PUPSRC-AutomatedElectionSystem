@@ -11,6 +11,7 @@ use App\Services\CentralServices\Tenants\CreateTenant;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\View\View;
 
 class TenantsController extends Controller
@@ -22,14 +23,12 @@ class TenantsController extends Controller
         return view('tenants.create', $vm->toArray());
     }
 
-    public function store(StoreTenantRequest $request, CreateTenant $action): JsonResponse|RedirectResponse
+    public function store(StoreTenantRequest $request, CreateTenant $action): JsonResponse|RedirectResponse|JsonResource
     {
         $data = $request->validated();
 
         $result = $action->handle($data);
 
-        return (new TenantCreatedResource($result))
-            ->response()
-            ->setStatusCode(200);
+        return new TenantCreatedResource($result);
     }
 }

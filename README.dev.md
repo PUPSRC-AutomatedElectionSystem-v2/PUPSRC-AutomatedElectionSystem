@@ -1,6 +1,9 @@
 Developer notes
 ================
 
+## Logging
+See [logging documentation (used by laravel)](https://github.com/Seldaek/monolog/blob/main/doc/01-usage.md#log-levels).
+
 Post-generation dedupe
 ----------------------
 

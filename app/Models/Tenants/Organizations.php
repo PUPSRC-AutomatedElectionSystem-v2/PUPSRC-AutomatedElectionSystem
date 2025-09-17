@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
-class Organizations extends Model
+class Organization extends Model
 {
     /** @use HasFactory<\Database\Factories\Tenants\OrganizationsFactory> */
     use CentralConnection, HasFactory, HasUlids;

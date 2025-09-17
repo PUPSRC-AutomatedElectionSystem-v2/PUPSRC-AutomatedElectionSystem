@@ -1,15 +1,24 @@
-# ignore all files
+# Ignore all files
 *
-# ignore file with no extension
-!*.*
 
+# Re-include directories we want to track
+!migrations/
+!factories/
+!seeders/
+
+# Re-include files with extensions (keeps files like .php, .md, etc.)
+!**/**.*
+
+# Re-include the .gitignore file itself
+!.gitignore
+
+# Ignore SQLite and database files
 *.sqlite*
-aes*
 *.sqlite
 *.sqlite3
 *.db
 *.sql
-*.sqlite*
+aes*
 
 # -----------------------------
 # Tips and optional rules

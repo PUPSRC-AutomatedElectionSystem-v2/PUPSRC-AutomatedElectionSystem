@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tenants\Organizations;
 use App\Http\Requests\StoreOrganizationsRequest;
 use App\Http\Requests\UpdateOrganizationsRequest;
+use App\Models\Tenants\Organization;
 
 class OrganizationsController extends Controller
 {
@@ -35,7 +35,7 @@ class OrganizationsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Organizations $organizations)
+    public function show(Organization $organizations)
     {
         //
     }
@@ -43,7 +43,7 @@ class OrganizationsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Organizations $organizations)
+    public function edit(Organization $organizations)
     {
         //
     }
@@ -51,7 +51,7 @@ class OrganizationsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrganizationsRequest $request, Organizations $organizations)
+    public function update(UpdateOrganizationsRequest $request, Organization $organizations)
     {
         //
     }
@@ -59,7 +59,7 @@ class OrganizationsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Organizations $organizations)
+    public function destroy(Organization $organizations)
     {
         //
     }

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Services\CentralServices\Tenants;
 
 use App\Exceptions\Validation\InvalidDomainException;
-use App\Models\Central\OrganizationContacts;
-use App\Models\Central\Organizations;
+use App\Models\Central\Organization;
+use App\Models\Central\OrganizationContact;
 use App\Models\Central\Tenant;
 use App\Services\DomainResolver;
 use Illuminate\Support\Facades\DB;
@@ -16,7 +16,7 @@ class CreateTenant
 {
     /**
      * @param  array{tenant: array{id?: string, domain: string}, organization: array{short_name: string, name: string, category_name: string, should_copy_from_other_org?: bool, allow_cross_membership?: bool, theme?: array|null, order?: int|null}, contacts: array{email: string, website?: ?string, facebook?: ?string, twitter?: ?string, instagram?: ?string, threads?: ?string, discord?: ?string}}  $payload
-     * @return array{tenant: Tenant, domain: Domain, organization: Organizations, contacts: OrganizationContacts}
+     * @return array{tenant: Tenant, domain: Domain, organization: Organization, contacts: OrganizationContact}
      */
     public function __construct(
         protected CreateOrganizationCategory $createCategory = new CreateOrganizationCategory,

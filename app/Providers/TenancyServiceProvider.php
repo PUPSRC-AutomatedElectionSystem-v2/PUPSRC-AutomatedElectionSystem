@@ -39,7 +39,7 @@ class TenancyServiceProvider extends ServiceProvider
 
                         ])->send(function (Events\TenantCreated $event) {
                             return $event->tenant;
-                        })->shouldBeQueued(false)->toListener();
+                        })->shouldBeQueued(false)->toListener(); // `false` by default, but you probably want to make this `true` for production.
 
                         // Invoke the pipeline listener now that the central DB transaction has committed.
                         $listener($event);

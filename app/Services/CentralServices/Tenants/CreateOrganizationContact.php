@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Services\CentralServices\Tenants;
 
-use App\Models\Central\OrganizationContacts;
+use App\Models\Central\OrganizationContact;
 
 class CreateOrganizationContact
 {
     /**
      * @param  array{organization_id: string, email: string, website?: ?string, facebook?: ?string, twitter?: ?string, instagram?: ?string, threads?: ?string, discord?: ?string}  $data
      */
-    public function handle(array $data): OrganizationContacts
+    public function handle(array $data): OrganizationContact
     {
-        return OrganizationContacts::create([
+        return OrganizationContact::create([
             'organization_id' => $data['organization_id'],
             'email' => $data['email'],
             'website' => $data['website'] ?? null,

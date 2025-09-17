@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('organizations', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->uuid('tenant_id');
+            $table->uuid('tenant_id')->unique();
             $table->string('short_name')->unique();
             $table->unsignedSmallInteger('contact_id');
             $table->string('name');

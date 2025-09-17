@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\Presenters;
 
 use App\Models\Tenant;
-use App\Models\Tenants\OrganizationContacts;
-use App\Models\Tenants\Organizations;
+use App\Models\Tenants\Organization;
+use App\Models\Tenants\OrganizationContact;
 use Stancl\Tenancy\Database\Models\Domain;
 
 class TenantPresenter
 {
     /**
-     * @param  array{tenant: Tenant, domain: Domain, organization: Organizations, contacts: OrganizationContacts}  $data
+     * @param  array{tenant: Tenant, domain: Domain, organization: Organization, contacts: OrganizationContact}  $data
      * @return array<string, mixed>
      */
     public function created(array $data): array

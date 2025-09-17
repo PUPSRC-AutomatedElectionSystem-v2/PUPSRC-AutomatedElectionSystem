@@ -22,19 +22,6 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        // Centralized data of users in the Application
-        // indentity_id is unique and can be reference by tenant users regardless of which tenant it falls if do have permission
-        Schema::create('users_data', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('identity_id')->comment('i.e. Student ID')->unique();
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('middle_name');
-            $table->string('suffix', 32);
-            $table->timestamps();
-            $table->softDeletes();
-        });
-
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');

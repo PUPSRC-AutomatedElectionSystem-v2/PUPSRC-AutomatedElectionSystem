@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tenants\OrganizationContacts;
 use App\Http\Requests\StoreOrganizationContactsRequest;
 use App\Http\Requests\UpdateOrganizationContactsRequest;
+use App\Models\Tenants\OrganizationContact;
 
 class OrganizationContactsController extends Controller
 {
@@ -35,7 +35,7 @@ class OrganizationContactsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(OrganizationContacts $organizationContacts)
+    public function show(OrganizationContact $organizationContacts)
     {
         //
     }
@@ -43,7 +43,7 @@ class OrganizationContactsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(OrganizationContacts $organizationContacts)
+    public function edit(OrganizationContact $organizationContacts)
     {
         //
     }
@@ -51,7 +51,7 @@ class OrganizationContactsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrganizationContactsRequest $request, OrganizationContacts $organizationContacts)
+    public function update(UpdateOrganizationContactsRequest $request, OrganizationContact $organizationContacts)
     {
         //
     }
@@ -59,7 +59,7 @@ class OrganizationContactsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(OrganizationContacts $organizationContacts)
+    public function destroy(OrganizationContact $organizationContacts)
     {
         //
     }

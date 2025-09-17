@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
-class Organizations extends Model
+class Organization extends Model
 {
     /** @use HasFactory<\Database\Factories\Tenants\OrganizationsFactory> */
     use CentralConnection, HasFactory, HasUlids;
@@ -45,13 +45,13 @@ class Organizations extends Model
         return $this->belongsTo(\App\Models\Central\Tenant::class, 'tenant_id', 'id');
     }
 
-    public function orgContact(): HasOne
+    public function contact(): HasOne
     {
-        return $this->hasOne(Organizations::class);
+        return $this->hasOne(OrganizationContact::class);
     }
 
     public function orgCategory(): HasOneThrough
     {
-        return $this->hasOneThrough(OrganizationCategory::class, Organizations::class);
+        return $this->hasOneThrough(OrganizationCategory::class, Organization::class);
     }
 }

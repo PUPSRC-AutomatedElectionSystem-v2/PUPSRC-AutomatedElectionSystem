@@ -2,9 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Tenants\OrganizationContacts;
+use App\Models\Tenants\OrganizationContact;
 use App\Models\User;
-use Illuminate\Auth\Access\Response;
 
 class OrganizationContactsPolicy
 {
@@ -19,7 +18,7 @@ class OrganizationContactsPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, OrganizationContacts $organizationContacts): bool
+    public function view(User $user, OrganizationContact $organizationContacts): bool
     {
         return false;
     }
@@ -35,7 +34,7 @@ class OrganizationContactsPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, OrganizationContacts $organizationContacts): bool
+    public function update(User $user, OrganizationContact $organizationContacts): bool
     {
         return false;
     }
@@ -43,7 +42,7 @@ class OrganizationContactsPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, OrganizationContacts $organizationContacts): bool
+    public function delete(User $user, OrganizationContact $organizationContacts): bool
     {
         return false;
     }
@@ -51,7 +50,7 @@ class OrganizationContactsPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, OrganizationContacts $organizationContacts): bool
+    public function restore(User $user, OrganizationContact $organizationContacts): bool
     {
         return false;
     }
@@ -59,7 +58,7 @@ class OrganizationContactsPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, OrganizationContacts $organizationContacts): bool
+    public function forceDelete(User $user, OrganizationContact $organizationContacts): bool
     {
         return false;
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Services\CentralServices\Tenants;
 
-use App\Models\CentralModels\Organizations;
+use App\Models\Central\Organizations;
 
 class CreateOrganization
 {

@@ -2,7 +2,7 @@
 
 namespace App\Actions\Fortify\CentralUsers;
 
-use App\Models\CentralModels\User;
+use App\Models\Central\User;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\CreatesNewUsers;

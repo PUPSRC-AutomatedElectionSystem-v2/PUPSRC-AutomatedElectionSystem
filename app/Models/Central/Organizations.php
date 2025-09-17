@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\CentralModels;
+namespace App\Models\Central;
 
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -42,7 +42,7 @@ class Organizations extends Model
 
     public function tenant(): BelongsTo
     {
-        return $this->belongsTo(\App\Models\CentralModels\Tenant::class, 'tenant_id', 'id');
+        return $this->belongsTo(\App\Models\Central\Tenant::class, 'tenant_id', 'id');
     }
 
     public function orgContact(): HasOne

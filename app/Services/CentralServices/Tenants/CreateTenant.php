@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Services\CentralServices\Tenants;
 
 use App\Exceptions\Validation\InvalidDomainException;
-use App\Models\CentralModels\OrganizationContacts;
-use App\Models\CentralModels\Organizations;
-use App\Models\CentralModels\Tenant;
+use App\Models\Central\OrganizationContacts;
+use App\Models\Central\Organizations;
+use App\Models\Central\Tenant;
 use App\Services\DomainResolver;
 use Illuminate\Support\Facades\DB;
 use Stancl\Tenancy\Database\Models\Domain;

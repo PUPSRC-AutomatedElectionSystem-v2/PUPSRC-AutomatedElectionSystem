@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models\CentralModels;
+namespace App\Models\Central;
 
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;

@@ -14,7 +14,7 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         // web: __DIR__ . '/../routes/web.php',
-        commands: __DIR__.'/../routes/console.php',
+        commands: __DIR__ . '/../routes/console.php',
         // api: __DIR__ . '/../routes/api.php',
         health: '/up',
         using: function () {
@@ -27,7 +27,8 @@ return Application::configure(basePath: dirname(__DIR__))
 
                 Route::middleware('api')
                     ->domain($domain)
-                    ->group(base_path('routes/api.php'));
+                    ->prefix('v1')
+                    ->group(base_path('routes/api/api_v01.php'));
             }
             // Load tenant routes with tenancy initialization.
             Route::middleware(['web', 'tenant'])->group(base_path('routes/tenant.php'));

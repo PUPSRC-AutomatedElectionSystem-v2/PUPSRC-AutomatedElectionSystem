@@ -18,9 +18,11 @@
         "laravel/socialite": "^5.23",
         "laravel/tinker": "^2.10.1",
         "laravel/wayfinder": "^0.1.9",
+        "modules/organization-admin": "*",
+        "modules/organization-voting": "*",
+        "modules/tenant-auth": "*",
         "stancl/tenancy": "^3.9",
-        "vladimir-yuldashev/laravel-queue-rabbitmq": "*",
-        "modules/organization-admin": "*"
+        "vladimir-yuldashev/laravel-queue-rabbitmq": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.16",

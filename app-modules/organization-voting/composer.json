@@ -1,0 +1,24 @@
+{
+	"name": "modules/organization-voting",
+	"description": "",
+	"type": "library",
+	"version": "1.0",
+	"license": "proprietary",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Modules\\OrganizationVoting\\": "src/",
+			"Modules\\OrganizationVoting\\Tests\\": "tests/",
+			"Modules\\OrganizationVoting\\Database\\Factories\\": "database/factories/",
+			"Modules\\OrganizationVoting\\Database\\Seeders\\": "database/seeders/"
+		}
+	},
+	"minimum-stability": "stable",
+	"extra": {
+		"laravel": {
+			"providers": [
+				"Modules\\OrganizationVoting\\Providers\\OrganizationVotingServiceProvider"
+			]
+		}
+	}
+}

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Route;
 use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 
@@ -17,6 +18,10 @@ use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 |
 */
 
+// if (tenant()) {
+Log::info(['tenant route' => tenant()]);
+// }
+
 Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], static function () {
     Route::get('/csrf-cookie', [CsrfCookieController::class, 'show'])
         ->middleware([
@@ -25,5 +30,5 @@ Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], static function 
 });
 
 Route::get('/', function () {
-    return 'This is your multi-tenant application. The id of the current tenant is '.tenant('id');
+    return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
 });

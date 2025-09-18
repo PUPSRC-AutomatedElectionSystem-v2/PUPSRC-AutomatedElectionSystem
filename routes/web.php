@@ -12,8 +12,8 @@ Route::get('dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-require __DIR__.'/settings.php';
-// require __DIR__ . '/auth.php';
+require __DIR__ . '/settings.php';
+require __DIR__ . '/auth.php';
 
 // Tenant management (central app)
 Route::get('/tenants/create', [TenantsController::class, 'create'])->name('tenants.create');

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import RegisteredUserController from '@/actions/Laravel/Fortify/Http/Controllers/RegisteredUserController';
+import RegisteredUserController from '@/actions/App/Http/Controllers/Auth/RegisteredUserController';
 import InputError from '@/components/InputError.vue';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
@@ -16,14 +16,13 @@ import { LoaderCircle } from 'lucide-vue-next';
 
         <Head title="Register" />
 
-        <Form :action="RegisteredUserController.store.url()" method="post"
-            :reset-on-success="['password', 'password_confirmation']" v-slot="{ errors, processing }"
-            class="flex flex-col gap-6">
+        <Form v-bind="RegisteredUserController.store.form()" :reset-on-success="['password', 'password_confirmation']"
+            v-slot="{ errors, processing }" class="flex flex-col gap-6">
             <div class="grid gap-6">
                 <div class="grid gap-2">
-                    <Label for="username">Name</Label>
+                    <Label for="username">Username</Label>
                     <Input id="username" type="text" required autofocus :tabindex="1" autocomplete="username"
-                        name="username" placeholder="Username" />
+                        name="username" placeholder="username" />
                     <InputError :message="errors.username" />
                 </div>
 

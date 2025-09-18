@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d77f47d8ac485b1ce08cba75206c038c",
+    "content-hash": "75fa5982465cea2c25b5e1916c07f336",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -3502,6 +3502,70 @@
                     "Modules\\OrganizationAdmin\\Tests\\": "tests/",
                     "Modules\\OrganizationAdmin\\Database\\Factories\\": "database/factories/",
                     "Modules\\OrganizationAdmin\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "modules/organization-voting",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "app-modules/organization-voting",
+                "reference": "944e90a1811240ef92c9c2c69704c3520f4ffe7d"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Modules\\OrganizationVoting\\Providers\\OrganizationVotingServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\OrganizationVoting\\": "src/",
+                    "Modules\\OrganizationVoting\\Tests\\": "tests/",
+                    "Modules\\OrganizationVoting\\Database\\Factories\\": "database/factories/",
+                    "Modules\\OrganizationVoting\\Database\\Seeders\\": "database/seeders/"
+                }
+            },
+            "license": [
+                "proprietary"
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "modules/tenant-auth",
+            "version": "1.0",
+            "dist": {
+                "type": "path",
+                "url": "app-modules/tenant-auth",
+                "reference": "8185de4db1ccb6d4b1b4502888f3adc76a81860d"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Modules\\TenantAuth\\Providers\\TenantAuthServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Modules\\TenantAuth\\": "src/",
+                    "Modules\\TenantAuth\\Tests\\": "tests/",
+                    "Modules\\TenantAuth\\Database\\Factories\\": "database/factories/",
+                    "Modules\\TenantAuth\\Database\\Seeders\\": "database/seeders/"
                 }
             },
             "license": [

@@ -17,9 +17,9 @@ class CreateTenantRule implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $rules = [
-            $attribute . '.id' => 'nullable|string|max:255|unique:tenants,id',
-            $attribute . '.domain' => 'required|string|max:255',
-            $attribute . '.use_default_domain' => 'required|boolean:strict',
+            $attribute.'.id' => 'nullable|string|max:255|unique:tenants,id',
+            $attribute.'.domain' => 'required|string|max:255',
+            $attribute.'.use_default_domain' => 'required|boolean:strict',
         ];
 
         // Add domain validation based on use_default_domain flag
@@ -35,7 +35,7 @@ class CreateTenantRule implements ValidationRule
             }
 
             // Add uniqueness check
-            $rules[$attribute . '.domain'] .= '|unique:domains,domain';
+            $rules[$attribute.'.domain'] .= '|unique:domains,domain';
         }
 
         $validator = Validator::make([$attribute => $value], $rules);

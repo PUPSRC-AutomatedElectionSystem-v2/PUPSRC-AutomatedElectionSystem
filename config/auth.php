@@ -70,7 +70,7 @@ return [
         ],
         'tenant_users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Tenants\User::class,
+            'model' => Modules\OrganizationAdmin\Models\User::class,
         ],
 
         // 'users' => [
@@ -104,6 +104,14 @@ return [
             'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
             'expire' => 60,
             'throttle' => 60,
+            'default' => env('AUTH_USER_DEFAULT_PASSWORD', 'password'),
+        ],
+        'admin' => [
+            'provider' => 'users',
+            'table' => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'password_reset_tokens'),
+            'expire' => 60,
+            'throttle' => 60,
+            'default' => env('AUTH_ADMIN_DEFAULT_PASSWORD', 'password'),
         ],
     ],
 

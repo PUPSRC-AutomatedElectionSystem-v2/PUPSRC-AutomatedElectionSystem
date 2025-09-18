@@ -19,6 +19,6 @@ class ValidDomainRuleTest extends TestCase
         $this->assertFalse(ValidDomainRule::isValid('http://example.com'));
         $this->assertFalse(ValidDomainRule::isValid('example!.com'));
         $this->assertFalse(ValidDomainRule::isValid(''));
-        $this->assertFalse(ValidDomainRule::isValid(str_repeat('a', 300) . '.com'));
+        $this->assertFalse(ValidDomainRule::isValid(str_repeat('a', 300).'.com'));
     }
 }

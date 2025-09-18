@@ -15,6 +15,7 @@ class InvalidEmailException extends Exception
     public static function fromValidationException(ValidationException $e): self
     {
         $message = $e->validator->errors()->first('email') ?? 'Invalid email provided.';
+
         return new self($message, 0, $e);
     }
 }

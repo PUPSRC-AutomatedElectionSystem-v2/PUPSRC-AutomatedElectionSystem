@@ -2,7 +2,7 @@
 
 namespace Modules\OrganizationAdmin\Policies;
 
-use App\Models\Central\User;
+use Modules\OrganizationAdmin\Models\User;
 use Modules\OrganizationAdmin\Models\VoterStatus;
 
 class VoterStatusPolicy

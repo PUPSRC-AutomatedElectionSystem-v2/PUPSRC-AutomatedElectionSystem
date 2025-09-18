@@ -15,8 +15,8 @@ return new class extends Migration
             $table->uuid()->primary();
             $table->tinyInteger('year_level');
             $table->string('section', 128);
-            $table->tinyInteger('voter_status_id', unsigned: true);
-            $table->foreign('voter_status_id')->references('id')->on('voter_statuses');
+            // $table->tinyInteger('voter_status_id', unsigned: true);
+            // $table->foreign('voter_status_id')->references('id')->on('voter_statuses');
             $table->timestamp('updated_at');
         });
     }

@@ -2,8 +2,8 @@
 
 namespace App\lib;
 
-use Illuminate\Support\Str;
 use Illuminate\Database\ConnectionInterface;
+use Illuminate\Support\Str;
 
 final class ShortKeyService
 {

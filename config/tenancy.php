@@ -62,13 +62,13 @@ return [
             'mysql' => Stancl\Tenancy\TenantDatabaseManagers\MySQLDatabaseManager::class,
             'pgsql' => Stancl\Tenancy\TenantDatabaseManagers\PostgreSQLDatabaseManager::class,
 
-            /**
+        /**
          * Use this database manager for MySQL to have a DB user created for each tenant database.
          * You can customize the grants given to these users by changing the $grants property.
          */
             // 'mysql' => Stancl\Tenancy\TenantDatabaseManagers\PermissionControlledMySQLDatabaseManager::class,
 
-            /**
+        /**
          * Disable the pgsql manager above, and enable the one below if you
          * want to separate tenant DBs by schemas rather than databases.
          */
@@ -186,7 +186,7 @@ return [
     'migration_parameters' => [
         '--force' => true, // This needs to be true to run migrations in production.
         '--path' => [
-            base_path(config('app-modules.modules_directory') . '/organization-admin/database/migrations/tenant'),
+            base_path(config('app-modules.modules_directory').'/organization-admin/database/migrations/tenant'),
         ],
         '--realpath' => true,
     ],
@@ -195,7 +195,7 @@ return [
      * Parameters used by the tenants:seed command.
      */
     'seeder_parameters' => [
-        '--class' => 'DatabaseSeeder', // root seeder class
-        // '--force' => true, // This needs to be true to seed tenant databases in production
+        '--class' => 'Modules\OrganizationAdmin\Database\Seeders\tenant\DatabaseSeeder', // root seeder class
+        '--force' => true, // This needs to be true to seed tenant databases in production
     ],
 ];

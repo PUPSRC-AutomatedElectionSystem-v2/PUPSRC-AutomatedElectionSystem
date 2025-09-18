@@ -15,5 +15,5 @@ final class EmailPattern
     /**
      * PHP preg pattern with delimiters.
      */
-    public const PREG = '/' . self::RAW . '/';
+    public const PREG = '/'.self::RAW.'/';
 }

@@ -28,12 +28,13 @@ class GenerateHostsEntries extends Command
 
         if (empty($domains)) {
             $this->info('# No tenant domains found.');
+
             return self::SUCCESS;
         }
 
         $this->line('# Add these lines to your hosts file (run as Administrator on Windows):');
         foreach ($domains as $d) {
-            $host = str_contains((string) $d, '.') ? (string) $d : ((string) $d . '.' . $central);
+            $host = str_contains((string) $d, '.') ? (string) $d : ((string) $d.'.'.$central);
             $this->line(sprintf('%s %s', $ip, $host));
         }
 

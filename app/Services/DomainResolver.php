@@ -19,7 +19,7 @@ class DomainResolver
         }
 
         if ($useDefaultDomain) {
-            return $domain . '.' . $centralDomain;
+            return $domain.'.'.$centralDomain;
         } else {
             return $domain;
         }
@@ -33,7 +33,7 @@ class DomainResolver
         $resolvedDomain = self::resolve($domain, $useDefaultDomain);
 
         if (! ValidDomainRule::isValid($resolvedDomain)) {
-            throw new \InvalidArgumentException('Invalid domain format provided for: ' . $resolvedDomain);
+            throw new \InvalidArgumentException('Invalid domain format provided for: '.$resolvedDomain);
         }
 
         return $resolvedDomain;
@@ -80,12 +80,12 @@ class DomainResolver
             // When using default domain, validate the full resolved domain
             $resolvedDomain = self::getResolvedDomain($domain, $useDefaultDomain);
             if (! self::validateResolvedDomain($resolvedDomain)) {
-                return 'Invalid domain format provided for: ' . $resolvedDomain;
+                return 'Invalid domain format provided for: '.$resolvedDomain;
             }
         } else {
             // When not using default domain, validate the domain as-is
             if (! self::validateResolvedDomain($domain)) {
-                return 'Invalid domain format provided for: ' . $domain;
+                return 'Invalid domain format provided for: '.$domain;
             }
         }
 

@@ -32,7 +32,7 @@ class TenancyServiceProvider extends ServiceProvider
                         $listener = JobPipeline::make([
                             Jobs\CreateDatabase::class,
                             Jobs\MigrateDatabase::class,
-                            // Jobs\SeedDatabase::class,
+                            Jobs\SeedDatabase::class,
 
                             // Your own jobs to prepare the tenant.
                             // Provision API keys, create S3 buckets, anything you want!

@@ -19,7 +19,7 @@ class ValidDomainRule implements ValidationRule
         $domain = trim((string) $value);
 
         if (! self::isValid($domain)) {
-            $fail('The ' . $attribute . ' must be a valid domain name.');
+            $fail('The '.$attribute.' must be a valid domain name.');
         }
     }
 

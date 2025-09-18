@@ -5,6 +5,7 @@ namespace Modules\OrganizationAdmin\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -47,6 +48,11 @@ class User extends Model
             'password' => 'hashed',
             'data' => 'array',
         ];
+    }
+
+    public function account(): MorphTo
+    {
+        return $this->morphTo();
     }
 
     /**

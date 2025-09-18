@@ -31,13 +31,13 @@ class UpdateTenantRule implements ValidationRule
             ->toArray();
 
         $rules = [
-            $attribute . '.id' => 'required|string|max:255|unique:tenants,id,' . $tenantId,
+            $attribute.'.id' => 'required|string|max:255|unique:tenants,id,'.$tenantId,
         ];
 
         // Validate domain and use_default_domain together if domain is being updated
         if (isset($value['domain'])) {
-            $rules[$attribute . '.domain'] = 'required|string|max:255';
-            $rules[$attribute . '.use_default_domain'] = 'required|boolean:strict';
+            $rules[$attribute.'.domain'] = 'required|string|max:255';
+            $rules[$attribute.'.use_default_domain'] = 'required|boolean:strict';
 
             $newDomain = $value['domain'];
             $useDefaultDomain = $value['use_default_domain'] ?? false;
@@ -52,7 +52,7 @@ class UpdateTenantRule implements ValidationRule
 
             // Check uniqueness only if domain is actually changing
             if (! in_array($newDomain, $currentDomains)) {
-                $rules[$attribute . '.domain'] .= '|unique:domains,domain';
+                $rules[$attribute.'.domain'] .= '|unique:domains,domain';
             }
         } elseif (isset($value['use_default_domain'])) {
             // If only use_default_domain is provided without domain, that's invalid

@@ -4,6 +4,7 @@ namespace Modules\OrganizationAdmin\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 class Committee extends Model
 {
@@ -15,4 +16,9 @@ class Committee extends Model
     ];
 
     const CREATED_AT = null;
+
+    public function users(): MorphOne
+    {
+        return $this->morphOne(User::class, 'account');
+    }
 }

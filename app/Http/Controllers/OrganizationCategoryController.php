@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tenants\OrganizationCategory;
 use App\Http\Requests\StoreOrganizationCategoryRequest;
 use App\Http\Requests\UpdateOrganizationCategoryRequest;
+use App\Models\Tenants\OrganizationCategory;
 
 class OrganizationCategoryController extends Controller
 {

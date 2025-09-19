@@ -18,6 +18,7 @@ const viteHost = (() => {
 })();
 
 const domain = viteHost.split('.').slice(-2).join('.');
+console.log(domain);
 
 export default defineConfig({
     server: {
@@ -29,7 +30,7 @@ export default defineConfig({
         port: 5173,
         // ensure Access-Control-Allow-Origin matches https://pupsraes.test
         cors: {
-            origin: new RegExp(`^https?://.*\.${domain.replace('.', '\\.')}$`),
+            origin: new RegExp(`^https?://(.*\\.)?${domain.replace('.', '\\.')}$`),
             credentials: true,
         },
         host: viteHost,          // listen on all interfaces

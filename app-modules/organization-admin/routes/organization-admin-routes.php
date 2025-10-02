@@ -1,11 +1,34 @@
 <?php
 
-// use Modules\OrganizationAdmin\Http\Controllers\OrganizationAdminController;
+declare(strict_types=1);
 
-// Route::get('/organization-admins', [OrganizationAdminController::class, 'index'])->name('organization-admins.index');
-// Route::get('/organization-admins/create', [OrganizationAdminController::class, 'create'])->name('organization-admins.create');
-// Route::post('/organization-admins', [OrganizationAdminController::class, 'store'])->name('organization-admins.store');
-// Route::get('/organization-admins/{organization-admin}', [OrganizationAdminController::class, 'show'])->name('organization-admins.show');
-// Route::get('/organization-admins/{organization-admin}/edit', [OrganizationAdminController::class, 'edit'])->name('organization-admins.edit');
-// Route::put('/organization-admins/{organization-admin}', [OrganizationAdminController::class, 'update'])->name('organization-admins.update');
-// Route::delete('/organization-admins/{organization-admin}', [OrganizationAdminController::class, 'destroy'])->name('organization-admins.destroy');
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Route;
+use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
+
+/*
+|--------------------------------------------------------------------------
+| Tenant Routes
+|--------------------------------------------------------------------------
+|
+| Here you can register the tenant routes for your application.
+| These routes are loaded by the TenantRouteServiceProvider.
+|
+| Feel free to customize them however you want. Good luck!
+|
+*/
+
+// if (tenant()) {
+Log::info(['tenant route' => tenant()]);
+// }
+
+Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], static function () {
+    Route::get('/csrf-cookie', [CsrfCookieController::class, 'show'])
+        ->middleware([
+            'universal',
+        ])->name('sanctum.csrf-cookie');
+});
+
+Route::get('/', function () {
+    return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
+});

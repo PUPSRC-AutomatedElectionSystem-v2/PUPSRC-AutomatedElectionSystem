@@ -20,6 +20,7 @@
         "laravel/wayfinder": "^0.1.9",
         "modules/organization-admin": "*",
         "modules/organization-voting": "*",
+        "modules/shared": "*",
         "modules/tenant-auth": "*",
         "stancl/tenancy": "^3.9",
         "vladimir-yuldashev/laravel-queue-rabbitmq": "*"

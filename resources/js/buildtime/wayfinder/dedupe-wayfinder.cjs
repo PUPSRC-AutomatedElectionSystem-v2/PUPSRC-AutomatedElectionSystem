@@ -59,19 +59,48 @@ function walk(dir, cb) {
 }
 
 function main() {
-    const base = path.resolve(__dirname, '..', '..', 'routes');
-    if (!fs.existsSync(base)) {
-        console.warn('[dedupe-wayfinder] no routes directory found at', base);
+    // Always include core resources/js/routes
+    const targets = [
+        path.resolve(__dirname, '..', '..', 'routes'),
+    ];
+
+    // Also include each module's routes directory: app-modules/*/resources/js/routes
+    const modulesDir = path.resolve(__dirname, '..', '..', '..', '..', 'app-modules');
+    if (fs.existsSync(modulesDir)) {
+        const modules = fs.readdirSync(modulesDir).filter((d) => {
+            try {
+                return fs.statSync(path.join(modulesDir, d)).isDirectory();
+            } catch {
+                return false;
+            }
+        });
+
+        for (const mod of modules) {
+            const modRoutes = path.join(modulesDir, mod, 'resources', 'js', 'routes');
+            if (fs.existsSync(modRoutes)) {
+                targets.push(modRoutes);
+            }
+        }
+    }
+
+    if (targets.length === 0) {
+        console.warn('[dedupe-wayfinder] no routes directories found');
         return;
     }
 
     let changed = 0;
-    walk(base, (file) => {
-        if (dedupeFile(file)) {
-            changed++;
-            console.log('[dedupe-wayfinder] fixed', file);
+    for (const base of targets) {
+        if (!fs.existsSync(base)) {
+            continue;
         }
-    });
+
+        walk(base, (file) => {
+            if (dedupeFile(file)) {
+                changed++;
+                console.log('[dedupe-wayfinder] fixed', file);
+            }
+        });
+    }
 
     if (changed === 0) {
         console.log('[dedupe-wayfinder] nothing to fix');

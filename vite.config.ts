@@ -52,8 +52,23 @@ export default defineConfig({
             refresh: true,
         }),
         tailwindcss(),
+        // Core app Wayfinder outputs (resources/js)
         wayfinder({
             formVariants: true,
+            // default path is resources/js, leaving implicit
+        }),
+        // Generate Wayfinder outputs for each module as well
+        wayfinder({
+            formVariants: true,
+            path: 'app-modules/tenant-auth/resources/js',
+        }),
+        wayfinder({
+            formVariants: true,
+            path: 'app-modules/organization-admin/resources/js',
+        }),
+        wayfinder({
+            formVariants: true,
+            path: 'app-modules/organization-voting/resources/js',
         }),
         // Run a small post-generation dedupe to remove duplicate named exports
         // produced by Wayfinder when multiple hosts/roots exist. This keeps

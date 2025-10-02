@@ -9,6 +9,7 @@
         "format:check": "prettier --check resources/",
         "lint": "eslint . --fix",
         "dedupe:wayfinder": "node resources/js/buildtime/wayfinder/dedupe-wayfinder.cjs",
+        "wayfinder:generate:all": "php artisan wayfinder:generate --with-form && php artisan wayfinder:generate --with-form --path=app-modules/tenant-auth/resources/js && php artisan wayfinder:generate --with-form --path=app-modules/organization-admin/resources/js && php artisan wayfinder:generate --with-form --path=app-modules/organization-voting/resources/js",
         "clean:node": "node scripts/clean-node-modules.cjs"
     },
     "devDependencies": {

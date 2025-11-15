@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController::store
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticationController.php:21
- * @route '//pupsraes.test/user/two-factor-authentication'
+ * @route '//pupsrc-aes.test/user/two-factor-authentication'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -11,13 +11,13 @@ export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => (
 
 store.definition = {
     methods: ["post"],
-    url: '//pupsraes.test/user/two-factor-authentication',
+    url: '//pupsrc-aes.test/user/two-factor-authentication',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController::store
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticationController.php:21
- * @route '//pupsraes.test/user/two-factor-authentication'
+ * @route '//pupsrc-aes.test/user/two-factor-authentication'
  */
 store.url = (options?: RouteQueryOptions) => {
     return store.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ store.url = (options?: RouteQueryOptions) => {
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController::store
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticationController.php:21
- * @route '//pupsraes.test/user/two-factor-authentication'
+ * @route '//pupsrc-aes.test/user/two-factor-authentication'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -36,7 +36,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController::store
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticationController.php:21
- * @route '//pupsraes.test/user/two-factor-authentication'
+ * @route '//pupsrc-aes.test/user/two-factor-authentication'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(options),
@@ -46,7 +46,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController::store
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticationController.php:21
- * @route '//pupsraes.test/user/two-factor-authentication'
+ * @route '//pupsrc-aes.test/user/two-factor-authentication'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(options),
@@ -57,7 +57,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController::destroy
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticationController.php:35
- * @route '//pupsraes.test/user/two-factor-authentication'
+ * @route '//pupsrc-aes.test/user/two-factor-authentication'
  */
 export const destroy = (options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(options),
@@ -66,13 +66,13 @@ export const destroy = (options?: RouteQueryOptions): RouteDefinition<'delete'> 
 
 destroy.definition = {
     methods: ["delete"],
-    url: '//pupsraes.test/user/two-factor-authentication',
+    url: '//pupsrc-aes.test/user/two-factor-authentication',
 } satisfies RouteDefinition<["delete"]>
 
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController::destroy
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticationController.php:35
- * @route '//pupsraes.test/user/two-factor-authentication'
+ * @route '//pupsrc-aes.test/user/two-factor-authentication'
  */
 destroy.url = (options?: RouteQueryOptions) => {
     return destroy.definition.url + queryParams(options)
@@ -81,7 +81,7 @@ destroy.url = (options?: RouteQueryOptions) => {
 /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController::destroy
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticationController.php:35
- * @route '//pupsraes.test/user/two-factor-authentication'
+ * @route '//pupsrc-aes.test/user/two-factor-authentication'
  */
 destroy.delete = (options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(options),
@@ -91,7 +91,7 @@ destroy.delete = (options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController::destroy
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticationController.php:35
- * @route '//pupsraes.test/user/two-factor-authentication'
+ * @route '//pupsrc-aes.test/user/two-factor-authentication'
  */
     const destroyForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: destroy.url({
@@ -106,7 +106,7 @@ destroy.delete = (options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
             /**
 * @see \Laravel\Fortify\Http\Controllers\TwoFactorAuthenticationController::destroy
  * @see vendor/laravel/fortify/src/Http/Controllers/TwoFactorAuthenticationController.php:35
- * @route '//pupsraes.test/user/two-factor-authentication'
+ * @route '//pupsrc-aes.test/user/two-factor-authentication'
  */
         destroyForm.delete = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: destroy.url({

@@ -4,7 +4,7 @@ namespace Modules\OrganizationAdmin\Database\Seeders\tenant;
 
 use Illuminate\Database\Seeder;
 use Modules\OrganizationAdmin\Models\Committee;
-use Modules\OrganizationAdmin\Models\User;
+use Modules\Shared\Models\User;
 
 class FirstCommitteeSeeder extends Seeder
 {

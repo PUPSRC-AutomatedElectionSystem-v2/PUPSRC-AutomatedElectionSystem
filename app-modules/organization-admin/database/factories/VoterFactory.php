@@ -18,8 +18,6 @@ class VoterFactory extends Factory
     {
         return [
             'id' => $this->faker->uuid(),
-            'year_level' => $this->faker->numberBetween(1, 4),
-            'section' => $this->faker->randomLetter(),
             // 'voter_status_id' => $this->faker->numberBetween(1, 3),
             'updated_at' => $this->faker->dateTime(),
         ];

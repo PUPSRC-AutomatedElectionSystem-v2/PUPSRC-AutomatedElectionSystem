@@ -2,7 +2,12 @@
 
 namespace Modules\OrganizationVoting\Tests;
 
-class OrganizationVotingServiceProviderTest extends TestCase
+use PHPUnit\Framework\TestCase as BaseTestCase;
+
+class OrganizationVotingServiceProviderTest extends BaseTestCase
 {
-    // TODO
+    public function test_provider_class_exists(): void
+    {
+        $this->assertTrue(class_exists(\Modules\OrganizationVoting\Providers\OrganizationVotingServiceProvider::class));
+    }
 }

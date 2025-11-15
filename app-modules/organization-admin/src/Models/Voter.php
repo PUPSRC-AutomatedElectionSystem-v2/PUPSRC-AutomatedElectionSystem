@@ -2,19 +2,6 @@
 
 namespace Modules\OrganizationAdmin\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use Modules\Shared\Models\Voter as BaseVoter;
 
-class Voter extends Model
-{
-    /** @use HasFactory<\Database\Factories\VoterFactory> */
-    use HasFactory, HasUuids;
-
-    const CREATED_AT = null;
-
-    protected $guarded = [
-        'id',
-        'updated_at',
-    ];
-}
+class Voter extends BaseVoter {}

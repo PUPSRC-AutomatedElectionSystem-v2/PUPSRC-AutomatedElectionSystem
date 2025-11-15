@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '//pupsraes.test/verify-email'
+ * @route '//pupsrc-aes.test/verify-email'
  */
 const EmailVerificationPromptController = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: EmailVerificationPromptController.url(options),
@@ -11,13 +11,13 @@ const EmailVerificationPromptController = (options?: RouteQueryOptions): RouteDe
 
 EmailVerificationPromptController.definition = {
     methods: ["get","head"],
-    url: '//pupsraes.test/verify-email',
+    url: '//pupsrc-aes.test/verify-email',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '//pupsraes.test/verify-email'
+ * @route '//pupsrc-aes.test/verify-email'
  */
 EmailVerificationPromptController.url = (options?: RouteQueryOptions) => {
     return EmailVerificationPromptController.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ EmailVerificationPromptController.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '//pupsraes.test/verify-email'
+ * @route '//pupsrc-aes.test/verify-email'
  */
 EmailVerificationPromptController.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: EmailVerificationPromptController.url(options),
@@ -35,7 +35,7 @@ EmailVerificationPromptController.get = (options?: RouteQueryOptions): RouteDefi
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '//pupsraes.test/verify-email'
+ * @route '//pupsrc-aes.test/verify-email'
  */
 EmailVerificationPromptController.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: EmailVerificationPromptController.url(options),
@@ -45,7 +45,7 @@ EmailVerificationPromptController.head = (options?: RouteQueryOptions): RouteDef
     /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '//pupsraes.test/verify-email'
+ * @route '//pupsrc-aes.test/verify-email'
  */
     const EmailVerificationPromptControllerForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: EmailVerificationPromptController.url(options),
@@ -55,7 +55,7 @@ EmailVerificationPromptController.head = (options?: RouteQueryOptions): RouteDef
             /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '//pupsraes.test/verify-email'
+ * @route '//pupsrc-aes.test/verify-email'
  */
         EmailVerificationPromptControllerForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: EmailVerificationPromptController.url(options),
@@ -64,7 +64,7 @@ EmailVerificationPromptController.head = (options?: RouteQueryOptions): RouteDef
             /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '//pupsraes.test/verify-email'
+ * @route '//pupsrc-aes.test/verify-email'
  */
         EmailVerificationPromptControllerForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: EmailVerificationPromptController.url({

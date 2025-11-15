@@ -10,10 +10,10 @@ import fs from 'fs';
 
 const viteHost = (() => {
     try {
-        const url = new URL(process.env.APP_URL ?? 'https://pupsraes.test');
+        const url = new URL(process.env.APP_URL ?? 'https://pupsrc-aes.test');
         return url.hostname;
     } catch {
-        return 'pupsraes.test';
+        return 'pupsrc-aes.test';
     }
 })();
 
@@ -24,11 +24,11 @@ export default defineConfig({
     server: {
         https: {
             // adjust these paths to wherever Herd is storing your .key/.crt
-            key: fs.readFileSync(path.resolve(process.env.USERPROFILE!, '.config', 'herd', 'config', 'valet', 'Certificates', 'pupsraes.test.key')),
-            cert: fs.readFileSync(path.resolve(process.env.USERPROFILE!, '.config', 'herd', 'config', 'valet', 'Certificates', 'pupsraes.test.crt')),
+            key: fs.readFileSync(path.resolve(process.env.USERPROFILE!, '.config', 'herd', 'config', 'valet', 'Certificates', 'pupsrc-aes.test.key')),
+            cert: fs.readFileSync(path.resolve(process.env.USERPROFILE!, '.config', 'herd', 'config', 'valet', 'Certificates', 'pupsrc-aes.test.crt')),
         },
         port: 5173,
-        // ensure Access-Control-Allow-Origin matches https://pupsraes.test
+        // ensure Access-Control-Allow-Origin matches https://pupsrc-aes.test
         cors: {
             origin: new RegExp(`^https?://(.*\\.)?${domain.replace('.', '\\.')}$`),
             credentials: true,
@@ -36,7 +36,7 @@ export default defineConfig({
         host: viteHost,          // listen on all interfaces
         hmr: {
             protocol: 'wss',
-            host: viteHost, // derived from APP_URL (pupsraes.test)
+            host: viteHost, // derived from APP_URL (pupsrc-aes.test)
             clientPort: 5173,
         },
     },

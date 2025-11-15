@@ -17,4 +17,3 @@ require __DIR__ . '/auth.php';
 
 // Tenant management (central app)
 Route::get('/tenants/create', [TenantsController::class, 'create'])->name('tenants.create');
-Route::post('/tenants', [TenantsController::class, 'store'])->name('tenants.store');

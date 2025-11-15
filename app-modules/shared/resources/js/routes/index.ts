@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '//pupsraes.test/login'
+ * @route '//pupsr-aes.test/login'
  */
 export const login = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: login.url(options),
@@ -10,14 +10,14 @@ export const login = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 
 login.definition = {
-    methods: ["get","head"],
-    url: '//pupsraes.test/login',
-} satisfies RouteDefinition<["get","head"]>
+    methods: ["get", "head"],
+    url: '//pupsr-aes.test/login',
+} satisfies RouteDefinition<["get", "head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '//pupsraes.test/login'
+ * @route '//pupsr-aes.test/login'
  */
 login.url = (options?: RouteQueryOptions) => {
     return login.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ login.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '//pupsraes.test/login'
+ * @route '//pupsr-aes.test/login'
  */
 login.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: login.url(options),
@@ -35,52 +35,52 @@ login.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '//pupsraes.test/login'
+ * @route '//pupsr-aes.test/login'
  */
 login.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: login.url(options),
     method: 'head',
 })
 
-    /**
+/**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '//pupsraes.test/login'
- */
-    const loginForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: login.url(options),
-        method: 'get',
-    })
+* @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
+* @route '//pupsr-aes.test/login'
+*/
+const loginForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: login.url(options),
+    method: 'get',
+})
 
-            /**
+/**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '//pupsraes.test/login'
- */
-        loginForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: login.url(options),
-            method: 'get',
-        })
-            /**
+* @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
+* @route '//pupsr-aes.test/login'
+*/
+loginForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: login.url(options),
+    method: 'get',
+})
+/**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::login
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '//pupsraes.test/login'
- */
-        loginForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: login.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    login.form = loginForm
+* @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
+* @route '//pupsr-aes.test/login'
+*/
+loginForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: login.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+login.form = loginForm
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '//pupsraes.test/logout'
+ * @route '//pupsr-aes.test/logout'
  */
 export const logout = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: logout.url(options),
@@ -89,13 +89,13 @@ export const logout = (options?: RouteQueryOptions): RouteDefinition<'post'> => 
 
 logout.definition = {
     methods: ["post"],
-    url: '//pupsraes.test/logout',
+    url: '//pupsr-aes.test/logout',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '//pupsraes.test/logout'
+ * @route '//pupsr-aes.test/logout'
  */
 logout.url = (options?: RouteQueryOptions) => {
     return logout.definition.url + queryParams(options)
@@ -104,37 +104,37 @@ logout.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '//pupsraes.test/logout'
+ * @route '//pupsr-aes.test/logout'
  */
 logout.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: logout.url(options),
     method: 'post',
 })
 
-    /**
+/**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '//pupsraes.test/logout'
- */
-    const logoutForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: logout.url(options),
-        method: 'post',
-    })
+* @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+* @route '//pupsr-aes.test/logout'
+*/
+const logoutForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: logout.url(options),
+    method: 'post',
+})
 
-            /**
+/**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::logout
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '//pupsraes.test/logout'
- */
-        logoutForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: logout.url(options),
-            method: 'post',
-        })
-    
-    logout.form = logoutForm
+* @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+* @route '//pupsr-aes.test/logout'
+*/
+logoutForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: logout.url(options),
+    method: 'post',
+})
+
+logout.form = logoutForm
 /**
  * @see routes/web.php:7
- * @route '//pupsraes.test/'
+ * @route '//pupsr-aes.test/'
  */
 export const home = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: home.url(options),
@@ -142,13 +142,13 @@ export const home = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 
 home.definition = {
-    methods: ["get","head"],
-    url: '//pupsraes.test/',
-} satisfies RouteDefinition<["get","head"]>
+    methods: ["get", "head"],
+    url: '//pupsr-aes.test/',
+} satisfies RouteDefinition<["get", "head"]>
 
 /**
  * @see routes/web.php:7
- * @route '//pupsraes.test/'
+ * @route '//pupsr-aes.test/'
  */
 home.url = (options?: RouteQueryOptions) => {
     return home.definition.url + queryParams(options)
@@ -156,7 +156,7 @@ home.url = (options?: RouteQueryOptions) => {
 
 /**
  * @see routes/web.php:7
- * @route '//pupsraes.test/'
+ * @route '//pupsr-aes.test/'
  */
 home.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: home.url(options),
@@ -164,48 +164,48 @@ home.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
  * @see routes/web.php:7
- * @route '//pupsraes.test/'
+ * @route '//pupsr-aes.test/'
  */
 home.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: home.url(options),
     method: 'head',
 })
 
-    /**
- * @see routes/web.php:7
- * @route '//pupsraes.test/'
- */
-    const homeForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: home.url(options),
-        method: 'get',
-    })
+/**
+* @see routes/web.php:7
+* @route '//pupsr-aes.test/'
+*/
+const homeForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: home.url(options),
+    method: 'get',
+})
 
-            /**
- * @see routes/web.php:7
- * @route '//pupsraes.test/'
- */
-        homeForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: home.url(options),
-            method: 'get',
-        })
-            /**
- * @see routes/web.php:7
- * @route '//pupsraes.test/'
- */
-        homeForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: home.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    home.form = homeForm
+/**
+* @see routes/web.php:7
+* @route '//pupsr-aes.test/'
+*/
+homeForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: home.url(options),
+    method: 'get',
+})
+/**
+* @see routes/web.php:7
+* @route '//pupsr-aes.test/'
+*/
+homeForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: home.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+home.form = homeForm
 /**
  * @see routes/web.php:11
- * @route '//pupsraes.test/dashboard'
+ * @route '//pupsr-aes.test/dashboard'
  */
 export const dashboard = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: dashboard.url(options),
@@ -213,13 +213,13 @@ export const dashboard = (options?: RouteQueryOptions): RouteDefinition<'get'> =
 })
 
 dashboard.definition = {
-    methods: ["get","head"],
-    url: '//pupsraes.test/dashboard',
-} satisfies RouteDefinition<["get","head"]>
+    methods: ["get", "head"],
+    url: '//pupsr-aes.test/dashboard',
+} satisfies RouteDefinition<["get", "head"]>
 
 /**
  * @see routes/web.php:11
- * @route '//pupsraes.test/dashboard'
+ * @route '//pupsr-aes.test/dashboard'
  */
 dashboard.url = (options?: RouteQueryOptions) => {
     return dashboard.definition.url + queryParams(options)
@@ -227,7 +227,7 @@ dashboard.url = (options?: RouteQueryOptions) => {
 
 /**
  * @see routes/web.php:11
- * @route '//pupsraes.test/dashboard'
+ * @route '//pupsr-aes.test/dashboard'
  */
 dashboard.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: dashboard.url(options),
@@ -235,48 +235,48 @@ dashboard.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
  * @see routes/web.php:11
- * @route '//pupsraes.test/dashboard'
+ * @route '//pupsr-aes.test/dashboard'
  */
 dashboard.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: dashboard.url(options),
     method: 'head',
 })
 
-    /**
- * @see routes/web.php:11
- * @route '//pupsraes.test/dashboard'
- */
-    const dashboardForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: dashboard.url(options),
-        method: 'get',
-    })
+/**
+* @see routes/web.php:11
+* @route '//pupsr-aes.test/dashboard'
+*/
+const dashboardForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: dashboard.url(options),
+    method: 'get',
+})
 
-            /**
- * @see routes/web.php:11
- * @route '//pupsraes.test/dashboard'
- */
-        dashboardForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: dashboard.url(options),
-            method: 'get',
-        })
-            /**
- * @see routes/web.php:11
- * @route '//pupsraes.test/dashboard'
- */
-        dashboardForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: dashboard.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    dashboard.form = dashboardForm
+/**
+* @see routes/web.php:11
+* @route '//pupsr-aes.test/dashboard'
+*/
+dashboardForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: dashboard.url(options),
+    method: 'get',
+})
+/**
+* @see routes/web.php:11
+* @route '//pupsr-aes.test/dashboard'
+*/
+dashboardForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: dashboard.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+dashboard.form = dashboardForm
 /**
  * @see routes/settings.php:22
- * @route '//pupsraes.test/settings/appearance'
+ * @route '//pupsr-aes.test/settings/appearance'
  */
 export const appearance = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: appearance.url(options),
@@ -284,13 +284,13 @@ export const appearance = (options?: RouteQueryOptions): RouteDefinition<'get'> 
 })
 
 appearance.definition = {
-    methods: ["get","head"],
-    url: '//pupsraes.test/settings/appearance',
-} satisfies RouteDefinition<["get","head"]>
+    methods: ["get", "head"],
+    url: '//pupsr-aes.test/settings/appearance',
+} satisfies RouteDefinition<["get", "head"]>
 
 /**
  * @see routes/settings.php:22
- * @route '//pupsraes.test/settings/appearance'
+ * @route '//pupsr-aes.test/settings/appearance'
  */
 appearance.url = (options?: RouteQueryOptions) => {
     return appearance.definition.url + queryParams(options)
@@ -298,7 +298,7 @@ appearance.url = (options?: RouteQueryOptions) => {
 
 /**
  * @see routes/settings.php:22
- * @route '//pupsraes.test/settings/appearance'
+ * @route '//pupsr-aes.test/settings/appearance'
  */
 appearance.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: appearance.url(options),
@@ -306,49 +306,49 @@ appearance.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 /**
  * @see routes/settings.php:22
- * @route '//pupsraes.test/settings/appearance'
+ * @route '//pupsr-aes.test/settings/appearance'
  */
 appearance.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: appearance.url(options),
     method: 'head',
 })
 
-    /**
- * @see routes/settings.php:22
- * @route '//pupsraes.test/settings/appearance'
- */
-    const appearanceForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: appearance.url(options),
-        method: 'get',
-    })
+/**
+* @see routes/settings.php:22
+* @route '//pupsr-aes.test/settings/appearance'
+*/
+const appearanceForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: appearance.url(options),
+    method: 'get',
+})
 
-            /**
- * @see routes/settings.php:22
- * @route '//pupsraes.test/settings/appearance'
- */
-        appearanceForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: appearance.url(options),
-            method: 'get',
-        })
-            /**
- * @see routes/settings.php:22
- * @route '//pupsraes.test/settings/appearance'
- */
-        appearanceForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: appearance.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    appearance.form = appearanceForm
+/**
+* @see routes/settings.php:22
+* @route '//pupsr-aes.test/settings/appearance'
+*/
+appearanceForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: appearance.url(options),
+    method: 'get',
+})
+/**
+* @see routes/settings.php:22
+* @route '//pupsr-aes.test/settings/appearance'
+*/
+appearanceForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: appearance.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+appearance.form = appearanceForm
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:20
- * @route '//pupsraes.test/register'
+ * @route '//pupsr-aes.test/register'
  */
 export const register = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: register.url(options),
@@ -356,14 +356,14 @@ export const register = (options?: RouteQueryOptions): RouteDefinition<'get'> =>
 })
 
 register.definition = {
-    methods: ["get","head"],
-    url: '//pupsraes.test/register',
-} satisfies RouteDefinition<["get","head"]>
+    methods: ["get", "head"],
+    url: '//pupsr-aes.test/register',
+} satisfies RouteDefinition<["get", "head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:20
- * @route '//pupsraes.test/register'
+ * @route '//pupsr-aes.test/register'
  */
 register.url = (options?: RouteQueryOptions) => {
     return register.definition.url + queryParams(options)
@@ -372,7 +372,7 @@ register.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:20
- * @route '//pupsraes.test/register'
+ * @route '//pupsr-aes.test/register'
  */
 register.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: register.url(options),
@@ -381,45 +381,45 @@ register.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:20
- * @route '//pupsraes.test/register'
+ * @route '//pupsr-aes.test/register'
  */
 register.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: register.url(options),
     method: 'head',
 })
 
-    /**
+/**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
- * @see app/Http/Controllers/Auth/RegisteredUserController.php:20
- * @route '//pupsraes.test/register'
- */
-    const registerForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: register.url(options),
-        method: 'get',
-    })
+* @see app/Http/Controllers/Auth/RegisteredUserController.php:20
+* @route '//pupsr-aes.test/register'
+*/
+const registerForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: register.url(options),
+    method: 'get',
+})
 
-            /**
+/**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
- * @see app/Http/Controllers/Auth/RegisteredUserController.php:20
- * @route '//pupsraes.test/register'
- */
-        registerForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: register.url(options),
-            method: 'get',
-        })
-            /**
+* @see app/Http/Controllers/Auth/RegisteredUserController.php:20
+* @route '//pupsr-aes.test/register'
+*/
+registerForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: register.url(options),
+    method: 'get',
+})
+/**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::register
- * @see app/Http/Controllers/Auth/RegisteredUserController.php:20
- * @route '//pupsraes.test/register'
- */
-        registerForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: register.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    register.form = registerForm
+* @see app/Http/Controllers/Auth/RegisteredUserController.php:20
+* @route '//pupsr-aes.test/register'
+*/
+registerForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: register.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+register.form = registerForm

@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '//pupsraes.test/verify-email'
+ * @route '//pupsrc-aes.test/verify-email'
  */
 export const notice = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: notice.url(options),
@@ -11,13 +11,13 @@ export const notice = (options?: RouteQueryOptions): RouteDefinition<'get'> => (
 
 notice.definition = {
     methods: ["get","head"],
-    url: '//pupsraes.test/verify-email',
+    url: '//pupsrc-aes.test/verify-email',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '//pupsraes.test/verify-email'
+ * @route '//pupsrc-aes.test/verify-email'
  */
 notice.url = (options?: RouteQueryOptions) => {
     return notice.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ notice.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '//pupsraes.test/verify-email'
+ * @route '//pupsrc-aes.test/verify-email'
  */
 notice.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: notice.url(options),
@@ -35,7 +35,7 @@ notice.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '//pupsraes.test/verify-email'
+ * @route '//pupsrc-aes.test/verify-email'
  */
 notice.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: notice.url(options),
@@ -45,7 +45,7 @@ notice.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '//pupsraes.test/verify-email'
+ * @route '//pupsrc-aes.test/verify-email'
  */
     const noticeForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: notice.url(options),
@@ -55,7 +55,7 @@ notice.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '//pupsraes.test/verify-email'
+ * @route '//pupsrc-aes.test/verify-email'
  */
         noticeForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: notice.url(options),
@@ -64,7 +64,7 @@ notice.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             /**
 * @see \App\Http\Controllers\Auth\EmailVerificationPromptController::__invoke
  * @see app/Http/Controllers/Auth/EmailVerificationPromptController.php:16
- * @route '//pupsraes.test/verify-email'
+ * @route '//pupsrc-aes.test/verify-email'
  */
         noticeForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: notice.url({
@@ -80,7 +80,7 @@ notice.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \App\Http\Controllers\Auth\VerifyEmailController::__invoke
  * @see app/Http/Controllers/Auth/VerifyEmailController.php:14
- * @route '//pupsraes.test/verify-email/{id}/{hash}'
+ * @route '//pupsrc-aes.test/verify-email/{id}/{hash}'
  */
 export const verify = (args: { id: string | number, hash: string | number } | [id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: verify.url(args, options),
@@ -89,13 +89,13 @@ export const verify = (args: { id: string | number, hash: string | number } | [i
 
 verify.definition = {
     methods: ["get","head"],
-    url: '//pupsraes.test/verify-email/{id}/{hash}',
+    url: '//pupsrc-aes.test/verify-email/{id}/{hash}',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\VerifyEmailController::__invoke
  * @see app/Http/Controllers/Auth/VerifyEmailController.php:14
- * @route '//pupsraes.test/verify-email/{id}/{hash}'
+ * @route '//pupsrc-aes.test/verify-email/{id}/{hash}'
  */
 verify.url = (args: { id: string | number, hash: string | number } | [id: string | number, hash: string | number ], options?: RouteQueryOptions) => {
     if (Array.isArray(args)) {
@@ -121,7 +121,7 @@ verify.url = (args: { id: string | number, hash: string | number } | [id: string
 /**
 * @see \App\Http\Controllers\Auth\VerifyEmailController::__invoke
  * @see app/Http/Controllers/Auth/VerifyEmailController.php:14
- * @route '//pupsraes.test/verify-email/{id}/{hash}'
+ * @route '//pupsrc-aes.test/verify-email/{id}/{hash}'
  */
 verify.get = (args: { id: string | number, hash: string | number } | [id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: verify.url(args, options),
@@ -130,7 +130,7 @@ verify.get = (args: { id: string | number, hash: string | number } | [id: string
 /**
 * @see \App\Http\Controllers\Auth\VerifyEmailController::__invoke
  * @see app/Http/Controllers/Auth/VerifyEmailController.php:14
- * @route '//pupsraes.test/verify-email/{id}/{hash}'
+ * @route '//pupsrc-aes.test/verify-email/{id}/{hash}'
  */
 verify.head = (args: { id: string | number, hash: string | number } | [id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: verify.url(args, options),
@@ -140,7 +140,7 @@ verify.head = (args: { id: string | number, hash: string | number } | [id: strin
     /**
 * @see \App\Http\Controllers\Auth\VerifyEmailController::__invoke
  * @see app/Http/Controllers/Auth/VerifyEmailController.php:14
- * @route '//pupsraes.test/verify-email/{id}/{hash}'
+ * @route '//pupsrc-aes.test/verify-email/{id}/{hash}'
  */
     const verifyForm = (args: { id: string | number, hash: string | number } | [id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: verify.url(args, options),
@@ -150,7 +150,7 @@ verify.head = (args: { id: string | number, hash: string | number } | [id: strin
             /**
 * @see \App\Http\Controllers\Auth\VerifyEmailController::__invoke
  * @see app/Http/Controllers/Auth/VerifyEmailController.php:14
- * @route '//pupsraes.test/verify-email/{id}/{hash}'
+ * @route '//pupsrc-aes.test/verify-email/{id}/{hash}'
  */
         verifyForm.get = (args: { id: string | number, hash: string | number } | [id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: verify.url(args, options),
@@ -159,7 +159,7 @@ verify.head = (args: { id: string | number, hash: string | number } | [id: strin
             /**
 * @see \App\Http\Controllers\Auth\VerifyEmailController::__invoke
  * @see app/Http/Controllers/Auth/VerifyEmailController.php:14
- * @route '//pupsraes.test/verify-email/{id}/{hash}'
+ * @route '//pupsrc-aes.test/verify-email/{id}/{hash}'
  */
         verifyForm.head = (args: { id: string | number, hash: string | number } | [id: string | number, hash: string | number ], options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: verify.url(args, {
@@ -175,7 +175,7 @@ verify.head = (args: { id: string | number, hash: string | number } | [id: strin
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::send
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '//pupsraes.test/email/verification-notification'
+ * @route '//pupsrc-aes.test/email/verification-notification'
  */
 export const send = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: send.url(options),
@@ -184,13 +184,13 @@ export const send = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
 
 send.definition = {
     methods: ["post"],
-    url: '//pupsraes.test/email/verification-notification',
+    url: '//pupsrc-aes.test/email/verification-notification',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::send
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '//pupsraes.test/email/verification-notification'
+ * @route '//pupsrc-aes.test/email/verification-notification'
  */
 send.url = (options?: RouteQueryOptions) => {
     return send.definition.url + queryParams(options)
@@ -199,7 +199,7 @@ send.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::send
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '//pupsraes.test/email/verification-notification'
+ * @route '//pupsrc-aes.test/email/verification-notification'
  */
 send.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: send.url(options),
@@ -209,7 +209,7 @@ send.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::send
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '//pupsraes.test/email/verification-notification'
+ * @route '//pupsrc-aes.test/email/verification-notification'
  */
     const sendForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: send.url(options),
@@ -219,7 +219,7 @@ send.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::send
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '//pupsraes.test/email/verification-notification'
+ * @route '//pupsrc-aes.test/email/verification-notification'
  */
         sendForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: send.url(options),

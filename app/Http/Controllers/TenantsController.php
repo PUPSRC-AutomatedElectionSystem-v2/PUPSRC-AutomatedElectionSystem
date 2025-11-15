@@ -22,13 +22,4 @@ class TenantsController extends Controller
 
         return view('tenants.create', $vm->toArray());
     }
-
-    public function store(StoreTenantRequest $request, CreateTenant $action): JsonResponse|RedirectResponse|JsonResource
-    {
-        $data = $request->validated();
-
-        $result = $action->handle($data);
-
-        return new TenantCreatedResource($result);
-    }
 }

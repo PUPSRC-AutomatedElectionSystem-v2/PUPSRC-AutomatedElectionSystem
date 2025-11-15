@@ -2,10 +2,11 @@
 
 namespace Modules\OrganizationAdmin\Database\Factories;
 
+use App\Models\Central\UserData;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Modules\OrganizationAdmin\Facades\MakeDefaultPassword;
 use Modules\OrganizationAdmin\Models\Committee;
-use Modules\OrganizationAdmin\Models\Voter;
+use Modules\Shared\Models\Voter;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Modules\OrganizationAdmin\Models\User>
@@ -28,15 +29,17 @@ class UserFactory extends Factory
             $accountType = strtolower(class_basename($this->accountModel));
             $accountId = $this->accountModel->id;
         } else {
-            $choices = array_map(fn (string $class): string => strtolower(class_basename($class)), [Voter::class, Committee::class]);
+            $choices = array_map(fn(string $class): string => strtolower(class_basename($class)), [Voter::class, Committee::class]);
             $accountType = $this->faker->randomElement($choices);
             $accountId = $this->faker->uuid();
         }
 
+        $userData = UserData::query()->inRandomOrder()->first() ?? UserData::factory()->create();
+
         return [
             'account_id' => $accountId,
             'account_type' => $accountType,
-            'identity_id' => null,
+            'identity_id' => $userData->identity_id,
             'email' => null,
             'email_verified_at' => null,
             'password' => MakeDefaultPassword::getDefaultPassword($accountType),

@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::store
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:30
- * @route '//pupsraes.test/register'
+ * @route '//pupsrc-aes.test/register'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -11,13 +11,13 @@ export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => (
 
 store.definition = {
     methods: ["post"],
-    url: '//pupsraes.test/register',
+    url: '//pupsrc-aes.test/register',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::store
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:30
- * @route '//pupsraes.test/register'
+ * @route '//pupsrc-aes.test/register'
  */
 store.url = (options?: RouteQueryOptions) => {
     return store.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ store.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::store
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:30
- * @route '//pupsraes.test/register'
+ * @route '//pupsrc-aes.test/register'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -36,7 +36,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::store
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:30
- * @route '//pupsraes.test/register'
+ * @route '//pupsrc-aes.test/register'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(options),
@@ -46,7 +46,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             /**
 * @see \App\Http\Controllers\Auth\RegisteredUserController::store
  * @see app/Http/Controllers/Auth/RegisteredUserController.php:30
- * @route '//pupsraes.test/register'
+ * @route '//pupsrc-aes.test/register'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(options),

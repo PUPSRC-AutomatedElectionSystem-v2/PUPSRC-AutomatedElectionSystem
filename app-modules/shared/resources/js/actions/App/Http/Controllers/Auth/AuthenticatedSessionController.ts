@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::create
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '//pupsraes.test/login'
+ * @route '//pupsr-aes.test/login'
  */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(options),
@@ -10,14 +10,14 @@ export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => (
 })
 
 create.definition = {
-    methods: ["get","head"],
-    url: '//pupsraes.test/login',
-} satisfies RouteDefinition<["get","head"]>
+    methods: ["get", "head"],
+    url: '//pupsr-aes.test/login',
+} satisfies RouteDefinition<["get", "head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::create
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '//pupsraes.test/login'
+ * @route '//pupsr-aes.test/login'
  */
 create.url = (options?: RouteQueryOptions) => {
     return create.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ create.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::create
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '//pupsraes.test/login'
+ * @route '//pupsr-aes.test/login'
  */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(options),
@@ -35,52 +35,52 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::create
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '//pupsraes.test/login'
+ * @route '//pupsr-aes.test/login'
  */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: create.url(options),
     method: 'head',
 })
 
-    /**
+/**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::create
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '//pupsraes.test/login'
- */
-    const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: create.url(options),
-        method: 'get',
-    })
+* @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
+* @route '//pupsr-aes.test/login'
+*/
+const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: create.url(options),
+    method: 'get',
+})
 
-            /**
+/**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::create
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '//pupsraes.test/login'
- */
-        createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: create.url(options),
-            method: 'get',
-        })
-            /**
+* @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
+* @route '//pupsr-aes.test/login'
+*/
+createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: create.url(options),
+    method: 'get',
+})
+/**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::create
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
- * @route '//pupsraes.test/login'
- */
-        createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: create.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    create.form = createForm
+* @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:20
+* @route '//pupsr-aes.test/login'
+*/
+createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: create.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+create.form = createForm
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::store
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:31
- * @route '//pupsraes.test/login'
+ * @route '//pupsr-aes.test/login'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -89,13 +89,13 @@ export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => (
 
 store.definition = {
     methods: ["post"],
-    url: '//pupsraes.test/login',
+    url: '//pupsr-aes.test/login',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::store
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:31
- * @route '//pupsraes.test/login'
+ * @route '//pupsr-aes.test/login'
  */
 store.url = (options?: RouteQueryOptions) => {
     return store.definition.url + queryParams(options)
@@ -104,38 +104,38 @@ store.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::store
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:31
- * @route '//pupsraes.test/login'
+ * @route '//pupsr-aes.test/login'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
     method: 'post',
 })
 
-    /**
+/**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::store
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:31
- * @route '//pupsraes.test/login'
- */
-    const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: store.url(options),
-        method: 'post',
-    })
+* @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:31
+* @route '//pupsr-aes.test/login'
+*/
+const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: store.url(options),
+    method: 'post',
+})
 
-            /**
+/**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::store
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:31
- * @route '//pupsraes.test/login'
- */
-        storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: store.url(options),
-            method: 'post',
-        })
-    
-    store.form = storeForm
+* @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:31
+* @route '//pupsr-aes.test/login'
+*/
+storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: store.url(options),
+    method: 'post',
+})
+
+store.form = storeForm
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::destroy
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '//pupsraes.test/logout'
+ * @route '//pupsr-aes.test/logout'
  */
 export const destroy = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: destroy.url(options),
@@ -144,13 +144,13 @@ export const destroy = (options?: RouteQueryOptions): RouteDefinition<'post'> =>
 
 destroy.definition = {
     methods: ["post"],
-    url: '//pupsraes.test/logout',
+    url: '//pupsr-aes.test/logout',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::destroy
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '//pupsraes.test/logout'
+ * @route '//pupsr-aes.test/logout'
  */
 destroy.url = (options?: RouteQueryOptions) => {
     return destroy.definition.url + queryParams(options)
@@ -159,34 +159,34 @@ destroy.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::destroy
  * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '//pupsraes.test/logout'
+ * @route '//pupsr-aes.test/logout'
  */
 destroy.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: destroy.url(options),
     method: 'post',
 })
 
-    /**
+/**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::destroy
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '//pupsraes.test/logout'
- */
-    const destroyForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: destroy.url(options),
-        method: 'post',
-    })
+* @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+* @route '//pupsr-aes.test/logout'
+*/
+const destroyForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: destroy.url(options),
+    method: 'post',
+})
 
-            /**
+/**
 * @see \App\Http\Controllers\Auth\AuthenticatedSessionController::destroy
- * @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
- * @route '//pupsraes.test/logout'
- */
-        destroyForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: destroy.url(options),
-            method: 'post',
-        })
-    
-    destroy.form = destroyForm
+* @see app/Http/Controllers/Auth/AuthenticatedSessionController.php:54
+* @route '//pupsr-aes.test/logout'
+*/
+destroyForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: destroy.url(options),
+    method: 'post',
+})
+
+destroy.form = destroyForm
 const AuthenticatedSessionController = { create, store, destroy }
 
 export default AuthenticatedSessionController

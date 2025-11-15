@@ -26,9 +26,10 @@ return Application::configure(basePath: dirname(__DIR__))
                     ->group(base_path('routes/web.php'));
 
                 Route::middleware('api')
+                    ->name('api.')
+                    ->prefix('api')
                     ->domain($domain)
-                    ->prefix('v1')
-                    ->group(base_path('routes/api/api_v01.php'));
+                    ->group(base_path('routes/api/api.php'));
             }
             // Load tenant routes with tenancy initialization.
             Route::middleware(['web', 'tenant'])
@@ -37,6 +38,15 @@ return Application::configure(basePath: dirname(__DIR__))
                     base_path('app-modules/organization-admin/routes/organization-admin-routes.php'),
                     base_path('app-modules/tenant-auth/routes/tenant-auth-routes.php'),
                     base_path('app-modules/organization-voting/routes/organization-voting-routes.php'),
+                ]);
+
+            Route::middleware(['api', 'tenant'])
+                ->name('org.api.')
+                ->prefix('org/api')
+                ->group([
+                    base_path('app-modules/organization-admin/routes/api/api.php'),
+                    // base_path('app-modules/tenant-auth/routes/api/api.php'),
+                    // base_path('app-modules/organization-voting/routes/api/api.php'),
                 ]);
         }
     )

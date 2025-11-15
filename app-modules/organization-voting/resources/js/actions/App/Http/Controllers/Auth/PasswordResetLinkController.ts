@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::create
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '//pupsraes.test/forgot-password'
+ * @route '//pupsrc-aes.test/forgot-password'
  */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(options),
@@ -11,13 +11,13 @@ export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => (
 
 create.definition = {
     methods: ["get","head"],
-    url: '//pupsraes.test/forgot-password',
+    url: '//pupsrc-aes.test/forgot-password',
 } satisfies RouteDefinition<["get","head"]>
 
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::create
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '//pupsraes.test/forgot-password'
+ * @route '//pupsrc-aes.test/forgot-password'
  */
 create.url = (options?: RouteQueryOptions) => {
     return create.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ create.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::create
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '//pupsraes.test/forgot-password'
+ * @route '//pupsrc-aes.test/forgot-password'
  */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(options),
@@ -35,7 +35,7 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::create
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '//pupsraes.test/forgot-password'
+ * @route '//pupsrc-aes.test/forgot-password'
  */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: create.url(options),
@@ -45,7 +45,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::create
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '//pupsraes.test/forgot-password'
+ * @route '//pupsrc-aes.test/forgot-password'
  */
     const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
         action: create.url(options),
@@ -55,7 +55,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::create
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '//pupsraes.test/forgot-password'
+ * @route '//pupsrc-aes.test/forgot-password'
  */
         createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: create.url(options),
@@ -64,7 +64,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
             /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::create
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:17
- * @route '//pupsraes.test/forgot-password'
+ * @route '//pupsrc-aes.test/forgot-password'
  */
         createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
             action: create.url({
@@ -80,7 +80,7 @@ create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::store
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '//pupsraes.test/forgot-password'
+ * @route '//pupsrc-aes.test/forgot-password'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -89,13 +89,13 @@ export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => (
 
 store.definition = {
     methods: ["post"],
-    url: '//pupsraes.test/forgot-password',
+    url: '//pupsrc-aes.test/forgot-password',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::store
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '//pupsraes.test/forgot-password'
+ * @route '//pupsrc-aes.test/forgot-password'
  */
 store.url = (options?: RouteQueryOptions) => {
     return store.definition.url + queryParams(options)
@@ -104,7 +104,7 @@ store.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::store
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '//pupsraes.test/forgot-password'
+ * @route '//pupsrc-aes.test/forgot-password'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -114,7 +114,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::store
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '//pupsraes.test/forgot-password'
+ * @route '//pupsrc-aes.test/forgot-password'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(options),
@@ -124,7 +124,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             /**
 * @see \App\Http\Controllers\Auth\PasswordResetLinkController::store
  * @see app/Http/Controllers/Auth/PasswordResetLinkController.php:29
- * @route '//pupsraes.test/forgot-password'
+ * @route '//pupsrc-aes.test/forgot-password'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(options),

@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\TenantsController::create
  * @see app/Http/Controllers/TenantsController.php:19
- * @route '//pupsraes.test/tenants/create'
+ * @route '//pupsr-aes.test/tenants/create'
  */
 export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(options),
@@ -10,14 +10,14 @@ export const create = (options?: RouteQueryOptions): RouteDefinition<'get'> => (
 })
 
 create.definition = {
-    methods: ["get","head"],
-    url: '//pupsraes.test/tenants/create',
-} satisfies RouteDefinition<["get","head"]>
+    methods: ["get", "head"],
+    url: '//pupsr-aes.test/tenants/create',
+} satisfies RouteDefinition<["get", "head"]>
 
 /**
 * @see \App\Http\Controllers\TenantsController::create
  * @see app/Http/Controllers/TenantsController.php:19
- * @route '//pupsraes.test/tenants/create'
+ * @route '//pupsr-aes.test/tenants/create'
  */
 create.url = (options?: RouteQueryOptions) => {
     return create.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ create.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\TenantsController::create
  * @see app/Http/Controllers/TenantsController.php:19
- * @route '//pupsraes.test/tenants/create'
+ * @route '//pupsr-aes.test/tenants/create'
  */
 create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: create.url(options),
@@ -35,52 +35,52 @@ create.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 /**
 * @see \App\Http\Controllers\TenantsController::create
  * @see app/Http/Controllers/TenantsController.php:19
- * @route '//pupsraes.test/tenants/create'
+ * @route '//pupsr-aes.test/tenants/create'
  */
 create.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: create.url(options),
     method: 'head',
 })
 
-    /**
+/**
 * @see \App\Http\Controllers\TenantsController::create
- * @see app/Http/Controllers/TenantsController.php:19
- * @route '//pupsraes.test/tenants/create'
- */
-    const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: create.url(options),
-        method: 'get',
-    })
+* @see app/Http/Controllers/TenantsController.php:19
+* @route '//pupsr-aes.test/tenants/create'
+*/
+const createForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: create.url(options),
+    method: 'get',
+})
 
-            /**
+/**
 * @see \App\Http\Controllers\TenantsController::create
- * @see app/Http/Controllers/TenantsController.php:19
- * @route '//pupsraes.test/tenants/create'
- */
-        createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: create.url(options),
-            method: 'get',
-        })
-            /**
+* @see app/Http/Controllers/TenantsController.php:19
+* @route '//pupsr-aes.test/tenants/create'
+*/
+createForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: create.url(options),
+    method: 'get',
+})
+/**
 * @see \App\Http\Controllers\TenantsController::create
- * @see app/Http/Controllers/TenantsController.php:19
- * @route '//pupsraes.test/tenants/create'
- */
-        createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: create.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    create.form = createForm
+* @see app/Http/Controllers/TenantsController.php:19
+* @route '//pupsr-aes.test/tenants/create'
+*/
+createForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: create.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+create.form = createForm
 /**
 * @see \App\Http\Controllers\TenantsController::store
  * @see app/Http/Controllers/TenantsController.php:26
- * @route '//pupsraes.test/tenants'
+ * @route '//pupsr-aes.test/tenants'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -89,13 +89,13 @@ export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => (
 
 store.definition = {
     methods: ["post"],
-    url: '//pupsraes.test/tenants',
+    url: '//pupsr-aes.test/tenants',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\TenantsController::store
  * @see app/Http/Controllers/TenantsController.php:26
- * @route '//pupsraes.test/tenants'
+ * @route '//pupsr-aes.test/tenants'
  */
 store.url = (options?: RouteQueryOptions) => {
     return store.definition.url + queryParams(options)
@@ -104,37 +104,37 @@ store.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\TenantsController::store
  * @see app/Http/Controllers/TenantsController.php:26
- * @route '//pupsraes.test/tenants'
+ * @route '//pupsr-aes.test/tenants'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
     method: 'post',
 })
 
-    /**
+/**
 * @see \App\Http\Controllers\TenantsController::store
- * @see app/Http/Controllers/TenantsController.php:26
- * @route '//pupsraes.test/tenants'
- */
-    const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: store.url(options),
-        method: 'post',
-    })
+* @see app/Http/Controllers/TenantsController.php:26
+* @route '//pupsr-aes.test/tenants'
+*/
+const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: store.url(options),
+    method: 'post',
+})
 
-            /**
+/**
 * @see \App\Http\Controllers\TenantsController::store
- * @see app/Http/Controllers/TenantsController.php:26
- * @route '//pupsraes.test/tenants'
- */
-        storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: store.url(options),
-            method: 'post',
-        })
-    
-    store.form = storeForm
+* @see app/Http/Controllers/TenantsController.php:26
+* @route '//pupsr-aes.test/tenants'
+*/
+storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: store.url(options),
+    method: 'post',
+})
+
+store.form = storeForm
 const tenants = {
     create: Object.assign(create, create),
-store: Object.assign(store, store),
+    store: Object.assign(store, store),
 }
 
 export default tenants

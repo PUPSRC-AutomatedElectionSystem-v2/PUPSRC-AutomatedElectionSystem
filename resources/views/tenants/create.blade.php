@@ -54,7 +54,7 @@
                 };
 
                 try {
-                    const res = await axios.post('{{ route('tenants.store') }}', data);
+                    const res = await axios.post('{{ route('api.v1.tenants.store') }}', data);
                     out.textContent = JSON.stringify(res.data, null, 2);
                     out.className = 'success';
                 } catch (err) {

@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '//pupsraes.test/email/verification-notification'
+ * @route '//pupsrc-aes.test/email/verification-notification'
  */
 export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -11,13 +11,13 @@ export const store = (options?: RouteQueryOptions): RouteDefinition<'post'> => (
 
 store.definition = {
     methods: ["post"],
-    url: '//pupsraes.test/email/verification-notification',
+    url: '//pupsrc-aes.test/email/verification-notification',
 } satisfies RouteDefinition<["post"]>
 
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '//pupsraes.test/email/verification-notification'
+ * @route '//pupsrc-aes.test/email/verification-notification'
  */
 store.url = (options?: RouteQueryOptions) => {
     return store.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ store.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '//pupsraes.test/email/verification-notification'
+ * @route '//pupsrc-aes.test/email/verification-notification'
  */
 store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     url: store.url(options),
@@ -36,7 +36,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
     /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '//pupsraes.test/email/verification-notification'
+ * @route '//pupsrc-aes.test/email/verification-notification'
  */
     const storeForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
         action: store.url(options),
@@ -46,7 +46,7 @@ store.post = (options?: RouteQueryOptions): RouteDefinition<'post'> => ({
             /**
 * @see \App\Http\Controllers\Auth\EmailVerificationNotificationController::store
  * @see app/Http/Controllers/Auth/EmailVerificationNotificationController.php:14
- * @route '//pupsraes.test/email/verification-notification'
+ * @route '//pupsrc-aes.test/email/verification-notification'
  */
         storeForm.post = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
             action: store.url(options),

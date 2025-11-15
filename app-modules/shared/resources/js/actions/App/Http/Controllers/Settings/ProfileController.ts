@@ -2,7 +2,7 @@ import { queryParams, type RouteQueryOptions, type RouteDefinition, type RouteFo
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::edit
  * @see app/Http/Controllers/Settings/ProfileController.php:19
- * @route '//pupsraes.test/settings/profile'
+ * @route '//pupsr-aes.test/settings/profile'
  */
 export const edit = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(options),
@@ -10,14 +10,14 @@ export const edit = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 })
 
 edit.definition = {
-    methods: ["get","head"],
-    url: '//pupsraes.test/settings/profile',
-} satisfies RouteDefinition<["get","head"]>
+    methods: ["get", "head"],
+    url: '//pupsr-aes.test/settings/profile',
+} satisfies RouteDefinition<["get", "head"]>
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::edit
  * @see app/Http/Controllers/Settings/ProfileController.php:19
- * @route '//pupsraes.test/settings/profile'
+ * @route '//pupsr-aes.test/settings/profile'
  */
 edit.url = (options?: RouteQueryOptions) => {
     return edit.definition.url + queryParams(options)
@@ -26,7 +26,7 @@ edit.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::edit
  * @see app/Http/Controllers/Settings/ProfileController.php:19
- * @route '//pupsraes.test/settings/profile'
+ * @route '//pupsr-aes.test/settings/profile'
  */
 edit.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
     url: edit.url(options),
@@ -35,52 +35,52 @@ edit.get = (options?: RouteQueryOptions): RouteDefinition<'get'> => ({
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::edit
  * @see app/Http/Controllers/Settings/ProfileController.php:19
- * @route '//pupsraes.test/settings/profile'
+ * @route '//pupsr-aes.test/settings/profile'
  */
 edit.head = (options?: RouteQueryOptions): RouteDefinition<'head'> => ({
     url: edit.url(options),
     method: 'head',
 })
 
-    /**
+/**
 * @see \App\Http\Controllers\Settings\ProfileController::edit
- * @see app/Http/Controllers/Settings/ProfileController.php:19
- * @route '//pupsraes.test/settings/profile'
- */
-    const editForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-        action: edit.url(options),
-        method: 'get',
-    })
+* @see app/Http/Controllers/Settings/ProfileController.php:19
+* @route '//pupsr-aes.test/settings/profile'
+*/
+const editForm = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: edit.url(options),
+    method: 'get',
+})
 
-            /**
+/**
 * @see \App\Http\Controllers\Settings\ProfileController::edit
- * @see app/Http/Controllers/Settings/ProfileController.php:19
- * @route '//pupsraes.test/settings/profile'
- */
-        editForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: edit.url(options),
-            method: 'get',
-        })
-            /**
+* @see app/Http/Controllers/Settings/ProfileController.php:19
+* @route '//pupsr-aes.test/settings/profile'
+*/
+editForm.get = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: edit.url(options),
+    method: 'get',
+})
+/**
 * @see \App\Http\Controllers\Settings\ProfileController::edit
- * @see app/Http/Controllers/Settings/ProfileController.php:19
- * @route '//pupsraes.test/settings/profile'
- */
-        editForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
-            action: edit.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'HEAD',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'get',
-        })
-    
-    edit.form = editForm
+* @see app/Http/Controllers/Settings/ProfileController.php:19
+* @route '//pupsr-aes.test/settings/profile'
+*/
+editForm.head = (options?: RouteQueryOptions): RouteFormDefinition<'get'> => ({
+    action: edit.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'HEAD',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'get',
+})
+
+edit.form = editForm
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::update
  * @see app/Http/Controllers/Settings/ProfileController.php:30
- * @route '//pupsraes.test/settings/profile'
+ * @route '//pupsr-aes.test/settings/profile'
  */
 export const update = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update.url(options),
@@ -89,13 +89,13 @@ export const update = (options?: RouteQueryOptions): RouteDefinition<'patch'> =>
 
 update.definition = {
     methods: ["patch"],
-    url: '//pupsraes.test/settings/profile',
+    url: '//pupsr-aes.test/settings/profile',
 } satisfies RouteDefinition<["patch"]>
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::update
  * @see app/Http/Controllers/Settings/ProfileController.php:30
- * @route '//pupsraes.test/settings/profile'
+ * @route '//pupsr-aes.test/settings/profile'
  */
 update.url = (options?: RouteQueryOptions) => {
     return update.definition.url + queryParams(options)
@@ -104,48 +104,48 @@ update.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::update
  * @see app/Http/Controllers/Settings/ProfileController.php:30
- * @route '//pupsraes.test/settings/profile'
+ * @route '//pupsr-aes.test/settings/profile'
  */
 update.patch = (options?: RouteQueryOptions): RouteDefinition<'patch'> => ({
     url: update.url(options),
     method: 'patch',
 })
 
-    /**
+/**
 * @see \App\Http\Controllers\Settings\ProfileController::update
- * @see app/Http/Controllers/Settings/ProfileController.php:30
- * @route '//pupsraes.test/settings/profile'
- */
-    const updateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: update.url({
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'PATCH',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
-    })
+* @see app/Http/Controllers/Settings/ProfileController.php:30
+* @route '//pupsr-aes.test/settings/profile'
+*/
+const updateForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: update.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'PATCH',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
 
-            /**
+/**
 * @see \App\Http\Controllers\Settings\ProfileController::update
- * @see app/Http/Controllers/Settings/ProfileController.php:30
- * @route '//pupsraes.test/settings/profile'
- */
-        updateForm.patch = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: update.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'PATCH',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-    
-    update.form = updateForm
+* @see app/Http/Controllers/Settings/ProfileController.php:30
+* @route '//pupsr-aes.test/settings/profile'
+*/
+updateForm.patch = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: update.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'PATCH',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+update.form = updateForm
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
  * @see app/Http/Controllers/Settings/ProfileController.php:46
- * @route '//pupsraes.test/settings/profile'
+ * @route '//pupsr-aes.test/settings/profile'
  */
 export const destroy = (options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(options),
@@ -154,13 +154,13 @@ export const destroy = (options?: RouteQueryOptions): RouteDefinition<'delete'> 
 
 destroy.definition = {
     methods: ["delete"],
-    url: '//pupsraes.test/settings/profile',
+    url: '//pupsr-aes.test/settings/profile',
 } satisfies RouteDefinition<["delete"]>
 
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
  * @see app/Http/Controllers/Settings/ProfileController.php:46
- * @route '//pupsraes.test/settings/profile'
+ * @route '//pupsr-aes.test/settings/profile'
  */
 destroy.url = (options?: RouteQueryOptions) => {
     return destroy.definition.url + queryParams(options)
@@ -169,44 +169,44 @@ destroy.url = (options?: RouteQueryOptions) => {
 /**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
  * @see app/Http/Controllers/Settings/ProfileController.php:46
- * @route '//pupsraes.test/settings/profile'
+ * @route '//pupsr-aes.test/settings/profile'
  */
 destroy.delete = (options?: RouteQueryOptions): RouteDefinition<'delete'> => ({
     url: destroy.url(options),
     method: 'delete',
 })
 
-    /**
+/**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
- * @see app/Http/Controllers/Settings/ProfileController.php:46
- * @route '//pupsraes.test/settings/profile'
- */
-    const destroyForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-        action: destroy.url({
-                    [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                        _method: 'DELETE',
-                        ...(options?.query ?? options?.mergeQuery ?? {}),
-                    }
-                }),
-        method: 'post',
-    })
+* @see app/Http/Controllers/Settings/ProfileController.php:46
+* @route '//pupsr-aes.test/settings/profile'
+*/
+const destroyForm = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: destroy.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'DELETE',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
 
-            /**
+/**
 * @see \App\Http\Controllers\Settings\ProfileController::destroy
- * @see app/Http/Controllers/Settings/ProfileController.php:46
- * @route '//pupsraes.test/settings/profile'
- */
-        destroyForm.delete = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
-            action: destroy.url({
-                        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
-                            _method: 'DELETE',
-                            ...(options?.query ?? options?.mergeQuery ?? {}),
-                        }
-                    }),
-            method: 'post',
-        })
-    
-    destroy.form = destroyForm
+* @see app/Http/Controllers/Settings/ProfileController.php:46
+* @route '//pupsr-aes.test/settings/profile'
+*/
+destroyForm.delete = (options?: RouteQueryOptions): RouteFormDefinition<'post'> => ({
+    action: destroy.url({
+        [options?.mergeQuery ? 'mergeQuery' : 'query']: {
+            _method: 'DELETE',
+            ...(options?.query ?? options?.mergeQuery ?? {}),
+        }
+    }),
+    method: 'post',
+})
+
+destroy.form = destroyForm
 const ProfileController = { edit, update, destroy }
 
 export default ProfileController

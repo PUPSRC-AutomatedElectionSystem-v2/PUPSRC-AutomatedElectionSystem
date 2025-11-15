@@ -19,7 +19,9 @@ return new class extends Migration
             $table->string('first_name');
             $table->string('last_name');
             $table->string('middle_name')->nullable();
-            $table->string('suffix', 32)->nullable();
+            $table->string('suffix', 32)->nullable()->comment('Name suffix, e.g., Jr., Sr., III');
+            $table->json('organizations')->nullable()->comment('List of organization IDs the user belongs to');
+            $table->json('data')->nullable()->comment('Additional user data as JSON (e.g., year_level, section, etc.)');
             $table->timestamps();
             $table->softDeletes();
         });

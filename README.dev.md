@@ -64,3 +64,191 @@ Remove-Item -Force package-lock.json
 Notes for contributors
 ----------------------
 - This post-generation script is a local workaround. If you maintain Wayfinder please consider upstreaming a dedupe option or configuration to control host variant generation.
+
+Service-Oriented Messaging (RabbitMQ)
+-------------------------------------
+
+This project uses RabbitMQ for async, decoupled messaging between modules. This architecture prepares for future app separation (central app + organization apps).
+
+### Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│              Organization-Admin Module (Publisher)                          │
+│  ┌──────────────────┐     ┌─────────────────────────┐                       │
+│  │  VotersImport    │────▶│ MessagePublisherInterface│                       │
+│  │  (Excel Import)  │     │ (RabbitMqMessagePublisher)                       │
+│  └──────────────────┘     └───────────┬─────────────┘                       │
+└───────────────────────────────────────┼─────────────────────────────────────┘
+                                        │ publish(DomainMessage)
+                                        ▼
+                            ┌───────────────────────┐
+                            │      RabbitMQ         │
+                            │  Exchange: organization│
+                            │  Routing: user.*      │
+                            │  Queue: organization.user
+                            └───────────┬───────────┘
+                                        │
+┌───────────────────────────────────────┼─────────────────────────────────────┐
+│                      Central App (Consumer)                                  │
+│                                       ▼                                      │
+│  ┌────────────────────────────────────────────────────────────────────────┐ │
+│  │  php artisan messaging:consume organization.user                       │ │
+│  │  ┌───────────────────┐     ┌─────────────────────────┐                 │ │
+│  │  │ MessageProcessor  │────▶│ MessageHandlerRegistry   │                 │ │
+│  │  └───────────────────┘     └────────────┬────────────┘                 │ │
+│  └─────────────────────────────────────────┼──────────────────────────────┘ │
+│                                            ▼                                 │
+│               ┌────────────────────────────────────────────┐                │
+│               │  App\Handlers\CreateUserDataHandler        │                │
+│               │  → Creates UserData in central database    │                │
+│               └────────────────────────────────────────────┘                │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Key Components
+
+| File | Purpose |
+|------|---------|
+| `app-modules/shared/src/Contracts/Messaging/DomainMessage.php` | Typed message DTO |
+| `app-modules/shared/src/Contracts/Messaging/MessagePublisherInterface.php` | Publisher contract |
+| `app-modules/shared/src/Contracts/Messaging/MessageConsumerInterface.php` | Consumer contract |
+| `app-modules/shared/src/Contracts/Messaging/MessageHandlerInterface.php` | Handler contract |
+| `app-modules/shared/src/Services/RabbitMqMessagePublisher.php` | RabbitMQ publisher |
+| `app-modules/shared/src/Services/RabbitMqMessageConsumer.php` | RabbitMQ consumer |
+| `app-modules/shared/src/Services/MessageHandlerRegistry.php` | Handler routing |
+| `app/Handlers/CreateUserDataHandler.php` | Central app handler for user.create |
+
+### Quick Start
+
+1. **Ensure RabbitMQ is running:**
+
+```powershell
+docker compose up -d rabbitmq
+```
+
+2. **Set up exchanges, queues, and bindings (once):**
+
+```powershell
+php artisan messaging:setup --exchange=organization --queue=organization.user --routing-key="user.*"
+```
+
+3. **Start the consumer (separate terminal or supervisor):**
+
+```powershell
+# Auto-discover all queues from registered handlers (recommended)
+php artisan messaging:consume
+
+# Or consume a specific queue
+php artisan messaging:consume organization.user
+```
+
+4. **List registered handlers:**
+
+```powershell
+php artisan messaging:handlers
+```
+
+Output shows queue, message type, handler class, and versions:
+
+```
++-------------------+--------------+------------------------------------+----------+
+| Queue             | Message Type | Handler Class                      | Versions |
++-------------------+--------------+------------------------------------+----------+
+| organization.user | user.create  | App\Handlers\CreateUserDataHandler | 1        |
++-------------------+--------------+------------------------------------+----------+
+```
+
+### Publishing Messages
+
+Messages are published automatically when importing voters via Excel. To publish manually:
+
+```php
+use Modules\Shared\Contracts\Messaging\DomainMessage;
+use Modules\Shared\Contracts\Messaging\MessagePublisherInterface;
+
+$publisher = app(MessagePublisherInterface::class);
+
+$message = DomainMessage::create(
+    type: 'user.create',
+    data: [
+        'identity_id' => 'STU-2025-001',
+        'first_name' => 'John',
+        'last_name' => 'Doe',
+        'email' => 'john@example.com',
+    ],
+    version: 1,
+);
+
+$publisher->publish($message, 'organization', 'user.create');
+```
+
+### Adding New Message Handlers
+
+1. **Create a handler class:**
+
+```php
+namespace App\Handlers;
+
+use Modules\Shared\Contracts\Messaging\DomainMessage;
+use Modules\Shared\Contracts\Messaging\MessageHandlerInterface;
+
+class MyNewHandler implements MessageHandlerInterface
+{
+    public function queue(): string
+    {
+        return 'my.queue.name'; // Queue to consume from
+    }
+
+    public function handles(): string
+    {
+        return 'my.message.type'; // Message type this handler processes
+    }
+
+    public function supportedVersions(): array
+    {
+        return [1];
+    }
+
+    public function handle(DomainMessage $message): void
+    {
+        // Process the message
+    }
+}
+```
+
+2. **Register in AppServiceProvider:**
+
+```php
+$registry->register(new MyNewHandler());
+```
+
+The handler will be auto-discovered when running `php artisan messaging:consume` without arguments.
+
+### Running Tests
+
+```powershell
+php artisan test --filter=Messaging
+```
+
+### Environment Variables
+
+Add to `.env`:
+
+```env
+RABBITMQ_HOST=127.0.0.1
+RABBITMQ_PORT=5672
+RABBITMQ_USER=guest
+RABBITMQ_PASSWORD=guest
+RABBITMQ_VHOST=/
+```
+
+### Future: Splitting Apps
+
+When breaking into separate applications:
+
+1. Extract `app-modules/shared` into a composer package
+2. Central app keeps consumers + handlers
+3. Organization app keeps publishers
+4. Both connect to the same RabbitMQ instance
+5. Messages are JSON — no PHP class serialization across apps

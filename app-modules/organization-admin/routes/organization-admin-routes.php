@@ -8,6 +8,7 @@ use Laravel\Sanctum\Http\Controllers\CsrfCookieController;
 use Modules\OrganizationAdmin\Http\Controllers\CandidateController;
 use Modules\OrganizationAdmin\Http\Controllers\PositionController;
 use Modules\OrganizationAdmin\Http\Controllers\RegistrationScheduleController;
+use Modules\OrganizationAdmin\Http\Controllers\VoterController;
 use Modules\OrganizationAdmin\Http\Controllers\VotingScheduleController;
 
 /*
@@ -23,7 +24,7 @@ use Modules\OrganizationAdmin\Http\Controllers\VotingScheduleController;
 */
 
 // if (tenant()) {
-Log::info(['tenant route' => tenant()]);
+// Log::info(['tenant route' => tenant()]);
 // }
 
 Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], static function () {
@@ -34,7 +35,7 @@ Route::group(['prefix' => config('sanctum.prefix', 'sanctum')], static function 
 });
 
 Route::get('/', function () {
-    return 'This is your multi-tenant application. The id of the current tenant is ' . tenant('id');
+    return 'This is your multi-tenant application. The id of the current tenant is '.tenant('id');
 });
 
 Route::prefix('config')->group(function () {
@@ -51,3 +52,7 @@ Route::prefix('config')->group(function () {
 });
 
 Route::get('/candidate/add', [CandidateController::class, 'create'])->name('positions.create');
+
+Route::prefix('/voters')->name('voters.')->group(function () {
+    Route::get('/create', [VoterController::class, 'create'])->name('create');
+});

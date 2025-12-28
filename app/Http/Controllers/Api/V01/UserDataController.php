@@ -1,11 +1,13 @@
 <?php
 
-namespace Modules\OrganizationAdmin\Http\Controllers;
+namespace App\Http\Controllers\Api\V01;
 
-use Illuminate\Http\Request;
-use Modules\OrganizationAdmin\Models\Voter;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUserDataRequest;
+use App\Http\Requests\UpdateUserDataRequest;
+use App\Models\Central\UserData;
 
-class VoterController
+class UserDataController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,21 +22,21 @@ class VoterController
      */
     public function create()
     {
-        return view('organization-admin::voter.create');
+        //
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserDataRequest $request)
     {
-        //
+        debugbar()->info(['UserDataController@store called', $request->validated()]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Voter $voter)
+    public function show(UserData $userData)
     {
         //
     }
@@ -42,7 +44,7 @@ class VoterController
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Voter $voter)
+    public function edit(UserData $userData)
     {
         //
     }
@@ -50,7 +52,7 @@ class VoterController
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Voter $voter)
+    public function update(UpdateUserDataRequest $request, UserData $userData)
     {
         //
     }
@@ -58,7 +60,7 @@ class VoterController
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Voter $voter)
+    public function destroy(UserData $userData)
     {
         //
     }

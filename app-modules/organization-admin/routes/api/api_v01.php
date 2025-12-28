@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Modules\OrganizationAdmin\Http\Controllers\Api\V01\CandidateController;
 use Modules\OrganizationAdmin\Http\Controllers\Api\V01\PositionController;
 use Modules\OrganizationAdmin\Http\Controllers\Api\V01\RegistrationScheduleController;
+use Modules\OrganizationAdmin\Http\Controllers\Api\V01\VoterController;
 use Modules\OrganizationAdmin\Http\Controllers\Api\V01\VotingScheduleController;
 
 Route::prefix('v1')->name('v1.')->group(function () {
@@ -20,4 +21,6 @@ Route::prefix('v1')->name('v1.')->group(function () {
     });
 
     Route::post('/candidates', [CandidateController::class, 'store'])->name('candidates.store');
+
+    Route::post('/voters/import', [VoterController::class, 'import'])->name('voters.import');
 });

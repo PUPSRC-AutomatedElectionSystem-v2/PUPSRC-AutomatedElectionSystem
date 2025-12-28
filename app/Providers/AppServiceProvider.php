@@ -21,8 +21,8 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(\App\Http\Middleware\HandleInertiaRequests::class, function ($app) {
             return tenancy()->initialized
-                ? new \Modules\Shared\Http\Middleware\HandleTenantInertiaRequests()
-                : new \App\Http\Middleware\HandleInertiaRequests();
+                ? new \Modules\Shared\Http\Middleware\HandleTenantInertiaRequests
+                : new \App\Http\Middleware\HandleInertiaRequests;
         });
     }
 }
